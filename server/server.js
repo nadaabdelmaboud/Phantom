@@ -8,7 +8,6 @@ app.use(bodyparser.json());
 app.use('/api',pins)
 
 
-
 const API_PORT = process.env.PORT || 3000;
 
 app.use(function(error, req, res, next) {
