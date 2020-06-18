@@ -1,12 +1,18 @@
 import Vue from "vue";
 import App from "./App.vue";
-import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import { makeServer } from "./server";
+import axios from "axios";
+import "./registerServiceWorker";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 Vue.config.productionTip = false;
+if (process.env.NODE_ENV === "development") {
+  makeServer();
+}
+axios.defaults.baseURL = "/api";
 
 new Vue({
   router,
