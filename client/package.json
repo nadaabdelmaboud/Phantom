@@ -12,7 +12,11 @@
     "unit": "jest --watch"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
@@ -71,6 +75,14 @@
     "not dead"
   ],
   "jest": {
-    "preset": "@vue/cli-plugin-unit-jest"
+    "preset": "@vue/cli-plugin-unit-jest",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.vue",
+      "!**/node_modules/**"
+    ],
+    "transformIgnorePatterns": [
+      "../../node_modules/(?!${vue-context})"
+    ]
   }
 }
