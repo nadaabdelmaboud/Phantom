@@ -2,6 +2,7 @@ require('dotenv/config')
 var express=require('express')
 var app=express();
 var pins=require('./routes/pin-route');
+require('./controllers/db-controller')();
 var bodyparser=require('body-parser');
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
