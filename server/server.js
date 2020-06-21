@@ -16,6 +16,7 @@ const methodOverride=require('method-override')
 app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+app.use(logger('dev'));
 app.use(methodOverride('_method'));
 app.use('/api',images);
 app.use('/api',pins);
