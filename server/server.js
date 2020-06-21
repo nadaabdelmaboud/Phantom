@@ -1,26 +1,25 @@
 
 require('dotenv/config'); // to use env variable 
-const connection =require('./controllers/db-controller');
+const connection =require('./controllers/db-controller')();
 const express = require('express');
 const app = express();
-//const methodOverride = require('method-override');
-//connect to database
-connection(app);
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const logger = require('morgan');
 var pins=require('./routes/pin-route');
-var authantication = require('./routes/authantication-routes');
+var images=require('./routes/image-route');
 
+var authentication = require('./routes/authentication-route');
+const methodOverride=require('method-override')
 
 
 app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-//app.use(methodOverride());
+app.use(methodOverride('_method'));
+app.use('/api',images);
 app.use('/api',pins);
-app.use('/api',authantication);
-
+app.use('/api',authentication);
 
 
 
