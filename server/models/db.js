@@ -95,3 +95,5 @@ const topic=new mongoose.Schema({
     description:String,
     pins:[mongoose.Schema.Types.ObjectId]
 });
+
+module.exports = { user, topic, category,pin }

@@ -7,7 +7,9 @@ var bodyparser=require('body-parser');
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use('/api',pins)
+const authantication = require('./routes/authantication-routes');
 
+app.use(authantication);
 
 const API_PORT = process.env.PORT || 3000;
 
