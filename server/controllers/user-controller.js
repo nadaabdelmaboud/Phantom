@@ -56,10 +56,13 @@ const User = {
                 else return 1;
             })
             if (!validate) return 0;
+            const salt = await bcrypt.genSalt(10);
+            let hash = await bcrypt.hash(user.password, salt);
             const newUser = new userDocument({
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                password: hash,
                 about: user.bio,
                 birthDate: user.birthday,
                 pins: [],
@@ -78,9 +81,7 @@ const User = {
                 },
                 createdAt: Date.now(),
             })
-            const salt = await bcrypt.genSalt(10);
-            let hash = await bcrypt.hash(user.password, salt);
-            newUser.password = hash;
+            newUser.birthDate = user.birthday;
             await newUser.save();
             return newUser;
         } catch (ex) {
@@ -128,7 +129,9 @@ const User = {
             return 0;
         }
     },
-
+    deleteUser: async function (userId) {
+        return await userDocument.findByIdAndDelete(userId)
+    },
 }
 
 module.exports = User;

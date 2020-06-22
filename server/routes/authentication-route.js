@@ -25,7 +25,7 @@ router.post('/sign_up', async (req, res) => {
                 return res.status(403).json({ message: 'Mail exists' });
             var token = jwt.sign({
                 email: req.body.email,
-                password: req.body.birthday,
+                password: req.body.password,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 birthday: req.body.birthday,
@@ -82,4 +82,17 @@ router.post('/login', async (req, res) => {
         res.json({ token: token });
     })
 })
+
+router.get('/me', auth, async (req, res) => {
+    const user = await User.getUserProfile(req.user._id);
+    if (!user) return res.status(403).json({ error: 'no user !' });
+    return res.json(user);
+});
+
+router.delete('/me/delete', auth, async (req, res) => {
+    const ifDelete = await User.deleteUser(req.user._id);
+    if (!ifDelete) return res.status(403).json({ error: 'no user !' });
+    return res.status(204).json({ success: 'delete done ' })
+})
+
 module.exports = router;

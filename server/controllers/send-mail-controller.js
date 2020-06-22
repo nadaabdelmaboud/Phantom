@@ -19,7 +19,7 @@ module.exports = async function (email, message, type) {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: 'Phantom SAMA has A Message FOR YOU ^^',
-            text: 'Please follow this URL to confirm your account http://100.25.194.8/confirm?token=' + message + '&type=signup'
+            text: 'Please follow this URL to confirm your account http:/localhost:8080/confirm?token=' + message + '&type=signup'
             // should be fornt link 
 
         };
@@ -27,9 +27,9 @@ module.exports = async function (email, message, type) {
     }
     else {
         mailOptions = {
-            from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+            from: '"Spotify Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
-            subject: 'Phantom SAMA has A Message FOR YOU ^^',
+            subject: 'MARIOPLEX SAMA has A Message FOR YOU ^^',
             text: message
         };
     }
