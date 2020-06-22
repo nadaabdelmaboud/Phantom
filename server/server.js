@@ -1,5 +1,6 @@
 
 require('dotenv/config'); // to use env variable 
+
 const express = require('express');
 const methodOverride = require('method-override');
 const cors = require('cors');
@@ -10,7 +11,8 @@ const session = require('express-session');
 
 const connection =require('./controllers/db-controller');
 const pins=require('./routes/pin-route');
-const authantication = require('./routes/authantication-routes');
+const authantication = require('./routes/authentication-route');
+var images=require('./routes/image-route');
 
 const app = express();
 //connect to database
@@ -20,12 +22,14 @@ app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(logger('dev'));
+
 app.use(session({ secret: 'anything' }));
 app.use(passport.initialize());
 app.use(methodOverride());
 
 app.use('/api',pins);
 app.use('/api',authantication);
+app.use('/api',images);
 
 const API_PORT = process.env.PORT || 3000;
 
