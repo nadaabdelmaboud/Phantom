@@ -14,9 +14,7 @@ const User = {
             }).catch((err) => 0);
 
             return user;
-        } catch (ex) {
-            return 0;
-        }
+        } catch (ex) { return 0; }
     },
     checkMAilExistAndFormat: async function (email) {
         try {
@@ -24,6 +22,7 @@ const User = {
             const shcema = Joi.object().keys({
                 email: Joi.string().trim().email().required(),
             });
+            console.log(email)
             const validate = Joi.validate(body, shcema, async (err, result) => {
                 if (err) return 0;
                 return 1;
@@ -34,9 +33,7 @@ const User = {
                 return user ? user : 0;
             });
             return user;
-        } catch (ex) {
-            return 0;
-        }
+        } catch (ex) { return 0; }
     },
 
     createUser: async function (user) {
@@ -84,9 +81,7 @@ const User = {
             newUser.birthDate = user.birthday;
             await newUser.save();
             return newUser;
-        } catch (ex) {
-            return 0;
-        }
+        } catch (ex) { return 0; }
     },
 
     checkEmailAndPass: async function (email, password) {
@@ -99,12 +94,11 @@ const User = {
                 if (isMatch) return user;
                 return -1;
             })
-        } catch (ex) {
-            return 0;
-        }
+        } catch (ex) { return 0; }
     },
     getUserProfile: async function (userId) {
         try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
             const user = await this.getUserById(userId);
             if (!user) return 0;
             return {
@@ -125,12 +119,13 @@ const User = {
                 counts: user.counts,
                 createdAt: user.createdAt,
             }
-        } catch (err) {
-            return 0;
-        }
+        } catch (err) { return 0; }
     },
     deleteUser: async function (userId) {
-        return await userDocument.findByIdAndDelete(userId)
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            return await userDocument.findByIdAndDelete(userId)
+        } catch (err) { return 0; }
     },
 }
 
