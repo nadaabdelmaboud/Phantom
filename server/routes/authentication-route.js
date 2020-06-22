@@ -92,9 +92,9 @@ router.delete('/me/delete', auth, async (req, res) => {
 })
 
 router.get('/checkEmail', async (req, res) => {
-    const user = await User.checkMAilExistAndFormat(req.body.email);
+    const user = await User.checkMAilExistAndFormat(req.query.email);
     if (!user) return res.status(204).json({ success: 'correct email ' });
     if (user == -1) return res.status(403).json({ error: 'no correct format !' });
-    return res.status(403).json({ error: 'this email exist ' });
+    return res.status(403).json({ error: 'this email exists ' });
 })
 module.exports = router;
