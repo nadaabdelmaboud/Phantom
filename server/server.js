@@ -9,10 +9,10 @@ const logger = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
 
-const connection =require('./controllers/db-controller');
-const pins=require('./routes/pin-route');
+const connection = require('./controllers/db-controller');
+const pins = require('./routes/pin-route');
 const authantication = require('./routes/authentication-route');
-var images=require('./routes/image-route');
+var images = require('./routes/image-route');
 
 const app = express();
 //connect to database
@@ -27,18 +27,18 @@ app.use(session({ secret: 'anything' }));
 app.use(passport.initialize());
 app.use(methodOverride());
 
-app.use('/api',pins);
-app.use('/api',authantication);
-app.use('/api',images);
+app.use('/api', pins);
+app.use('/api', authantication);
+app.use('/api', images);
 
 const API_PORT = process.env.PORT || 3000;
 
-app.use(function(error, req, res, next) {
+app.use(function (error, req, res, next) {
     res.status(500);
     res.send({ error: error.message });
 
 });
-app.listen(process.env.port || API_PORT, function() {
+app.listen(process.env.port || API_PORT, function () {
     console.log('listening for a request');
 });
 
