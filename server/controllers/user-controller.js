@@ -30,7 +30,7 @@ const User = {
             const validate = Joi.validate(body, shcema);
             if (validate.error != null) return -1;
             const user = await userDocument.findOne({ email: email });
-            console.log(user);
+            //consolconsole.log(user);
             return user;
         } catch (ex) { return 0; }
     },

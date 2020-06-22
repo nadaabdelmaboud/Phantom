@@ -13,27 +13,24 @@ module.exports = async function (email, message, type) {
         }
     });
     var mailOptions;
-
     if (type == "confirm") {
         mailOptions = {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: 'Phantom SAMA has A Message FOR YOU ^^',
             text: 'Please follow this URL to confirm your account http:/localhost:8080/confirm?token=' + message + '&type=signup'
-            // should be fornt link 
 
         };
-
     }
     else {
         mailOptions = {
-            from: '"Spotify Contact" <' + String(process.env.EMAIL) + '>',
+            from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
-            subject: 'MARIOPLEX SAMA has A Message FOR YOU ^^',
+            subject: 'Phantom SAMA has A Message FOR YOU ^^',
             text: message
         };
     }
 
-
+    transporter.sendMail(mailOptions);
     return 1;
 };
