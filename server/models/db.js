@@ -1,5 +1,6 @@
 const mongoose=require('mongoose')
-const user=new mongoose.Schema({
+const Schema = mongoose.Schema;
+const User=new Schema({
 firstName:String,
 lastName:String,
 email:String,
@@ -33,7 +34,7 @@ createdAt:Date,
 
 
 });
-const board=new mongoose.Schema({
+const Board=new Schema({
     url:String,
     name:String,
     creator:{
@@ -50,7 +51,7 @@ const board=new mongoose.Schema({
       },
 
 });
-const pin=new mongoose.Schema({
+const Pin=new Schema({
     imageId:mongoose.Schema.Types.ObjectId,
     url:String,
     creator:{
@@ -78,22 +79,29 @@ const pin=new mongoose.Schema({
     
 });
 
-const category=new mongoose.Schema({
+const Category=new  Schema({
     name:String,
     pins:[mongoose.Schema.Types.ObjectId]
 });
 
-const image=new mongoose.Schema({
+const Image=new  Schema({
     height:Number,
     width:Number,
     url:String
 });
 
-const topic=new mongoose.Schema({
+const Topic=new  Schema({
     name:String,
     followers:[],
     description:String,
     pins:[mongoose.Schema.Types.ObjectId]
 });
 
-module.exports = { user, topic, category,pin,image }
+const user = mongoose.model('User', User);
+const category = mongoose.model('Category', Category);
+const image = mongoose.model('Image', Image);
+const topic = mongoose.model('Topic', Topic);
+const pin = mongoose.model('Pin', Pin);
+const board = mongoose.model('Board', Board);
+
+module.exports = { user, topic, category,pin,image,board }

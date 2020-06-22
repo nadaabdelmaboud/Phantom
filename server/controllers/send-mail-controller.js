@@ -1,5 +1,4 @@
 var nodemailer = require('nodemailer');
-const emailExistance = require('email-existence');
 module.exports = async function(email, message, type) {
     var transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -14,10 +13,6 @@ module.exports = async function(email, message, type) {
         }
     });
     var mailOptions;
-    const ifEmail= emailExistance.check(email, function(err, res) {
-       return res;
-    })
-    if(!ifEmail||ifEmail=="false") return 0;
 
      if (type == "confirm") {
         mailOptions = {
@@ -28,6 +23,7 @@ module.exports = async function(email, message, type) {
             // should be fornt link 
 
         };
+        
     }
      else {
         mailOptions = {
@@ -38,12 +34,6 @@ module.exports = async function(email, message, type) {
         };
     }
 
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error)
-            if (email == String(process.env.EMAIL)) {
-                // at frist send email to myself if not send correctly change the env variables
-                console.log('your email is not correct which enter in env variables');
-            }
-    });
+    
     return 1;
 };

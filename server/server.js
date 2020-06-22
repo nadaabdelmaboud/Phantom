@@ -1,28 +1,31 @@
 
 require('dotenv/config'); // to use env variable 
-const connection =require('./controllers/db-controller');
 const express = require('express');
-const app = express();
-//const methodOverride = require('method-override');
-//connect to database
-connection(app);
+const methodOverride = require('method-override');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const logger = require('morgan');
-var pins=require('./routes/pin-route');
-var authantication = require('./routes/authantication-routes');
+const passport = require('passport');
+const session = require('express-session');
 
+const connection =require('./controllers/db-controller');
+const pins=require('./routes/pin-route');
+const authantication = require('./routes/authantication-routes');
 
+const app = express();
+//connect to database
+connection(app);
 
 app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-//app.use(methodOverride());
+app.use(logger('dev'));
+app.use(session({ secret: 'anything' }));
+app.use(passport.initialize());
+app.use(methodOverride());
+
 app.use('/api',pins);
 app.use('/api',authantication);
-
-
-
 
 const API_PORT = process.env.PORT || 3000;
 

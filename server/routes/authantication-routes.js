@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 
 // route for user sign up
 router.post('/sign_up', async(req, res) => {
+    
     try{
     // set Joi validation schema to check correctness of data
     const shcema = Joi.object().keys({
@@ -18,7 +19,7 @@ router.post('/sign_up', async(req, res) => {
         lastName :Joi.string().required(),
         bio : Joi.string().optional()
     });
-
+  
     Joi.validate(req.body, shcema, async(err, result) => {
         if (err) {
             // if not valid set status to 500
@@ -28,7 +29,7 @@ router.post('/sign_up', async(req, res) => {
 
         } else {
             // if valid check that email didnt exist before
-            if(await User.checkMAilExist( req.body.email)){
+            if(await User.checkMAilExistAndFormat( req.body.email)){
                 return res.status(403).json({
                     message: 'Mail exists'
                 });  
@@ -36,8 +37,10 @@ router.post('/sign_up', async(req, res) => {
             var token = jwt.sign({email: req.body.email,password:req.body.birthday ,firstName:req.body.fristName ,lastName:req.body.lastName ,country:req.body.country ,birthday:req.body.birthday ,bio:req.body.bio }, process.env.jwtsecret, {
                 expiresIn: '904380934853454h'
             });
-            if(await sendmail( req.body.email, String(token), 'confirm')) res.status(201);
-            return res.status(400);
+           
+            if(await sendmail( req.body.email, String(token), 'confirm')) 
+               return  res.status(204).json({ success: 'sign up done ' })
+            else return res.status(400);
            
         }
     });
