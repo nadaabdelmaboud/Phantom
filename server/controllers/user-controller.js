@@ -54,6 +54,7 @@ const User = {
             });
             const validate = Joi.validate(user, shcema);
             if (validate.error != null) return 0;
+            if (await this.checkMAilExistAndFormat(user.email)) return -1;
             const salt = await bcrypt.genSalt(10);
             let hash = await bcrypt.hash(user.password, salt);
             const newUser = new userDocument({

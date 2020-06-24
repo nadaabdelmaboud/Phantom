@@ -12,6 +12,7 @@ const session = require('express-session');
 const connection = require('./controllers/db-controller');
 const pins = require('./routes/pin-route');
 const authantication = require('./routes/authentication-route');
+const user = require('./routes/user-route');
 var images = require('./routes/image-route');
 
 const app = express();
@@ -29,6 +30,7 @@ app.use(methodOverride());
 
 app.use('/api', pins);
 app.use('/api', authantication);
+app.use('/api', user);
 app.use('/api', images);
 
 const API_PORT = process.env.PORT || 3000;

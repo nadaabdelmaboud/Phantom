@@ -57,6 +57,7 @@ router.post('/sign_up/confirm', auth, async (req, res) => {
             return res.status(500).json({ error: err })
         user = await User.createUser(req.user)
         if (!user) return res.status(400).json({ error: 'there is error !' });
+        if (user == -1) return res.status(403).json({ error: 'you have already confirmed!' });
         return res.status(204).json({ success: 'confirm done' })
     })
 })
@@ -77,13 +78,6 @@ router.post('/login', async (req, res) => {
     })
 })
 
-
-
-router.get('/me', auth, async (req, res) => {
-    const user = await User.getUserProfile(req.user._id);
-    if (!user) return res.status(403).json({ error: 'no user !' });
-    return res.json(user);
-});
 
 router.delete('/me/delete', auth, async (req, res) => {
     const ifDelete = await User.deleteUser(req.user._id);
