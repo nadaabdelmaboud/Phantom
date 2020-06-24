@@ -90,7 +90,7 @@ export default {
   data: function() {
     return {
       inHome: true,
-      inFollowing: false,
+      inFollowing: false
     };
   },
   watch: {
@@ -102,7 +102,7 @@ export default {
         this.inHome = false;
         this.inFollowing = true;
       }
-    },
+    }
   },
 };
 </script>
