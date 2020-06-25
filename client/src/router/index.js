@@ -1,15 +1,30 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import PhantomHome from "../views/PhantomHome.vue";
+import UserHome from "../views/UserHome.vue";
+import Following from "../views/Following.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "PhantomHome",
+    component: PhantomHome,
+    children:[
+      {
+        path: "",
+        name: "UserHome",
+        component: UserHome
+      },
+      {
+        path: "Following",
+        name: "Following",
+        component: Following
+      }
+    ]
   }
+
 ];
 
 const router = new VueRouter({
