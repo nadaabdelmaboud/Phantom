@@ -57,6 +57,22 @@ const Board={
         await user.save();
         return true;
     },
+    getCurrentUserBoards:async function(userId) {
+        if(await checkMonooseObjectID([userId])==0){return false;}
+        let user=await userDocument.findById(userId);
+        if(!user)return false;
+        let allBoards=await boardDocument.find({});
+        console.log(allBoards);
+        let retBoards=[];
+        for(var i=0;i<user.boards.length;i++){
+            for(var j=0;j<allBoards.length;j++){
+                if(String(user.boards[i].boardId)==String(allBoards[j]._id)){
+                    retBoards.push(allBoards[j]);
+                }
+            }
+        }
+        return retBoards;
+    }
 };
 
 module.exports=Board;
