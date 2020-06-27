@@ -23,4 +23,17 @@ router.post('/me/pins',auth,async (req,res)=>{
     }
 
 })
+//get all user created pins
+router.get('/me/pins',auth,async (req,res)=>{
+
+    let userId=req.user._id;
+    let pins=await Pin.getCurrentUserPins(userId);
+    if(pins&&pins.length!=0){
+         return res.status(200).send(pins);
+    }
+    else{
+        return res.status(404).send("pins not found");
+    }
+
+})
 module.exports=router;

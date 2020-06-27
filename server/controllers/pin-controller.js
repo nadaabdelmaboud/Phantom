@@ -53,6 +53,21 @@ const Pin={
         await user.save();
         return true;
     },
+    getCurrentUserPins:async function(userId) {
+        if(await checkMonooseObjectID([userId])==0){return false;}
+        let user=await userDocument.findById(userId);
+        if(!user)return false;
+        let allPins=await pinDocument.find({});
+        let retPins=[];
+        for(var i=0;i<user.pins.length;i++){
+            for(var j=0;j<allPins.length;j++){
+                if(String(user.pins[i])==String(allPins[j]._id)){
+                    retPins.push(allPins[j]);
+                }
+            }
+        }
+        return retPins;
+    }
 };
 
 module.exports=Pin;
