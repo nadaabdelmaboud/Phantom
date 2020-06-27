@@ -67,7 +67,49 @@ const Pin={
             }
         }
         return retPins;
-    }
+    },
+    savePin: async function(userId,pinId,boardId) {
+        if(await checkMonooseObjectID([userId,pinId])==0){return false;}
+        let user=await User.getUserById(userId);
+        if(!user)return 0;
+        let pin=await this.getPinById(pinId);
+        if(!pin)return false;
+        let found=false;
+        for(var i=0;i<user.savedPins.length;i++){
+                if(String(user.savedPins[i])==String(pinId)){
+                    found=true;
+                    break;
+                }
+        }
+        if(!found){
+            user.savedPins.push(pinId);
+        }
+        else{
+            return false;
+        }
+        if(boardId&&boardId!=undefined){
+           if(await checkMonooseObjectID([boardId])!=0){
+            await Board.addPintoBoard(pinId,boardId);
+           }
+        }
+        await user.save();
+        return true;
+    },
+    getCurrentUserSavedPins:async function(userId) {
+        if(await checkMonooseObjectID([userId])==0){return false;}
+        let user=await userDocument.findById(userId);
+        if(!user)return false;
+        let allPins=await pinDocument.find({});
+        let retPins=[];
+        for(var i=0;i<user.savedPins.length;i++){
+            for(var j=0;j<allPins.length;j++){
+                if(String(user.savedPins[i])==String(allPins[j]._id)){
+                    retPins.push(allPins[j]);
+                }
+            }
+        }
+        return retPins;
+    },
 };
 
 module.exports=Pin;

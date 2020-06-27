@@ -36,4 +36,30 @@ router.get('/me/pins',auth,async (req,res)=>{
     }
 
 })
+router.post('/me/savedPins/:id',auth,async (req,res)=>{
+
+    let pinId=req.params.id;
+    let userId=req.user._id;
+    let savedPin=await Pin.savePin(userId,pinId,boardId);
+    if(savedPin){
+         return res.status(200).send("pin saved succissfully");
+    }
+    else{
+        return res.status(400).send("pin not saved");
+    }
+
+})
+//get all user saved pins
+router.get('/me/savedPins',auth,async (req,res)=>{
+
+    let userId=req.user._id;
+    let pins=await Pin.getCurrentUserSavedPins(userId);
+    if(pins&&pins.length!=0){
+         return res.status(200).send(pins);
+    }
+    else{
+        return res.status(404).send("pins not found");
+    }
+
+})
 module.exports=router;
