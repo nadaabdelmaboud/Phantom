@@ -14,6 +14,7 @@ const pins = require('./routes/pin-route');
 const authantication = require('./routes/authentication-route');
 const user = require('./routes/user-route');
 var images = require('./routes/image-route');
+var boards = require('./routes/board-route');
 
 const app = express();
 //connect to database
@@ -32,6 +33,8 @@ app.use('/api', pins);
 app.use('/api', authantication);
 app.use('/api', user);
 app.use('/api', images);
+app.use('/api', boards);
+
 
 const API_PORT = process.env.PORT || 3000;
 
