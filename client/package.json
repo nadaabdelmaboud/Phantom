@@ -16,8 +16,10 @@
     "bootstrap": "^4.5.0",
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
+    "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "register-service-worker": "^1.7.1",
+    "sass-loader": "^8.0.2",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"

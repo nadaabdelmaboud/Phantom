@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 router.post('/sign_up', async (req, res) => {
 
     try {
-        // set Joi validation schema to check correctness of data
         const shcema = Joi.object().keys({
             email: Joi.string().trim().email().required(),
             password: Joi.string().required(),
@@ -25,7 +24,7 @@ router.post('/sign_up', async (req, res) => {
                 return res.status(403).json({ message: 'Mail exists' });
             var token = jwt.sign({
                 email: req.body.email,
-                password: req.body.birthday,
+                password: req.body.password,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 birthday: req.body.birthday,
@@ -54,16 +53,12 @@ router.post('/sign_up/confirm', auth, async (req, res) => {
     });
 
     Joi.validate(req.user, shcema, async (err, result) => {
-        if (err) {
-            // if not valid set status to 500
-            res.status(500).json({
-                error: err
-            })
-        } else {
-            user = await User.createUser(req.user)
-            if (!user) return res.status(400).json({ error: 'there is error !' });
-            return res.status(204).json({ success: 'confirm done' })
-        }
+        if (err)
+            return res.status(500).json({ error: err })
+        user = await User.createUser(req.user)
+        if (!user) return res.status(400).json({ error: 'there is error !' });
+        if (user == -1) return res.status(403).json({ error: 'you have already confirmed!' });
+        return res.status(204).json({ success: 'confirm done' })
     })
 })
 
@@ -81,5 +76,19 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ _id: user._id }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
         res.json({ token: token });
     })
+})
+
+
+router.delete('/me/delete', auth, async (req, res) => {
+    const ifDelete = await User.deleteUser(req.user._id);
+    if (!ifDelete) return res.status(403).json({ error: 'no user !' });
+    return res.status(204).json({ success: 'delete done ' });
+})
+
+router.get('/checkEmail', async (req, res) => {
+    const user = await User.checkMAilExistAndFormat(req.query.email);
+    if (!user) return res.status(204).json({ success: 'correct email ' });
+    if (user == -1) return res.status(403).json({ error: 'no correct format !' });
+    return res.status(403).json({ error: 'this email exists ' });
 })
 module.exports = router;
