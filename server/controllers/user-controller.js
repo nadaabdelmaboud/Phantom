@@ -147,6 +147,19 @@ const User = {
             return await userDocument.findByIdAndDelete(userId)
         } catch (err) { return 0; }
     },
+
+    resetPassword: async function (userId, newPassword) {
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            const user = await this.getUserById(userId);
+            if (!user || !newPassword) return 0;
+            const salt = await bcrypt.genSalt(10);
+            let hash = await bcrypt.hash(newPassword, salt);
+            user.password = hash;
+            await userDocument.updateOne({ _id: userId }, { password: hash });
+            return 1;
+        } catch (err) { return 0; }
+    }
 }
 
 module.exports = User;
