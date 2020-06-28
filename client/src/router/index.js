@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
+import PinBuilder from "../views/PinBuilder.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
         path: "Following",
         name: "Following",
         component: Following
+      },
+      {
+        path: "PinBuilder",
+        name: "PinBuilder",
+        component: PinBuilder
       }
     ]
   }

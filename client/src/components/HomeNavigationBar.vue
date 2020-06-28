@@ -34,10 +34,14 @@
 @import "../scss/Mixins";
 
 .navigationBar {
+  position: fixed;
+  top:0;
+  bottom: 80px;
   height: 80px;
   width: 100%;
   padding: 16px;
   background-color: $offWhite;
+  z-index: 1;
 }
 .buttons {
   @include horizontalDivs;
