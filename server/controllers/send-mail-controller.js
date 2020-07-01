@@ -17,7 +17,7 @@ module.exports = async function (email, message, type) {
         mailOptions = {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
-            subject: 'Phantom SAMA has A Message FOR YOU ^^',
+            subject: 'Phantom has a message for you',
             text: 'Please follow this URL to confirm your account http:/localhost:8080/confirm?token=' + message + '&type=signup'
 
         };
@@ -26,7 +26,7 @@ module.exports = async function (email, message, type) {
         mailOptions = {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
-            subject: 'Phantom SAMA has A Message FOR YOU ^^',
+            subject: 'Phantom has a message for you',
             text: message
         };
     }
