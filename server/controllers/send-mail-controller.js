@@ -21,6 +21,22 @@ module.exports = async function (email, message, type, userName) {
             html: '<html><h1>  Hi,' + userName + ' 😊 </h1> <p> you should confirm your email to complete sign up </p> <h2> <a href="http:/localhost:8080/confirm?token=' + message + '&type=signup" target ="_blank">Confirm</a></h2></html>'
         };
     }
+    else if (type == "change email") {
+        mailOptions = {
+            from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+            to: email,
+            subject: 'You changed your email address on Phantom',
+            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> <p> The email address on your Phantom account was just changed. Did you make this change?<br> if you need it change follow this like </p> <h2> <a href="http:/localhost:8080/changeEmail?token=' + message + '&type=changeEmail" target ="_blank">sure change email</a></h2></html>'
+        };
+    }
+    else if (type == "set email") {
+        mailOptions = {
+            from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+            to: email,
+            subject: '👋 You reset your email address on Phantom',
+            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> you reset this email to be your new email <br> please follow this link to confirm that </h2><h2><a href="http:/localhost:8080/changeEmail?token=' + message + '&type=resetEmail" target ="_blank">sure email</a></h2></html>'
+        };
+    }
     else if (type == "forget Password") {
         mailOptions = {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
