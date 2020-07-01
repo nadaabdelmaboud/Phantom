@@ -198,9 +198,60 @@ const User = {
             await userDocument.updateOne({ _id: userId }, { email: newEmail });
             return 1;
         } catch (err) { return 0; }
-    }
+    },
+    checkFollowUser: async function (user, userId) {
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            if (!user.following) await userDocument.updateOne({ _id: user._id }, { following: [] });
+            for (let i = 0; i < user.following.length; i++)
+                if (String(userId) == String(user.following[i]))
+                    return true;
+            return false;
+        } catch (err) { return 0; }
+    },
 
-
+    followUser: async function (userId1, userId2) {
+        try {
+            if (!checkMonooseObjectID([userId1, userId2])) throw new Error('not mongoose id');
+            userFollow = await User.getUserById(userId1);
+            followedUser = await User.getUserById(userId2);
+            if (!userFollow || !followedUser) return 0;
+            if (await this.checkFollowUser(userFollow, userId2)) return -1;
+            userFollow.following.push(userId2);
+            await userDocument.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+            if (!followedUser.followers) followedUser.followers = [];
+            followedUser.followers.push(userId1);
+            await userDocument.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+            return 1;
+        } catch (err) { return 0; }
+    },
+    unfollowUser: async function (userId1, userId2) {
+        try {
+            if (!checkMonooseObjectID([userId1, userId2])) throw new Error('not mongoose id');
+            userFollow = await User.getUserById(userId1);
+            followedUser = await User.getUserById(userId2);
+            if (!userFollow || !followedUser) return 0;
+            if (!await this.checkFollowUser(userFollow, userId2)) return -1;
+            if (userFollow.following) {
+                for (let i = 0; i < userFollow.following.length; i++) {
+                    if (String(userFollow.following[i]) == String(userId2)) {
+                        userFollow.following.splice(i, 1);
+                        await userDocument.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+                        break;
+                    }
+                }
+            } else return 0;
+            if (followedUser.followers) {
+                for (let i = 0; i < followedUser.followers.length; i++) {
+                    if (String(followedUser.followers[i]) == String(userId1)) {
+                        followedUser.followers.splice(i, 1);
+                        await userDocument.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+                        return 1;
+                    }
+                }
+            } else return 0;
+        } catch (err) { return 0; }
+    },
 }
 
 module.exports = User;

@@ -62,5 +62,25 @@ router.put('/me/confirm-update-email', auth, async (req, res) => {
     return res.status(403).json({ error: 'not correct type' });
 })
 
+router.put('/me/follow-user/:user_id', auth, async (req, res) => {
+    const ifFollow = await User.followUser(req.user._id, req.params.user_id);
+    if (!ifFollow) return res.status(403).json({ error: 'one of users not correct' });
+    if (ifFollow == -1) return res.status(400).json({ error: ' you follow this user !' });
+    return res.status(204).json({ success: ' done ' });
+})
+
+router.delete('/me/follow-user/:user_id', auth, async (req, res) => {
+    const ifFollow = await User.unfollowUser(req.user._id, req.params.user_id);
+    if (!ifFollow) return res.status(403).json({ error: 'one of users not correct' });
+    if (ifFollow == -1) return res.status(400).json({ error: ' you not follow this user !' });
+    return res.status(204).json({ success: ' done ' });
+})
+
+router.get('/me/follow-user/:user_id', auth, async (req, res) => {
+    const user = await User.getUserById(req.user._id);
+    if (!user) return res.status(403).json({ error: 'main user is not correct' });
+    const ifFollow = await User.checkFollowUser(user, req.params.user_id);
+    return res.json({ follow: ifFollow });
+})
 
 module.exports = router;
