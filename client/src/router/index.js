@@ -11,7 +11,7 @@ const routes = [
     path: "/",
     name: "PhantomHome",
     component: PhantomHome,
-    children:[
+    children: [
       {
         path: "",
         name: "UserHome",
@@ -24,7 +24,6 @@ const routes = [
       }
     ]
   }
-
 ];
 
 const router = new VueRouter({

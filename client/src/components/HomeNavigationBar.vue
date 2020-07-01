@@ -72,14 +72,15 @@
     font-size: 20px;
   }
 }
-.icons:active, .icons:focus {
-        background-color:red;
+.icons:active,
+.icons:focus {
+  background-color: red;
 }
 .inRoute {
   background-color: $darkBlue;
   color: $lightPink;
 }
-.inRoute:hover{
+.inRoute:hover {
   background-color: $darkBlue;
   color: $lightPink;
 }
@@ -103,6 +104,6 @@ export default {
         this.inFollowing = true;
       }
     }
-  },
+  }
 };
 </script>

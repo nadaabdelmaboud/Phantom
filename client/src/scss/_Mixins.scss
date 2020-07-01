@@ -13,3 +13,16 @@
       background-color: $lightPink;
     }
   }
+
+  @mixin circleButtons{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background-color:$lightgrey;
+    text-align: center;
+    border-color: transparent;
+    margin: 3px;
+    &:active{
+     border: 1px solid $darkBlue;
+    }
+  }
