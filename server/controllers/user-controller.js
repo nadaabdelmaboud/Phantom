@@ -4,6 +4,7 @@ const Joi = require('joi');
 const bcrypt = require('bcrypt');
 var sendmail = require('../controllers/send-mail-controller');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = {
 
     /**
@@ -49,6 +50,8 @@ const User = {
                 birthday: Joi.date().raw().required(),
                 firstName: Joi.string().required(),
                 lastName: Joi.string().required(),
+                country: Joi.string().optional(),
+                gender: Joi.string().optional(),
                 bio: Joi.string().optional(),
                 iat: Joi.required(),
                 exp: Joi.required()
@@ -58,12 +61,14 @@ const User = {
             if (await this.checkMAilExistAndFormat(user.email)) return -1;
             const salt = await bcrypt.genSalt(10);
             let hash = await bcrypt.hash(user.password, salt);
-            const newUser = new userDocument({
+            var newUser = new userDocument({
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
                 password: hash,
                 about: user.bio,
+                gender: user.gender,
+                country: user.country,
                 birthDate: user.birthday,
                 pins: [],
                 uploadedImages: [],
@@ -82,6 +87,8 @@ const User = {
                 createdAt: Date.now(),
             })
             await newUser.save();
+            await userDocument.updateOne({ _id: newUser._id }, { profileImage: newUser._id });
+            newUser = await this.getUserById(newUser._id);
             return newUser;
         } catch (ex) { return 0; }
     },

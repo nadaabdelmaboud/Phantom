@@ -15,6 +15,8 @@ router.post('/sign_up', async (req, res) => {
             birthday: Joi.date().raw().required(),
             firstName: Joi.string().required(),
             lastName: Joi.string().required(),
+            country: Joi.string().optional(),
+            gender: Joi.string().optional(),
             bio: Joi.string().optional()
         });
 
@@ -28,6 +30,8 @@ router.post('/sign_up', async (req, res) => {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 birthday: req.body.birthday,
+                country: req.body.country,
+                gender: req.body.gender,
                 bio: req.body.bio
             }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
             console.log(token);
@@ -47,6 +51,8 @@ router.post('/sign_up/confirm', auth, async (req, res) => {
         birthday: Joi.date().raw().required(),
         firstName: Joi.string().required(),
         lastName: Joi.string().required(),
+        country: Joi.string().optional(),
+        gender: Joi.string().optional(),
         bio: Joi.string().optional(),
         iat: Joi.required(),
         exp: Joi.required()
@@ -59,7 +65,7 @@ router.post('/sign_up/confirm', auth, async (req, res) => {
         if (!user) return res.status(400).json({ error: 'there is error !' });
         if (user == -1) return res.status(403).json({ error: 'you have already confirmed!' });
         const token = jwt.sign({ _id: user._id }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
-        res.json({ token: token });
+        res.json({ token: token, profileImage: user.profileImage });
     })
 })
 
@@ -75,7 +81,7 @@ router.post('/login', async (req, res) => {
         if (!user) return res.status(403).json({ error: 'not user by this email ' });
         if (user == -1) return res.status(403).json({ error: ' password is not correct' });
         const token = jwt.sign({ _id: user._id }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
-        res.json({ token: token });
+        res.json({ token: token, profileImage: user.profileImage });
     })
 })
 
