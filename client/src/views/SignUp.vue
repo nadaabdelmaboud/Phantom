@@ -1,6 +1,6 @@
 <template>
   <div class="signUpForm">
-    <p class="text-center" id="phantom">Welcom to Phantom</p>
+    <p class="text-center" id="phantom">Welcome to Phantom</p>
     <p class="text-center" id="findIdeas">Find new ideas to try</p>
     <input
       type="text"
@@ -19,7 +19,7 @@
     />
     <br />
     <input
-      type="text"
+      type="email"
       id="email"
       v-model="email"
       placeholder="Enter Your Email"
@@ -52,13 +52,19 @@
     />
     <br />
     <div class="row">
-    <p>About You</p>
-    <p class="optional">(Optional)</p>
+      <p>About You</p>
+      <p class="optional">(Optional)</p>
     </div>
-    <textarea id="about" placeholder="Write something.." style="height:300px padding-top:1px" v-model="about"></textarea>
+    <textarea
+      id="about"
+      placeholder="Write something.."
+      rows="8"
+      cols="50"
+      v-model="about"
+    ></textarea>
     <br />
     <div id="signUp" class="text-center">
-    <button >Sign Up</button>
+      <button @click="submit">Sign Up</button>
     </div>
     <br />
     <router-link to="/login" class="text-center">
@@ -78,8 +84,22 @@ export default {
       password: "",
       confirmPassword: "",
       birthDate: "",
-      about: ""
+      about: "",
+      passwordMatching: false
     };
+  },
+  methods: {
+    submit() {
+      if (this.passwordMatching) {
+        this.$store.dispatch("user/signUp", {
+          firstName: this.fname,
+          password: this.password,
+          birthday: this.birthDate,
+          lastName: this.lastName,
+          bio: this.about
+        });
+      }
+    }
   }
 };
 </script>
@@ -87,7 +107,8 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/Colors";
 
-input ,textarea {
+input,
+textarea {
   border-radius: 8px;
   border: 2px solid $ligthPaige;
   padding-left: 8px;
@@ -97,10 +118,6 @@ input ,textarea {
   outline: none;
   min-width: 400px;
   max-height: 300px;
-}
-
-textarea {
-  height: 150px;
 }
 
 input:focus {
@@ -137,7 +154,7 @@ button:focus {
   padding: 20px;
 }
 
-.optional{
+.optional {
   padding-left: 4px;
   opacity: 0.8;
 }
@@ -152,7 +169,7 @@ a {
   font-size: 14px;
   font-weight: bold;
 }
-a:hover{
+a:hover {
   text-decoration: none;
   color: black;
 }
