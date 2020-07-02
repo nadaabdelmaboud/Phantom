@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { number } = require('joi');
 const Schema = mongoose.Schema;
 const User = new Schema({
     firstName: String,
@@ -11,8 +12,7 @@ const User = new Schema({
     gender: String,
     profileImage: mongoose.Schema.Types.ObjectId,
     pins: [mongoose.Schema.Types.ObjectId],
-    uploadedImages: [mongoose.Schema.Types.ObjectId],
-    savedImages: [mongoose.Schema.Types.ObjectId],
+    savedPins: [mongoose.Schema.Types.ObjectId],
     confirm: Boolean,
     fcmToken: String,
     notifications: [{}],
@@ -44,6 +44,7 @@ const Board = new Schema({
         id: mongoose.Schema.Types.ObjectId,
         profileUrl: String
     },
+    pins:[mongoose.Schema.Types.ObjectId],
     createdAt: Date,
     counts: {
         followers: Number,
@@ -54,7 +55,10 @@ const Board = new Schema({
 });
 const Pin = new Schema({
     imageId: mongoose.Schema.Types.ObjectId,
+    imageWidth:Number,
+    imageHeight:Number,
     url: String,
+    title:String,
     creator: {
         firstName: String,
         lastName: String,
@@ -64,7 +68,15 @@ const Pin = new Schema({
     board: mongoose.Schema.Types.ObjectId,
     createdAt: Date,
     note: String,
-    color: String,
+    destLink:String,
+    comments:[{
+        commenter:mongoose.Schema.Types.ObjectId,
+        comment:String,
+        replies:[{
+            replier:mongoose.Schema.Types.ObjectId,
+            reply:String
+        }]
+    }],
     counts: {
         comments: Number,
         thanksReacts: Number,
@@ -85,11 +97,7 @@ const Category = new Schema({
     pins: [mongoose.Schema.Types.ObjectId]
 });
 
-const Image = new Schema({
-    height: Number,
-    width: Number,
-    url: String
-});
+
 
 const Topic = new Schema({
     name: String,
@@ -100,9 +108,8 @@ const Topic = new Schema({
 
 const user = mongoose.model('User', User);
 const category = mongoose.model('Category', Category);
-const image = mongoose.model('Image', Image);
 const topic = mongoose.model('Topic', Topic);
 const pin = mongoose.model('Pin', Pin);
 const board = mongoose.model('Board', Board);
 
-module.exports = { user, topic, category, pin, image, board }
+module.exports = { user, topic, category, pin, board }
