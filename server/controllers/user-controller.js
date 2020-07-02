@@ -2,7 +2,9 @@ const { user: userDocument, board: boardDocument, pin: pinDocument, image: image
 const checkMonooseObjectID = require('./validation-controller');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
-
+var sendmail = require('../controllers/send-mail-controller');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = {
 
     /**
@@ -48,6 +50,8 @@ const User = {
                 birthday: Joi.date().raw().required(),
                 firstName: Joi.string().required(),
                 lastName: Joi.string().required(),
+                country: Joi.string().optional(),
+                gender: Joi.string().optional(),
                 bio: Joi.string().optional(),
                 iat: Joi.required(),
                 exp: Joi.required()
@@ -57,12 +61,14 @@ const User = {
             if (await this.checkMAilExistAndFormat(user.email)) return -1;
             const salt = await bcrypt.genSalt(10);
             let hash = await bcrypt.hash(user.password, salt);
-            const newUser = new userDocument({
+            var newUser = new userDocument({
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
                 password: hash,
                 about: user.bio,
+                gender: user.gender,
+                country: user.country,
                 birthDate: user.birthday,
                 pins: [],
                 uploadedImages: [],
@@ -81,6 +87,8 @@ const User = {
                 createdAt: Date.now(),
             })
             await newUser.save();
+            await userDocument.updateOne({ _id: newUser._id }, { profileImage: newUser._id });
+            newUser = await this.getUserById(newUser._id);
             return newUser;
         } catch (ex) { return 0; }
     },
@@ -145,6 +153,110 @@ const User = {
         try {
             if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
             return await userDocument.findByIdAndDelete(userId)
+        } catch (err) { return 0; }
+    },
+    /**
+     *  reset new password 
+     * @param {String} -userId user id 
+     * @param {String} -newPassword -the new user password  
+     * @returns {Number} 1 if sucess and 0 if faild
+     */
+    resetPassword: async function (userId, newPassword) {
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            const user = await this.getUserById(userId);
+            if (!user || !newPassword) return 0;
+            const salt = await bcrypt.genSalt(10);
+            let hash = await bcrypt.hash(newPassword, salt);
+            user.password = hash;
+            await userDocument.updateOne({ _id: userId }, { password: hash });
+            return 1;
+        } catch (err) { return 0; }
+    },
+
+    updateUserInfo: async function (userId, firstName, lastName, about, gender, country, email, birthDate) {
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            const user = await this.getUserById(userId);
+            if (!user) return 0;
+            if (firstName) await userDocument.updateOne({ _id: userId }, { firstName: firstName });
+            if (lastName) await userDocument.updateOne({ _id: userId }, { lastName: lastName });
+            if (about) await userDocument.updateOne({ _id: userId }, { about: about });
+            if (gender) await userDocument.updateOne({ _id: userId }, { gender: gender });
+            if (country) await userDocument.updateOne({ _id: userId }, { country: country });
+            if (email && ! await this.checkMAilExistAndFormat(email)) {
+                var token = jwt.sign({
+                    email: user.email,
+                    _id: user._id,
+                    newEmail: email,
+                    firstName: firstName ? firstName : user.firstName
+                }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
+                sendmail(user.email, token, 'change email', firstName ? firstName : user.firstName);
+            }
+            if (birthDate) await userDocument.updateOne({ _id: userId }, { birthDate: birthDate });
+            return 1;
+        } catch (err) { return 0; }
+    },
+    setEmail: async function (userId, newEmail) {
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            const user = await this.getUserById(userId);
+            if (!user || !newEmail) return 0;
+            await userDocument.updateOne({ _id: userId }, { email: newEmail });
+            return 1;
+        } catch (err) { return 0; }
+    },
+    checkFollowUser: async function (user, userId) {
+        try {
+            if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+            if (!user.following) await userDocument.updateOne({ _id: user._id }, { following: [] });
+            for (let i = 0; i < user.following.length; i++)
+                if (String(userId) == String(user.following[i]))
+                    return true;
+            return false;
+        } catch (err) { return 0; }
+    },
+
+    followUser: async function (userId1, userId2) {
+        try {
+            if (!checkMonooseObjectID([userId1, userId2])) throw new Error('not mongoose id');
+            userFollow = await User.getUserById(userId1);
+            followedUser = await User.getUserById(userId2);
+            if (!userFollow || !followedUser) return 0;
+            if (await this.checkFollowUser(userFollow, userId2)) return -1;
+            userFollow.following.push(userId2);
+            await userDocument.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+            if (!followedUser.followers) followedUser.followers = [];
+            followedUser.followers.push(userId1);
+            await userDocument.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+            return 1;
+        } catch (err) { return 0; }
+    },
+    unfollowUser: async function (userId1, userId2) {
+        try {
+            if (!checkMonooseObjectID([userId1, userId2])) throw new Error('not mongoose id');
+            userFollow = await User.getUserById(userId1);
+            followedUser = await User.getUserById(userId2);
+            if (!userFollow || !followedUser) return 0;
+            if (!await this.checkFollowUser(userFollow, userId2)) return -1;
+            if (userFollow.following) {
+                for (let i = 0; i < userFollow.following.length; i++) {
+                    if (String(userFollow.following[i]) == String(userId2)) {
+                        userFollow.following.splice(i, 1);
+                        await userDocument.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+                        break;
+                    }
+                }
+            } else return 0;
+            if (followedUser.followers) {
+                for (let i = 0; i < followedUser.followers.length; i++) {
+                    if (String(followedUser.followers[i]) == String(userId1)) {
+                        followedUser.followers.splice(i, 1);
+                        await userDocument.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+                        return 1;
+                    }
+                }
+            } else return 0;
         } catch (err) { return 0; }
     },
 }
