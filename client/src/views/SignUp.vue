@@ -32,16 +32,44 @@
       v-model="password"
       placeholder="Enter Your Password"
       required
+      @input="validatePassword()"
     />
     <br />
+    <div v-if="this.password.length" class="passwordValidation">
+      <p>Password sould be</p>
+      <div class="row">
+        <i class="fa fa-check-circle" v-if="this.validLength" id="valid"></i>
+        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <p>At least 8 characters</p>
+      </div>
+      <div class="row">
+        <i class="fa fa-check-circle" v-if="this.capChar" id="valid"></i>
+        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <p>Minimum one uppercase</p>
+      </div>
+      <div class="row">
+        <i class="fa fa-check-circle" v-if="this.specialChar" id="valid"></i>
+        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <p>Minimum one Special character</p>
+      </div>
+      <div class="row">
+        <i class="fa fa-check-circle" v-if="containNum" id="valid"></i>
+        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <p>Minimum one number</p>
+      </div>
+    </div>
     <input
       type="password"
       id="passwordConfirm"
       v-model="confirmPassword"
       placeholder="Confrim Password"
       required
+      @input="passwordMatch()"
     />
     <br />
+    <div v-if="!this.passwordMatching" class="passwordValidation">
+      <p style="color:red;">Password mismatching</p>
+    </div>
     <label for="birthDate">Date of birth</label><br />
     <input
       type="date"
@@ -58,7 +86,7 @@
     <textarea
       id="about"
       placeholder="Write something.."
-      rows="8"
+      rows="4"
       cols="50"
       v-model="about"
     ></textarea>
@@ -85,12 +113,12 @@ export default {
       confirmPassword: "",
       birthDate: "",
       about: "",
-      passwordMatching: false
+      passwordMatching: true
     };
   },
   methods: {
     submit() {
-      if (this.passwordMatching) {
+      if (this.passwordMatching && this.validPassword) {
         this.$store.dispatch("user/signUp", {
           firstName: this.fname,
           password: this.password,
@@ -99,6 +127,30 @@ export default {
           bio: this.about
         });
       }
+    },
+    validatePassword() {
+      this.$store.commit("user/validatePassword", this.password);
+    },
+    passwordMatch() {
+      if (this.password === this.confirmPassword) this.passwordMatching = true;
+      else this.passwordMatching = false;
+    }
+  },
+  computed: {
+    validPassword: function() {
+      return this.$store.state.user.validPassword;
+    },
+    validLength: function() {
+      return this.$store.state.user.validPasswordLength;
+    },
+    capChar: function() {
+      return this.$store.state.user.containCapitalChar;
+    },
+    specialChar: function() {
+      return this.$store.state.user.containSpecialChar;
+    },
+    containNum: function() {
+      return this.$store.state.user.containNumber;
     }
   }
 };
@@ -187,5 +239,21 @@ a:hover {
 #findIdeas {
   font-weight: bold;
   font-size: 14px;
+}
+
+.passwordValidation p {
+  font-size: 12px;
+}
+
+i {
+  margin-right: 4px;
+}
+
+#valid {
+  color: green;
+}
+
+#unvalid {
+  color: red;
 }
 </style>

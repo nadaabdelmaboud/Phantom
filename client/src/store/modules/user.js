@@ -5,12 +5,43 @@ const state = {
   userToken: "",
   userFirstName: "",
   userLastName: "",
-  userEmail: ""
+  userEmail: "",
+  validPasswordLength: null,
+  containCapitalChar: null,
+  containSpecialChar: null,
+  containNumber: null,
+  validPassword: null
 };
 
 const mutations = {
   changeSignUpState(state, payload) {
     state.signUpState = payload;
+  },
+  validatePassword(state, password) {
+    var upperCaseLetters = /[A-Z]/g;
+
+    if (password.match(upperCaseLetters)) state.containCapitalChar = true;
+    else state.containCapitalChar = false;
+
+    var numbers = /[0-9]/g;
+    if (password.match(numbers)) state.containNumber = true;
+    else state.containNumber = false;
+
+    if (password.length >= 8) state.validPasswordLength = true;
+    else state.validPasswordLength = false;
+
+    var specialChars = /[!@#$%^&*]/g;
+    if (password.match(specialChars)) state.containSpecialChar = true;
+    else state.containSpecialChar = false;
+
+    if (
+      state.containSpecialChar &&
+      state.validPasswordLength &&
+      state.containNumber &&
+      state.containCapitalChar
+    )
+      state.validPassword = true;
+    else state.validPassword = false;
   }
 };
 
