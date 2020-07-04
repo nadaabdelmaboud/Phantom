@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-  signUpState: false,
+  signUpState: null,
   userToken: "",
   userFirstName: "",
   userLastName: "",
@@ -10,7 +10,8 @@ const state = {
   containCapitalChar: null,
   containSpecialChar: null,
   containNumber: null,
-  validPassword: null
+  validPassword: null,
+  errorMessage: null
 };
 
 const mutations = {
@@ -42,19 +43,25 @@ const mutations = {
     )
       state.validPassword = true;
     else state.validPassword = false;
+  },
+  setErrorMessage(state, message) {
+    state.errorMessage = message;
   }
 };
 
 const actions = {
   signUp({ commit }, userData) {
+    commit("setErrorMessage", null);
     axios
       .post("sign_up", userData)
       .then(() => {
         commit("changeSignUpState", true);
       })
       .catch(error => {
-        console.log("axios caught an error");
-        console.log(error);
+        if (error.response.data.message == "Mail exists") {
+          commit("changeSignUpState", false);
+          commit("setErrorMessage", "This email is already exists");
+        } else commit("setErrorMessage", error.response.data.message);
       });
   }
 };

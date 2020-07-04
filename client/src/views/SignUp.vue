@@ -1,104 +1,111 @@
 <template>
-  <div class="signUpForm">
-    <p class="text-center" id="phantom">Welcome to Phantom</p>
-    <p class="text-center" id="findIdeas">Find new ideas to try</p>
-    <input
-      type="text"
-      id="firstName"
-      v-model="fname"
-      placeholder="First Name"
-      required
-    />
-    <br />
-    <input
-      type="text"
-      id="lastName"
-      v-model="lname"
-      placeholder="Last Name"
-      required
-    />
-    <br />
-    <input
-      type="email"
-      id="email"
-      v-model="email"
-      placeholder="Enter Your Email"
-      required
-    />
-    <br />
-    <input
-      type="password"
-      id="password"
-      v-model="password"
-      placeholder="Enter Your Password"
-      required
-      @input="validatePassword()"
-    />
-    <br />
-    <div v-if="this.password.length" class="passwordValidation">
-      <p>Password sould be</p>
-      <div class="row">
-        <i class="fa fa-check-circle" v-if="this.validLength" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
-        <p>At least 8 characters</p>
+  <form @submit.prevent="submit">
+    <div class="signUpForm">
+      <p class="text-center" id="phantom">Welcome to Phantom</p>
+      <p class="text-center" id="findIdeas">Find new ideas to try</p>
+      <div class="error" v-if="errorMessage">
+        <p class="text-center" style="padding-bottom:4px;">
+          {{ errorMessage }} 😞
+        </p>
       </div>
-      <div class="row">
-        <i class="fa fa-check-circle" v-if="this.capChar" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
-        <p>Minimum one uppercase</p>
+      <input
+        type="text"
+        id="firstName"
+        v-model="fname"
+        placeholder="First Name"
+        required
+      />
+      <br />
+      <input
+        type="text"
+        id="lastName"
+        v-model="lname"
+        placeholder="Last Name"
+        required
+      />
+      <br />
+      <input
+        type="email"
+        id="email"
+        v-model="email"
+        placeholder="Enter Your Email"
+        required
+      />
+      <br />
+      <input
+        type="password"
+        id="password"
+        v-model="password"
+        placeholder="Enter Your Password"
+        required
+        @input="validatePassword()"
+      />
+      <br />
+      <div v-if="this.password.length" class="passwordValidation">
+        <p>Password sould be:</p>
+        <div class="row">
+          <i class="fa fa-check-circle" v-if="this.validLength" id="valid"></i>
+          <i class="fa fa-times-circle" v-else id="unvalid"></i>
+          <p>At least 8 characters</p>
+        </div>
+        <div class="row">
+          <i class="fa fa-check-circle" v-if="this.capChar" id="valid"></i>
+          <i class="fa fa-times-circle" v-else id="unvalid"></i>
+          <p>Minimum one uppercase</p>
+        </div>
+        <div class="row">
+          <i class="fa fa-check-circle" v-if="this.specialChar" id="valid"></i>
+          <i class="fa fa-times-circle" v-else id="unvalid"></i>
+          <p>Minimum one Special character</p>
+        </div>
+        <div class="row">
+          <i class="fa fa-check-circle" v-if="containNum" id="valid"></i>
+          <i class="fa fa-times-circle" v-else id="unvalid"></i>
+          <p>Minimum one number</p>
+        </div>
       </div>
-      <div class="row">
-        <i class="fa fa-check-circle" v-if="this.specialChar" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
-        <p>Minimum one Special character</p>
+      <input
+        type="password"
+        id="passwordConfirm"
+        v-model="confirmPassword"
+        placeholder="Confrim Password"
+        required
+        @input="passwordMatch()"
+      />
+      <br />
+      <div v-if="!this.passwordMatching" class="passwordValidation">
+        <p style="color:red;">Password mismatching</p>
       </div>
+      <label for="birthDate">Date of birth</label><br />
+      <input
+        type="date"
+        id="birthDate"
+        v-model="birthDate"
+        required
+        pattern="\d{4}-\d{2}-\d{2}"
+      />
+      <br />
       <div class="row">
-        <i class="fa fa-check-circle" v-if="containNum" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
-        <p>Minimum one number</p>
+        <p>About You</p>
+        <p class="optional">(Optional)</p>
       </div>
+      <textarea
+        id="about"
+        placeholder="Write something.."
+        rows="4"
+        cols="50"
+        v-model="about"
+      ></textarea>
+      <br />
+      <div id="signUp" class="text-center">
+        <button type="submit">Sign Up</button>
+      </div>
+      <br />
+      <router-link to="/login" class="text-center">
+        <p>Already have an account? Login</p>
+      </router-link>
     </div>
-    <input
-      type="password"
-      id="passwordConfirm"
-      v-model="confirmPassword"
-      placeholder="Confrim Password"
-      required
-      @input="passwordMatch()"
-    />
-    <br />
-    <div v-if="!this.passwordMatching" class="passwordValidation">
-      <p style="color:red;">Password mismatching</p>
-    </div>
-    <label for="birthDate">Date of birth</label><br />
-    <input
-      type="date"
-      id="birthDate"
-      v-model="birthDate"
-      required
-      pattern="\d{4}-\d{2}-\d{2}"
-    />
-    <br />
-    <div class="row">
-      <p>About You</p>
-      <p class="optional">(Optional)</p>
-    </div>
-    <textarea
-      id="about"
-      placeholder="Write something.."
-      rows="4"
-      cols="50"
-      v-model="about"
-    ></textarea>
-    <br />
-    <div id="signUp" class="text-center">
-      <button @click="submit">Sign Up</button>
-    </div>
-    <br />
-    <router-link to="/login" class="text-center">
-      <p>Already have an account? Login</p>
-    </router-link>
-  </div>
+  </form>
 </template>
 
 <script>
@@ -118,13 +125,15 @@ export default {
   },
   methods: {
     submit() {
+      this.passwordMatch();
       if (this.passwordMatching && this.validPassword) {
         this.$store.dispatch("user/signUp", {
           firstName: this.fname,
           password: this.password,
           birthday: this.birthDate,
-          lastName: this.lastName,
-          bio: this.about
+          lastName: this.lname,
+          bio: this.about,
+          email: this.email
         });
       }
     },
@@ -151,6 +160,17 @@ export default {
     },
     containNum: function() {
       return this.$store.state.user.containNumber;
+    },
+    signUpState: function() {
+      return this.$store.state.user.signUpState;
+    },
+    errorMessage: function() {
+      return this.$store.state.user.errorMessage;
+    }
+  },
+  watch: {
+    signUpState: function() {
+      if (this.signUpState) this.$router.push("confirm");
     }
   }
 };
@@ -255,5 +275,14 @@ i {
 
 #unvalid {
   color: red;
+}
+
+.error {
+  background-color: red;
+  color: white;
+  padding-top: 4px;
+  margin-bottom: 4px;
+  font-weight: bold;
+  max-width: 400px;
 }
 </style>
