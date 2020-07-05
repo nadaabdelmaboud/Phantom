@@ -101,9 +101,12 @@ const Category = new Schema({
 
 const Topic = new Schema({
     name: String,
-    followers: [],
+    followers: [mongoose.Schema.Types.ObjectId],
     description: String,
-    pins: [mongoose.Schema.Types.ObjectId]
+    pins: [mongoose.Schema.Types.ObjectId],
+    image: mongoose.Schema.Types.ObjectId,
+    imageWidth:Number,
+    imageHeight:Number,
 });
 
 const user = mongoose.model('User', User);
