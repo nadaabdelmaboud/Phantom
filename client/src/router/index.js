@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import SignUp from "../views/SignUp.vue";
 import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
@@ -8,10 +9,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
+    path: "",
     name: "PhantomHome",
     component: PhantomHome,
-    children:[
+    children: [
       {
         path: "",
         name: "UserHome",
@@ -23,8 +24,12 @@ const routes = [
         component: Following
       }
     ]
+  },
+  {
+    path: "/signup",
+    name: "SignUp",
+    component: SignUp
   }
-
 ];
 
 const router = new VueRouter({

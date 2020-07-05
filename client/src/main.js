@@ -13,6 +13,7 @@ if (process.env.NODE_ENV === "development") {
   makeServer();
 }
 axios.defaults.baseURL = "/api";
+//axios.defaults.baseURL = "http://localhost:3000/api";
 
 new Vue({
   router,
