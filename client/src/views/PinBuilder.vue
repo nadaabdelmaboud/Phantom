@@ -13,8 +13,18 @@
       @change="onFileSelected"
       ref="fileInput"
       >
-      <div class="pinData addImg">
-          <div class="imageInput doubleBorder" v-if="!imageFile" @click="$refs.fileInput.click()">
+      <div class="pinData addImg"
+       >
+          <div class="imageInput doubleBorder"
+           :class="{
+              dragging: dragover
+          }" 
+          v-if="!imageFile"
+          @click="$refs.fileInput.click()"
+          @dragenter="dragover=true"
+          @dragover.prevent="dragover = true"
+          @drop.prevent="onFileDragged"
+          @dragleave.prevent="dragover = false">
               <i class="fa fa-arrow-circle-up"></i>
               <p>Drag and drop or click to upload</p>
               <p>Recommendation: Use high-quality .jpg files less than 32MB</p>
@@ -42,14 +52,24 @@
 
 .addPin {
   background-color: white;
+ 
 }
-
+@keyframes appear {
+    from{
+        margin: 30px 0px 0px 0px;
+    }
+    to{
+        margin:20px 0px;
+    }
+}
 .pin {
   background-color: $offWhite;
-  margin: 20px 0px;
+//margin: 20px 0px;
   height: calc(100vh - 120px);
   border-radius: 16px;
+   animation: appear 0.2s linear 1 both;
 }
+
 .board {
     cursor: pointer;
   .boardName {
@@ -143,6 +163,11 @@
   right: 5px;
   bottom: 5px;
 }
+.dragging{
+    border:1px solid $darkBlue;
+      border-radius: 16px;
+    background-color: $lightBlue;
+}
 .addData{
       width: 55%;
       left: 40%;
@@ -199,12 +224,29 @@ export default {
       title: "",
       note: "",
       board: "",
-      imageFile:null
+      imageFile:null,
+      dragover:false
     };
   },
   methods:{
+     onFileDragged:function(event){
+         event.preventDefault();
+         console.log(event.dataTransfer.files[0])
+     
+          this.imageFile=event.dataTransfer.files[0];
+            if(this.imageFile){
+                const reader = new FileReader();
+                reader.addEventListener("load",function(){
+                 var img = document.getElementById("imgPreview");
+                 img.setAttribute("src",this.result);
+                 img.style.display="block";
+                })
+                reader.readAsDataURL(this.imageFile);
+            }     
+      },
       onFileSelected:function(event){
           this.imageFile=event.target.files[0];
+          console.log(this.imageFile)
             if(this.imageFile){
                 const reader = new FileReader();
                 reader.addEventListener("load",function(){
@@ -221,7 +263,7 @@ export default {
           var img = document.getElementById("imgPreview");
           img.setAttribute("src","");
           img.style.display="none";
-
+        this.dragover=false;
       }
   }
 };
