@@ -45,7 +45,6 @@ module.exports = async function (email, message, type, userName) {
             html: '<html><h1>   Hi,' + userName + ', 😊 </h1> <p> please, do not worry at all  </p> <p> follow this link to reset your password  </p> <h2> <a href="http:/localhost:8080/reset_password?token=' + message + '" target ="_blank">Reset Password</a></h2></html>'
         };
     }
-
     else if (type == "Delete account") {
         mailOptions = {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
