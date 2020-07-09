@@ -73,12 +73,22 @@ const Pin = new Schema({
     {
       commenter: mongoose.Schema.Types.ObjectId,
       comment: String,
+      date: Date,
       replies: [
         {
           replier: mongoose.Schema.Types.ObjectId,
           reply: String,
+          date: Date,
+          likes: {
+            counts: Number,
+            likers: [mongoose.Schema.Types.ObjectId],
+          },
         },
       ],
+      likes: {
+        counts: Number,
+        likers: [mongoose.Schema.Types.ObjectId],
+      },
     },
   ],
   counts: {

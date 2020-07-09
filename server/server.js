@@ -8,17 +8,14 @@ const logger = require("morgan");
 const passport = require("passport");
 const session = require("express-session");
 
-const connection = require("./controllers/db-controller");
 const pins = require("./routes/pin-route");
-const authantication = require("./routes/authentication-route");
+const authentication = require("./routes/authentication-route");
 const user = require("./routes/user-route");
 var images = require("./routes/image-route");
 var boards = require("./routes/board-route");
 
 const app = express();
-//connect to database
-connection(app);
-
+require("./controllers/db-controller")();
 app.use(cors());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -29,7 +26,7 @@ app.use(passport.initialize());
 app.use(methodOverride());
 
 app.use("/api", pins);
-app.use("/api", authantication);
+app.use("/api", authentication);
 app.use("/api", user);
 app.use("/api", images);
 app.use("/api", boards);
