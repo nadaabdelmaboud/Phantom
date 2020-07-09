@@ -15,9 +15,19 @@
             <button class="share-icon" id="shareIcon">
               <i class="fa fa-upload" id="upload-icon"></i>
             </button>
-            <button class="added-list" id="added-list">
+            <button
+              class="added-list"
+              id="added-list"
+              @click="showDropdownlist()"
+            >
               <i class="fa fa-ellipsis-h" id="list-icon"></i>
             </button>
+            <div class="dropdownlist" id="dropDownlist" v-if="show">
+              <ul>
+                <li>Download image</li>
+                <li>Report Pin</li>
+              </ul>
+            </div>
           </div>
           <div class="secondsection">
             <div class="imageTitle">Awesome Dress</div>
@@ -94,11 +104,6 @@ img {
 #navbar {
   overflow: hidden;
 }
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
-}
 .save-post {
   background-color: $lightBlue;
   float: right;
@@ -136,6 +141,38 @@ button:focus {
 #upload-icon,
 #added-list {
   font-size: 22px;
+}
+.dropdownlist {
+  position: absolute;
+  width: 250px;
+  height: 105px;
+  background-color: $offWhite;
+  z-index: 1;
+  border-radius: 15px;
+  padding: 15px;
+  ul {
+    position: relative;
+    margin-left: 0%;
+    padding: 0;
+    &:hover li {
+      opacity: 0.2;
+    }
+    li {
+      list-style: none;
+      font-weight: bold;
+      color: black;
+      font-size: 12px;
+      padding: 10px;
+      width: 100%;
+      transition: transform 0.5s;
+      &:hover {
+        transform: scale(1.1);
+        z-index: 100;
+        background: $lightgrey;
+        opacity: 1;
+      }
+    }
+  }
 }
 .secondsection {
   margin-top: 20px;
@@ -210,13 +247,29 @@ export default {
   name: "postpagecard",
   data: function() {
     return {
-      followuser: false
+      followuser: false,
+      show: false
     };
   },
   methods: {
     followUnfollowUser() {
       this.followuser = !this.followuser;
+    },
+    showDropdownlist() {
+      this.show = !this.show;
+    },
+    hideList(event) {
+      if (event.target.id != ("list-icon" || "added-list")) {
+        this.show = false;
+        this.defaultStyle();
+      }
     }
+  },
+  created: function() {
+    window.addEventListener("click", this.hideList);
+  },
+  beforeDestroy: function() {
+    window.removeEventListener("click", this.hideList);
   }
 };
 </script>
