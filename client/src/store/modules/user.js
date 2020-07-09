@@ -12,7 +12,8 @@ const state = {
   containNumber: null,
   validPassword: null,
   errorMessage: null,
-  emailConfirm: false
+  emailConfirm: false,
+  loginState: null
 };
 
 const mutations = {
@@ -50,6 +51,9 @@ const mutations = {
   },
   setEmailConfirm(state, status) {
     state.emailConfirm = status;
+  },
+  setLogin(state, status) {
+    state.loginState = status;
   }
 };
 
@@ -89,6 +93,21 @@ const actions = {
         commit("setEmailConfirm", false);
         console.log("axios caught an error");
         console.log(error);
+      });
+  },
+  login({ commit }, data) {
+    axios
+      .post("login", data)
+      .then(response => {
+        localStorage.setItem("userToken", response.data.token);
+        commit("setLogin", true);
+      })
+      .catch(error => {
+        commit("setLogin", false);
+        console.log(error.response);
+        if (error.response.data.error == " password is not correct")
+          commit("setErrorMessage", "Password is not correct");
+        else commit("setErrorMessage", "Email is not correct");
       });
   }
 };

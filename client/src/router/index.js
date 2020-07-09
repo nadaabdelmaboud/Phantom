@@ -6,6 +6,7 @@ import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
 import PostPage from "../views/PostPage.vue";
 import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
+import LoginView from "../views/LoginView.vue";
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,11 @@ const routes = [
     path: "/signup",
     name: "SignUp",
     component: SignUp
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginView
   },
   {
     path: "/confirm",
