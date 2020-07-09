@@ -89,4 +89,14 @@ router.post(
     }
   }
 );
+//get pin comments replies
+router.get("/pins/:pinId/comments", auth, async (req, res) => {
+  let pinId = req.params.pinId;
+  let comments = await Pin.getPinCommentsReplies(pinId);
+  if (comments) {
+    return res.status(200).send({ success: true, comments: comments });
+  } else {
+    return res.status(400).send({ success: false });
+  }
+});
 module.exports = router;

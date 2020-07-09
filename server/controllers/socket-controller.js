@@ -20,13 +20,13 @@ module.exports = function (server) {
       let pin = await pinModel.findById(pinId);
       const token = data.token;
       const decoded = await jwt.verify(token, process.env.jwtsecret);
-      commentterId = decoded._id;
-      let commentter = await userModel.findById(commentterId);
-      if (commentter && pin && commentText) {
+      commenterId = decoded._id;
+      let commenter = await userModel.findById(commenterId);
+      if (commenter && pin && commentText) {
         io.sockets.emit("sendComment", {
           commentText: data.text,
-          commentterName: commentter.firstName + " " + commentter.lastName,
-          commentterImage: commentter.profileImage,
+          commenterName: commenter.firstName + " " + commenter.lastName,
+          commenterImage: commenter.profileImage,
           pinId: data.pinId,
           date: Date.now(),
         });

@@ -177,6 +177,45 @@ const Pin = {
       }
     }
   },
+  getPinCommentsReplies: async function (pinId) {
+    if ((await checkMonooseObjectID([pinId])) == 0) {
+      return false;
+    }
+    let pin = await this.getPinById(pinId);
+    if (!pin) return false;
+    let retComments = [];
+    for (var i = 0; i < pin.comments.length; i++) {
+      let commenter = await userDocument.findById(pin.comments[i].commenter);
+      if (commenter) {
+        let comment = {
+          commenter: pin.comments[i].commenter,
+          commenterName: commenter.firstName + " " + commenter.lastName,
+          commenterImage: commenter.profileImage,
+          commentText: pin.comments[i].comment,
+          date: pin.comments[i].date,
+          likes: pin.comments[i].likes,
+        };
+        let replies = [];
+        for (var j = 0; j < pin.comments[i].length; j++) {
+          let replier = await userDocument.findById(
+            pin.comments[i].replies[j].replier
+          );
+          if (replier) {
+            let reply = {
+              replier: pin.comments[i].replies[j].replier,
+              replierName: replier.firstName + " " + replier.lastName,
+              replierImage: replier.profileImage,
+              replyText: pin.comments[i].replies[j].reply,
+              date: pin.comments[i].replies[j].date,
+              likes: pin.comments[i].replies[j].likes,
+            };
+            replies.push(reply);
+          }
+        }
+        retComments.push({ comment: comment, replies: replies });
+      }
+    }
+  },
 };
 
 module.exports = Pin;
