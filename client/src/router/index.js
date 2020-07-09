@@ -5,6 +5,7 @@ import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
 import PostPage from "../views/PostPage.vue";
+import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,12 @@ const routes = [
     path: "/signup",
     name: "SignUp",
     component: SignUp
+  },
+  {
+    path: "/confirm",
+    name: "confirm",
+    query: "token=",
+    component: WelcomePage
   }
 ];
 

@@ -11,7 +11,8 @@ const state = {
   containSpecialChar: null,
   containNumber: null,
   validPassword: null,
-  errorMessage: null
+  errorMessage: null,
+  emailConfirm: false
 };
 
 const mutations = {
@@ -46,6 +47,9 @@ const mutations = {
   },
   setErrorMessage(state, message) {
     state.errorMessage = message;
+  },
+  setEmailConfirm(state, status) {
+    state.emailConfirm = status;
   }
 };
 
@@ -62,6 +66,29 @@ const actions = {
           commit("changeSignUpState", false);
           commit("setErrorMessage", "This email is already exists");
         } else commit("setErrorMessage", error.response.data.message);
+      });
+  },
+  confirmEmail({ commit }, token) {
+    axios
+      .post(
+        "sign_up/confirm",
+        {},
+        {
+          headers: {
+            "x-auth-token": `${token}`
+          }
+        }
+      )
+      .then(response => {
+        localStorage.setItem("userToken", response.data.token);
+        localStorage.setItem("imgProfileID", response.data.profileImage);
+        commit("setEmailConfirm", true);
+        console.log(response.data.token);
+      })
+      .catch(error => {
+        commit("setEmailConfirm", false);
+        console.log("axios caught an error");
+        console.log(error);
       });
   }
 };
