@@ -1,26 +1,40 @@
 <template>
   <div class="card" id="homeCard">
-    <img src="../assets/dress.jpg" class="card-img" alt="Card image" />
-    <div class="card-img-overlay d-flex flex-column align-items-end">
-      <button class="save-post" id="saveImage">Save</button>
-      <div class="mt-auto">
-        <button class="share-icon" id="shareIcon">
-          <i class="fa fa-upload" id="upload-icon"></i>
+    <router-link to="/PostPage">
+      <img src="../assets/dress.jpg" class="card-img" alt="Card image" />
+      <div class="card-img-overlay d-flex flex-column align-items-end">
+        <button class="save-post" id="saveImage" @click.capture="clicked">
+          Save
         </button>
-        <button class="added-list" id="added-list" @click="showDropdownlist()">
-          <i class="fa fa-ellipsis-h" id="list-icon"></i>
-        </button>
-        <div class="dropdownlist" id="dropDownlist" v-if="show">
-          <p class="title">This Pin is inspired by your recent activity</p>
-          <hr />
-          <ul>
-            <li>Hide Pin</li>
-            <li>Download image</li>
-            <li>Report Pin</li>
-          </ul>
+        <div class="mt-auto">
+          <button class="share-icon" id="shareIcon" @click.capture="clicked">
+            <i class="fa fa-upload" id="upload-icon"></i>
+          </button>
+          <button
+            class="added-list"
+            id="added-list"
+            @click="showDropdownlist()"
+            @click.capture="clicked"
+          >
+            <i class="fa fa-ellipsis-h" id="list-icon"></i>
+          </button>
+          <div
+            class="dropdownlist"
+            id="dropDownlist"
+            v-if="show"
+            @click.capture="clicked"
+          >
+            <p class="title">This Pin is inspired by your recent activity</p>
+            <hr />
+            <ul>
+              <li>Hide Pin</li>
+              <li>Download image</li>
+              <li>Report Pin</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -80,6 +94,7 @@ button:focus {
   .title {
     font-size: 14px;
     font-weight: 400;
+    color: black;
   }
   ul {
     position: relative;
@@ -91,6 +106,7 @@ button:focus {
     li {
       list-style: none;
       font-weight: bold;
+      color: black;
       font-size: 12px;
       padding: 10px;
       width: 100%;
@@ -145,6 +161,9 @@ export default {
         this.show = false;
         this.defaultStyle();
       }
+    },
+    clicked(event) {
+      event.preventDefault();
     }
   },
   created: function() {
