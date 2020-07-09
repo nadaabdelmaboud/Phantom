@@ -14,6 +14,7 @@
 <script>
 export default {
   created() {
+    console.log(this.$route.query.token);
     this.$store.dispatch("user/confirmEmail", this.$route.query.token);
   },
   methods: {
