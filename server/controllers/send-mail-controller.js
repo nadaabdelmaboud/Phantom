@@ -18,7 +18,7 @@ module.exports = async function (email, message, type, userName) {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: '👋 Please confirm your email',
-            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> <p> you should confirm your email to complete sign up </p> <h2> <a href="http:/localhost:8080/confirm?token=' + message + '&type=signup" target ="_blank">Confirm</a></h2></html>'
+            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> <p> you should confirm your email to complete sign up </p> <h2> <a href="http://localhost:8080/confirm?token=' + message + '&type=signup" target ="_blank">Confirm</a></h2></html>'
         };
     }
     else if (type == "change email") {
@@ -26,7 +26,7 @@ module.exports = async function (email, message, type, userName) {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: 'You changed your email address on Phantom',
-            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> <p> The email address on your Phantom account was just changed. Did you make this change?<br> if you need it change follow this like </p> <h2> <a href="http:/localhost:8080/changeEmail?token=' + message + '&type=changeEmail" target ="_blank">sure change email</a></h2></html>'
+            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> <p> The email address on your Phantom account was just changed. Did you make this change?<br> if you need it change follow this like </p> <h2> <a href="http://localhost:8080/changeEmail?token=' + message + '&type=changeEmail" target ="_blank">sure change email</a></h2></html>'
         };
     }
     else if (type == "set email") {
@@ -34,7 +34,7 @@ module.exports = async function (email, message, type, userName) {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: '👋 You reset your email address on Phantom',
-            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> you reset this email to be your new email <br> please follow this link to confirm that </h2><h2><a href="http:/localhost:8080/changeEmail?token=' + message + '&type=resetEmail" target ="_blank">sure email</a></h2></html>'
+            html: '<html><h1>  Hi,' + userName + ' 😊 </h1> you reset this email to be your new email <br> please follow this link to confirm that </h2><h2><a href="http://localhost:8080/changeEmail?token=' + message + '&type=resetEmail" target ="_blank">sure email</a></h2></html>'
         };
     }
     else if (type == "forget Password") {
@@ -42,7 +42,7 @@ module.exports = async function (email, message, type, userName) {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: '👋 Please reset your password ',
-            html: '<html><h1>   Hi,' + userName + ', 😊 </h1> <p> please, do not worry at all  </p> <p> follow this link to reset your password  </p> <h2> <a href="http:/localhost:8080/reset_password?token=' + message + '" target ="_blank">Reset Password</a></h2></html>'
+            html: '<html><h1>   Hi,' + userName + ', 😊 </h1> <p> please, do not worry at all  </p> <p> follow this link to reset your password  </p> <h2> <a href="http://localhost:8080/reset_password?token=' + message + '" target ="_blank">Reset Password</a></h2></html>'
         };
     }
     else if (type == "Delete account") {
@@ -50,7 +50,7 @@ module.exports = async function (email, message, type, userName) {
             from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
             to: email,
             subject: '😔 Sure delete account ',
-            html: '<html><h1>  Hi,' + userName + '  </h1> <p>Really, We are very sad because you will leave us </p> <p>We have been very happy with you </p> <p>follow this link  and return to us  <p></p> <h2> <a href=http:/localhost:8080" target ="_blank">phantom</a></h2></html>'
+            html: '<html><h1>  Hi,' + userName + '  </h1> <p>Really, We are very sad because you will leave us </p> <p>We have been very happy with you </p> <p>follow this link  and return to us  <p></p> <h2> <a href=http://localhost:8080" target ="_blank">phantom</a></h2></html>'
         };
     }
     else {
