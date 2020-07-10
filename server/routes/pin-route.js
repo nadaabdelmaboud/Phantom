@@ -112,4 +112,36 @@ router.post("/pins/:pinId/reacts", auth, async (req, res) => {
     return res.status(400).send({ success: false });
   }
 });
+
+router.post(
+  "/pins/:pinId/comments/:commentId/likes",
+  auth,
+  async (req, res) => {
+    let pinId = req.params.pinId;
+    let commentId = req.params.commentId;
+    let userId = req.user._id;
+    let like = await Pin.likeComment(pinId, commentId, userId);
+    if (like) {
+      return res.status(200).send({ success: true });
+    } else {
+      return res.status(400).send({ success: false });
+    }
+  }
+);
+router.post(
+  "/pins/:pinId/comments/:commentId/replies/:replyId/likes",
+  auth,
+  async (req, res) => {
+    let pinId = req.params.pinId;
+    let commentId = req.params.commentId;
+    let replyId = req.params.replyId;
+    let userId = req.user._id;
+    let like = await Pin.likeReply(pinId, commentId, userId, replyId);
+    if (like) {
+      return res.status(200).send({ success: true });
+    } else {
+      return res.status(400).send({ success: false });
+    }
+  }
+);
 module.exports = router;

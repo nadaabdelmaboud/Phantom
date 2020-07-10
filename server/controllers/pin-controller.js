@@ -161,7 +161,7 @@ const Pin = {
     let user = await userDocument.findById(userId);
     let pin = await this.getPinById(pinId);
     if (!user || !pin) return false;
-    for (var i = 0; i < pin.length; i++) {
+    for (var i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
         pin.comments[i].replies.push({
           replier: userId,
@@ -196,7 +196,7 @@ const Pin = {
           likes: pin.comments[i].likes,
         };
         let replies = [];
-        for (var j = 0; j < pin.comments[i].length; j++) {
+        for (var j = 0; j < pin.comments[i].replies.length; j++) {
           let replier = await userDocument.findById(
             pin.comments[i].replies[j].replier
           );
@@ -254,6 +254,46 @@ const Pin = {
     }
     await pin.save();
     return true;
+  },
+  likeComment: async function (pinId, commentId, userId) {
+    if ((await checkMonooseObjectID([userId, pinId, commentId])) == 0) {
+      return false;
+    }
+    let user = await userDocument.findById(userId);
+    let pin = await this.getPinById(pinId);
+    if (!user || !pin) return false;
+    for (var i = 0; i < pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) == String(commentId)) {
+        pin.comments[i].likes.likers.push(userId);
+        pin.comments[i].likes.counts += 1;
+        await pin.save();
+        return true;
+      }
+    }
+    return false;
+  },
+  likeReply: async function (pinId, commentId, userId, replyId) {
+    if (
+      (await checkMonooseObjectID([userId, pinId, commentId, replyId])) == 0
+    ) {
+      return false;
+    }
+    let user = await userDocument.findById(userId);
+    let pin = await this.getPinById(pinId);
+    if (!user || !pin) return false;
+    for (var i = 0; i < pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) == String(commentId)) {
+        for (var j = 0; j < pin.comments[i].replies.length; j++) {
+          if (String(pin.comments[i].replies[j]._id) == String(replyId)) {
+            pin.comments[i].replies[j].likes.likers.push(userId);
+            pin.comments[i].replies[j].likes.counts += 1;
+            await pin.save();
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   },
 };
 
