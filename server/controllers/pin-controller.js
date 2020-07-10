@@ -216,6 +216,45 @@ const Pin = {
       }
     }
   },
+  createReact: async function (pinId, reactType, userId) {
+    if ((await checkMonooseObjectID([userId, pinId])) == 0) {
+      return false;
+    }
+    if (
+      reactType != "Wow" ||
+      reactType != "Love" ||
+      reactType != "Good idea" ||
+      reactType != "Thanks" ||
+      reactType != "Haha"
+    )
+      return false;
+    let user = await userDocument.findById(userId);
+    let pin = await this.getPinById(pinId);
+    if (!user || !pin) return false;
+    pin.reacts.push({
+      type: reactType,
+      userId: userId,
+    });
+    switch (reactType) {
+      case "Wow":
+        pin.counts.wowReacts += 1;
+        break;
+      case "Love":
+        pin.counts.loveReacts += 1;
+        break;
+      case "Haha":
+        pin.counts.hahaReacts += 1;
+        break;
+      case "Thanks":
+        pin.counts.thanksReacts += 1;
+        break;
+      case "Good idea":
+        pin.counts.goodIdeaReacts += 1;
+        break;
+    }
+    await pin.save();
+    return true;
+  },
 };
 
 module.exports = Pin;

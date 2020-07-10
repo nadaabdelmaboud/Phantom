@@ -99,4 +99,17 @@ router.get("/pins/:pinId/comments", auth, async (req, res) => {
     return res.status(400).send({ success: false });
   }
 });
+
+//react pin with 5 types - like comment - like reply routes - controllers - socket
+router.post("/pins/:pinId/reacts", auth, async (req, res) => {
+  let pinId = req.params.pinId;
+  let reactType = req.query.reactType;
+  let userId = req.user._id;
+  let react = await Pin.createReact(pinId, reactType, userId);
+  if (react) {
+    return res.status(200).send({ success: true });
+  } else {
+    return res.status(400).send({ success: false });
+  }
+});
 module.exports = router;
