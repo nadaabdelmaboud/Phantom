@@ -31,11 +31,11 @@
           </div>
           <div class="secondsection">
             <div class="imageTitle">Awesome Dress</div>
-            <span class="imagedescription"
-              >beautiful blue dress beautiful blue dress beautiful blue dress
+            <div class="imagedescription">
               beautiful blue dress beautiful blue dress beautiful blue dress
               beautiful blue dress beautiful blue dress beautiful blue dress
-            </span>
+              beautiful blue dress beautiful blue dress beautiful blue dress
+            </div>
             <div class="followuserbox">
               <div class="userimage">
                 <img src="../assets/user.png" alt="User Image" />
@@ -63,6 +63,13 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="toast" id="toastId">
+      <img src="../assets/user.png" alt="User Image" class="toastimage" />
+      <div class="userinfo">
+        <div id="toastmessage">Now Following</div>
+        <div class="toastusername">User</div>
       </div>
     </div>
   </div>
@@ -105,6 +112,7 @@ img {
   overflow: hidden;
 }
 .save-post {
+  letter-spacing: 1px;
   background-color: $lightBlue;
   float: right;
   color: white;
@@ -214,6 +222,7 @@ button:focus {
   font-weight: 400;
 }
 .followUserbutton {
+  letter-spacing: 1px;
   background-color: $lightBlue;
   color: white;
   border-radius: 500px;
@@ -227,10 +236,53 @@ button:focus {
 button:focus {
   outline: 0 !important;
 }
+.toastimage {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+#toastmessage {
+  font-size: 14px;
+  font-weight: 700px;
+}
+.toastusername {
+  float: left;
+  font-size: 14px;
+  font-weight: 700;
+}
+.toast {
+  display: flex;
+  align-content: center;
+  left: 40%;
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  bottom: 18px;
+  margin: auto;
+  min-width: 320px;
+  height: 90px;
+  background-color: rgb(19, 20, 20);
+  padding: 10px;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  z-index: 1500;
+  box-shadow: 0 0 10 rgb(19, 20, 20);
+  transition: 0.5s ease-in-out;
+  font-size: 15px;
+  .userinfo {
+    margin-top: 13px;
+  }
+}
+.toast--visible {
+  visibility: visible;
+  opacity: 1;
+}
 @media screen and (max-width: 950px) {
   .container {
     flex-flow: wrap;
-    width: 95%;
+    width: 85%;
   }
   .box {
     width: 100%;
@@ -238,6 +290,34 @@ button:focus {
   }
   .contentbox {
     margin-left: 0;
+  }
+  .toast {
+    left: 30%;
+  }
+}
+@media screen and (max-width: 720px) {
+  .toast {
+    left: 25%;
+  }
+}
+@media screen and (max-width: 580px) {
+  .toast {
+    left: 20%;
+  }
+}
+@media screen and (max-width: 510px) {
+  .toast {
+    left: 17%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .toast {
+    left: 10%;
+  }
+}
+@media screen and (max-width: 360px) {
+  .toast {
+    left: 7%;
   }
 }
 </style>
@@ -252,8 +332,19 @@ export default {
     };
   },
   methods: {
+    showToast() {
+      var mytoast = document.getElementById("toastId");
+      clearTimeout(mytoast.hideTimeout);
+      mytoast.className = "toast toast--visible";
+      mytoast.hideTimeout = setTimeout(() => {
+        mytoast.classList.remove("toast--visible");
+      }, 2000);
+    },
     followUnfollowUser() {
       this.followuser = !this.followuser;
+      if (this.followuser == true) {
+        this.showToast();
+      }
     },
     showDropdownlist() {
       this.show = !this.show;
@@ -261,7 +352,6 @@ export default {
     hideList(event) {
       if (event.target.id != ("list-icon" || "added-list")) {
         this.show = false;
-        this.defaultStyle();
       }
     }
   },

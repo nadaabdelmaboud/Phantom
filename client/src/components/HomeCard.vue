@@ -60,6 +60,7 @@
 }
 .save-post {
   display: none;
+  letter-spacing: 1px;
   background-color: $lightBlue;
   color: white;
   border-radius: 500px;
