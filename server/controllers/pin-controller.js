@@ -153,6 +153,7 @@ const Pin = {
     });
     pin.counts.comments += 1;
     await pin.save();
+    return true;
   },
   createReply: async function (pinId, replyText, userId, commentId) {
     if ((await checkMonooseObjectID([userId, pinId, commentId])) == 0) {
@@ -160,6 +161,7 @@ const Pin = {
     }
     let user = await userDocument.findById(userId);
     let pin = await this.getPinById(pinId);
+
     if (!user || !pin) return false;
     for (var i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
@@ -176,6 +178,7 @@ const Pin = {
         return true;
       }
     }
+    return false;
   },
   getPinCommentsReplies: async function (pinId) {
     if ((await checkMonooseObjectID([pinId])) == 0) {
@@ -215,24 +218,27 @@ const Pin = {
         retComments.push({ comment: comment, replies: replies });
       }
     }
+    return retComments;
   },
   createReact: async function (pinId, reactType, userId) {
     if ((await checkMonooseObjectID([userId, pinId])) == 0) {
       return false;
     }
     if (
-      reactType != "Wow" ||
-      reactType != "Love" ||
-      reactType != "Good idea" ||
-      reactType != "Thanks" ||
-      reactType != "Haha"
-    )
+      String(reactType) != "Wow" &&
+      String(reactType) != "Love" &&
+      String(reactType) != "Good idea" &&
+      String(reactType) != "Thanks" &&
+      String(reactType) != "Haha"
+    ) {
       return false;
+    }
     let user = await userDocument.findById(userId);
     let pin = await this.getPinById(pinId);
+
     if (!user || !pin) return false;
     pin.reacts.push({
-      type: reactType,
+      reactType: reactType,
       userId: userId,
     });
     switch (reactType) {

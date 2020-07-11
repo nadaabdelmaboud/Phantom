@@ -101,7 +101,7 @@ const Pin = new Schema({
   },
   reacts: [
     {
-      type: String,
+      reactType: String,
       userId: mongoose.Schema.Types.ObjectId,
     },
   ],
