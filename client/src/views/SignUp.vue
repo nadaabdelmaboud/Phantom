@@ -3,7 +3,7 @@
     <div class="signUpForm">
       <p class="text-center" id="phantom">Welcome to Phantom</p>
       <p class="text-center" id="findIdeas">Find new ideas to try</p>
-      <div class="error" v-if="errorMessage">
+      <div class="error" v-if="errorMessage && !signUpState">
         <p class="text-center" style="padding-bottom:4px;">
           {{ errorMessage }} 😞
         </p>

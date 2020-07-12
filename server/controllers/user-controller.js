@@ -1,5 +1,6 @@
 const { user: userDocument, board: boardDocument, pin: pinDocument, image: imageDocument, category: categoryDocument, user } = require('../models/db');
 const checkMonooseObjectID = require('./validation-controller');
+const limitOffset = require('../middlewares/limit-offset');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 var sendmail = require('../controllers/send-mail-controller');
@@ -173,7 +174,18 @@ const User = {
             return 1;
         } catch (err) { return 0; }
     },
-
+    /**
+     * update information in user profile 
+     * @param {String} userId -id of user
+     * @param {ٍString} firstName -new first name for user 
+     * @param {String} lastName -new last name for user 
+     * @param {String} about -new info about user 
+     * @param {String} gender -new gender for user 
+     * @param {String} country -new country for user
+     * @param {String} email  -new email for user
+     * @param {String} birthDate -new birthDate of user
+     * @returns {Number}
+     */
     updateUserInfo: async function (userId, firstName, lastName, about, gender, country, email, birthDate) {
         try {
             if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
@@ -197,6 +209,12 @@ const User = {
             return 1;
         } catch (err) { return 0; }
     },
+    /**
+     * set user email
+     * @param {string} userId - id of user
+     * @param {string} newEmail  - new email 
+     * @returns {Number}
+     */
     setEmail: async function (userId, newEmail) {
         try {
             if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
@@ -206,6 +224,12 @@ const User = {
             return 1;
         } catch (err) { return 0; }
     },
+    /**
+     * check if this user follow this user id  
+     * @param {Object} user - user he follow 
+     * @param {String} userId - id of user followed
+     * @returns {boolean}
+     */
     checkFollowUser: async function (user, userId) {
         try {
             if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
@@ -216,7 +240,12 @@ const User = {
             return false;
         } catch (err) { return 0; }
     },
-
+    /**
+     * followUser:  make frist user id follow second user id 
+     * @param {String} userId1 - id of user went to follow 
+     * @param {String} userId2  - id of user wented to be followed 
+     * @returns {Number}
+     */
     followUser: async function (userId1, userId2) {
         try {
             if (!checkMonooseObjectID([userId1, userId2])) throw new Error('not mongoose id');
@@ -232,6 +261,13 @@ const User = {
             return 1;
         } catch (err) { return 0; }
     },
+    /**
+     * unfollowUser:  make frist user id unfollow second user id 
+     * @param {String} userId1 - id of user went to unfollow 
+     * @param {String} userId2  - id of user wented to be unfollowed 
+     * @returns {Number}
+     */
+
     unfollowUser: async function (userId1, userId2) {
         try {
             if (!checkMonooseObjectID([userId1, userId2])) throw new Error('not mongoose id');
@@ -259,6 +295,49 @@ const User = {
             } else return 0;
         } catch (err) { return 0; }
     },
+    /**
+     * userFollowers: get user followers 
+     * @param {*} userId - user id
+     * @param {*} limit  - the limit 
+     * @param {*} offset - the start
+     * @returns {object} - has array of user object and real number of followers 
+     */
+    userFollowers: async function (userId, limit, offset) {
+        const user = await this.getUserById(userId);
+        if (!user) return 0;
+        if (!user.followers || user.followers.length == 0) return { followers: [], numOfFollowers: 0 };
+        const followers = limitOffset(limit, offset, user.followers);
+        var followersInfo = [];
+        for (let i = 0; i < followers.length; i++) {
+            var currentUser = await this.getUserById(followers[i]);
+            if (currentUser)
+                followersInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+        }
+        return { followers: followersInfo, numOfFollowers: user.followers.length };
+
+    },
+
+    /**
+   * userFollowings: get user following 
+   * @param {*} userId - user id
+   * @param {*} limit  - the limit 
+   * @param {*} offset - the start
+   * @returns {object} - has array of user object and real number of followings 
+   */
+    userFollowings: async function (userId, limit, offset) {
+        const user = await this.getUserById(userId);
+        if (!user) return 0;
+        if (!user.following || user.following.length == 0) return { followings: [], numOfFollowings: 0 };
+        const followings = limitOffset(limit, offset, user.following);
+        var followingsInfo = [];
+        for (let i = 0; i < followings.length; i++) {
+            var currentUser = await this.getUserById(followings[i]);
+            if (currentUser)
+                followingsInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+        }
+        return { followings: followersInfo, numOfFollowings: user.following.length };
+
+    }
 }
 
 module.exports = User;

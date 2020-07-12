@@ -83,5 +83,33 @@ router.get('/me/follow-user/:user_id', auth, async (req, res) => {
     return res.json({ follow: ifFollow });
 })
 
+router.get('/me/follower', auth, async (req, res) => {
+    const followers = await User.userFollowers(req.user._id, req.query.limit, req.query.offset);
+    if (!followers) return res.status(403).json({ error: ' user does not exist' });
+    return res.json(followers);
+
+})
+
+router.get('/me/following', auth, async (req, res) => {
+    const followings = await User.userFollowings(req.user._id, req.query.limit, req.query.offset);
+    if (!followings) return res.status(403).json({ error: ' user does not exist' });
+    return res.json(followings);
+
+})
+
+router.get('/:user_id/follower', auth, async (req, res) => {
+    const followers = await User.userFollowers(req.params.user_id, req.query.limit, req.query.offset);
+    if (!followers) return res.status(403).json({ error: ' user does not exist' });
+    return res.json(followers);
+
+})
+
+router.get('/:user_id/following', auth, async (req, res) => {
+    const followings = await User.userFollowings(req.params.user_id, req.query.limit, req.query.offset);
+    if (!followings) return res.status(403).json({ error: ' user does not exist' });
+    return res.json(followings);
+
+})
+
 
 module.exports = router;

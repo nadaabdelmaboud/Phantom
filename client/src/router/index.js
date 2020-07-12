@@ -5,6 +5,9 @@ import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
 import PinBuilder from "../views/PinBuilder.vue";
+import PostPage from "../views/PostPage.vue";
+import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
+import LoginView from "../views/LoginView.vue";
 
 Vue.use(VueRouter);
 
@@ -28,6 +31,10 @@ const routes = [
         path: "PinBuilder",
         name: "PinBuilder",
         component: PinBuilder
+      },{
+        path: "PostPage",
+        name: "PostPage",
+        component: PostPage
       }
     ]
   },
@@ -35,6 +42,17 @@ const routes = [
     path: "/signup",
     name: "SignUp",
     component: SignUp
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: LoginView
+  },
+  {
+    path: "/confirm",
+    name: "confirm",
+    query: "token=",
+    component: WelcomePage
   }
 ];
 
