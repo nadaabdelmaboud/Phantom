@@ -61,6 +61,26 @@
                 </button>
               </div>
             </div>
+            <div class="actionsbox">
+              <li>
+                <button
+                  class="underlineLink"
+                  id="photobutton"
+                  @click="addPhoto()"
+                >
+                  Photos
+                </button>
+              </li>
+              <li>
+                <button
+                  class="underlineLink"
+                  id="commentbutton"
+                  @click="addComment()"
+                >
+                  Comments
+                </button>
+              </li>
+            </div>
           </div>
         </div>
       </div>
@@ -279,6 +299,38 @@ button:focus {
   visibility: visible;
   opacity: 1;
 }
+.actionsbox {
+  margin-top: 25px;
+}
+li {
+  display: inline;
+}
+li button {
+  background: transparent;
+  border: transparent;
+  margin: 5px;
+  color: $darkgrey;
+  font-size: 17px;
+  font-weight: 700;
+  &:hover {
+    color: black;
+  }
+  &:focus {
+    color: black;
+  }
+}
+.underlineLink::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 3px;
+  background: black;
+  transition: width 0.3s;
+}
+.underlineLink:hover::after {
+  width: 100%;
+  transition: width 0.3s;
+}
 @media screen and (max-width: 950px) {
   .container {
     flex-flow: wrap;
@@ -353,6 +405,12 @@ export default {
       if (event.target.id != ("list-icon" || "added-list")) {
         this.show = false;
       }
+    },
+    addPhoto() {
+      //add Photos Here
+    },
+    addComment() {
+      //add Comments Here
     }
   },
   created: function() {
