@@ -88,12 +88,20 @@
             <div class="AddPhotos" v-if="showPhotos == true">
               <p>Tried this pin?</p>
               <div>
-                Add a Photo to show how it went
+                Add a photo to show how it went
                 <button class="addphotobutton">Add Photo</button>
               </div>
             </div>
             <div class="AddComments" v-if="showComments == true">
-              Nihal
+              <p>Share feedback, ask a question or give a high five</p>
+              <div class="displaycomments">
+                <div class="userimage">
+                  <img src="../assets/user.png" alt="User Image" />
+                </div>
+                <div class="commentsfield">
+                  <input type="text" placeholder="Add a Comment" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -267,7 +275,8 @@ button:focus {
     background-color: $darkBlue;
   }
 }
-button:focus {
+button,
+input:focus {
   outline: 0 !important;
 }
 .toastimage {
@@ -349,6 +358,7 @@ li button {
   margin: 12px;
   p {
     margin: 0;
+    color: black;
   }
 }
 .addphotobutton {
@@ -364,7 +374,35 @@ li button {
     background-color: $darkBlue;
   }
 }
-@media screen and (max-width: 950px) {
+.AddComments {
+  margin: 12px;
+  p {
+    font-size: 13px;
+    color: black;
+  }
+}
+.displaycomments {
+  display: flex;
+}
+.commentsfield {
+  margin-left: 20px;
+  margin-top: 8px;
+  width: 350px;
+  height: 50px;
+  border-radius: 40px;
+  box-shadow: 0 2px 10px 10px rgba(0, 0, 0, 0.04);
+  input {
+    margin-left: 25px;
+    border: none;
+    background: none;
+    outline: none;
+    width: 280px;
+    padding: 0;
+    line-height: 50px;
+  }
+}
+
+@media screen and (max-width: 993px) {
   .container {
     flex-flow: wrap;
     width: 85%;
@@ -376,6 +414,8 @@ li button {
   .contentbox {
     margin-left: 0;
   }
+}
+@media screen and (max-width: 950px) {
   .toast {
     left: 30%;
   }
@@ -383,6 +423,14 @@ li button {
 @media screen and (max-width: 720px) {
   .toast {
     left: 25%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .commentsfield {
+    width: 270px;
+    input {
+      width: 210px;
+    }
   }
 }
 @media screen and (max-width: 580px) {
@@ -400,9 +448,25 @@ li button {
     left: 10%;
   }
 }
+@media screen and (max-width: 420px) {
+  .commentsfield {
+    input {
+      width: 180px;
+    }
+  }
+}
 @media screen and (max-width: 360px) {
   .toast {
     left: 7%;
+  }
+  .AddComments {
+    width: 290px;
+  }
+  .commentsfield {
+    width: 200px;
+    input {
+      width: 150px;
+    }
   }
 }
 </style>
