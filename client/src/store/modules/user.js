@@ -11,7 +11,9 @@ const state = {
   containSpecialChar: null,
   containNumber: null,
   validPassword: null,
-  errorMessage: null
+  errorMessage: null,
+  emailConfirm: false,
+  loginState: null
 };
 
 const mutations = {
@@ -46,6 +48,12 @@ const mutations = {
   },
   setErrorMessage(state, message) {
     state.errorMessage = message;
+  },
+  setEmailConfirm(state, status) {
+    state.emailConfirm = status;
+  },
+  setLogin(state, status) {
+    state.loginState = status;
   }
 };
 
@@ -62,6 +70,44 @@ const actions = {
           commit("changeSignUpState", false);
           commit("setErrorMessage", "This email is already exists");
         } else commit("setErrorMessage", error.response.data.message);
+      });
+  },
+  confirmEmail({ commit }, token) {
+    axios
+      .post(
+        "sign_up/confirm",
+        {},
+        {
+          headers: {
+            "x-auth-token": `${token}`
+          }
+        }
+      )
+      .then(response => {
+        localStorage.setItem("userToken", response.data.token);
+        localStorage.setItem("imgProfileID", response.data.profileImage);
+        commit("setEmailConfirm", true);
+        console.log(response.data.token);
+      })
+      .catch(error => {
+        commit("setEmailConfirm", false);
+        console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  login({ commit }, data) {
+    axios
+      .post("login", data)
+      .then(response => {
+        localStorage.setItem("userToken", response.data.token);
+        commit("setLogin", true);
+      })
+      .catch(error => {
+        commit("setLogin", false);
+        console.log(error.response);
+        if (error.response.data.error == " password is not correct")
+          commit("setErrorMessage", "Password is not correct");
+        else commit("setErrorMessage", "Email is not correct");
       });
   }
 };

@@ -52,6 +52,71 @@ module.exports = function (server) {
         });
       }
     });
+    socket.on("reactPin", async function (data) {
+      const token = data.token;
+      const decoded = await jwt.verify(token, process.env.jwtsecret);
+      userId = decoded._id;
+      let user = await userModel.findById(userId);
+      let pin = await pinModel.findById(data.pinId);
+      io.sockets.emit("sendPinReact", {
+        reactType: data.reactType,
+        userName: user.firstName + " " + user.lastName,
+        userImage: user.profileImage,
+        pinId: data.pinId,
+        wowReacts: pin.counts.wowReacts,
+        loveReacts: pin.counts.loveReacts,
+        goodIdeaReacts: pin.counts.goodIdeaReacts,
+        hahaReacts: pin.counts.hahaReacts,
+        thanksReacts: pin.counts.thanksReacts,
+      });
+    });
+    socket.on("likeComment", async function (data) {
+      const token = data.token;
+      const decoded = await jwt.verify(token, process.env.jwtsecret);
+      userId = decoded._id;
+      let user = await userModel.findById(userId);
+      let pin = await pinModel.findById(data.pinId);
+      for (var i = 0; i < pin.comments.length; i++) {
+        if (String(pin.comments[i]._id) == String(data.commentId)) {
+          io.sockets.emit("sendLikeComment", {
+            userName: user.firstName + " " + user.lastName,
+            userImage: user.profileImage,
+            pinId: data.pinId,
+            commentId: pin.comments[i]._id,
+            commentLikes: pin.comments[i].likes.counts,
+          });
+          break;
+        }
+      }
+    });
+    socket.on("likeReply", async function (data) {
+      const token = data.token;
+      const decoded = await jwt.verify(token, process.env.jwtsecret);
+      userId = decoded._id;
+      let user = await userModel.findById(userId);
+      let pin = await pinModel.findById(data.pinId);
+      for (var i = 0; i < pin.comments.length; i++) {
+        if (String(pin.comments[i]._id) == String(data.commentId)) {
+          for (var j = 0; j < pin.comments[i].replies.length; j++) {
+            if (
+              String(pin.comments[i].replies[j]._id) == String(data.replyId)
+            ) {
+              io.sockets.emit("sendLikeReply", {
+                userName: user.firstName + " " + user.lastName,
+                userImage: user.profileImage,
+                pinId: data.pinId,
+                commentId: pin.comments[i]._id,
+                replyId: data.replyId,
+                replyLikes: pin.comments[i].replies[j].likes.counts,
+              });
+              break;
+            }
+          }
+
+          break;
+        }
+      }
+    });
     socket.on("clearUserId", async function (data) {
       const token = data.token;
       const decoded = await jwt.verify(token, process.env.jwtsecret);

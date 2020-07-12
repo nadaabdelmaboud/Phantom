@@ -35,7 +35,7 @@ router.post('/sign_up', async (req, res) => {
                 bio: req.body.bio
             }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
             console.log(token);
-            if (await sendmail(req.body.email, String(token), 'confirm'))
+            if (await sendmail(req.body.email, String(token), 'confirm', req.body.firstName))
                 return res.status(204).json({ success: 'sign up done ' })
             else return res.status(400);
         });

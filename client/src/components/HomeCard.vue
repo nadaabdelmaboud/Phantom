@@ -92,6 +92,7 @@ button:focus {
   padding: 15px;
   left: 235px;
   bottom: -25px;
+  box-shadow: 0 5px 10px 10px rgba(0, 0, 0, 0.06);
   .title {
     font-size: 14px;
     font-weight: 400;

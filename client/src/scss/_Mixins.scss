@@ -1,16 +1,16 @@
 @mixin horizontalDivs {
-  display: inline-block;
-  vertical-align: middle;
-  height: 48px;
-  padding: 12px 4px;
-  text-align: center;
-  margin: 0px 3px;
-  cursor: pointer;
-  transition: background-color 0.5s ease;
-  color: $darkBlue;
-  &:hover {
-    background-color: $lightPink;
-  }
+    display: inline-block;
+    vertical-align: middle;
+    height: 48px;
+    padding: 12px 4px;
+    text-align: center;
+    margin: 0px 1px;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    color: $darkBlue;
+    &:hover {
+      background-color: $lightPink;
+    }
 }
 
 @mixin circleButtons {

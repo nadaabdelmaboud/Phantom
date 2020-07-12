@@ -172,7 +172,7 @@ button:focus {
 }
 .share-icon {
   @include circleButtons;
-  background-color: white;
+  background: transparent;
   height: 40px;
   width: 40px;
   &:hover {
@@ -181,7 +181,7 @@ button:focus {
 }
 .added-list {
   @include circleButtons;
-  background-color: white;
+  background: transparent;
   height: 40px;
   width: 40px;
   &:hover {
@@ -200,6 +200,7 @@ button:focus {
   z-index: 1;
   border-radius: 15px;
   padding: 15px;
+  box-shadow: 0 5px 10px 10px rgba(0, 0, 0, 0.06);
   ul {
     position: relative;
     margin-left: 0%;
@@ -208,6 +209,7 @@ button:focus {
       opacity: 0.2;
     }
     li {
+      display: block;
       list-style: none;
       font-weight: bold;
       color: black;
