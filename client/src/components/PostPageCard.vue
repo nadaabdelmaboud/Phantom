@@ -66,7 +66,9 @@
                 <button
                   class="underlineLink"
                   id="photobutton"
-                  @click="addPhoto()"
+                  @click="
+                    addPhoto(), (showPhotos = true), (showComments = false)
+                  "
                 >
                   Photos
                 </button>
@@ -75,11 +77,23 @@
                 <button
                   class="underlineLink"
                   id="commentbutton"
-                  @click="addComment()"
+                  @click="
+                    addComment(), (showPhotos = false), (showComments = true)
+                  "
                 >
                   Comments
                 </button>
               </li>
+            </div>
+            <div class="AddPhotos" v-if="showPhotos == true">
+              <p>Tried this pin?</p>
+              <div>
+                Add a Photo to show how it went
+                <button class="addphotobutton">Add Photo</button>
+              </div>
+            </div>
+            <div class="AddComments" v-if="showComments == true">
+              Nihal
             </div>
           </div>
         </div>
@@ -331,6 +345,25 @@ li button {
   width: 100%;
   transition: width 0.3s;
 }
+.AddPhotos {
+  margin: 12px;
+  p {
+    margin: 0;
+  }
+}
+.addphotobutton {
+  letter-spacing: 1px;
+  background-color: $lightBlue;
+  float: right;
+  color: white;
+  border-radius: 500px;
+  border-color: transparent;
+  align-content: center;
+  padding: 10px;
+  &:hover {
+    background-color: $darkBlue;
+  }
+}
 @media screen and (max-width: 950px) {
   .container {
     flex-flow: wrap;
@@ -380,7 +413,9 @@ export default {
   data: function() {
     return {
       followuser: false,
-      show: false
+      show: false,
+      showPhotos: true,
+      showComments: false
     };
   },
   methods: {
