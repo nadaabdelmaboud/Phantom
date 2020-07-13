@@ -60,6 +60,7 @@
 }
 .save-post {
   display: none;
+  letter-spacing: 1px;
   background-color: $lightBlue;
   color: white;
   border-radius: 500px;
@@ -91,6 +92,7 @@ button:focus {
   padding: 15px;
   left: 235px;
   bottom: -25px;
+  box-shadow: 0 5px 10px 10px rgba(0, 0, 0, 0.06);
   .title {
     font-size: 14px;
     font-weight: 400;

@@ -4,6 +4,7 @@ import SignUp from "../views/SignUp.vue";
 import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
+import PinBuilder from "../views/PinBuilder.vue";
 import PostPage from "../views/PostPage.vue";
 import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
 import LoginView from "../views/LoginView.vue";
@@ -25,6 +26,11 @@ const routes = [
         path: "Following",
         name: "Following",
         component: Following
+      },
+      {
+        path: "PinBuilder",
+        name: "PinBuilder",
+        component: PinBuilder
       },
       {
         path: "PostPage",
