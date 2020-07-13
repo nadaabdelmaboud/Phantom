@@ -3,9 +3,9 @@
     <div class="col-sm-10 col-md-9 col-lg-7 pin">
       <div class="board">
         <div class="boardName" @click="showBoard = !showBoard">
-          {{ board }}
-          <button v-if="!showBoard">Save</button>
+          {{ chosenBoardName }}
         </div>
+         <button v-if="!showBoard" @click="createPin">Save</button>
       </div>
       <input
         style="display:none"
@@ -19,6 +19,7 @@
           class="imageInput doubleBorder"
           :class="{
             dragging: dragover,
+            noImage:(validate&&!imageFile)
           }"
           v-if="!imageFile"
           @click="$refs.fileInput.click()"
@@ -27,8 +28,10 @@
           @drop.prevent="onFileDragged"
           @dragleave.prevent="dragover = false"
         >
-          <i class="fa fa-arrow-circle-up"></i>
-          <p>Drag and drop or click to upload</p>
+          <i v-if="validate&&!imageFile" class="fa fa-exclamation-circle"></i>
+          <i v-else class="fa fa-arrow-circle-up"></i>
+          <p v-if="validate&&!imageFile" >Image is required to create a pin.</p>
+          <p v-else>Drag and drop or click to upload</p>
           <p>Recommendation: Use high-quality .jpg files less than 32MB</p>
         </div>
         <img
@@ -47,7 +50,8 @@
       </div>
 
       <div class="pinData addData">
-        <input type="text" placeholder="Add your title" />
+        <input type="text" placeholder="Add your title" v-model="title"/>
+        <p v-if="validate ? title=='': false" style="color:rgb(230,0,35);margin-left:20px;" >Image is required to create a pin.</p>
         <br />
         <i class="fa fa-user-circle"> Mostafa--</i>
         <br />
@@ -60,7 +64,10 @@
         <input type="text" v-model="searchBoard" placeholder="Search" />
         <p><strong>All Boards </strong></p>
         <ul v-for="(b, i) in boards" :key="i">
-          <li v-if="b.name.search(new RegExp(searchBoard, 'i')) != -1">
+          <li 
+          v-if="b.name.search(new RegExp(searchBoard, 'i')) != -1"
+          @click="chooseBoard(b.name,b._id)"
+          >
             {{ b.name }}
           </li>
         </ul>
@@ -89,6 +96,8 @@
   top: 90px;
   box-shadow: 0px 0px 12px 2px #a09f9f;
   padding: 20px;
+  max-height: 400px;
+  overflow-y:auto;
   p{
     margin:16px 0;
   }
@@ -132,6 +141,7 @@
        cursor: pointer;
        height: 48px;
        padding: 12px 0;
+       margin-bottom: 10px;
        border-radius: 16px;
         transition: background-color 0.5s ease;
        i{
@@ -172,7 +182,8 @@
   }
   button {
     position: absolute;
-    left: 134px;
+    right: 30px;
+    top:42px;
     width: 66px;
     height: 48px;
     margin-top: -12px;
@@ -251,6 +262,12 @@
   border-radius: 16px;
   background-color: $lightBlue;
 }
+.noImage {
+  border: 2px solid red;
+  border-radius: 16px;
+  background-color:rgba(230, 0, 35, 0.03);;
+  color:rgb(230,0,35);
+}
 .addData {
   width: 55%;
   left: 40%;
@@ -295,15 +312,8 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: "PinBuilder",
-  props: {
-    boardName: {
-      type: String,
-      default: "Select",
-    },
-  },
   mounted() {
     this.$store.dispatch("boards/userBoards")
-    this.board = this.boardName;
     this.classifier = ml5.imageClassifier(
       this.imageModelURL + "model.json",
       function() {
@@ -315,51 +325,61 @@ export default {
     return {
       title: "",
       note: "",
-      board: "",
       searchBoard: "",
       showBoard: false,
       imageFile: null,
+      width:"",
+      height:"",
       dragover: false,
-      imageModelURL:
-        "https://teachablemachine.withgoogle.com/models/VEQ3gk-V4/",
+      imageModelURL:"https://teachablemachine.withgoogle.com/models/VEQ3gk-V4/",
       classifier: "",
+      validate:false,
       // To store the classification
-      label: "",
+      label: ""
     };
   },
   methods: {
     onFileDragged: function(event) {
       event.preventDefault();
-      console.log(event.dataTransfer.files[0]);
 
       this.imageFile = event.dataTransfer.files[0];
       if (this.imageFile) {
         const reader = new FileReader();
+         var image= new Image;
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
           img.setAttribute("src", this.result);
           img.style.display = "block";
+          image.setAttribute("src", this.result);
         });
         reader.readAsDataURL(this.imageFile);
+           setTimeout(()=>{
+           this.classifier.classify(this.$refs.image, this.gotResult);   
+           this.width = image.width;
+           this.height = image.height;   
+           console.log(this.height,"   ",this.width)
+        },500)
       }
     },
     onFileSelected: function(event) {
       this.imageFile = event.target.files[0];
-      console.log(this.imageFile);
       if (this.imageFile) {
         const reader = new FileReader();
+        var image= new Image;
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
-          img.setAttribute("src", reader.result);
+          img.setAttribute("src", this.result);
           img.style.display = "block";
-          console.log("loaaaded");
+          image.setAttribute("src", this.result);
         });
-
         reader.readAsDataURL(this.imageFile);
-        setTimeout(() => {
-          console.log(this.$refs.image);
-          this.classifier.classify(this.$refs.image, this.gotResult);
-        }, 1000);
+      
+        setTimeout(()=>{
+           this.classifier.classify(this.$refs.image, this.gotResult);   
+           this.width = image.width;
+           this.height = image.height;   
+           console.log(this.height,"   ",this.width)
+        },500)
       }
     },
     unUpload: function() {
@@ -371,23 +391,50 @@ export default {
     },
     // A function to run when we get any errors and the results
     gotResult(error, results) {
-      //  console.error("blabla");
-      // Display error in the console
       if (error) {
-        console.error("blabla", error);
+        console.error( error);
       } else {
         // The results are in an array ordered by confidence.
-        console.log(results);
+        this.label= results[0];
       }
     },
     createBoardPopup(){
-      this.$store.commit("popUpsState/toggleCreateBoardPopup"),
+      this.$store.commit("popUpsState/toggleCreateBoardPopup")
       this.showBoard= false
+    },
+    chooseBoard(name,id){
+      this.showBoard= false;
+      this.$store.commit("boards/chooseBoard",{name,id});
+    },
+    createPin(){
+      if(this.chosenBoardName == "Select")
+        {
+          this.showBoard= true
+        }
+      else{
+        if(this.title=="" || !this.imageFile)
+          this.validate = true
+        else{
+          console.log("nnn",this.width,"   ",this.height)
+          let pin={
+            title:this.title,
+            board:this.chosenBoardId,
+            imageWidth:this.width,
+            imageHeight:this.height,
+            imageId:this.imageFile
+          }
+          if(this.note != '')
+              pin.note=this.note
+          this.$store.dispatch("pins/createPin",pin)
+        }
+      }
     }
   },
   computed:{
     ...mapGetters({
-       boards: "boards/userBoards"
+       boards: "boards/userBoards",
+       chosenBoardName:"boards/chosenBoardName",
+       chosenBoardId:"boards/chosenBoardId"
     })
   }
 };

@@ -10,7 +10,7 @@ var storage = new GridFsStorage({
     url: process.env.CONNECTION_STRING,
     file: (req, file) => {
       return new Promise((resolve, reject) => {
-        if(file.mimetype!="image/jpg"&&file.mimetype!="image/jpeg"&&file.mimetype!="iamge/png"&&file.mimetype!="image/bmp"){
+        if(file.mimetype!="image/jpg"&&file.mimetype!="image/jpeg"&&file.mimetype!="image/png"&&file.mimetype!="image/bmp"){
           return reject(Error("file should be an image"));
         }
         

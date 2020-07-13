@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const state = {
-  userBoards:[]
+  userBoards:[],
+  chosenBoardName:"Select",
+  chosenBoardId:""
 };
 
 const mutations = {
@@ -11,11 +13,16 @@ const mutations = {
   setBoards(state,boards){
     state.userBoards=boards
   },
+  chooseBoard(state,{name,id}){
+      state.chosenBoardName =name,
+      state.chosenBoardId =id
+  }
 };
 
 const actions = {
-    createBoard({ commit }, boardName) {
+    createBoard({ commit ,state }, boardName) {
        // localStorage.setItem("x-auth-token", token);
+        state.chosenBoardName = boardName;
         let token =localStorage.getItem("userToken");
         console.log(token);
         axios.defaults.headers.common["Authorization"] =token
@@ -27,6 +34,7 @@ const actions = {
           )
           .then((response) => {
             commit("addNewBoard", response.data);
+            state.chosenBoardId = response.data._id
           })
           .catch(error => {
             console.log(error)
@@ -48,7 +56,9 @@ const actions = {
 };
 
 const getters = {
-    userBoards: state => state.userBoards
+    userBoards: state => state.userBoards,
+    chosenBoardName: state => state.chosenBoardName,
+    chosenBoardId: state => state.chosenBoardId
   };
 
 export default {
