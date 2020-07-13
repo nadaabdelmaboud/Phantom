@@ -2,9 +2,9 @@
   <div class="row justify-content-center addPin m-0">
     <div class="col-sm-10 col-md-9 col-lg-7 pin">
       <div class="board">
-        <div class="boardName">
+        <div class="boardName" @click="showBoard = !showBoard">
           {{ board }}
-          <button>Save</button>
+          <button v-if="!showBoard">Save</button>
         </div>
       </div>
       <input
@@ -31,7 +31,13 @@
           <p>Drag and drop or click to upload</p>
           <p>Recommendation: Use high-quality .jpg files less than 32MB</p>
         </div>
-        <img ref="image" style="display:none" id="imgPreview" src="" alt="uploaded img" />
+        <img
+          ref="image"
+          style="display:none"
+          id="imgPreview"
+          src=""
+          alt="uploaded img"
+        />
         <i
           v-if="imageFile"
           class="fa fa-trash deleteicon"
@@ -49,6 +55,20 @@
         <br />
         <input type="text" placeholder="Add destination link" />
       </div>
+
+      <div class="boards" v-if="showBoard">
+        <input type="text" v-model="searchBoard" placeholder="Search" />
+        <p><strong>All Boards </strong></p>
+        <ul v-for="(b, i) in boards" :key="i">
+          <li v-if="b.name.search(new RegExp(searchBoard, 'i')) != -1">
+            {{ b.name }}
+          </li>
+        </ul>
+        <div class="createBoard" @click="createBoardPopup">
+           <i class="fa fa-plus globalIcons" ></i> 
+           <strong>Create Board</strong>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -58,6 +78,69 @@
 
 .addPin {
   background-color: white;
+}
+.boards {
+  background-color: $offWhite;
+  border-radius: 16px;
+  width: 350px;
+  position: absolute;
+  z-index: 10;
+  right: 10px;
+  top: 90px;
+  box-shadow: 0px 0px 12px 2px #a09f9f;
+  padding: 20px;
+  p{
+    margin:16px 0;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      padding: 10px 10px;
+      margin: 4px 0;
+      height: 40px;
+      font-family: Arial, Helvetica, sans-serif;
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+      border-radius: 16px;
+    }
+    li:hover {
+      background-color: $lightPink;
+    }
+  }
+    input {
+      display: table-cell;
+      background-color: $lightPink;
+      height: 48px;
+      margin-top: 4px;
+      width: 100%;
+      border: none;
+      padding: 10px;
+      border-radius: 40px;
+      transition: background-color 0.5s ease;
+    }
+    input:hover {
+      background-color: $lightPinkHover;
+    }
+    input:focus {
+      background-color: $lightPinkHover;
+      border: $lightBlue 4px solid;
+    }
+    .createBoard{
+       background-color: $lightPink;
+       cursor: pointer;
+       height: 48px;
+       padding: 12px 0;
+       border-radius: 16px;
+        transition: background-color 0.5s ease;
+       i{
+         margin: 0 10px;
+       }
+    }
+    .createBoard:hover{
+      background-color: $lightPinkHover;
+    }
 }
 @keyframes appear {
   from {
@@ -69,7 +152,6 @@
 }
 .pin {
   background-color: $offWhite;
-  //margin: 20px 0px;
   height: calc(100vh - 120px);
   border-radius: 16px;
   animation: appear 0.2s linear 1 both;
@@ -208,13 +290,9 @@
 </style>
 
 <script>
-import ml5 from 'ml5'
-// const classifier =ml5.imageClassifier(
-//       this.imageModelURL + "model.json",
-//       function() {
-//         console.log("Model Loaded!");
-//       }
-//     );
+import ml5 from "ml5";
+import { mapGetters } from 'vuex';
+
 export default {
   name: "PinBuilder",
   props: {
@@ -224,6 +302,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("boards/userBoards")
     this.board = this.boardName;
     this.classifier = ml5.imageClassifier(
       this.imageModelURL + "model.json",
@@ -231,18 +310,19 @@ export default {
         console.log("Model Loaded!");
       }
     );
-      //console.log(this.classifier)
   },
   data: function() {
     return {
       title: "",
       note: "",
       board: "",
+      searchBoard: "",
+      showBoard: false,
       imageFile: null,
       dragover: false,
       imageModelURL:
         "https://teachablemachine.withgoogle.com/models/VEQ3gk-V4/",
-     classifier:"",
+      classifier: "",
       // To store the classification
       label: "",
     };
@@ -268,20 +348,18 @@ export default {
       console.log(this.imageFile);
       if (this.imageFile) {
         const reader = new FileReader();
-        reader.addEventListener("load", function() {  
+        reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
           img.setAttribute("src", reader.result);
           img.style.display = "block";
-          console.log("loaaaded")
+          console.log("loaaaded");
         });
 
         reader.readAsDataURL(this.imageFile);
-        setTimeout(()=>{
+        setTimeout(() => {
           console.log(this.$refs.image);
-            this.classifier.classify(this.$refs.image,this.gotResult);
-        },1000)
-       
-      
+          this.classifier.classify(this.$refs.image, this.gotResult);
+        }, 1000);
       }
     },
     unUpload: function() {
@@ -293,15 +371,24 @@ export default {
     },
     // A function to run when we get any errors and the results
     gotResult(error, results) {
-    //  console.error("blabla");
+      //  console.error("blabla");
       // Display error in the console
       if (error) {
-        console.error("blabla",error);
+        console.error("blabla", error);
       } else {
         // The results are in an array ordered by confidence.
         console.log(results);
       }
     },
+    createBoardPopup(){
+      this.$store.commit("popUpsState/toggleCreateBoardPopup"),
+      this.showBoard= false
+    }
   },
+  computed:{
+    ...mapGetters({
+       boards: "boards/userBoards"
+    })
+  }
 };
 </script>
