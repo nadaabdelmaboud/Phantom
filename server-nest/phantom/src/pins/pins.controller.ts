@@ -4,21 +4,28 @@ import {
   Body,
   UseFilters,
   ForbiddenException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { createPinDto } from './dto/create-pin.dto';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { PinsService } from './pins.service';
-
+import { ImagesService } from '../images/images.service';
 @UseFilters(new HttpExceptionFilter())
-@Controller('pins')
+@Controller()
 export class PinsController {
-  constructor(private PinsService: PinsService) {}
-  @Post()
+  constructor(
+    private PinsService: PinsService,
+    private ImagesService: ImagesService,
+  ) {}
+  @Post('/me/pins')
   async createPin(@Body() createPinDto: createPinDto) {
-    if (createPinDto.note == 'nada') {
-      return await this.PinsService.getPins();
+    let userId = '5ef10225f775502d20121345';
+    let createdPin = await this.PinsService.createPin(userId, createPinDto);
+    if (createdPin) {
+      return createdPin;
     } else {
-      throw new ForbiddenException({ message: 'you are not nada' });
+      await this.ImagesService.deleteFile(createPinDto.imageId.toString());
+      throw new NotAcceptableException({ message: 'pin is not created' });
     }
   }
 }

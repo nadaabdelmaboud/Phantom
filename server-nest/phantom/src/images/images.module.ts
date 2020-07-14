@@ -4,8 +4,6 @@ this module is inspired by  https://medium.com/@khoa.phan.9xset/nestjs-file-uplo
 import { Module } from '@nestjs/common';
 import { ImagesController } from './images.controller';
 import { ImagesService } from './images.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { UserService } from '../shared/user.service';
 import { UserModule } from '../shared/user.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { GridFsMulterConfigService } from './multer-config.service';
@@ -18,5 +16,6 @@ import { GridFsMulterConfigService } from './multer-config.service';
   ],
   controllers: [ImagesController],
   providers: [ImagesService, GridFsMulterConfigService],
+  exports: [ImagesService],
 })
 export class ImagesModule {}

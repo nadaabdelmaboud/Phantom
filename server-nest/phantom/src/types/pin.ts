@@ -1,5 +1,24 @@
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+export interface reply extends Document {
+  replier: mongoose.Schema.Types.ObjectId;
+  reply: String;
+  date: Date;
+  likes: {
+    counts: Number;
+    likers: Array<mongoose.Schema.Types.ObjectId>;
+  };
+}
+export interface comment extends Document {
+  commenter: mongoose.Schema.Types.ObjectId;
+  comment: String;
+  date: Date;
+  replies: Array<reply>;
+  likes: {
+    counts: Number;
+    likers: Array<mongoose.Schema.Types.ObjectId>;
+  };
+}
 export interface pin extends Document {
   imageId: mongoose.Schema.Types.ObjectId;
   imageWidth: Number;
@@ -16,28 +35,7 @@ export interface pin extends Document {
   createdAt: Date;
   note: String;
   destLink: String;
-  comments: [
-    {
-      commenter: mongoose.Schema.Types.ObjectId;
-      comment: String;
-      date: Date;
-      replies: [
-        {
-          replier: mongoose.Schema.Types.ObjectId;
-          reply: String;
-          date: Date;
-          likes: {
-            counts: Number;
-            likers: [mongoose.Schema.Types.ObjectId];
-          };
-        },
-      ];
-      likes: {
-        counts: Number;
-        likers: [mongoose.Schema.Types.ObjectId];
-      };
-    },
-  ];
+  comments: Array<comment>;
   counts: {
     comments: Number;
     thanksReacts: Number;
@@ -46,10 +44,8 @@ export interface pin extends Document {
     goodIdeaReacts: Number;
     hahaReacts: Number;
   };
-  reacts: [
-    {
-      reactType: String;
-      userId: mongoose.Schema.Types.ObjectId;
-    },
-  ];
+  reacts: Array<{
+    reactType: String;
+    userId: mongoose.Schema.Types.ObjectId;
+  }>;
 }
