@@ -173,6 +173,7 @@ export class PinsService {
     ) {
       return false;
     }
+    console.log('user');
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
 
