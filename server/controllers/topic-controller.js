@@ -40,9 +40,15 @@ const Topic={
         });
         return topics;
     },
-    addPinToTopic: async function(topicId, pinId){
-        if (!checkMonooseObjectID([topicId,pinId])) return 0;
-        const topic = await this.getTopicById(topicId);
+    addPinToTopic: async function(topicName, pinId){
+        if (!checkMonooseObjectID([pinId])) return 0;
+        let topic = await topicDocument.find({name: topicName}, (err, topic) => {
+            if (err) return 0;
+            return topic;
+        });
+        if (!topic){
+            topic = this.createTopic(undefined, undefined, undefined, undefined, topicName);
+        }
         const pin = Pin.getPinById(pinId);
         if(topic && pin){
             topic.pins.push(pinId);
