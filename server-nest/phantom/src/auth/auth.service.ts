@@ -6,10 +6,13 @@ import { Payload } from '../types/payload';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   async signPayload(payload: Payload) {
-    return sign(payload, process.env.SECRET_KEY, { expiresIn: '67472347632732h' });
+    return (
+      'Bearer ' +
+      sign(payload, process.env.SECRET_KEY, { expiresIn: '67472347632732h' })
+    );
   }
 
   async validateUser(payload: Payload) {
