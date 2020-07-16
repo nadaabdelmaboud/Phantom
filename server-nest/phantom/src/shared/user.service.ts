@@ -16,7 +16,9 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(@InjectModel('User') private readonly userModel: Model<user>) { }
   async getUserById(id) {
-    return await this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
+    if (!user) new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    return user;
   }
 
   async findByLogin(LoginDTO: LoginDTO): Promise<any> {
