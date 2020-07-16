@@ -7,11 +7,19 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
 import { UserService } from './user.service';
 import { ValidationService } from './validation.service';
+import { SharedGateway } from './shared.gateway';
+import { Pin } from 'src/models/pin.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'User', schema: User }])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'User', schema: User },
+      { name: 'Pin', schema: Pin },
+    ]),
+  ],
   providers: [
     UserService,
+    SharedGateway,
     ValidationService,
     {
       provide: APP_FILTER,
