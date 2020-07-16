@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PinsModule } from './pins/pins.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
+import { SharedModule } from './shared/shared.module';
 import { BoardModule } from './board/board.module';
 import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
@@ -13,9 +15,11 @@ import { TopicModule } from './topic/topic.module';
     PinsModule,
     BoardModule,
     ImagesModule,
-    TopicModule
+    TopicModule,
+    SharedModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService, ImagesService],
 })
-export class AppModule {}
+export class AppModule { }
