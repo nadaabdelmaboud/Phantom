@@ -7,9 +7,12 @@ import {
   NotAcceptableException,
   Param,
   Get,
+  Request,
+  UseGuards,
   NotFoundException,
   Query,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
 
@@ -17,9 +20,11 @@ import { BoardService } from './board.service';
 @Controller('board')
 export class BoardController {
   constructor(private BoardService: BoardService) {}
+
+  @UseGuards(AuthGuard('jwt'))
   @Post('/me/boards')
-  async createBoard(@Body('name') name: string) {
-    let userId = '5ef10225f775502d20121345';
+  async createBoard(@Request() req, @Body('name') name: string) {
+    let userId = req.user._id;
     let createdBoard = await this.BoardService.createBoard(name, userId);
     if (createdBoard) {
       return createdBoard;
@@ -27,9 +32,11 @@ export class BoardController {
       throw new NotAcceptableException({ message: 'board not created' });
     }
   }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get('/me/boards')
-  async getCurrentUserBoards() {
-    let userId = '5ef10225f775502d20121345';
+  async getCurrentUserBoards(@Request() req) {
+    let userId = req.user._id;
     let boards = await this.BoardService.getCurrentUserBoards(userId);
     if (boards && boards.length != 0) {
       return boards;
