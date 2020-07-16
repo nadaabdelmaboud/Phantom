@@ -11,6 +11,7 @@ import {
   HttpStatus,
   ForbiddenException,
   BadRequestException,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -96,7 +97,7 @@ export class ImagesController {
     return filestream.pipe(res);
   }
 
-  @Get('delete/:id')
+  @Delete('image/:id')
   @ApiBadRequestResponse({ type: BadRequestException })
   @ApiCreatedResponse({ type: FileResponseVm })
   async deleteFile(@Param('id') id: string): Promise<FileResponseVm> {

@@ -17,7 +17,6 @@ import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { ImagesService } from '../images/images.service';
 import { TopicService } from './topic.service';
 import { of, from } from 'rxjs';
-@UseFilters(new HttpExceptionFilter())
 @Controller()
 export class TopicController {
   constructor(
@@ -75,9 +74,9 @@ export class TopicController {
   @Post('/topic/addPin')
   async addPinToAtopic(
     @Body('pinId') pinId: string,
-    @Body('topicId') topicId: string,
+    @Body('topicName') topicName: string,
   ) {
-    let topics = await this.TopicService.addPinToTopic(topicId, pinId);
+    let topics = await this.TopicService.addPinToTopic(topicName, pinId);
     if (topics) {
       return { message: 'pin has been added successfully!' };
     } else {
@@ -106,6 +105,16 @@ export class TopicController {
       return topic;
     } else {
       await this.ImageService.deleteFile(imageId);
+      return ForbiddenException;
+    }
+  }
+
+  @Post('/createTopics')
+  async createTopics(@Body('topics') topics: Array<object>) {
+    let topic = await this.TopicService.topicsSeeds(topics);
+    if (topic) {
+      return topic;
+    } else {
       return ForbiddenException;
     }
   }

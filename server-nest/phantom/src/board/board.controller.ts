@@ -17,7 +17,7 @@ import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
 
 @UseFilters(new HttpExceptionFilter())
-@Controller('board')
+@Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
 
