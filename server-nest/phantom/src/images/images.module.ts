@@ -4,12 +4,12 @@ this module is inspired by  https://medium.com/@khoa.phan.9xset/nestjs-file-uplo
 import { Module } from '@nestjs/common';
 import { ImagesController } from './images.controller';
 import { ImagesService } from './images.service';
-import { UserModule } from '../shared/user.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { GridFsMulterConfigService } from './multer-config.service';
+import { SharedModule } from 'src/shared/shared.module';
 @Module({
   imports: [
-    UserModule,
+    SharedModule,
     MulterModule.registerAsync({
       useClass: GridFsMulterConfigService,
     }),

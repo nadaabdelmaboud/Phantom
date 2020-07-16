@@ -6,11 +6,13 @@ import { User } from '../models/user.schema';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
 import { UserService } from './user.service';
+import { ValidationService } from './validation.service';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'User', schema: User }])],
   providers: [
     UserService,
+    ValidationService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
@@ -20,6 +22,6 @@ import { UserService } from './user.service';
       useClass: LoggingInterceptor,
     },
   ],
-  exports: [UserService],
+  exports: [UserService, ValidationService],
 })
-export class SharedModule { }
+export class SharedModule {}

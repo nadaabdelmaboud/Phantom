@@ -1,18 +1,23 @@
-import { Body, UseGuards, Controller, Post, Request, Get } from '@nestjs/common';
+import {
+  Body,
+  UseGuards,
+  Controller,
+  Post,
+  Request,
+  Get,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../shared/user.service';
 import { Payload } from '../types/payload';
-import { LoginDTO, RegisterDTO } from './auth.dto';
+import { LoginDTO } from './dto/login.dto';
+import { RegisterDTO } from './dto/register.dto';
 import { AuthService } from './auth.service';
-import { User } from '../utilities/user.decorator';
-import { user as UserDocument } from '../types/user';
-import passport from 'passport';
 @Controller()
 export class AuthController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-  ) { }
+  ) {}
 
   @Post('/login')
   async login(@Body() userDTO: LoginDTO) {
@@ -41,7 +46,6 @@ export class AuthController {
     const user = await this.userService.getUserById(req.user._id);
     console.log(user);
     user.password = undefined;
-    return { user }
+    return { user };
   }
-
 }

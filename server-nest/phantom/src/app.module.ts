@@ -17,9 +17,9 @@ import { TopicModule } from './topic/topic.module';
     ImagesModule,
     TopicModule,
     SharedModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ImagesService],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

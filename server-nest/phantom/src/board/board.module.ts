@@ -3,12 +3,12 @@ import { BoardController } from './board.controller';
 import { BoardService } from './board.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Board } from '../models/board.schema';
-import { UserModule } from '../shared/user.module';
 import { Pin } from 'src/models/pin.schema';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
   imports: [
-    UserModule,
+    SharedModule,
     MongooseModule.forFeature([
       { name: 'Board', schema: Board },
       { name: 'Pin', schema: Pin },
