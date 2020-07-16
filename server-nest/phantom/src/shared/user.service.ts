@@ -32,56 +32,55 @@ export class UserService {
 
 
   async createUser(RegisterDTO: RegisterDTO): Promise<any> {
-    try {
-      const shcema = Joi.object({
-        email: Joi.string().trim().email().required(),
-        password: Joi.string().required(),
-        birthday: Joi.date().raw().required(),
-        firstName: Joi.string().required(),
-        lastName: Joi.string().required(),
-        country: Joi.string().optional(),
-        gender: Joi.string().optional(),
-        bio: Joi.string().optional(),
-        iat: Joi.optional(),
-        exp: Joi.optional()
-      });
-      const body = RegisterDTO;
-      const validate = shcema.validate(body);
-      console.log(validate);
-      if (validate.error) throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-      if (await this.checkMAilExistAndFormat(RegisterDTO.email)) return -1;
-      const salt = await bcrypt.genSalt(10);
-      let hash = await bcrypt.hash(RegisterDTO.password, salt);
-      var newUser = new this.userModel({
-        firstName: RegisterDTO.firstName,
-        lastName: RegisterDTO.lastName,
-        email: RegisterDTO.email,
-        password: hash,
-        about: RegisterDTO.bio,
-        gender: RegisterDTO.gender,
-        country: RegisterDTO.country,
-        birthDate: RegisterDTO.birthday,
-        pins: [],
-        uploadedImages: [],
-        savedImages: [],
-        notifications: [],
-        offlineNotifications: [],
-        followers: [],
-        following: [],
-        boards: [],
-        counts: {
-          likes: 0,
-          comments: 0,
-          repins: 0,
-          saves: 0
-        },
-        createdAt: Date.now(),
-      })
-      await newUser.save();
-      await this.userModel.updateOne({ _id: newUser._id }, { profileImage: newUser._id });
-      newUser = await this.getUserById(newUser._id);
-      return newUser;
-    } catch (ex) { return 0; }
+    const shcema = Joi.object({
+      email: Joi.string().trim().email().required(),
+      password: Joi.string().required(),
+      birthday: Joi.date().raw().required(),
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      country: Joi.string().optional(),
+      gender: Joi.string().optional(),
+      bio: Joi.string().optional(),
+      iat: Joi.optional(),
+      exp: Joi.optional()
+    });
+    const body = RegisterDTO;
+    const validate = shcema.validate(body);
+    console.log(validate);
+    if (validate.error) throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    if (await this.checkMAilExistAndFormat(RegisterDTO.email)) throw new HttpException('\"email\" should not have acount', HttpStatus.FORBIDDEN);
+    const salt = await bcrypt.genSalt(10);
+    let hash = await bcrypt.hash(RegisterDTO.password, salt);
+    var newUser = new this.userModel({
+      firstName: RegisterDTO.firstName,
+      lastName: RegisterDTO.lastName,
+      email: RegisterDTO.email,
+      password: hash,
+      about: RegisterDTO.bio,
+      gender: RegisterDTO.gender,
+      country: RegisterDTO.country,
+      birthDate: RegisterDTO.birthday,
+      pins: [],
+      uploadedImages: [],
+      savedImages: [],
+      notifications: [],
+      offlineNotifications: [],
+      followers: [],
+      following: [],
+      boards: [],
+      counts: {
+        likes: 0,
+        comments: 0,
+        repins: 0,
+        saves: 0
+      },
+      createdAt: Date.now(),
+    })
+    await newUser.save();
+    await this.userModel.updateOne({ _id: newUser._id }, { profileImage: newUser._id });
+    newUser = await this.getUserById(newUser._id);
+    return newUser;
+
   }
 
   async checkMAilExistAndFormat(email) {
