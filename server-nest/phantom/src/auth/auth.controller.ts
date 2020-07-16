@@ -22,7 +22,7 @@ export class AuthController {
       _id: user._id,
     };
     const token = await this.authService.signPayload(payload);
-    return { user, token };
+    return { profileImage: user.profileImage, token };
   }
 
   @Post('/sign_up')
@@ -32,7 +32,7 @@ export class AuthController {
       _id: user._id,
     };
     const token = await this.authService.signPayload(payload);
-    return { user, token };
+    return { profileImage: user.profileImage, token };
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')
@@ -41,7 +41,7 @@ export class AuthController {
     const user = await this.userService.getUserById(req.user._id);
     console.log(user);
     user.password = undefined;
-    return { user: user }
+    return { user }
   }
 
 }
