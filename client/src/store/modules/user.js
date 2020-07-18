@@ -79,7 +79,7 @@ const actions = {
         {},
         {
           headers: {
-            "x-auth-token": `${token}`
+            Authorization: `${token}`
           }
         }
       )

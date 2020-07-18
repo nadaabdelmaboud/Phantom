@@ -37,13 +37,17 @@
           toggle="#password-field"
           class="fa fa-eye-slash field-icon"
           @click="togglePassword"
-        ></i
-        ><br />
+        ></i>
       </div>
+      <input type="checkbox" id="remember-me" />
+      <label for="remember-me">Remember me?</label>
       <center>
-        <button type="submit">Login</button>
+        <button type="submit" id="login">Login</button>
       </center>
     </form>
+    <router-link to="/signup">
+      <p>Create new account? Sign Up</p>
+    </router-link>
   </div>
 </template>
 
@@ -92,10 +96,8 @@ export default {
 input {
   border-radius: 8px;
   border: 2px solid $ligthPaige;
-  padding-left: 8px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
+  padding: 6px 8px;
+  margin: 5px 0;
   outline: none;
   min-width: 300px;
   max-height: 300px;
@@ -115,7 +117,7 @@ input:focus {
 }
 
 .login-form {
-  margin: 10%;
+  margin: 40px auto;
   padding: 5%;
   border: 2px solid $lightBlue;
   border-radius: 40px;
@@ -124,10 +126,8 @@ input:focus {
 }
 
 button {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px 40px;
+  margin: 10px 0;
   background-color: $darkBlue;
   border-radius: 20px;
   border: none;
@@ -149,5 +149,28 @@ h2 {
   margin-bottom: 4px;
   font-weight: bold;
   max-width: 300px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+#remember-me {
+  min-width: auto;
+  margin: 4px 10px 0px 15px;
+}
+
+label {
+  font-weight: bold;
+  font-size: 14px;
 }
 </style>
