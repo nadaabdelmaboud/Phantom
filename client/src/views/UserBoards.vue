@@ -1,12 +1,22 @@
 <template>
   <div class="home">
-    <h1>Boards</h1>
+   <Board v-for="board in boards" :key="board._id"/>
   </div>
 </template>
 
 <script>
+import Board from "../components/Board"
+import {mapGetters} from "vuex"
 export default {
-  name: "UserBoards"
+  name: "UserBoards",
+  components:{
+    Board
+  },
+  computed: {
+    ...mapGetters({
+      boards: "boards/userBoards"
+    }),
+  },
 };
 </script>
 

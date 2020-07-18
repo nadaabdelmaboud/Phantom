@@ -5,7 +5,7 @@
         <div class="boardName" @click="showBoard = !showBoard">
           {{ chosenBoardName }}
         </div>
-         <button v-if="!showBoard" @click="createPin">Save</button>
+        <button v-if="!showBoard" @click="createPin">Save</button>
       </div>
       <input
         style="display:none"
@@ -19,7 +19,7 @@
           class="imageInput doubleBorder"
           :class="{
             dragging: dragover,
-            noImage:(validate&&!imageFile)
+            noImage: validate && !imageFile,
           }"
           v-if="!imageFile"
           @click="$refs.fileInput.click()"
@@ -28,9 +28,11 @@
           @drop.prevent="onFileDragged"
           @dragleave.prevent="dragover = false"
         >
-          <i v-if="validate&&!imageFile" class="fa fa-exclamation-circle"></i>
+          <i v-if="validate && !imageFile" class="fa fa-exclamation-circle"></i>
           <i v-else class="fa fa-arrow-circle-up"></i>
-          <p v-if="validate&&!imageFile" >Image is required to create a pin.</p>
+          <p v-if="validate && !imageFile">
+            Image is required to create a pin.
+          </p>
           <p v-else>Drag and drop or click to upload</p>
           <p>Recommendation: Use high-quality .jpg files less than 32MB</p>
         </div>
@@ -50,8 +52,13 @@
       </div>
 
       <div class="pinData addData">
-        <input type="text" placeholder="Add your title" v-model="title"/>
-        <p v-if="validate ? title=='': false" style="color:rgb(230,0,35);margin-left:20px;" >Image is required to create a pin.</p>
+        <input type="text" placeholder="Add your title" v-model="title" />
+        <p
+          v-if="validate ? title == '' : false"
+          style="color:rgb(230,0,35);margin-left:20px;"
+        >
+          Image is required to create a pin.
+        </p>
         <br />
         <i class="fa fa-user-circle"> Mostafa--</i>
         <br />
@@ -64,16 +71,16 @@
         <input type="text" v-model="searchBoard" placeholder="Search" />
         <p><strong>All Boards </strong></p>
         <ul v-for="(b, i) in boards" :key="i">
-          <li 
-          v-if="b.name.search(new RegExp(searchBoard, 'i')) != -1"
-          @click="chooseBoard(b.name,b._id)"
+          <li
+            v-if="b.name.search(new RegExp(searchBoard, 'i')) != -1"
+            @click="chooseBoard(b.name, b._id)"
           >
             {{ b.name }}
           </li>
         </ul>
         <div class="createBoard" @click="createBoardPopup">
-           <i class="fa fa-plus globalIcons" ></i> 
-           <strong>Create Board</strong>
+          <i class="fa fa-plus globalIcons"></i>
+          <strong>Create Board</strong>
         </div>
       </div>
     </div>
@@ -82,75 +89,32 @@
 
 <style scoped lang="scss">
 @import "../scss/Colors";
+@import "../scss/mixins";
 
 .addPin {
   background-color: white;
 }
 .boards {
-  background-color: $offWhite;
-  border-radius: 16px;
-  width: 350px;
-  position: absolute;
-  z-index: 10;
+  @include optionsList;
   right: 10px;
   top: 90px;
-  box-shadow: 0px 0px 12px 2px #a09f9f;
-  padding: 20px;
   max-height: 400px;
-  overflow-y:auto;
-  p{
-    margin:16px 0;
-  }
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    li {
-      padding: 10px 10px;
-      margin: 4px 0;
-      height: 40px;
-      font-family: Arial, Helvetica, sans-serif;
-      cursor: pointer;
-      transition: background-color 0.5s ease;
-      border-radius: 16px;
-    }
-    li:hover {
-      background-color: $lightPink;
+  overflow-y: auto;
+  .createBoard {
+    background-color: $lightPink;
+    cursor: pointer;
+    height: 48px;
+    padding: 12px 0;
+    margin-bottom: 10px;
+    border-radius: 16px;
+    transition: background-color 0.5s ease;
+    i {
+      margin: 0 10px;
     }
   }
-    input {
-      display: table-cell;
-      background-color: $lightPink;
-      height: 48px;
-      margin-top: 4px;
-      width: 100%;
-      border: none;
-      padding: 10px;
-      border-radius: 40px;
-      transition: background-color 0.5s ease;
-    }
-    input:hover {
-      background-color: $lightPinkHover;
-    }
-    input:focus {
-      background-color: $lightPinkHover;
-      border: $lightBlue 4px solid;
-    }
-    .createBoard{
-       background-color: $lightPink;
-       cursor: pointer;
-       height: 48px;
-       padding: 12px 0;
-       margin-bottom: 10px;
-       border-radius: 16px;
-        transition: background-color 0.5s ease;
-       i{
-         margin: 0 10px;
-       }
-    }
-    .createBoard:hover{
-      background-color: $lightPinkHover;
-    }
+  .createBoard:hover {
+    background-color: $lightPinkHover;
+  }
 }
 @keyframes appear {
   from {
@@ -183,7 +147,7 @@
   button {
     position: absolute;
     right: 30px;
-    top:42px;
+    top: 42px;
     width: 66px;
     height: 48px;
     margin-top: -12px;
@@ -265,8 +229,8 @@
 .noImage {
   border: 2px solid red;
   border-radius: 16px;
-  background-color:rgba(230, 0, 35, 0.03);;
-  color:rgb(230,0,35);
+  background-color: rgba(230, 0, 35, 0.03);
+  color: rgb(230, 0, 35);
 }
 .addData {
   width: 55%;
@@ -308,12 +272,12 @@
 
 <script>
 import ml5 from "ml5";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 
 export default {
   name: "PinBuilder",
   mounted() {
-    this.$store.dispatch("boards/userBoards")
+    this.$store.dispatch("boards/userBoards");
     this.classifier = ml5.imageClassifier(
       this.imageModelURL + "model.json",
       function() {
@@ -328,14 +292,15 @@ export default {
       searchBoard: "",
       showBoard: false,
       imageFile: null,
-      width:"",
-      height:"",
+      width: "",
+      height: "",
       dragover: false,
-      imageModelURL:"https://teachablemachine.withgoogle.com/models/VEQ3gk-V4/",
+      imageModelURL:
+        "https://teachablemachine.withgoogle.com/models/VEQ3gk-V4/",
       classifier: "",
-      validate:false,
+      validate: false,
       // To store the classification
-      label: ""
+      label: "",
     };
   },
   methods: {
@@ -345,7 +310,7 @@ export default {
       this.imageFile = event.dataTransfer.files[0];
       if (this.imageFile) {
         const reader = new FileReader();
-         var image= new Image;
+        var image = new Image();
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
           img.setAttribute("src", this.result);
@@ -353,19 +318,19 @@ export default {
           image.setAttribute("src", this.result);
         });
         reader.readAsDataURL(this.imageFile);
-           setTimeout(()=>{
-           this.classifier.classify(this.$refs.image, this.gotResult);   
-           this.width = image.width;
-           this.height = image.height;   
-           console.log(this.height,"   ",this.width)
-        },500)
+        setTimeout(() => {
+          this.classifier.classify(this.$refs.image, this.gotResult);
+          this.width = image.width;
+          this.height = image.height;
+          console.log(this.height, "   ", this.width);
+        }, 500);
       }
     },
     onFileSelected: function(event) {
       this.imageFile = event.target.files[0];
       if (this.imageFile) {
         const reader = new FileReader();
-        var image= new Image;
+        var image = new Image();
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
           img.setAttribute("src", this.result);
@@ -373,13 +338,13 @@ export default {
           image.setAttribute("src", this.result);
         });
         reader.readAsDataURL(this.imageFile);
-      
-        setTimeout(()=>{
-           this.classifier.classify(this.$refs.image, this.gotResult);   
-           this.width = image.width;
-           this.height = image.height;   
-           console.log(this.height,"   ",this.width)
-        },500)
+
+        setTimeout(() => {
+          this.classifier.classify(this.$refs.image, this.gotResult);
+          this.width = image.width;
+          this.height = image.height;
+          console.log(this.height, "   ", this.width);
+        }, 500);
       }
     },
     unUpload: function() {
@@ -392,50 +357,46 @@ export default {
     // A function to run when we get any errors and the results
     gotResult(error, results) {
       if (error) {
-        console.error( error);
+        console.error(error);
       } else {
         // The results are in an array ordered by confidence.
-        this.label= results[0];
+        this.label = results[0];
       }
     },
-    createBoardPopup(){
-      this.$store.commit("popUpsState/toggleCreateBoardPopup")
-      this.showBoard= false
+    createBoardPopup() {
+      this.$store.commit("popUpsState/toggleCreateBoardPopup");
+      this.showBoard = false;
     },
-    chooseBoard(name,id){
-      this.showBoard= false;
-      this.$store.commit("boards/chooseBoard",{name,id});
+    chooseBoard(name, id) {
+      this.showBoard = false;
+      this.$store.commit("boards/chooseBoard", { name, id });
     },
-    createPin(){
-      if(this.chosenBoardName == "Select")
-        {
-          this.showBoard= true
-        }
-      else{
-        if(this.title=="" || !this.imageFile)
-          this.validate = true
-        else{
-          console.log("nnn",this.width,"   ",this.height)
-          let pin={
-            title:this.title,
-            board:this.chosenBoardId,
-            imageWidth:this.width,
-            imageHeight:this.height,
-            imageId:this.imageFile
-          }
-          if(this.note != '')
-              pin.note=this.note
-          this.$store.dispatch("pins/createPin",pin)
+    createPin() {
+      if (this.chosenBoardName == "Select") {
+        this.showBoard = true;
+      } else {
+        if (this.title == "" || !this.imageFile) this.validate = true;
+        else {
+          console.log("nnn", this.width, "   ", this.height);
+          let pin = {
+            title: this.title,
+            board: this.chosenBoardId,
+            imageWidth: this.width,
+            imageHeight: this.height,
+            imageId: this.imageFile,
+          };
+          if (this.note != "") pin.note = this.note;
+          this.$store.dispatch("pins/createPin", {pin,label:this.label});
         }
       }
-    }
+    },
   },
-  computed:{
+  computed: {
     ...mapGetters({
-       boards: "boards/userBoards",
-       chosenBoardName:"boards/chosenBoardName",
-       chosenBoardId:"boards/chosenBoardId"
-    })
-  }
+      boards: "boards/userBoards",
+      chosenBoardName: "boards/chosenBoardName",
+      chosenBoardId: "boards/chosenBoardId",
+    }),
+  },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" @click="clear">
     <div class="profileInfo">
       <img
         src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
@@ -31,10 +31,17 @@
         </router-link>
       </div>
       <div class="col-sm-4 col3">
-        <i class="fa fa-plus" aria-hidden="true" style="float:right;"></i>
+        <i class="fa fa-plus" aria-hidden="true" id="create" style="float:right;" @click="showCreate = !showCreate"></i>
         <i class="fa fa-list" aria-hidden="true" style="float:right;"></i>
       </div>
     </div>
+    <div class="create" v-if="showCreate">
+        <p>Create</p>
+        <ul>
+          <li  @click="createBoardPopup">Board</li>
+          <router-link tag="li" to="/PinBuilder">Pin</router-link>
+        </ul>
+      </div>
     <router-view> </router-view>
   </div>
 </template>
@@ -46,7 +53,17 @@ export default {
     return {
       inBoards: true,
       inPins: false,
+      showCreate: false
     };
+  },
+  methods:{
+    clear(event){
+      if(event.target.id != "create")
+       this.showCreate = false;
+    },
+    createBoardPopup() {
+      this.$store.commit("popUpsState/toggleCreateBoardPopup");
+    },
   },
   watch: {
     $route: function() {
@@ -124,5 +141,12 @@ padding: 0 60px;
 .inRoute:hover {
   background-color: $darkBlue;
   color: $lightPink;
+}
+.create{
+  @include optionsList;
+  padding:10px;
+  width:200px;
+  top:200;
+  right: 20px;
 }
 </style>
