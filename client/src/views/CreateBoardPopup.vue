@@ -155,7 +155,6 @@ button{
  cursor: default;
  background-color:darkgray;
  color: rgb(87, 87, 87);
-
 }
 
 </style>

@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-   <Board v-for="board in boards" :key="board._id"/>
+    <div class="row m-0">
+   <Board v-for="board in boards" class="col-sm-3"
+   :key="board._id"
+   :boardName="board.name"
+   :pinsImages="board.pins"
+   />
+   </div>
   </div>
 </template>
 
@@ -9,6 +15,9 @@ import Board from "../components/Board"
 import {mapGetters} from "vuex"
 export default {
   name: "UserBoards",
+  mounted() {
+    this.$store.dispatch("boards/userBoards");
+  },
   components:{
     Board
   },
@@ -21,5 +30,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.home{
+  padding: 2%;
+}
 
 </style>

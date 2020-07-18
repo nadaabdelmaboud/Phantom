@@ -106,9 +106,12 @@ h6 {
   font-size: 16px;
 }
 .stickyBar {
-  height: 48px;
+  background-color: $offWhite;
+  height: 68px;
   position: sticky;
   top: 80px;
+  z-index: 10;
+  padding: 6px 0;
 }
 i {
   height: 48px;
@@ -147,7 +150,7 @@ padding: 0 calc((33% - 151px)/2);
   @include optionsList;
   padding:10px;
   width:200px;
-  top:200;
-  right: 20px;
+ // top:200;
+  right: 30px;
 }
 </style>
