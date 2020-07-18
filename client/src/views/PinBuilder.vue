@@ -300,7 +300,7 @@ export default {
       classifier: "",
       validate: false,
       // To store the classification
-      label: ""
+      label: "",
     };
   },
   methods: {
@@ -361,7 +361,7 @@ export default {
         console.error(error);
       } else {
         // The results are in an array ordered by confidence.
-        this.label = results[0];
+        this.label = results[0].label;
       }
     },
     createBoardPopup() {
@@ -387,7 +387,7 @@ export default {
             imageId: this.imageFile,
           };
           if (this.note != "") pin.note = this.note;
-          this.$store.dispatch("pins/createPin", {pin,label:this.label});
+          this.$store.dispatch("pins/createPin", { pin, label: this.label });
         }
       }
     },
