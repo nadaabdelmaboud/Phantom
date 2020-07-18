@@ -8,6 +8,9 @@ import PinBuilder from "../views/PinBuilder.vue";
 import PostPage from "../views/PostPage.vue";
 import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
 import LoginView from "../views/LoginView.vue";
+import UserProfile from "../views/UserProfile";
+import UserBoards from "../views/UserBoards";
+import UserPins from "../views/UserPins";
 
 Vue.use(VueRouter);
 
@@ -35,6 +38,23 @@ const routes = [
         path: "PostPage",
         name: "PostPage",
         component: PostPage
+      },
+      {
+        path: "/UserProfile",
+        name: "UserProfile",
+        component: UserProfile,
+        children:[
+          {
+            path: "Boards",
+            name: "Boards",
+            component: UserBoards,
+          },
+          {
+          path: "Pins",
+          name: "Pins",
+          component: UserPins,
+          }
+        ]
       }
     ]
   },

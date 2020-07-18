@@ -23,7 +23,7 @@
   height: 48px;
   width: 48px;
   position: absolute;
-  left: 94%;
+  left: 92%;
   font-size: 24px;
   color:$darkBlue;
   border-radius: 50%;
@@ -31,6 +31,7 @@
   text-align: center;
   box-shadow: 4px 4px 4px #888888;
   z-index: 2;
+    transition: background-color 0.5s ease;
 }
 .globalIcons:hover{
 background-color: $lightPink;
