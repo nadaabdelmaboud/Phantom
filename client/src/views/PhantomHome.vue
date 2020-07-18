@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <CreateBoardPopup v-if="CreateBoard"/>
+    <div>
     <HomeNavigationBar />
     <router-view class="mainComponent" />
     <i class="fa fa-comment globalIcons"></i>
@@ -9,6 +11,7 @@
       to="/PinBuilder"
     ></router-link>
     <i class="fa fa-question-circle globalIcons"></i>
+    </div>
   </div>
 </template>
 
@@ -19,23 +22,34 @@
   min-height: calc(100vh);
   padding-top: 80px;
 }
-.home {
-  .globalIcons {
-    height: 48px;
-    width: 48px;
-    position: absolute;
-    left: 94%;
-    font-size: 24px;
-    color: $darkBlue;
-    border-radius: 50%;
-    padding: 12px;
-    text-align: center;
-    box-shadow: 4px 4px 4px #888888;
-    z-index: 2;
-  }
-  .globalIcons:hover {
-    background-color: $lightPink;
-  }
+.home{
+.globalIcons{
+  height: 48px;
+  width: 48px;
+  position: absolute;
+  left: 92%;
+  font-size: 24px;
+  color:$darkBlue;
+  border-radius: 50%;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 4px 4px 4px #888888;
+  z-index: 2;
+    transition: background-color 0.5s ease;
+}
+.globalIcons:hover{
+background-color: $lightPink;
+}
+
+.globalIcons:nth-child(3){
+ bottom: 170px;
+}
+.globalIcons:nth-child(4){
+  bottom: 110px;
+}
+.globalIcons:nth-child(5){
+  bottom: 50px;
+}
 
   .globalIcons:nth-child(3) {
     top: 76%;
@@ -50,10 +64,18 @@
 </style>
 <script>
 import HomeNavigationBar from "../components/HomeNavigationBar";
+import CreateBoardPopup from "../views/CreateBoardPopup";
+import {mapState} from "vuex"
 export default {
   name: "PhantomHome",
   components: {
-    HomeNavigationBar
+    HomeNavigationBar,
+    CreateBoardPopup
+  },
+  computed:{
+      ...mapState({
+      CreateBoard: state => state.popUpsState.createBoardPopup
+    }),
   }
 };
 </script>
