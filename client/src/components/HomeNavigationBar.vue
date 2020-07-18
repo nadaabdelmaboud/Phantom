@@ -18,11 +18,12 @@
     <input class="searchInput" placeholder=" Search..." />
     <!-- </div> -->
     <div class="icons">
+
       <i class="fa fa-bell"></i>
     </div>
-    <div class="icons">
-      <i class="fa fa-user-circle"></i>
-    </div>
+    <router-link tag="div" class="icons" to="/UserProfile/Boards">
+      <i class="fa fa-user-circle" ></i> 
+    </router-link>
     <div class="icons">
       <i class="fa fa-angle-down"></i>
     </div>
@@ -34,10 +35,16 @@
 @import "../scss/Mixins";
 
 .navigationBar {
+  position: fixed;
+  top:0;
+  right: 0;
+  left:0;
+ // bottom: 80px;
   height: 80px;
-  width: 100%;
-  padding: 16px;
+  width: 100vw;
+  padding: 16px 0;
   background-color: $offWhite;
+  z-index: 1;
 }
 .buttons {
   @include horizontalDivs;
@@ -99,9 +106,14 @@ export default {
       if (this.$route.path == "/") {
         this.inFollowing = false;
         this.inHome = true;
-      } else if (this.$route.path == "/following") {
+      } 
+      else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
+      }
+      else{
+         this.inHome = false;
+         this.inFollowing = false;
       }
     }
   }

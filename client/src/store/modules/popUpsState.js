@@ -1,7 +1,8 @@
 const state = {
   welcomePopUp: false,
   genderPopUp: false,
-  countryPopUp: false
+  countryPopUp: false,
+  createBoardPopup:false
 };
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   toggleCountryPopUp(state) {
     state.countryPopUp = !state.countryPopUp;
+  },
+  toggleCreateBoardPopup(state) {
+    state.createBoardPopup = !state.createBoardPopup;
   }
 };
 export default {

@@ -103,11 +103,12 @@ const actions = {
         commit("setLogin", true);
       })
       .catch(error => {
-        commit("setLogin", false);
-        console.log(error.response);
-        if (error.response.data.error == " password is not correct")
-          commit("setErrorMessage", "Password is not correct");
-        else commit("setErrorMessage", "Email is not correct");
+        console.log(error);
+        // commit("setLogin", false);
+        // console.log(error.response);
+        // if (error.response.data.error == " password is not correct")
+        //   commit("setErrorMessage", "Password is not correct");
+        // else commit("setErrorMessage", "Email is not correct");
       });
   }
 };
