@@ -8,11 +8,11 @@
       <h6>16 following</h6>
     </div>
     <div class="stickyBar row  m-0">
-      <div class="col-sm-4 col1">
+      <div class="col-sm-4 col-4 col1">
         <i class="fa fa-pencil" aria-hidden="true"></i>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
-      <div class="col-sm-4 col2">
+      <div class="col-sm-4 col-4 col2">
         <router-link
           class="buttons"
           to="/UserProfile/Boards"
@@ -30,7 +30,7 @@
           Pins
         </router-link>
       </div>
-      <div class="col-sm-4 col3">
+      <div class="col-sm-4 col-4 col3">
         <i class="fa fa-plus" aria-hidden="true" id="create" style="float:right;" @click="showCreate = !showCreate"></i>
         <i class="fa fa-list" aria-hidden="true" style="float:right;"></i>
       </div>
@@ -125,7 +125,7 @@ i:hover {
   background-color: $lightPink;
 }
 .col2{
-padding: 0 60px;
+padding: 0 calc((33% - 151px)/2);
 }
 .buttons {
   @include horizontalDivs;
@@ -133,6 +133,7 @@ padding: 0 60px;
   font-size: 16px;
   font-weight: 700;
   padding: 12px;
+  margin: 0 5px;
 }
 .inRoute {
   background-color: $darkBlue;
