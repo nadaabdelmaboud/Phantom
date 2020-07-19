@@ -2,7 +2,7 @@ const state = {
   welcomePopUp: false,
   genderPopUp: false,
   countryPopUp: false,
-  createBoardPopup:false
+  createBoardPopup: false
 };
 
 const mutations = {

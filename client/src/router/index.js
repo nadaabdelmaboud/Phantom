@@ -11,7 +11,8 @@ import LoginView from "../views/LoginView.vue";
 import UserProfile from "../views/UserProfile";
 import UserBoards from "../views/UserBoards";
 import UserPins from "../views/UserPins";
-
+import EditProfile from "../views/EditProfile";
+import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,16 +45,37 @@ const routes = [
         path: "/UserProfile",
         name: "UserProfile",
         component: UserProfile,
-        children:[
+        children: [
           {
             path: "Boards",
             name: "Boards",
-            component: UserBoards,
+            component: UserBoards
           },
           {
-          path: "Pins",
-          name: "Pins",
-          component: UserPins,
+            path: "Pins",
+            name: "Pins",
+            component: UserPins
+          }
+        ]
+      },
+      {
+        path: "/settings",
+        name: "Settings",
+        redirect: "/settings/edit-profile",
+        component: EditProfile,
+        children: [
+          {
+            path: "/settings/edit-profile",
+            name: "EditProfile",
+            component: EditProfileSettings
+          },
+          {
+            path: "/settings/account-settings",
+            name: "AccountSettings"
+          },
+          {
+            path: "/settings/notifications",
+            name: "Notifications"
           }
         ]
       }

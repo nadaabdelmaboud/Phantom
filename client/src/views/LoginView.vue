@@ -26,21 +26,9 @@
           placeholder="Enter Your Password"
           required
         />
-        <i
-          v-if="passwordType"
-          toggle="#password-field"
-          class="fa fa-fw fa-eye field-icon"
-          @click="togglePassword"
-        ></i>
-        <i
-          v-else
-          toggle="#password-field"
-          class="fa fa-eye-slash field-icon"
-          @click="togglePassword"
-        ></i>
       </div>
-      <input type="checkbox" id="remember-me" />
-      <label for="remember-me">Remember me?</label>
+      <input type="checkbox" id="show-password" @click="togglePassword" />
+      <label for="show-password">Show Password</label>
       <center>
         <button type="submit" id="login">Login</button>
       </center>
@@ -164,7 +152,7 @@ a:hover {
   color: black;
 }
 
-#remember-me {
+#show-password {
   min-width: auto;
   margin: 4px 10px 0px 15px;
 }

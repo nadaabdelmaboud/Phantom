@@ -31,17 +31,23 @@
         </router-link>
       </div>
       <div class="col-sm-4 col3">
-        <i class="fa fa-plus" aria-hidden="true" id="create" style="float:right;" @click="showCreate = !showCreate"></i>
+        <i
+          class="fa fa-plus"
+          aria-hidden="true"
+          id="create"
+          style="float:right;"
+          @click="showCreate = !showCreate"
+        ></i>
         <i class="fa fa-list" aria-hidden="true" style="float:right;"></i>
       </div>
     </div>
     <div class="create" v-if="showCreate">
-        <p>Create</p>
-        <ul>
-          <li  @click="createBoardPopup">Board</li>
-          <router-link tag="li" to="/PinBuilder">Pin</router-link>
-        </ul>
-      </div>
+      <p>Create</p>
+      <ul>
+        <li @click="createBoardPopup">Board</li>
+        <router-link tag="li" to="/PinBuilder">Pin</router-link>
+      </ul>
+    </div>
     <router-view> </router-view>
   </div>
 </template>
@@ -56,14 +62,13 @@ export default {
       showCreate: false
     };
   },
-  methods:{
-    clear(event){
-      if(event.target.id != "create")
-       this.showCreate = false;
+  methods: {
+    clear(event) {
+      if (event.target.id != "create") this.showCreate = false;
     },
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
-    },
+    }
   },
   watch: {
     $route: function() {
@@ -77,8 +82,8 @@ export default {
         this.inBoards = false;
         this.inPins = false;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -124,8 +129,8 @@ i {
 i:hover {
   background-color: $lightPink;
 }
-.col2{
-padding: 0 60px;
+.col2 {
+  padding: 0 60px;
 }
 .buttons {
   @include horizontalDivs;
@@ -142,11 +147,11 @@ padding: 0 60px;
   background-color: $darkBlue;
   color: $lightPink;
 }
-.create{
+.create {
   @include optionsList;
-  padding:10px;
-  width:200px;
-  top:200;
+  padding: 10px;
+  width: 200px;
+  top: 200;
   right: 20px;
 }
 </style>
