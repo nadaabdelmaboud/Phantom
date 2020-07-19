@@ -32,13 +32,11 @@ export class ImagesService {
       return false;
     }
   }
-  async findInfo(id: string): Promise<FileInfoVm> {
+  async findInfo(id: string) {
     const result = await this.fileModel
-      .findById(id)
-      .catch(err => {
-        throw new HttpException('File not found', HttpStatus.NOT_FOUND);
-      })
-      .then(result => result);
+      .findById(id);
+      if(!result||result==undefined){return;}
+      
     return {
       filename: result.filename,
       length: result.length,

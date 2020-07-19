@@ -22,6 +22,8 @@ export const User = new Schema({
   boards: [
     {
       boardId: mongoose.Schema.Types.ObjectId,
+      name: String,
+      createdAt: Date,
       isJoined: Boolean,
       joiners: Array(mongoose.Schema.Types.ObjectId),
       followers: Array(mongoose.Schema.Types.ObjectId),

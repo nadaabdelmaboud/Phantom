@@ -78,8 +78,9 @@ export class ImagesController {
     const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.readStream(id);
     if (!filestream) {
-      const imgPath = path.join(__dirname, '/../static/default.jpg');
-      return res.sendFile(imgPath);
+      var filePath = "./default.jpg"
+      var resolvedPath =await path.resolve(filePath);
+      return res.sendFile(resolvedPath);
     }
     res.header('Content-Type', file.contentType);
     return filestream.pipe(res);

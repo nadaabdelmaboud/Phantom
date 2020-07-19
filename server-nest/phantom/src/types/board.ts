@@ -3,6 +3,9 @@ import * as mongoose from 'mongoose';
 export interface board extends Document {
   url: String;
   name: String;
+  startDate: Date;
+  endDate: Date;
+  status: String;
   creator: {
     firstName: String;
     lastName: String;
