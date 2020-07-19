@@ -5,6 +5,10 @@ import { MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
 import { FileInfoVm } from './file-info-vm.model';
 import { response } from 'express';
+import { AxiosResponse } from 'axios';
+import { Observable } from 'rxjs';
+import { fstat } from 'fs';
+import { error } from 'console';
 
 @Injectable()
 export class ImagesService {
@@ -17,7 +21,17 @@ export class ImagesService {
   async readStream(id: string): Promise<GridFSBucketReadStream> {
     return await this.fileModel.readFileStream(id);
   }
-
+  async checkImage(id: string): Promise<Boolean> {
+    let isFound = true;
+    let im = await this.fileModel.findById(id).catch(err => {
+      isFound = false;
+    });
+    if (isFound) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   async findInfo(id: string): Promise<FileInfoVm> {
     const result = await this.fileModel
       .findById(id)
