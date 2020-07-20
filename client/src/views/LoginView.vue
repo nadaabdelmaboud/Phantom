@@ -75,6 +75,9 @@ export default {
     loginState: function() {
       if (this.loginState) this.$router.push("/");
     }
+  },
+  created: function() {
+    this.$store.commit("user/setErrorMessage", null);
   }
 };
 </script>

@@ -172,6 +172,9 @@ export default {
     signUpState: function() {
       if (this.signUpState) this.$router.push("confirm");
     }
+  },
+  created: function() {
+    this.$store.commit("user/setErrorMessage", null);
   }
 };
 </script>

@@ -79,7 +79,7 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: `${token}`
+            Authorization: `Bearer ${token}`
           }
         }
       )
@@ -99,16 +99,17 @@ const actions = {
     axios
       .post("login", data)
       .then(response => {
-        localStorage.setItem("userToken", response.data.token);
+        let token = response.data.token;
+        localStorage.setItem("userToken", token.slice(7, token.length));
         commit("setLogin", true);
       })
       .catch(error => {
         console.log(error);
-        // commit("setLogin", false);
-        // console.log(error.response);
-        // if (error.response.data.error == " password is not correct")
-        //   commit("setErrorMessage", "Password is not correct");
-        // else commit("setErrorMessage", "Email is not correct");
+        commit("setLogin", false);
+        console.log(error.response);
+        if (error.response.data.message == "password is not correct")
+          commit("setErrorMessage", "Password is not correct");
+        else commit("setErrorMessage", "Email is not correct");
       });
   }
 };
