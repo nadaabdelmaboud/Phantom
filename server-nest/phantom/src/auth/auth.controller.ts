@@ -23,7 +23,6 @@ export class AuthController {
 
   @Post('/login')
   async login(@Body() userDTO: LoginDTO) {
-    await this.Email.sendEmail('ayasabohadima@gmail.com', 'trrertd', 'confirm', 'Aya')
     const user = await this.userService.findByLogin(userDTO);
     if (!user) throw new Error('topic not found');
     const payload: Payload = {
@@ -35,12 +34,9 @@ export class AuthController {
 
   @Post('/sign_up')
   async sign_up(@Body() userDTO: RegisterDTO) {
-    const user = await this.userService.createUser(userDTO);
-    const payload: Payload = {
-      _id: user._id,
-    };
-    const token = await this.authService.signPayload(payload);
-    return { profileImage: user.profileImage, token };
+    const user = await this.userService.checkCreateData(userDTO);
+    const token = await this.authService.signPayload(userDTO);
+    await this.Email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/me')

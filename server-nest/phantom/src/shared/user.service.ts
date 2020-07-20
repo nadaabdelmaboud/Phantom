@@ -15,7 +15,7 @@ import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<user>) {}
+  constructor(@InjectModel('User') private readonly userModel: Model<user>) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -36,8 +36,7 @@ export class UserService {
     if (await bcrypt.compare(LoginDTO.password, user.password)) return user;
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
   }
-
-  async createUser(RegisterDTO: RegisterDTO): Promise<any> {
+  async checkCreateData(RegisterDTO: RegisterDTO) {
     const shcema = Joi.object({
       email: Joi.string()
         .trim()
@@ -57,9 +56,12 @@ export class UserService {
     });
     const body = RegisterDTO;
     const validate = shcema.validate(body);
-    console.log(validate);
     if (validate.error)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+  }
+
+  async createUser(RegisterDTO: RegisterDTO): Promise<any> {
+    await this.checkCreateData(RegisterDTO);
     if (await this.checkMAilExistAndFormat(RegisterDTO.email))
       throw new HttpException(
         '"email" should not have acount',
