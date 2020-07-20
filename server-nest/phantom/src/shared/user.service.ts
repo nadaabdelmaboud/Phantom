@@ -58,15 +58,12 @@ export class UserService {
     const validate = shcema.validate(body);
     if (validate.error)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    if (await this.checkMAilExistAndFormat(RegisterDTO.email))
+      throw new HttpException('"email" should not have acount', HttpStatus.FORBIDDEN,);
   }
 
   async createUser(RegisterDTO: RegisterDTO): Promise<any> {
     await this.checkCreateData(RegisterDTO);
-    if (await this.checkMAilExistAndFormat(RegisterDTO.email))
-      throw new HttpException(
-        '"email" should not have acount',
-        HttpStatus.FORBIDDEN,
-      );
     const salt = await bcrypt.genSalt(10);
     let hash = await bcrypt.hash(RegisterDTO.password, salt);
     var newUser = new this.userModel({
@@ -104,21 +101,11 @@ export class UserService {
   }
 
   async checkMAilExistAndFormat(email) {
-    try {
-      const body = { email: email };
-      const shcema = Joi.object({
-        email: Joi.string()
-          .trim()
-          .email()
-          .required(),
-      });
-      const validate = shcema.validate(body);
-      if (validate.error != null) return -1;
-      const user = await this.userModel.findOne({ email: email });
-      console.log(user);
-      return user;
-    } catch (ex) {
-      return 0;
-    }
+    const body = { email: email };
+    const shcema = Joi.object({ email: Joi.string().trim().email().required() });
+    const validate = shcema.validate(body);
+    if (validate.error != null) throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    const user = await this.userModel.findOne({ email: email });
+    return user;
   }
 }
