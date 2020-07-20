@@ -31,6 +31,7 @@ export class AuthController {
     const token = await this.authService.signPayload(userDTO);
     await this.Email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
   }
+
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Post('/sign_up/confirm')
   async confirm(@nestCommon.Request() req) {
@@ -42,11 +43,22 @@ export class AuthController {
     const token = await this.authService.signPayload(payload);
     return { profileImage: user.profileImage, token };
   }
+
   @nestCommon.Get('/checkEmail')
   async checkEmail(@nestCommon.Query('email') email: string) {
     const user = await this.userService.checkMAilExistAndFormat(email);
-    console.log(user);
     if (user) throw new nestCommon.HttpException('this user is exists', nestCommon.HttpStatus.FORBIDDEN);
+  }
+  @nestCommon.Post('/forget-password')
+  async forgetPassword(@nestCommon.Body() body) {
+    const user = await this.userService.checkMAilExistAndFormat(body.email);
+    if (!user) throw new nestCommon.HttpException('not user by this email', nestCommon.HttpStatus.FORBIDDEN);
+    const payload: Payload = {
+      _id: user._id,
+      email: user.email
+    };
+    const token = await this.authService.signPayload(payload);
+    await this.Email.sendEmail(payload.email, token, 'forget Password', user.firstName)
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
@@ -54,7 +66,6 @@ export class AuthController {
   async me(@nestCommon.Request() req) {
     /* const { password, ...result } = req.user._doc;*/
     const user = await this.userService.getUserById(req.user._id);
-    console.log(user);
     user.password = undefined;
     return { user };
   }
