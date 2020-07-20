@@ -12,15 +12,18 @@ import { Payload } from '../types/payload';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
 import { AuthService } from './auth.service';
+import { Email } from '../shared/send-email.service'
 @Controller()
 export class AuthController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-  ) {}
+    private Email: Email,
+  ) { }
 
   @Post('/login')
   async login(@Body() userDTO: LoginDTO) {
+    await this.Email.sendEmail('ayasabohadima@gmail.com', 'trrertd', 'confirm', 'Aya')
     const user = await this.userService.findByLogin(userDTO);
     if (!user) throw new Error('topic not found');
     const payload: Payload = {
