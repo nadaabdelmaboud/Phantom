@@ -115,6 +115,7 @@ export class UserService {
       const validate = shcema.validate(body);
       if (validate.error != null) return -1;
       const user = await this.userModel.findOne({ email: email });
+      console.log(user);
       return user;
     } catch (ex) {
       return 0;

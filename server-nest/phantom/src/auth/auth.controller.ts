@@ -39,6 +39,18 @@ export class AuthController {
     await this.Email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
   }
   @UseGuards(AuthGuard('jwt'))
+  @Post('/sign_up/confirm')
+  async confirm(@Request() req) {
+    console.log(req.user)
+    const user = await this.userService.createUser(req.user);
+    const payload: Payload = {
+      _id: user._id,
+    };
+    const token = await this.authService.signPayload(payload);
+    return { profileImage: user.profileImage, token };
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Get('/me')
   async me(@Request() req) {
     /* const { password, ...result } = req.user._doc;*/
