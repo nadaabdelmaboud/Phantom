@@ -13,7 +13,8 @@ const state = {
   validPassword: null,
   errorMessage: null,
   emailConfirm: false,
-  loginState: null
+  loginState: null,
+  sendEmailStatus: null
 };
 
 const mutations = {
@@ -54,6 +55,9 @@ const mutations = {
   },
   setLogin(state, status) {
     state.loginState = status;
+  },
+  setSendEmail(state, status) {
+    state.sendEmailStatus = status;
   }
 };
 
@@ -96,9 +100,6 @@ const actions = {
       });
   },
   login({ commit }, data) {
-    axios.defaults.headers.common["Vary"] = "Origin";
-    axios.defaults.headers.common["Access-Control-Allow-Origin"] =
-      "origin-list";
     axios
       .post("login", data)
       .then(response => {
@@ -107,12 +108,22 @@ const actions = {
         commit("setLogin", true);
       })
       .catch(error => {
-        console.log(error);
         commit("setLogin", false);
-        console.log(error.response);
         if (error.response.data.message == "password is not correct")
           commit("setErrorMessage", "Password is not correct");
         else commit("setErrorMessage", "Email is not correct");
+      });
+  },
+  forgetPassword({ commit }, email) {
+    axios
+      .post("/forget-password", {'email': email })
+      .then(() => {
+        commit("setSendEmail", true);
+      })
+      .catch(error => {
+        commit("setSendEmail", false);
+        if (error.response.data.message == "not user by this email")
+          commit("setErrorMessage", "This Email is not correct");
       });
   }
 };

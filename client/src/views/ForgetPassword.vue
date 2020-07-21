@@ -14,14 +14,42 @@
       </p>
       <center>
         <input type="email" v-model="email" placeholder="Your Email" /><br />
-        <button>Send</button>
+        <p v-if="emptyField" style="color:red;">Please enter this field</p>
+        <p v-if="!sendState" style="color:red;">{{ errorMessage }}</p>
+        <button @click="sendEmail">Send</button>
       </center>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data: function() {
+    return {
+      email: null,
+      emptyField: false
+    };
+  },
+  methods: {
+    sendEmail: function() {
+      if (this.email) {
+        this.$store.dispatch("user/forgetPassword", this.email);
+        this.emptyField = false;
+      } else this.emptyField = true;
+    }
+  },
+  computed: {
+    sendState: function() {
+      return this.$store.state.user.sendEmailStatus;
+    },
+    errorMessage: function() {
+      return this.$store.state.user.errorMessage;
+    }
+  },
+  created: function() {
+    this.$store.commit("user/setErrorMessage", null);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -53,7 +81,8 @@ input:focus {
   max-height: 300px;
 }
 
-button {
+button,
+button:focus {
   padding: 4px 40px;
   margin: 10px 0;
   background-color: $darkBlue;
@@ -62,6 +91,7 @@ button {
   color: $offWhite;
   text-decoration: none;
   font-size: 18px;
+  outline: none;
 }
 
 i {
