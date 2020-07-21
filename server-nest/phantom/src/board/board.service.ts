@@ -149,22 +149,48 @@ export class BoardService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let allBoards = await this.boardModel.find({});
-    console.log(allBoards);
     let retBoards = [];
     for (var i = 0; i < user.boards.length; i++) {
-      for (var j = 0; j < allBoards.length; j++) {
-        if (String(user.boards[i].boardId) == String(allBoards[j]._id)) {
-          retBoards.push(allBoards[j]);
+      let board = await this.boardModel.findById(user.boards[i].boardId);
+      if (board) {
+        retBoards.push(board);
+      }
+    }
+    return retBoards;
+  }
+  async getSomeUserBoards(userId, boardUserId) {
+    if (
+      (await this.ValidationService.checkMongooseID([userId, boardUserId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) return false;
+    let boardUser = await this.UserService.getUserById(boardUserId);
+    if (!boardUser) return false;
+    let retBoards = [];
+    for (var i = 0; i < boardUser.boards.length; i++) {
+      let board = await this.boardModel.findById(boardUser.boards[i].boardId);
+      if (!board) continue;
+      if (board.status && board.status == 'public') {
+        retBoards.push(board);
+        continue;
+      } else {
+        if (await this.authorizedBoard(board, userId)) {
+          retBoards.push(board);
+          continue;
         }
       }
     }
     return retBoards;
   }
-
   async authorizedBoard(board, userId) {
     if (!board) return false;
     if (String(board.creator.id) == String(userId)) return true;
+    if (!board.collaborators) {
+      board.collaborators = [];
+      await board.save();
+    }
     for (var i = 0; i < board.collaborators.length; i++) {
       if (String(board.collaborators[i] == userId)) {
         return true;
@@ -192,6 +218,10 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
+    let creator = await this.UserService.getUserById(board.creator.id);
+    if (!creator) {
+      throw new BadRequestException('no board creator found');
+    }
     if (!(await this.authorizedBoard(board, userId))) {
       throw new UnauthorizedException(
         'this user is unauthorized to edit this board',
@@ -199,10 +229,6 @@ export class BoardService {
     }
     if (editBoardDto.name) {
       board.name = editBoardDto.name;
-      let creator = await this.UserService.getUserById(board.creator.id);
-      if (!creator) {
-        throw new BadRequestException('no board creator found');
-      }
 
       for (var i = 0; i < creator.boards.length; i++) {
         if (String(boardId) == String(creator.boards[i].boardId)) {
@@ -249,6 +275,13 @@ export class BoardService {
         if (!board.collaborators) board.collaborators = [];
         let id = mongoose.Types.ObjectId(collaboratores[i]);
         board.collaborators.push(id);
+        for (var i = 0; i < creator.boards.length; i++) {
+          if (String(boardId) == String(creator.boards[i].boardId)) {
+            creator.boards[i].joiners.push(id);
+            await creator.save();
+            break;
+          }
+        }
       }
     }
     await board.save();

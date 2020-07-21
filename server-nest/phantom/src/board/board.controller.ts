@@ -17,7 +17,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
 import { editBoardDto } from './dto/editBoard.dto';
-@UseFilters(new HttpExceptionFilter())
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -51,6 +50,17 @@ export class BoardController {
   async getCurrentUserBoards(@Request() req) {
     let userId = req.user._id;
     let boards = await this.BoardService.getCurrentUserBoards(userId);
+    if (boards && boards.length != 0) {
+      return boards;
+    } else {
+      throw new NotFoundException({ message: 'no boards' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/users/:id/boards')
+  async getSomeUserBoards(@Request() req, @Param('id') id: string) {
+    let userId = req.user._id;
+    let boards = await this.BoardService.getSomeUserBoards(userId, id);
     if (boards && boards.length != 0) {
       return boards;
     } else {
