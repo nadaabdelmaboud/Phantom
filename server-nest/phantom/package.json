@@ -33,6 +33,7 @@
     "@nestjs/swagger": "^4.5.12",
     "@nestjs/websockets": "^7.3.2",
     "@types/multer-gridfs-storage": "^4.0.1",
+    "@types/nodemailer": "^6.4.0",
     "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
     "dotenv": "^8.2.0",

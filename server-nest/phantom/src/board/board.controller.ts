@@ -16,8 +16,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
-import { stat } from 'fs';
-
+import { editBoardDto } from './dto/editBoard.dto';
+@UseFilters(new HttpExceptionFilter())
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -98,6 +98,26 @@ export class BoardController {
       return boards;
     } else {
       throw new NotFoundException({ message: 'no boards' });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/edit/:boardId')
+  async editBoard(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body() editBoardDto: editBoardDto,
+  ) {
+    let userId = req.user._id;
+    let board = await this.BoardService.editBoard(
+      boardId,
+      userId,
+      editBoardDto,
+    );
+    if (board) {
+      return board;
+    } else {
+      throw new NotAcceptableException("board couldn't be updated");
     }
   }
 }
