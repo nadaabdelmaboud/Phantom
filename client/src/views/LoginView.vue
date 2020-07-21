@@ -33,6 +33,9 @@
         <button type="submit" id="login">Login</button>
       </center>
     </form>
+    <router-link to="/password-reset">
+      <p>Forget your password?</p>
+    </router-link>
     <router-link to="/signup">
       <p>Create new account? Sign Up</p>
     </router-link>

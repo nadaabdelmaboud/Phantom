@@ -14,6 +14,7 @@ import UserPins from "../views/UserPins";
 import EditProfile from "../views/EditProfile";
 import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
 import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
+import ForgetPassword from "../views/ForgetPassword.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -102,6 +103,11 @@ const routes = [
     path: "/email-confirm",
     name: "EmailConfirm",
     component: EmailConfirm
+  },
+  {
+    path: "/password-reset",
+    name: "ForgetPassword",
+    component: ForgetPassword
   }
 ];
 
