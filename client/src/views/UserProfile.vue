@@ -8,11 +8,11 @@
       <h6>16 following</h6>
     </div>
     <div class="stickyBar row  m-0">
-      <div class="col-sm-4 col1">
+      <div class="col-sm-4 col-4 col1">
         <i class="fa fa-pencil" aria-hidden="true"></i>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
-      <div class="col-sm-4 col2">
+      <div class="col-sm-4 col-4 col2">
         <router-link
           class="buttons"
           to="/UserProfile/Boards"
@@ -138,6 +138,7 @@ i:hover {
   font-size: 16px;
   font-weight: 700;
   padding: 12px;
+  margin: 0 5px;
 }
 .inRoute {
   background-color: $darkBlue;

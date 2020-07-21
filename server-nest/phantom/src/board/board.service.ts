@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { board } from '../types/board';
 import { UserService } from 'src/shared/user.service';
 import { pin } from 'src/types/pin';
 import { ValidationService } from 'src/shared/validation.service';
+import { start } from 'repl';
 @Injectable()
 export class BoardService {
   constructor(
@@ -36,12 +37,21 @@ export class BoardService {
     await board.save();
     return true;
   }
-  async createBoard(name, userId) {
+  async createBoard(
+    name: string,
+    startDate: Date,
+    endDate: Date,
+    status: string,
+    userId: string,
+  ) {
     let user = await this.UserService.getUserById(userId);
     if (!user) return 0;
     let board = new this.boardModel({
       name: name,
       pins: [],
+      startDate: startDate,
+      endDate: endDate,
+      status: status,
       createdAt: Date.now(),
       counts: {
         followers: 0,
@@ -54,9 +64,57 @@ export class BoardService {
         id: userId,
       },
     });
-    await board.save();
+    await board.save().catch(err => {
+      console.log(err);
+    });
     await this.addBoardtoUser(userId, board._id);
     return board;
+  }
+  async sortBoardsAtoZ(userId): Promise<Array<object>> {
+    let user = await this.UserService.getUserById(userId);
+
+    await user.boards.sort((a, b) => a.name.localeCompare(b.name.toString()));
+    await user.save();
+    return user.boards;
+  }
+
+  async sortBoardsDate(userId): Promise<Array<object>> {
+    let user = await this.UserService.getUserById(userId);
+
+    await user.boards.sort(function(a, b) {
+      if (a.createdAt < b.createdAt) {
+        return -1;
+      }
+      if (a.createdAt > b.createdAt) {
+        return 1;
+      }
+      return 0;
+    });
+    await user.save();
+    return user.boards;
+  }
+  //start index  0 based index of the element in the array
+  //positionIndex  the postion the element would be in from (>= 1 to the <= array.size())
+  async reorderBoards(
+    userId,
+    startIndex,
+    positionIndex,
+  ): Promise<Array<object>> {
+    let user = await this.UserService.getUserById(userId);
+    if (
+      startIndex < 0 ||
+      startIndex >= user.boards.length ||
+      positionIndex < 1 ||
+      positionIndex > user.boards.length
+    ) {
+      throw new BadRequestException({
+        message: 'startIndex or positionIndex are not valid',
+      });
+    }
+    let desiredBorder = await user.boards.splice(startIndex, 1);
+    await user.boards.splice(positionIndex - 1, 0, desiredBorder[0]);
+    await user.save();
+    return user.boards;
   }
   async addBoardtoUser(userId, boardId) {
     if (
@@ -70,6 +128,8 @@ export class BoardService {
     if (!user) return false;
     user.boards.push({
       boardId: boardId,
+      name: board.name,
+      createdAt: board.createdAt,
       isJoined: false,
       joiners: [],
       followers: [],

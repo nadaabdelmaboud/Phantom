@@ -361,7 +361,7 @@ export default {
         console.error(error);
       } else {
         // The results are in an array ordered by confidence.
-        this.label = results[0];
+        this.label = results[0].label;
       }
     },
     createBoardPopup() {

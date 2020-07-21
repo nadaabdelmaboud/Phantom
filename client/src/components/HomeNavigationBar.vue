@@ -14,9 +14,7 @@
     >
       Following
     </router-link>
-    <!-- <div class="search"> -->
     <input class="searchInput" placeholder=" Search..." />
-    <!-- </div> -->
     <div class="icons">
       <i class="fa fa-bell"></i>
     </div>

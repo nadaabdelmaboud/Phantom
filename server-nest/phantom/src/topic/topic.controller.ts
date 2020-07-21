@@ -32,7 +32,7 @@ export class TopicController {
     if (topics) {
       return topics;
     } else {
-      return NotFoundException;
+      return new NotFoundException();
     }
   }
   //get a certain topic
@@ -44,7 +44,7 @@ export class TopicController {
     if (topic) {
       return topic;
     } else {
-      return NotFoundException;
+      return new NotFoundException();
     }
   }
   //get all pins of a certain topic
@@ -66,7 +66,7 @@ export class TopicController {
     if (pins && pins.length != 0) {
       return pins;
     } else {
-      return NotFoundException;
+      return new NotFoundException();
     }
   }
   //add pin to a certain topic
@@ -80,7 +80,7 @@ export class TopicController {
     if (topics) {
       return { message: 'pin has been added successfully!' };
     } else {
-      return ForbiddenException;
+      return new ForbiddenException();
     }
   }
   @UseGuards(AuthGuard('jwt'))
@@ -105,7 +105,7 @@ export class TopicController {
       return topic;
     } else {
       await this.ImageService.deleteFile(imageId);
-      return ForbiddenException;
+      return new ForbiddenException();
     }
   }
 
@@ -115,7 +115,7 @@ export class TopicController {
     if (topic) {
       return topic;
     } else {
-      return ForbiddenException;
+      return new ForbiddenException();
     }
   }
 }

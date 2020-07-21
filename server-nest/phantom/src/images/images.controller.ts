@@ -21,6 +21,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
 import { FileResponseVm } from './file-response-vm..model';
+var path=require('path');
 @Controller()
 export class ImagesController {
   constructor(private filesService: ImagesService) {}
@@ -67,15 +68,19 @@ export class ImagesController {
   }
 
   @Get('/image/:id')
-  @ApiBadRequestResponse({ type: BadRequestException })
   async getFile(@Param('id') id: string, @Res() res) {
+    const checkImage = await this.filesService.checkImage(id);
+    if (!checkImage) {
+      var filePath = "./default.jpg"
+      var resolvedPath =await path.resolve(filePath);
+      return res.sendFile(resolvedPath);
+    }
     const file = await this.filesService.findInfo(id);
     const filestream = await this.filesService.readStream(id);
     if (!filestream) {
-      throw new HttpException(
-        'An error occurred while retrieving file',
-        HttpStatus.EXPECTATION_FAILED,
-      );
+      var filePath = "./default.jpg"
+      var resolvedPath =await path.resolve(filePath);
+      return res.sendFile(resolvedPath);
     }
     res.header('Content-Type', file.contentType);
     return filestream.pipe(res);

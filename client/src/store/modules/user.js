@@ -96,6 +96,9 @@ const actions = {
       });
   },
   login({ commit }, data) {
+    axios.defaults.headers.common["Vary"] = "Origin";
+    axios.defaults.headers.common["Access-Control-Allow-Origin"] =
+      "origin-list";
     axios
       .post("login", data)
       .then(response => {
