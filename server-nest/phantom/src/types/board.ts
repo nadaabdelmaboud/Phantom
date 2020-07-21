@@ -12,11 +12,11 @@ export interface board extends Document {
   creator: {
     firstName: String;
     lastName: String;
-    id: mongoose.Schema.Types.ObjectId;
+    id: mongoose.Types.ObjectId;
     profileUrl: String;
   };
-  collaborators: Array<mongoose.Schema.Types.ObjectId>;
-  pins: Array<mongoose.Schema.Types.ObjectId>;
+  collaborators: Array<mongoose.Types.ObjectId>;
+  pins: Array<mongoose.Types.ObjectId>;
   createdAt: Date;
   counts: {
     followers: Number;

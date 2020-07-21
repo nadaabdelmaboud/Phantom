@@ -12,12 +12,12 @@ export const Board = new Schema({
   creator: {
     firstName: String,
     lastName: String,
-    id: mongoose.Schema.Types.ObjectId,
+    id: mongoose.Types.ObjectId,
     profileUrl: String,
   },
-  pins: [mongoose.Schema.Types.ObjectId],
+  pins: [mongoose.Types.ObjectId],
   createdAt: Date,
-  collaborators: [mongoose.Schema.Types.ObjectId],
+  collaborators: [mongoose.Types.ObjectId],
   counts: {
     followers: Number,
     joiners: Number,

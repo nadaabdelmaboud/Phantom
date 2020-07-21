@@ -96,6 +96,7 @@ export class BoardService {
       return 0;
     });
     await user.save();
+    console.log(user.boards);
     return user.boards;
   }
   //start index  0 based index of the element in the array
@@ -198,6 +199,18 @@ export class BoardService {
     }
     if (editBoardDto.name) {
       board.name = editBoardDto.name;
+      let creator = await this.UserService.getUserById(board.creator.id);
+      if (!creator) {
+        throw new BadRequestException('no board creator found');
+      }
+
+      for (var i = 0; i < creator.boards.length; i++) {
+        if (String(boardId) == String(creator.boards[i].boardId)) {
+          creator.boards[i].name = editBoardDto.name;
+          await creator.save();
+          break;
+        }
+      }
     }
     if (editBoardDto.endDate) {
       board.endDate = new Date(editBoardDto.endDate);
@@ -211,7 +224,10 @@ export class BoardService {
     if (editBoardDto.personalization) {
       board.personalization = editBoardDto.personalization;
     }
-    if (editBoardDto.status) {
+    if (
+      editBoardDto.status &&
+      (editBoardDto.status == 'public' || editBoardDto.status == 'private')
+    ) {
       board.status = editBoardDto.status;
     }
     if (editBoardDto.topic) {
@@ -231,12 +247,12 @@ export class BoardService {
         );
         if (!collaborator) continue;
         if (!board.collaborators) board.collaborators = [];
-        let id = new mongoose.SchemaTypes.ObjectId(collaboratores[i]);
+        let id = mongoose.Types.ObjectId(collaboratores[i]);
         board.collaborators.push(id);
       }
     }
-    //if user is allowed whether this is his board or he is a collaboarotor
     await board.save();
+
     return board;
   }
 }

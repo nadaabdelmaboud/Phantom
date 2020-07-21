@@ -1,26 +1,26 @@
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 export interface reply extends Document {
-  replier: mongoose.Schema.Types.ObjectId;
+  replier: mongoose.Types.ObjectId;
   reply: String;
   date: Date;
   likes: {
     counts: Number;
-    likers: Array<mongoose.Schema.Types.ObjectId>;
+    likers: Array<mongoose.Types.ObjectId>;
   };
 }
 export interface comment extends Document {
-  commenter: mongoose.Schema.Types.ObjectId;
+  commenter: mongoose.Types.ObjectId;
   comment: String;
   date: Date;
   replies: Array<reply>;
   likes: {
     counts: Number;
-    likers: Array<mongoose.Schema.Types.ObjectId>;
+    likers: Array<mongoose.Types.ObjectId>;
   };
 }
 export interface pin extends Document {
-  imageId: mongoose.Schema.Types.ObjectId;
+  imageId: mongoose.Types.ObjectId;
   imageWidth: Number;
   imageHeight: Number;
   url: String;
@@ -28,10 +28,10 @@ export interface pin extends Document {
   creator: {
     firstName: String;
     lastName: String;
-    id: mongoose.Schema.Types.ObjectId;
+    id: mongoose.Types.ObjectId;
     profileUrl: String;
   };
-  board: mongoose.Schema.Types.ObjectId;
+  board: mongoose.Types.ObjectId;
   createdAt: Date;
   note: String;
   destLink: String;
@@ -46,6 +46,6 @@ export interface pin extends Document {
   };
   reacts: Array<{
     reactType: String;
-    userId: mongoose.Schema.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
   }>;
 }
