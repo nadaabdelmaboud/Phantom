@@ -58,7 +58,15 @@ export class AuthController {
       email: user.email
     };
     const token = await this.authService.signPayload(payload);
-    await this.Email.sendEmail(payload.email, token, 'forget Password', user.firstName)
+    await this.Email.sendEmail(payload.email, token, 'forget Password', user.firstName);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Delete('/me/delete')
+  async deleteMe(@nestCommon.Request() req) {
+    const user = await this.userService.getUserById(req.user._id);
+    await this.userService.deleteUser(req.user._id);
+    await this.Email.sendEmail(user.email, undefined, 'Delete account', user.firstName);
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))

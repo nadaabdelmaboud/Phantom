@@ -108,4 +108,9 @@ export class UserService {
     const user = await this.userModel.findOne({ email: email });
     return user;
   }
+
+  async deleteUser(id) {
+    const user = await this.getUserById(id);
+    return await this.userModel.findByIdAndDelete(id);
+  }
 }
