@@ -13,6 +13,7 @@ import UserBoards from "../views/UserBoards";
 import UserPins from "../views/UserPins";
 import EditProfile from "../views/EditProfile";
 import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
+import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
 Vue.use(VueRouter);
 
 const routes = [
@@ -96,6 +97,11 @@ const routes = [
     name: "confirm",
     query: "token=",
     component: WelcomePage
+  },
+  {
+    path: "/email-confirm",
+    name: "EmailConfirm",
+    component: EmailConfirm
   }
 ];
 
