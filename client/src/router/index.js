@@ -15,6 +15,8 @@ import EditProfile from "../views/EditProfile";
 import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
 import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
 import ForgetPassword from "../views/ForgetPassword.vue";
+import ResetPassword from "../views/ResetPassword.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -98,6 +100,12 @@ const routes = [
     name: "confirm",
     query: "token=",
     component: WelcomePage
+  },
+  {
+    path: "/reset_password",
+    name: "Reset Password",
+    query: "token=",
+    component: ResetPassword
   },
   {
     path: "/email-confirm",

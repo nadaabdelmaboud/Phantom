@@ -114,9 +114,9 @@ const actions = {
         else commit("setErrorMessage", "Email is not correct");
       });
   },
-  forgetPassword({ commit }, email) {
+  forgetPassword({ commit }, emailAddress) {
     axios
-      .post("/forget-password", {'email': email })
+      .post("/forget-password", { email: emailAddress })
       .then(() => {
         commit("setSendEmail", true);
       })
