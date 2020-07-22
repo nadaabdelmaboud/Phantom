@@ -8,7 +8,7 @@ const state = {
 const mutations = {};
 
 const actions = {
-  createPin({ state ,dispatch }, {pin , label}) {
+  createPin({ state,commit ,dispatch }, {pin , label}) {
     console.log(pin);
     const file = new FormData();
     file.append("file", pin.imageId);
@@ -18,14 +18,16 @@ const actions = {
       data: file,
     })
       .then((response) => {
-        pin.imageId = response.data.imageId;
+        pin.imageId = response.data[0].id;
         axios.post("me/pins", pin).then((response) => {
           state.pin = response.data
+          console.log("here i get image id",pin.imageId)
+          state.pin.imageId = pin.imageId;
           dispatch("addPinToTopic",{
             pinId: state.pin._id,
             topicName:label
           })
-
+          commit("popUpsState/toggleNewPin", null, { root: true });
         });
       })
       .catch((error) => {

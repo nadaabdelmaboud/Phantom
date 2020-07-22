@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <CreateBoardPopup v-if="CreateBoard"/>
+    <CreateBoardPopup v-if="createBoard"/>
+     <NewPinPopup v-if="newPin"/>
     <div>
     <HomeNavigationBar />
     <router-view class="mainComponent" />
@@ -26,7 +27,7 @@
 .globalIcons{
   height: 48px;
   width: 48px;
-  position: absolute;
+  position: fixed;
   left: 92%;
   font-size: 24px;
   color:$darkBlue;
@@ -35,7 +36,8 @@
   text-align: center;
   box-shadow: 4px 4px 4px #888888;
   z-index: 2;
-    transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
+  background-color: $offWhite;
 }
 .globalIcons:hover{
 background-color: $lightPink;
@@ -50,31 +52,24 @@ background-color: $lightPink;
 .globalIcons:nth-child(5){
   bottom: 50px;
 }
-
-  .globalIcons:nth-child(3) {
-    top: 76%;
-  }
-  .globalIcons:nth-child(4) {
-    top: 84%;
-  }
-  .globalIcons:nth-child(5) {
-    top: 92%;
-  }
 }
 </style>
 <script>
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/CreateBoardPopup";
+import NewPinPopup from "../views/NewPinPopup"
 import {mapState} from "vuex"
 export default {
   name: "PhantomHome",
   components: {
     HomeNavigationBar,
-    CreateBoardPopup
+    CreateBoardPopup,
+     NewPinPopup
   },
   computed:{
       ...mapState({
-      CreateBoard: state => state.popUpsState.createBoardPopup
+      createBoard: state => state.popUpsState.createBoardPopup,
+      newPin: state => state.popUpsState.newPinPopup
     }),
   }
 };
