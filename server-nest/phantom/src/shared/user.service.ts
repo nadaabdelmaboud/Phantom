@@ -113,14 +113,14 @@ export class UserService {
   async resetPassword(userId, newPassword) {
     //if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
     const user = await this.getUserById(userId);
-    if (!user || !newPassword) return 0;
+    if (!user || !newPassword) throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
     const salt = await bcrypt.genSalt(10);
     let hash = await bcrypt.hash(newPassword, salt);
     user.password = hash;
     await this.userModel.updateOne({ _id: userId }, { password: hash });
     return 1;
   }
-  /*
+
   /**
    * update information in user profile 
    * @param {String} userId -id of user
@@ -132,46 +132,47 @@ export class UserService {
    * @param {String} email  -new email for user
    * @param {String} birthDate -new birthDate of user
    * @returns {Number}
-   
-  async updateUserInfo(userId, firstName, lastName, about, gender, country, email, birthDate) {
-    try {
-      if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
-      const user = await this.getUserById(userId);
-      if (!user) return 0;
-      if (firstName) await userDocument.updateOne({ _id: userId }, { firstName: firstName });
-      if (lastName) await userDocument.updateOne({ _id: userId }, { lastName: lastName });
-      if (about) await userDocument.updateOne({ _id: userId }, { about: about });
-      if (gender) await userDocument.updateOne({ _id: userId }, { gender: gender });
-      if (country) await userDocument.updateOne({ _id: userId }, { country: country });
-      if (email && ! await this.checkMAilExistAndFormat(email)) {
-        var token = jwt.sign({
-          email: user.email,
-          _id: user._id,
-          newEmail: email,
-          firstName: firstName ? firstName : user.firstName
-        }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
-        sendmail(user.email, token, 'change email', firstName ? firstName : user.firstName);
-      }
-      if (birthDate) await userDocument.updateOne({ _id: userId }, { birthDate: birthDate });
-      return 1;
-    } catch (err) { return 0; }
-  }
-  /**
-   * set user email
-   * @param {string} userId - id of user
-   * @param {string} newEmail  - new email 
-   * @returns {Number}
-   
-  setEmail: async function(userId, newEmail) {
-    try {
-      if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
-      const user = await this.getUserById(userId);
-      if (!user || !newEmail) return 0;
-      await userDocument.updateOne({ _id: userId }, { email: newEmail });
-      return 1;
-    } catch (err) { return 0; }
-  }
-*/
+  */
+  /*
+   async updateUserInfo(userId, firstName, lastName, about, gender, country, email, birthDate) {
+     //try {
+      // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+       const user = await this.getUserById(userId);
+       if (!user) return 0;
+       if (firstName) await userDocument.updateOne({ _id: userId }, { firstName: firstName });
+       if (lastName) await userDocument.updateOne({ _id: userId }, { lastName: lastName });
+       if (about) await userDocument.updateOne({ _id: userId }, { about: about });
+       if (gender) await userDocument.updateOne({ _id: userId }, { gender: gender });
+       if (country) await userDocument.updateOne({ _id: userId }, { country: country });
+       if (email && ! await this.checkMAilExistAndFormat(email)) {
+         var token = jwt.sign({
+           email: user.email,
+           _id: user._id,
+           newEmail: email,
+           firstName: firstName ? firstName : user.firstName
+         }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
+         sendmail(user.email, token, 'change email', firstName ? firstName : user.firstName);
+       }
+       if (birthDate) await userDocument.updateOne({ _id: userId }, { birthDate: birthDate });
+       return 1;
+     } catch (err) { return 0; }
+   }
+   /**
+    * set user email
+    * @param {string} userId - id of user
+    * @param {string} newEmail  - new email 
+    * @returns {Number}
+    
+   setEmail: async function(userId, newEmail) {
+     try {
+       if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+       const user = await this.getUserById(userId);
+       if (!user || !newEmail) return 0;
+       await userDocument.updateOne({ _id: userId }, { email: newEmail });
+       return 1;
+     } catch (err) { return 0; }
+   }
+ */
   async deleteUser(id) {
     const user = await this.getUserById(id);
     return await this.userModel.findByIdAndDelete(id);
