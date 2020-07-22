@@ -9,6 +9,7 @@ import { BoardModule } from './board/board.module';
 import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
 import { TopicModule } from './topic/topic.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
@@ -18,8 +19,9 @@ import { TopicModule } from './topic/topic.module';
     TopicModule,
     SharedModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

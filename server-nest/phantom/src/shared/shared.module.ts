@@ -6,6 +6,8 @@ import { User } from '../models/user.schema';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
 import { UserService } from './user.service';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from '../shared/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from 'src/models/pin.schema';
@@ -21,6 +23,8 @@ import { Pin } from 'src/models/pin.schema';
     UserService,
     SharedGateway,
     ValidationService,
+    AuthService,
+    JwtStrategy,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
@@ -32,4 +36,4 @@ import { Pin } from 'src/models/pin.schema';
   ],
   exports: [UserService, ValidationService],
 })
-export class SharedModule {}
+export class SharedModule { }
