@@ -4,7 +4,7 @@ import { UserService } from '../shared/user.service';
 import { Payload } from '../types/payload';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
-import { AuthService } from './auth.service';
+import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service'
 @nestCommon.Controller()
 export class AuthController {
