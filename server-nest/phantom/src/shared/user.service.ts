@@ -139,11 +139,11 @@ export class UserService {
       // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
        const user = await this.getUserById(userId);
        if (!user) return 0;
-       if (firstName) await userDocument.updateOne({ _id: userId }, { firstName: firstName });
-       if (lastName) await userDocument.updateOne({ _id: userId }, { lastName: lastName });
-       if (about) await userDocument.updateOne({ _id: userId }, { about: about });
-       if (gender) await userDocument.updateOne({ _id: userId }, { gender: gender });
-       if (country) await userDocument.updateOne({ _id: userId }, { country: country });
+       if (firstName) await this.userModel.updateOne({ _id: userId }, { firstName: firstName });
+       if (lastName) await this.userModel.updateOne({ _id: userId }, { lastName: lastName });
+       if (about) await this.userModel.updateOne({ _id: userId }, { about: about });
+       if (gender) await this.userModel.updateOne({ _id: userId }, { gender: gender });
+       if (country) await this.userModel.updateOne({ _id: userId }, { country: country });
        if (email && ! await this.checkMAilExistAndFormat(email)) {
          var token = jwt.sign({
            email: user.email,
@@ -155,8 +155,9 @@ export class UserService {
        }
        if (birthDate) await userDocument.updateOne({ _id: userId }, { birthDate: birthDate });
        return 1;
-     } catch (err) { return 0; }
+   //  } catch (err) { return 0; }
    }
+   
    /**
     * set user email
     * @param {string} userId - id of user

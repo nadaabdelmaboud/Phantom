@@ -51,6 +51,7 @@ export class AuthController {
   }
   @nestCommon.Post('/forget-password')
   async forgetPassword(@nestCommon.Body() body) {
+
     const user = await this.userService.checkMAilExistAndFormat(body.email);
     if (!user) throw new nestCommon.HttpException('not user by this email', nestCommon.HttpStatus.FORBIDDEN);
     const payload: Payload = {
@@ -58,7 +59,7 @@ export class AuthController {
       email: user.email
     };
     const token = await this.authService.signPayload(payload);
-    await this.Email.sendEmail(payload.email, token, 'forget Password', user.firstName);
+    await this.Email.sendEmail(user.email, token, 'forget Password', user.firstName);
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
