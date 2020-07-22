@@ -11,12 +11,17 @@ export class UserController {
         private Email: Email,
     ) { }
 
-
     @nestCommon.UseGuards(AuthGuard('jwt'))
     @nestCommon.Get('/me')
     async me(@nestCommon.Request() req) {
-        /* const { password, ...result } = req.user._doc;*/
         const user = await this.userService.getUserById(req.user._id);
+        user.password = undefined;
+        return { user };
+    }
+
+    @nestCommon.Get('/user/:user_id')
+    async getUser(@nestCommon.Param() params) {
+        const user = await this.userService.getUserById(params.user_id);
         user.password = undefined;
         return { user };
     }
