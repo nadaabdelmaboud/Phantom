@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 export const Pin = new Schema({
-  imageId: mongoose.Schema.Types.ObjectId,
+  imageId: mongoose.Types.ObjectId,
   imageWidth: Number,
   imageHeight: Number,
   url: String,
@@ -9,31 +9,31 @@ export const Pin = new Schema({
   creator: {
     firstName: String,
     lastName: String,
-    id: mongoose.Schema.Types.ObjectId,
+    id: mongoose.Types.ObjectId,
     profileUrl: String,
   },
-  board: mongoose.Schema.Types.ObjectId,
+  board: mongoose.Types.ObjectId,
   createdAt: Date,
   note: String,
   destLink: String,
   comments: Array({
-    commenter: mongoose.Schema.Types.ObjectId,
+    commenter: mongoose.Types.ObjectId,
     comment: String,
     date: Date,
     replies: [
       {
-        replier: mongoose.Schema.Types.ObjectId,
+        replier: mongoose.Types.ObjectId,
         reply: String,
         date: Date,
         likes: {
           counts: Number,
-          likers: [mongoose.Schema.Types.ObjectId],
+          likers: [mongoose.Types.ObjectId],
         },
       },
     ],
     likes: {
       counts: Number,
-      likers: [mongoose.Schema.Types.ObjectId],
+      likers: [mongoose.Types.ObjectId],
     },
   }),
   counts: {
@@ -47,7 +47,7 @@ export const Pin = new Schema({
   reacts: [
     {
       reactType: String,
-      userId: mongoose.Schema.Types.ObjectId,
+      userId: mongoose.Types.ObjectId,
     },
   ],
 });
