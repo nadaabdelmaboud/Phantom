@@ -45,7 +45,7 @@
       <p v-if="!passwordMatching" class="password-matching">
         Passwords should match
       </p>
-      <button>Change Password</button>
+      <button @click="changePassword">Change Password</button>
     </div>
   </div>
 </template>
@@ -66,6 +66,15 @@ export default {
     passwordMatch() {
       if (this.password === this.confirmPassword) this.passwordMatching = true;
       else this.passwordMatching = false;
+    },
+    changePassword() {
+      console.log(this.$route.query.token);
+      if (this.passwordMatching && this.validatePassword && this.password) {
+        this.$store.dispatch("user/resetPassword", {
+          newPassword: this.password,
+          token: this.$route.query.token
+        });
+      }
     }
   },
   computed: {
@@ -89,6 +98,14 @@ export default {
     },
     errorMessage: function() {
       return this.$store.state.user.errorMessage;
+    },
+    resetStatus: function() {
+      return this.$store.state.user.resetPasswordStatus;
+    }
+  },
+  watch: {
+    resetStatus: function() {
+      if (this.resetStatus) this.$router.push("login");
     }
   }
 };

@@ -14,7 +14,8 @@ const state = {
   errorMessage: null,
   emailConfirm: false,
   loginState: null,
-  sendEmailStatus: null
+  sendEmailStatus: null,
+  resetPasswordStatus: null
 };
 
 const mutations = {
@@ -58,6 +59,9 @@ const mutations = {
   },
   setSendEmail(state, status) {
     state.sendEmailStatus = status;
+  },
+  setResetStatus(state, status) {
+    state.resetPasswordStatus = status;
   }
 };
 
@@ -123,6 +127,20 @@ const actions = {
         commit("setSendEmail", false);
         if (error.response.data.message == "not user by this email")
           commit("setErrorMessage", "This Email is not correct");
+      });
+  },
+  resetPassword({ commit }, payload) {
+    axios
+      .put("/me/reset-password?newPassword=" + payload.newPassword, {
+        headers: {
+          Authorization: payload.token
+        }
+      })
+      .then(() => {
+        commit("setResetStatus", true);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 };
