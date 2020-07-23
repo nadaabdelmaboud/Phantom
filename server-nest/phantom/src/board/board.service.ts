@@ -33,12 +33,17 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([pinId, boardId])) == 0) {
       return false;
     }
+
     let board = await this.getBoardById(boardId);
     if (!board) return false;
     let pin = await this.pinModel.findById(pinId);
     if (!pin) return false;
     board.pins.push(pinId);
     board.counts.pins = board.counts.pins.valueOf() + 1;
+    if (!board.coverImages) board.coverImages = [];
+    if (board.coverImages && board.coverImages.length < 3) {
+      board.coverImages.push(pin.imageId);
+    }
     await board.save();
     return true;
   }
@@ -58,11 +63,17 @@ export class BoardService {
       endDate: endDate,
       status: status,
       createdAt: Date.now(),
+      description: '',
+      personalization: false,
+      collaborators: [],
+      isJoined: false,
+      followers: [],
       counts: {
         followers: 0,
         joiners: 0,
         pins: 0,
       },
+      coverImages: [],
       creator: {
         firstName: user.firstName,
         lastName: user.lastName,
@@ -137,6 +148,7 @@ export class BoardService {
       name: board.name,
       createdAt: board.createdAt,
       isJoined: false,
+      createdOrjoined: 'created',
       joiners: [],
       followers: [],
     });
@@ -204,6 +216,7 @@ export class BoardService {
     if (board.status == 'public') return true;
     return false;
   }
+
   async editBoard(boardId, userId, editBoardDto: editBoardDto) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -282,6 +295,15 @@ export class BoardService {
             break;
           }
         }
+        collaborator.boards.push({
+          boardId: boardId,
+          name: board.name,
+          createdAt: board.createdAt,
+          isJoined: board.isJoined,
+          createdOrjoined: 'joined',
+          joiners: board.collaborators,
+          followers: board.followers,
+        });
       }
     }
     await board.save();

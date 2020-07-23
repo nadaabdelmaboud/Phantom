@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -37,6 +38,15 @@ export class PinsService {
       throw new BadRequestException({ message: 'user id not valid' });
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new NotFoundException({ message: 'user not found' });
+    let board = await this.BoardService.getBoardById(createPinDto.board);
+    if (!board) {
+      throw new NotFoundException({ message: 'board not found' });
+    }
+    if (!(await this.BoardService.authorizedBoard(board, userId))) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to add pin to this board',
+      );
+    }
     let pin = new this.pinModel({
       imageId: createPinDto.imageId,
       imageWidth: createPinDto.imageWidth,
@@ -97,13 +107,28 @@ export class PinsService {
     return retPins;
   }
   async savePin(userId, pinId, boardId) {
-    if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        pinId,
+        boardId,
+      ])) == 0
+    ) {
       return false;
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return 0;
     let pin = await this.getPinById(pinId);
     if (!pin) return false;
+    let board = await this.BoardService.getBoardById(boardId);
+    if (!board) {
+      throw new NotFoundException({ message: 'board not found' });
+    }
+    if (!(await this.BoardService.authorizedBoard(board, userId))) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to save pin to this board',
+      );
+    }
     let found = false;
     for (var i = 0; i < user.savedPins.length; i++) {
       if (String(user.savedPins[i]) == String(pinId)) {

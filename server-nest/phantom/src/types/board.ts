@@ -15,7 +15,10 @@ export interface board extends Document {
     id: mongoose.Types.ObjectId;
     profileUrl: String;
   };
+  coverImages: Array<mongoose.Types.ObjectId>;
   collaborators: Array<mongoose.Types.ObjectId>;
+  isJoined: Boolean;
+  followers: Array<mongoose.Types.ObjectId>;
   pins: Array<mongoose.Types.ObjectId>;
   createdAt: Date;
   counts: {

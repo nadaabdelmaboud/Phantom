@@ -15,9 +15,12 @@ export const Board = new Schema({
     id: mongoose.Types.ObjectId,
     profileUrl: String,
   },
+  coverImages: [mongoose.Types.ObjectId],
   pins: [mongoose.Types.ObjectId],
   createdAt: Date,
   collaborators: [mongoose.Types.ObjectId],
+  isJoined: Boolean,
+  followers: Array(mongoose.Types.ObjectId),
   counts: {
     followers: Number,
     joiners: Number,

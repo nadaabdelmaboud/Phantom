@@ -6,7 +6,7 @@ import { Payload } from '../types/payload';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   async signPayload(payload) {
     return (

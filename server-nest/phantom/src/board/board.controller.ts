@@ -17,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
 import { editBoardDto } from './dto/editBoard.dto';
+import { start } from 'repl';
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -66,6 +67,13 @@ export class BoardController {
     } else {
       throw new NotFoundException({ message: 'no boards' });
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/boards/state/:id')
+  async isBoardPublic(@Param('id') id: string) {
+    let state = await this.BoardService.isPublicBoard(id);
+    return state;
   }
 
   @UseGuards(AuthGuard('jwt'))

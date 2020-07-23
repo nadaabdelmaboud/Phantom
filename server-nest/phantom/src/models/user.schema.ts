@@ -19,6 +19,7 @@ export const User = new Schema({
   offlineNotifications: [{}],
   followers: Array(mongoose.Types.ObjectId),
   following: Array(mongoose.Types.ObjectId),
+  viewState: String,
   boards: [
     {
       boardId: mongoose.Types.ObjectId,

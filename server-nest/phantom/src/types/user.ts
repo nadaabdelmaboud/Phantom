@@ -27,8 +27,10 @@ export interface user extends Document {
       isJoined: Boolean;
       joiners: Array<mongoose.Types.ObjectId>;
       followers: Array<mongoose.Types.ObjectId>;
+      createdOrjoined: String;
     },
   ];
+  viewState: string;
   counts: {
     likes: Number;
     comments: Number;
