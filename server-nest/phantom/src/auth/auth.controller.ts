@@ -4,14 +4,14 @@ import { UserService } from '../shared/user.service';
 import { Payload } from '../types/payload';
 import { LoginDTO } from './dto/login.dto';
 import { RegisterDTO } from './dto/register.dto';
-import { AuthService } from './auth.service';
+import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service'
 @nestCommon.Controller()
 export class AuthController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private Email: Email,
+    private email: Email,
   ) { }
 
   @nestCommon.Post('/login')
@@ -29,7 +29,7 @@ export class AuthController {
   async sign_up(@nestCommon.Body() userDTO: RegisterDTO) {
     const user = await this.userService.checkCreateData(userDTO);
     const token = await this.authService.signPayload(userDTO);
-    await this.Email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
+    await this.email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
@@ -51,6 +51,7 @@ export class AuthController {
   }
   @nestCommon.Post('/forget-password')
   async forgetPassword(@nestCommon.Body() body) {
+
     const user = await this.userService.checkMAilExistAndFormat(body.email);
     if (!user) throw new nestCommon.HttpException('not user by this email', nestCommon.HttpStatus.FORBIDDEN);
     const payload: Payload = {
@@ -58,7 +59,15 @@ export class AuthController {
       email: user.email
     };
     const token = await this.authService.signPayload(payload);
-    await this.Email.sendEmail(payload.email, token, 'forget Password', user.firstName)
+    await this.email.sendEmail(user.email, token, 'forget Password', user.firstName);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Delete('/me/delete')
+  async deleteMe(@nestCommon.Request() req) {
+    const user = await this.userService.getUserById(req.user._id);
+    await this.userService.deleteUser(req.user._id);
+    await this.email.sendEmail(user.email, undefined, 'Delete account', user.firstName);
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))

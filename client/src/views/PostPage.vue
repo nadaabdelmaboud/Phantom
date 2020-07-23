@@ -1,9 +1,9 @@
 <template>
   <div class="postpage">
-    <div class="row">
+    <div class="row m-0">
       <post-page-card />
     </div>
-    <div class="row">
+    <div class="row m-0">
       <span>More like this</span>
     </div>
   </div>
