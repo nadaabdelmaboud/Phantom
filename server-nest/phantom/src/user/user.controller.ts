@@ -52,13 +52,14 @@ export class UserController {
             if (!user) throw new nestCommon.HttpException('no user by this email', nestCommon.HttpStatus.FORBIDDEN);
             await this.email.sendEmail(req.user.newEmail, req.header('Authorization'), 'set email', req.user.firstName)
         }
-        if (type === 'resetEmail') {
+        else if (type === 'resetEmail') {
             const user = await this.userService.checkMAilExistAndFormat(req.user.newEmail);
             if (user) throw new nestCommon.HttpException('this email aleardy exists', nestCommon.HttpStatus.FORBIDDEN);
             if (! await this.userService.setEmail(req.user._id, req.user.newEmail))
                 throw new nestCommon.HttpException('not user or not email', nestCommon.HttpStatus.BAD_REQUEST);
 
-        }
+        } else
+            if (!type) throw new nestCommon.HttpException('type mot correct', nestCommon.HttpStatus.FORBIDDEN);
     }
 
 
