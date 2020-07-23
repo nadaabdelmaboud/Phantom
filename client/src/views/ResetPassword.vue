@@ -45,7 +45,7 @@
       <p v-if="!passwordMatching" class="password-matching">
         Passwords should match
       </p>
-      <button style="float: right">Change Password</button>
+      <button>Change Password</button>
     </div>
   </div>
 </template>
@@ -126,7 +126,7 @@ input:focus {
 
 button,
 button:focus {
-  padding: 4px 40px;
+  padding: 4px 25px;
   background-color: $darkBlue;
   border-radius: 20px;
   border: none;
@@ -134,6 +134,7 @@ button:focus {
   text-decoration: none;
   font-size: 18px;
   outline: none;
+  float: right;
 }
 
 .passwordValidation p,

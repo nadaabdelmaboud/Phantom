@@ -83,7 +83,7 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `${token}`
           }
         }
       )
@@ -91,7 +91,6 @@ const actions = {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
         commit("setEmailConfirm", true);
-        console.log(response.data.token);
       })
       .catch(error => {
         commit("setEmailConfirm", false);
@@ -104,7 +103,7 @@ const actions = {
       .post("login", data)
       .then(response => {
         let token = response.data.token;
-        localStorage.setItem("userToken", token.slice(7, token.length));
+        localStorage.setItem("userToken", token);
         commit("setLogin", true);
       })
       .catch(error => {
