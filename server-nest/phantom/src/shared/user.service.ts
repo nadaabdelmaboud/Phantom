@@ -8,14 +8,21 @@ import {
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { user } from '../types/user';
+import { AuthService } from '../shared/auth.service';
+import { Email } from '../shared/send-email.service'
 import { LoginDTO } from '../auth/dto/login.dto';
 import { RegisterDTO } from '../auth/dto/register.dto';
+import { UpdateDTO } from '../user/dto/update-user.dto';
 import { Payload } from '../types/payload';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<user>) { }
+  constructor(
+    private authService: AuthService,
+    private email: Email,
+    @InjectModel('User') private readonly userModel: Model<user>
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -60,6 +67,33 @@ export class UserService {
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
     if (await this.checkMAilExistAndFormat(RegisterDTO.email))
       throw new HttpException('"email" should not have acount', HttpStatus.FORBIDDEN,);
+  }
+
+  async checkUpdateData(updateDTO: UpdateDTO) {
+    const shcema = Joi.object({
+      email: Joi.string()
+        .trim()
+        .email()
+        .optional(),
+      password: Joi.string().optional(),
+      birthDate: Joi.date()
+        .raw()
+        .optional(),
+      firstName: Joi.string().optional(),
+      lastName: Joi.string().optional(),
+      country: Joi.string().optional(),
+      gender: Joi.string().optional(),
+      bio: Joi.string().optional(),
+      iat: Joi.optional(),
+      exp: Joi.optional(),
+    });
+    const body = updateDTO;
+    const validate = shcema.validate(body);
+    if (validate.error)
+      throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    if (updateDTO.email)
+      if (await this.checkMAilExistAndFormat(updateDTO.email))
+        throw new HttpException('"email" should not have acount', HttpStatus.FORBIDDEN,);
   }
 
   async createUser(RegisterDTO: RegisterDTO): Promise<any> {
@@ -124,56 +158,45 @@ export class UserService {
   /**
    * update information in user profile 
    * @param {String} userId -id of user
-   * @param {ٍString} firstName -new first name for user 
-   * @param {String} lastName -new last name for user 
-   * @param {String} about -new info about user 
-   * @param {String} gender -new gender for user 
-   * @param {String} country -new country for user
-   * @param {String} email  -new email for user
-   * @param {String} birthDate -new birthDate of user
-   * @returns {Number}
   */
-  /*
-   async updateUserInfo(userId, firstName, lastName, about, gender, country, email, birthDate) {
-     //try {
-      // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
-       const user = await this.getUserById(userId);
-       if (!user) return 0;
-       if (firstName) await this.userModel.updateOne({ _id: userId }, { firstName: firstName });
-       if (lastName) await this.userModel.updateOne({ _id: userId }, { lastName: lastName });
-       if (about) await this.userModel.updateOne({ _id: userId }, { about: about });
-       if (gender) await this.userModel.updateOne({ _id: userId }, { gender: gender });
-       if (country) await this.userModel.updateOne({ _id: userId }, { country: country });
-       if (email && ! await this.checkMAilExistAndFormat(email)) {
-         var token = jwt.sign({
-           email: user.email,
-           _id: user._id,
-           newEmail: email,
-           firstName: firstName ? firstName : user.firstName
-         }, process.env.jwtsecret, { expiresIn: '904380934853454h' });
-         sendmail(user.email, token, 'change email', firstName ? firstName : user.firstName);
-       }
-       if (birthDate) await userDocument.updateOne({ _id: userId }, { birthDate: birthDate });
-       return 1;
-   //  } catch (err) { return 0; }
-   }
-   
-   /**
-    * set user email
-    * @param {string} userId - id of user
-    * @param {string} newEmail  - new email 
-    * @returns {Number}
-    
-   setEmail: async function(userId, newEmail) {
-     try {
-       if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
-       const user = await this.getUserById(userId);
-       if (!user || !newEmail) return 0;
-       await userDocument.updateOne({ _id: userId }, { email: newEmail });
-       return 1;
-     } catch (err) { return 0; }
-   }
- */
+
+  async updateUserInfo(userId, updateDTO: UpdateDTO) {
+    // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+    const user = await this.getUserById(userId);
+    if (!user) return 0;
+    if (updateDTO.firstName) await this.userModel.updateOne({ _id: userId }, { firstName: updateDTO.firstName });
+    if (updateDTO.lastName) await this.userModel.updateOne({ _id: userId }, { lastName: updateDTO.lastName });
+    if (updateDTO.bio) await this.userModel.updateOne({ _id: userId }, { about: updateDTO.bio });
+    if (updateDTO.gender) await this.userModel.updateOne({ _id: userId }, { gender: updateDTO.gender });
+    if (updateDTO.country) await this.userModel.updateOne({ _id: userId }, { country: updateDTO.country });
+    if (updateDTO.email && ! await this.checkMAilExistAndFormat(updateDTO.email)) {
+      var token = this.authService.signPayload({
+        email: user.email,
+        _id: user._id,
+        newEmail: updateDTO.email,
+        firstName: updateDTO.firstName ? updateDTO.firstName : user.firstName
+      })
+      await this.email.sendEmail(user.email, token, 'change email', updateDTO.firstName ? updateDTO.firstName : user.firstName);
+    }
+    if (updateDTO.birthDate) await this.userModel.updateOne({ _id: userId }, { birthDate: updateDTO.birthDate });
+    return 1;
+  }
+
+  /**
+  * set user email
+  * @param {string} userId - id of user
+  * @param {string} newEmail  - new email 
+  * @returns {Number}
+   */
+  async setEmail(userId, newEmail) {
+
+    // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+    const user = await this.getUserById(userId);
+    if (!user || !newEmail) return 0;
+    await this.userModel.updateOne({ _id: userId }, { email: newEmail });
+    return 1;
+  }
+
   async deleteUser(id) {
     const user = await this.getUserById(id);
     return await this.userModel.findByIdAndDelete(id);

@@ -23,7 +23,6 @@ import { Pin } from 'src/models/pin.schema';
     UserService,
     SharedGateway,
     ValidationService,
-    AuthService,
     JwtStrategy,
     {
       provide: APP_FILTER,

@@ -11,7 +11,7 @@ export class AuthController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private Email: Email,
+    private email: Email,
   ) { }
 
   @nestCommon.Post('/login')
@@ -29,7 +29,7 @@ export class AuthController {
   async sign_up(@nestCommon.Body() userDTO: RegisterDTO) {
     const user = await this.userService.checkCreateData(userDTO);
     const token = await this.authService.signPayload(userDTO);
-    await this.Email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
+    await this.email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
@@ -59,7 +59,7 @@ export class AuthController {
       email: user.email
     };
     const token = await this.authService.signPayload(payload);
-    await this.Email.sendEmail(user.email, token, 'forget Password', user.firstName);
+    await this.email.sendEmail(user.email, token, 'forget Password', user.firstName);
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
@@ -67,7 +67,7 @@ export class AuthController {
   async deleteMe(@nestCommon.Request() req) {
     const user = await this.userService.getUserById(req.user._id);
     await this.userService.deleteUser(req.user._id);
-    await this.Email.sendEmail(user.email, undefined, 'Delete account', user.firstName);
+    await this.email.sendEmail(user.email, undefined, 'Delete account', user.firstName);
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
