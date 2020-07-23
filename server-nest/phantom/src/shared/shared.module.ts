@@ -11,7 +11,7 @@ import { JwtStrategy } from '../shared/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from 'src/models/pin.schema';
-
+import { Email } from './send-email.service'
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -23,7 +23,9 @@ import { Pin } from 'src/models/pin.schema';
     UserService,
     SharedGateway,
     ValidationService,
+    AuthService,
     JwtStrategy,
+    Email,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
@@ -33,6 +35,6 @@ import { Pin } from 'src/models/pin.schema';
       useClass: LoggingInterceptor,
     },
   ],
-  exports: [UserService, ValidationService],
+  exports: [UserService, ValidationService, AuthService, Email],
 })
 export class SharedModule { }

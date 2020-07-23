@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { sign } from 'jsonwebtoken';
 import { user } from '../types/user';
-import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service'
 import { LoginDTO } from '../auth/dto/login.dto';
 import { RegisterDTO } from '../auth/dto/register.dto';
@@ -19,9 +19,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(
-    private authService: AuthService,
-    private email: Email,
-    @InjectModel('User') private readonly userModel: Model<user>
+    @InjectModel('User') private readonly userModel: Model<user>,
+    private email: Email
   ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
@@ -170,12 +169,14 @@ export class UserService {
     if (updateDTO.gender) await this.userModel.updateOne({ _id: userId }, { gender: updateDTO.gender });
     if (updateDTO.country) await this.userModel.updateOne({ _id: userId }, { country: updateDTO.country });
     if (updateDTO.email && ! await this.checkMAilExistAndFormat(updateDTO.email)) {
-      var token = this.authService.signPayload({
-        email: user.email,
-        _id: user._id,
-        newEmail: updateDTO.email,
-        firstName: updateDTO.firstName ? updateDTO.firstName : user.firstName
-      })
+      var token = 'Bearer ' +
+        sign({
+          email: user.email,
+          _id: user._id,
+          newEmail: updateDTO.email,
+          firstName: updateDTO.firstName ? updateDTO.firstName : user.firstName
+        }, process.env.SECRET_KEY, { expiresIn: '67472347632732h' })
+
       await this.email.sendEmail(user.email, token, 'change email', updateDTO.firstName ? updateDTO.firstName : user.firstName);
     }
     if (updateDTO.birthDate) await this.userModel.updateOne({ _id: userId }, { birthDate: updateDTO.birthDate });
