@@ -15,7 +15,7 @@ const state = {
   emailConfirm: false,
   loginState: null,
   sendEmailStatus: null,
-  resetPasswordStatus: null,
+  resetPasswordStatus: null
 };
 
 const mutations = {
@@ -62,7 +62,7 @@ const mutations = {
   },
   setResetStatus(state, status) {
     state.resetPasswordStatus = status;
-  },
+  }
 };
 
 const actions = {
@@ -73,7 +73,7 @@ const actions = {
       .then(() => {
         commit("changeSignUpState", true);
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response.data.message == "Mail exists") {
           commit("changeSignUpState", false);
           commit("setErrorMessage", "This email is already exists");
@@ -87,16 +87,16 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: `${token}`,
-          },
+            Authorization: `${token}`
+          }
         }
       )
-      .then((response) => {
+      .then(response => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
         commit("setEmailConfirm", true);
       })
-      .catch((error) => {
+      .catch(error => {
         commit("setEmailConfirm", false);
         console.log("axios caught an error");
         console.log(error);
@@ -105,12 +105,12 @@ const actions = {
   login({ commit }, data) {
     axios
       .post("login", data)
-      .then((response) => {
+      .then(response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
         commit("setLogin", true);
       })
-      .catch((error) => {
+      .catch(error => {
         commit("setLogin", false);
         if (error.response.data.message == "password is not correct")
           commit("setErrorMessage", "Password is not correct");
@@ -123,7 +123,7 @@ const actions = {
       .then(() => {
         commit("setSendEmail", true);
       })
-      .catch((error) => {
+      .catch(error => {
         commit("setSendEmail", false);
         if (error.response.data.message == "not user by this email")
           commit("setErrorMessage", "This Email is not correct");
@@ -131,23 +131,27 @@ const actions = {
   },
   resetPassword({ commit }, payload) {
     axios
-      .put("/me/reset-password?newPassword=" + payload.newPassword, {
-        headers: {
-          Authorization: payload.token,
-        },
-      })
+      .put(
+        "/me/reset-password?newPassword=" + payload.newPassword,
+        {},
+        {
+          headers: {
+            Authorization: payload.token
+          }
+        }
+      )
       .then(() => {
         commit("setResetStatus", true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions,
+  actions
 };
