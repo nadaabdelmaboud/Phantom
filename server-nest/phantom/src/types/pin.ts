@@ -25,6 +25,8 @@ export interface pin extends Document {
   imageHeight: Number;
   url: String;
   title: String;
+  topic: String;
+  savers: Array<mongoose.Types.ObjectId>;
   creator: {
     firstName: String;
     lastName: String;

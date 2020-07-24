@@ -2,6 +2,7 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { Model, Mongoose } from 'mongoose';
 import * as mongoose from 'mongoose';
@@ -11,11 +12,14 @@ import { UserService } from 'src/shared/user.service';
 import { pin } from 'src/types/pin';
 import { ValidationService } from 'src/shared/validation.service';
 import { editBoardDto } from './dto/editBoard.dto';
+import { PinsService } from '../pins/pins.service';
+import { topic } from 'src/types/topic';
 @Injectable()
 export class BoardService {
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
+    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
@@ -414,7 +418,11 @@ export class BoardService {
       throw new BadRequestException('permissions must be boolean values');
     }
     if (
-      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+      (await this.ValidationService.checkMongooseID([
+        boardId,
+        userId,
+        collaboratorId,
+      ])) == 0
     ) {
       throw new BadRequestException('not valid id');
     }
@@ -452,6 +460,183 @@ export class BoardService {
         editDescription: board.collaborators[i].editDescription,
       };
     }
+    return false;
+  }
+
+  async deleteCollaborator(userId, boardId, collaboratorId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        boardId,
+        userId,
+        collaboratorId,
+      ])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    if (String(board.creator.id) != String(userId)) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to get this board permissions',
+      );
+    }
+    let collaborator = undefined;
+    for (var i = 0; i < board.collaborators.length; i++) {
+      if (String(board.collaborators[i].id) == String(collaboratorId)) {
+        collaborator = await this.UserService.getUserById(
+          board.collaborators[i].id,
+        );
+        board.collaborators.splice(i, 1);
+        await board.save();
+        break;
+      }
+    }
+    if (collaborator) {
+      for (var i = 0; i < collaborator.boards.length; i++) {
+        if (
+          String(collaborator.boards[i].boardId) == String(boardId) &&
+          collaborator.boards[i].createdOrjoined == 'joined'
+        ) {
+          collaborator.boards.splice(i, 1);
+          await collaborator.save();
+          return true;
+        }
+      }
+      return false;
+    } else {
+      throw new NotAcceptableException('collaborator not found');
+    }
+  }
+  async deletePin(pinId, userId, isBoard) {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
+      throw new BadRequestException('not valid id');
+    }
+    let pin = await this.pinModel.findById(pinId);
+    if (!pin) {
+      throw new BadRequestException('not valid board');
+    }
+    if (!isBoard) {
+      let user = await this.UserService.getUserById(userId);
+      if (!user) {
+        throw new BadRequestException('not valid user');
+      }
+      if (String(pin.creator.id) != String(userId)) {
+        throw new UnauthorizedException(
+          'this user is unauthorized to delete this pin',
+        );
+      }
+    }
+    let creator = await this.UserService.getUserById(pin.creator.id);
+    if (!creator) {
+      throw new NotAcceptableException('not valid pin creator');
+    }
+    for (var i = 0; i < creator.pins.length; i++) {
+      if (String(creator.pins[i].id) == String(pinId)) {
+        let pinBoard = await this.boardModel.findById(creator.pins[i].boardId);
+        for (var j = 0; j < pinBoard.pins.length; j++) {
+          if (String(pinBoard.pins[j]) == String(pinId)) {
+            pinBoard.pins.splice(i, 1);
+            await pinBoard.save();
+            break;
+          }
+        }
+        creator.pins.splice(i, 1);
+        await creator.save();
+        break;
+      }
+    }
+    let savers = [];
+    for (var i = 0; i < pin.savers.length; i++) {
+      let saverUser = await this.UserService.getUserById(pin.savers[i]);
+      if (saverUser) {
+        savers.push(saverUser);
+      }
+    }
+
+    for (var k = 0; k < savers.length; k++) {
+      for (var i = 0; i < savers[k].savedPins.length; i++) {
+        if (String(savers[k].savedPins[i].id) == String(pinId)) {
+          let pinBoard = await this.boardModel.findById(
+            savers[k].savedPins[i].boardId,
+          );
+          for (var j = 0; j < pinBoard.pins.length; j++) {
+            if (String(pinBoard.pins[j]) == String(pinId)) {
+              pinBoard.pins.splice(i, 1);
+              await pinBoard.save();
+              break;
+            }
+          }
+          savers[k].savedPins.splice(i, 1);
+          await savers[k].save();
+          break;
+        }
+      }
+    }
+    let topic = await this.topicModel.findOne({ name: pin.topic });
+    if (topic) {
+      for (var i = 0; i < topic.pins.length; i++) {
+        if (String(topic.pins[i]) == pinId) {
+          topic.pins.splice(i, 1);
+          await topic.save();
+        }
+      }
+    }
+    return true;
+  }
+  async deleteBoard(userId, boardId) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    if (String(board.creator.id) != String(userId)) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to get this board permissions',
+      );
+    }
+    for (var i = 0; i < user.boards.length; i++) {
+      if (String(user.boards[i].boardId) == String(boardId)) {
+        user.boards.splice(i, 1);
+        await user.save();
+        break;
+      }
+    }
+    for (var k = 0; k < board.collaborators.length; k++) {
+      let collaborator = await this.UserService.getUserById(
+        board.collaborators[k].id,
+      );
+      if (collaborator) {
+        for (var i = 0; i < collaborator.boards.length; i++) {
+          if (String(collaborator.boards[i].boardId) == String(boardId)) {
+            collaborator.boards.splice(i, 1);
+            await collaborator.save();
+            break;
+          }
+        }
+      }
+    }
+    for (var i = 0; i < board.pins.length; i++) {
+      let isDeleted = await this.deletePin(board.pins[i], undefined, true);
+      if (!isDeleted) {
+        throw new Error("error while deleting board's pins");
+      }
+    }
+    let isBoardDeleted = await board.deleteOne();
+    if (isBoardDeleted) return true;
     return false;
   }
 }

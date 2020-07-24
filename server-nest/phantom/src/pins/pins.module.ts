@@ -7,6 +7,7 @@ import { BoardModule } from '../board/board.module';
 import { ImagesModule } from '../images/images.module';
 import { Board } from 'src/models/board.schema';
 import { SharedModule } from 'src/shared/shared.module';
+import { Topic } from 'src/models/topic.schema';
 @Module({
   imports: [
     SharedModule,
@@ -15,9 +16,11 @@ import { SharedModule } from 'src/shared/shared.module';
     MongooseModule.forFeature([
       { name: 'Pin', schema: Pin },
       { name: 'Board', schema: Board },
+      { name: 'Topic', schema: Topic },
     ]),
   ],
   controllers: [PinsController],
   providers: [PinsService],
+  exports: [PinsService],
 })
 export class PinsModule {}

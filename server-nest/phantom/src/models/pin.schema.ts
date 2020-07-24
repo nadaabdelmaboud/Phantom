@@ -12,8 +12,10 @@ export const Pin = new Schema({
     id: mongoose.Types.ObjectId,
     profileUrl: String,
   },
+  savers: Array(mongoose.Types.ObjectId),
   board: mongoose.Types.ObjectId,
   createdAt: Date,
+  topic: String,
   note: String,
   destLink: String,
   comments: Array({
