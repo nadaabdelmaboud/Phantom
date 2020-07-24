@@ -42,7 +42,9 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    if (!(await this.BoardService.authorizedBoard(board, userId))) {
+    let isCreator = await this.BoardService.isCreator(board, userId);
+    let isCollaborator = await this.BoardService.isCollaborator(board, userId);
+    if (!isCreator && !(isCollaborator && isCollaborator.createPin)) {
       throw new UnauthorizedException(
         'this user is unauthorized to add pin to this board',
       );
@@ -124,7 +126,9 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    if (!(await this.BoardService.authorizedBoard(board, userId))) {
+    let isCreator = await this.BoardService.isCreator(board, userId);
+    let isCollaborator = await this.BoardService.isCollaborator(board, userId);
+    if (!isCreator && !(isCollaborator && isCollaborator.savePin)) {
       throw new UnauthorizedException(
         'this user is unauthorized to save pin to this board',
       );

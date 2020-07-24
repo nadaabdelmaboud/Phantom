@@ -217,6 +217,24 @@ export class BoardService {
     return false;
   }
 
+  async isCreator(board, userId) {
+    if (!board) return false;
+    if (String(board.creator.id) == String(userId)) return true;
+    return false;
+  }
+  async isCollaborator(board, userId) {
+    if (!board) return false;
+    if (!board.collaborators) {
+      board.collaborators = [];
+      await board.save();
+    }
+    for (var i = 0; i < board.collaborators.length; i++) {
+      if (String(board.collaborators[i] == userId)) {
+        return board.collaborators[i];
+      }
+    }
+    return false;
+  }
   async editBoard(boardId, userId, editBoardDto: editBoardDto) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -240,7 +258,12 @@ export class BoardService {
         'this user is unauthorized to edit this board',
       );
     }
-    if (editBoardDto.name) {
+    let isCreator = await this.isCreator(board, userId);
+    let isCollaborator = await this.isCollaborator(board, userId);
+    if (
+      (isCreator || (isCollaborator && isCollaborator.editTitle)) &&
+      editBoardDto.name
+    ) {
       board.name = editBoardDto.name;
 
       for (var i = 0; i < creator.boards.length; i++) {
@@ -251,16 +274,22 @@ export class BoardService {
         }
       }
     }
-    if (editBoardDto.endDate) {
+    if (isCreator && editBoardDto.endDate) {
       board.endDate = new Date(editBoardDto.endDate);
     }
-    if (editBoardDto.startDate) {
+    if (isCreator && editBoardDto.startDate) {
       board.startDate = new Date(editBoardDto.startDate);
     }
-    if (editBoardDto.description) {
+    if (
+      (isCreator || (isCollaborator && isCollaborator.editDescription)) &&
+      editBoardDto.description
+    ) {
       board.description = editBoardDto.description;
     }
-    if (editBoardDto.personalization) {
+    if (
+      (isCreator || (isCollaborator && isCollaborator.personalization)) &&
+      editBoardDto.personalization
+    ) {
       board.personalization = editBoardDto.personalization;
     }
     if (
@@ -272,7 +301,10 @@ export class BoardService {
     if (editBoardDto.topic) {
       board.topic = editBoardDto.topic;
     }
-    if (editBoardDto.collaboratores) {
+    if (
+      (isCreator || (isCollaborator && isCollaborator.addCollaborators)) &&
+      editBoardDto.collaboratores
+    ) {
       let collaboratores = editBoardDto.collaboratores.split(',');
       for (var i = 0; i < collaboratores.length; i++) {
         if (
@@ -287,7 +319,15 @@ export class BoardService {
         if (!collaborator) continue;
         if (!board.collaborators) board.collaborators = [];
         let id = mongoose.Types.ObjectId(collaboratores[i]);
-        board.collaborators.push(id);
+        board.collaborators.push({
+          id: id,
+          savePin: true,
+          createPin: true,
+          personalization: true,
+          editTitle: false,
+          editDescription: false,
+          addCollaborators: false,
+        });
         for (var i = 0; i < creator.boards.length; i++) {
           if (String(boardId) == String(creator.boards[i].boardId)) {
             creator.boards[i].joiners.push(id);
@@ -295,13 +335,17 @@ export class BoardService {
             break;
           }
         }
+        let joiners = [];
+        for (var i = 0; i < board.collaborators.length; i++) {
+          joiners.push(board.collaborators[i].id);
+        }
         collaborator.boards.push({
           boardId: boardId,
           name: board.name,
           createdAt: board.createdAt,
           isJoined: board.isJoined,
           createdOrjoined: 'joined',
-          joiners: board.collaborators,
+          joiners: joiners,
           followers: board.followers,
         });
       }
@@ -309,5 +353,105 @@ export class BoardService {
     await board.save();
 
     return board;
+  }
+  async getCollaboratoresPermissions(userId, boardId) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    if (String(board.creator.id) != String(userId)) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to get this board permissions',
+      );
+    }
+    let retCollaborators = [];
+    for (var i = 0; i < board.collaborators.length; i++) {
+      let collaborator = await this.UserService.getUserById(
+        board.collaborators[i].id,
+      );
+      retCollaborators.push({
+        id: collaborator._id,
+        imageId: collaborator.profileImage,
+        name: collaborator.firstName + ' ' + collaborator.lastName,
+        savePin: board.collaborators[i].savePin,
+        createPin: board.collaborators[i].createPin,
+        editTitle: board.collaborators[i].editTitle,
+        personalization: board.collaborators[i].personalization,
+        editDescription: board.collaborators[i].editDescription,
+        addCollaborators: board.collaborators[i].addCollaborators,
+      });
+    }
+    return retCollaborators;
+  }
+  async editCollaboratoresPermissions(
+    userId,
+    boardId,
+    collaboratorId,
+    savePin,
+    createPin,
+    addCollaborators,
+    editTitle,
+    personalization,
+    editDescription,
+  ) {
+    if (
+      (savePin != true && savePin != false) ||
+      (createPin != true && createPin != false) ||
+      (addCollaborators != true && addCollaborators != false) ||
+      (editTitle != true && editTitle != false) ||
+      (personalization != true && personalization != false) ||
+      (editDescription != true && editDescription != false)
+    ) {
+      throw new BadRequestException('permissions must be boolean values');
+    }
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    if (String(board.creator.id) != String(userId)) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to get this board permissions',
+      );
+    }
+    for (var i = 0; i < board.collaborators.length; i++) {
+      if (String(board.collaborators[i].id) == String(collaboratorId)) {
+        board.collaborators[i].savePin = savePin;
+        board.collaborators[i].createPin = createPin;
+        board.collaborators[i].editTitle = editTitle;
+        board.collaborators[i].addCollaborators = addCollaborators;
+        board.collaborators[i].personalization = personalization;
+        board.collaborators[i].editDescription = editDescription;
+
+        await board.save();
+      }
+      return {
+        id: board.collaborators[i].id,
+        savePin: board.collaborators[i].savePin,
+        createPin: board.collaborators[i].createPin,
+        editTitle: board.collaborators[i].editTitle,
+        addCollaborators: board.collaborators[i].addCollaborators,
+        personalization: board.collaborators[i].personalization,
+        editDescription: board.collaborators[i].editDescription,
+      };
+    }
+    return false;
   }
 }
