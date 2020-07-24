@@ -131,11 +131,15 @@ const actions = {
   },
   resetPassword({ commit }, payload) {
     axios
-      .put("/me/reset-password?newPassword=" + payload.newPassword, {
-        headers: {
-          Authorization: payload.token
+      .put(
+        "/me/reset-password?newPassword=" + payload.newPassword,
+        {},
+        {
+          headers: {
+            Authorization: payload.token
+          }
         }
-      })
+      )
       .then(() => {
         commit("setResetStatus", true);
       })
