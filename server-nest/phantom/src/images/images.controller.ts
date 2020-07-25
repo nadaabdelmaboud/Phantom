@@ -21,10 +21,10 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
 import { FileResponseVm } from './file-response-vm..model';
-var path=require('path');
+var path = require('path');
 @Controller()
 export class ImagesController {
-  constructor(private filesService: ImagesService) {}
+  constructor(private ImagesService: ImagesService) {}
   @Post('/me/uploadImage')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('file'))
@@ -53,9 +53,9 @@ export class ImagesController {
   @Get('imageInfo/:id')
   @ApiBadRequestResponse({ type: BadRequestException })
   async getFileInfo(@Param('id') id: string): Promise<FileResponseVm> {
-    const file = await this.filesService.findInfo(id);
-    const filestream = await this.filesService.readStream(id);
-    if (!filestream) {
+    const file = await this.ImagesService.findInfo(id);
+    const fileStream = await this.ImagesService.readStream(id);
+    if (!fileStream) {
       throw new HttpException(
         'An error occurred while retrieving file info',
         HttpStatus.EXPECTATION_FAILED,
@@ -69,29 +69,29 @@ export class ImagesController {
 
   @Get('/image/:id')
   async getFile(@Param('id') id: string, @Res() res) {
-    const checkImage = await this.filesService.checkImage(id);
+    const checkImage = await this.ImagesService.checkImage(id);
     if (!checkImage) {
-      var filePath = "./default.jpg"
-      var resolvedPath =await path.resolve(filePath);
+      var filePath = './default.jpg';
+      var resolvedPath = await path.resolve(filePath);
       return res.sendFile(resolvedPath);
     }
-    const file = await this.filesService.findInfo(id);
-    const filestream = await this.filesService.readStream(id);
-    if (!filestream) {
-      var filePath = "./default.jpg"
-      var resolvedPath =await path.resolve(filePath);
+    const file = await this.ImagesService.findInfo(id);
+    const fileStream = await this.ImagesService.readStream(id);
+    if (!fileStream) {
+      var filePath = './default.jpg';
+      var resolvedPath = await path.resolve(filePath);
       return res.sendFile(resolvedPath);
     }
     res.header('Content-Type', file.contentType);
-    return filestream.pipe(res);
+    return fileStream.pipe(res);
   }
 
   @Get('download/:id')
   @ApiBadRequestResponse({ type: BadRequestException })
   async downloadFile(@Param('id') id: string, @Res() res) {
-    const file = await this.filesService.findInfo(id);
-    const filestream = await this.filesService.readStream(id);
-    if (!filestream) {
+    const file = await this.ImagesService.findInfo(id);
+    const fileStream = await this.ImagesService.readStream(id);
+    if (!fileStream) {
       throw new HttpException(
         'An error occurred while retrieving file',
         HttpStatus.EXPECTATION_FAILED,
@@ -99,16 +99,16 @@ export class ImagesController {
     }
     res.header('Content-Type', file.contentType);
     res.header('Content-Disposition', 'attachment; filename=' + file.filename);
-    return filestream.pipe(res);
+    return fileStream.pipe(res);
   }
 
   @Delete('image/:id')
   @ApiBadRequestResponse({ type: BadRequestException })
   @ApiCreatedResponse({ type: FileResponseVm })
   async deleteFile(@Param('id') id: string): Promise<FileResponseVm> {
-    const file = await this.filesService.findInfo(id);
-    const filestream = await this.filesService.deleteFile(id);
-    if (!filestream) {
+    const file = await this.ImagesService.findInfo(id);
+    const fileStream = await this.ImagesService.deleteFile(id);
+    if (!fileStream) {
       throw new HttpException(
         'An error occurred during file deletion',
         HttpStatus.EXPECTATION_FAILED,

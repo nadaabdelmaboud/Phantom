@@ -11,10 +11,10 @@ import { board } from '../types/board';
 import { UserService } from 'src/shared/user.service';
 import { pin } from 'src/types/pin';
 import { ValidationService } from 'src/shared/validation.service';
-import { editBoardDto } from './dto/editBoard.dto';
 import { PinsService } from '../pins/pins.service';
 import { topic } from 'src/types/topic';
-import { editCollaboratoresPermissionsDto } from './dto/editCollaboratoresPermissions.dto';
+import { EditBoardDto } from './dto/edit-board.dto';
+import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
 @Injectable()
 export class BoardService {
   constructor(
@@ -275,7 +275,7 @@ export class BoardService {
     }
     return false;
   }
-  async editBoard(boardId, userId, editBoardDto: editBoardDto) {
+  async editBoard(boardId, userId, editBoardDto: EditBoardDto) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
     ) {
@@ -435,7 +435,7 @@ export class BoardService {
   async editCollaboratoresPermissions(
     userId,
     boardId,
-    editCollaboratoresPermissionsDto: editCollaboratoresPermissionsDto,
+    editCollaboratoresPermissionsDto: EditCollaboratoresPermissionsDto,
   ) {
     let collaboratorId = editCollaboratoresPermissionsDto.collaboratorId,
       savePin = editCollaboratoresPermissionsDto.savePin,

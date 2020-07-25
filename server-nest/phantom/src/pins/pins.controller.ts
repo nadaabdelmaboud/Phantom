@@ -14,7 +14,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { createPinDto } from './dto/create-pin.dto';
+import { CreatePinDto } from './dto/create-pin.dto';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { PinsService } from './pins.service';
 import { ImagesService } from '../images/images.service';
@@ -31,7 +31,7 @@ export class PinsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/pins')
-  async createPin(@Request() req, @Body() createPinDto: createPinDto) {
+  async createPin(@Request() req, @Body() createPinDto: CreatePinDto) {
     let userId = req.user._id;
     let createdPin = await this.PinsService.createPin(userId, createPinDto);
     if (createdPin) {

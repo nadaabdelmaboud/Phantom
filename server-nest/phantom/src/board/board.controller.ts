@@ -17,8 +17,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
-import { editBoardDto } from './dto/editBoard.dto';
-import { editCollaboratoresPermissionsDto } from './dto/editCollaboratoresPermissions.dto';
+import { EditBoardDto } from './dto/edit-board.dto';
+import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
 
 @UseFilters(HttpExceptionFilter)
 @Controller()
@@ -127,7 +127,7 @@ export class BoardController {
   async editBoard(
     @Request() req,
     @Param('boardId') boardId: string,
-    @Body() editBoardDto: editBoardDto,
+    @Body() editBoardDto: EditBoardDto,
   ) {
     let userId = req.user._id;
     let board = await this.BoardService.editBoard(
@@ -163,7 +163,7 @@ export class BoardController {
   async editCollaboratoresPermissions(
     @Request() req,
     @Param('boardId') boardId: string,
-    @Body() editCollaboratoresPermissionsDto: editCollaboratoresPermissionsDto,
+    @Body() editCollaboratoresPermissionsDto: EditCollaboratoresPermissionsDto,
   ) {
     let userId = req.user._id;
     let collaborator = await this.BoardService.editCollaboratoresPermissions(

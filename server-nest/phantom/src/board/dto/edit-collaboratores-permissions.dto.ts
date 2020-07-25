@@ -1,4 +1,4 @@
-export class editCollaboratoresPermissionsDto {
+export class EditCollaboratoresPermissionsDto {
   readonly collaboratorId: string;
   readonly savePin: Boolean;
   readonly createPin: Boolean;

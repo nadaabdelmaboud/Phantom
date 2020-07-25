@@ -9,7 +9,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserService } from 'src/shared/user.service';
 import { ValidationService } from '../shared/validation.service';
-import { createPinDto } from './dto/create-pin.dto';
+import { CreatePinDto } from './dto/create-pin.dto';
 import { pin } from '../types/pin';
 import { comment } from '../types/pin';
 import { reply } from '../types/pin';
@@ -36,7 +36,7 @@ export class PinsService {
       throw new Error('pin not found');
     }
   }
-  async createPin(userId: String, createPinDto: createPinDto): Promise<pin> {
+  async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new BadRequestException({ message: 'user id not valid' });
     let user = await this.UserService.getUserById(userId);
