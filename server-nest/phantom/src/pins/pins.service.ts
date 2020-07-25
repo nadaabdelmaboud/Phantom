@@ -3,22 +3,25 @@ import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserService } from 'src/shared/user.service';
 import { ValidationService } from '../shared/validation.service';
-import { createPinDto } from './dto/create-pin.dto';
+import { CreatePinDto } from './dto/create-pin.dto';
 import { pin } from '../types/pin';
 import { comment } from '../types/pin';
 import { reply } from '../types/pin';
 import { BoardService } from '../board/board.service';
 import { board } from 'src/types/board';
+import { topic } from 'src/types/topic';
 @Injectable()
 export class PinsService {
   constructor(
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
+    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
@@ -33,7 +36,7 @@ export class PinsService {
       throw new Error('pin not found');
     }
   }
-  async createPin(userId: String, createPinDto: createPinDto): Promise<pin> {
+  async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new BadRequestException({ message: 'user id not valid' });
     let user = await this.UserService.getUserById(userId);
@@ -42,7 +45,9 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    if (!(await this.BoardService.authorizedBoard(board, userId))) {
+    let isCreator = await this.BoardService.isCreator(board, userId);
+    let isCollaborator = await this.BoardService.isCollaborator(board, userId);
+    if (!isCreator && !(isCollaborator && isCollaborator.createPin)) {
       throw new UnauthorizedException(
         'this user is unauthorized to add pin to this board',
       );
@@ -74,10 +79,10 @@ export class PinsService {
     });
     await pin.save();
     await this.BoardService.addPintoBoard(pin._id, createPinDto.board);
-    await this.addPintoUser(userId, pin._id);
+    await this.addPintoUser(userId, pin._id, createPinDto.board);
     return pin;
   }
-  async addPintoUser(userId, pinId) {
+  async addPintoUser(userId, pinId, boardId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
       return false;
     }
@@ -85,7 +90,10 @@ export class PinsService {
     if (!pin) return false;
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    user.pins.push(pinId);
+    user.pins.push({
+      id: pinId,
+      boardId: boardId,
+    });
     await user.save();
     return true;
   }
@@ -95,13 +103,11 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let allPins = await this.pinModel.find({});
     let retPins = [];
     for (var i = 0; i < user.pins.length; i++) {
-      for (var j = 0; j < allPins.length; j++) {
-        if (String(user.pins[i]) == String(allPins[j]._id)) {
-          retPins.push(allPins[j]);
-        }
+      let pinFound = await this.pinModel.findById(user.pins[i].id);
+      if (pinFound) {
+        retPins.push(pinFound);
       }
     }
     return retPins;
@@ -124,20 +130,26 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    if (!(await this.BoardService.authorizedBoard(board, userId))) {
+    let isCreator = await this.BoardService.isCreator(board, userId);
+    let isCollaborator = await this.BoardService.isCollaborator(board, userId);
+    if (!isCreator && !(isCollaborator && isCollaborator.savePin)) {
       throw new UnauthorizedException(
         'this user is unauthorized to save pin to this board',
       );
     }
     let found = false;
     for (var i = 0; i < user.savedPins.length; i++) {
-      if (String(user.savedPins[i]) == String(pinId)) {
+      if (String(user.savedPins[i].id) == String(pinId)) {
         found = true;
         break;
       }
     }
     if (!found) {
-      user.savedPins.push(pinId);
+      user.savedPins.push({
+        id: pinId,
+        boardId: boardId,
+      });
+      pin.savers.push(userId);
     } else {
       return false;
     }
@@ -155,13 +167,11 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let allPins = await this.pinModel.find({});
     let retPins = [];
     for (var i = 0; i < user.savedPins.length; i++) {
-      for (var j = 0; j < allPins.length; j++) {
-        if (String(user.savedPins[i]) == String(allPins[j]._id)) {
-          retPins.push(allPins[j]);
-        }
+      let pinFound = await this.pinModel.findById(user.savedPins[i].id);
+      if (pinFound) {
+        retPins.push(pinFound);
       }
     }
     return retPins;

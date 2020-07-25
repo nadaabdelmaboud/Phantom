@@ -1,4 +1,4 @@
-export class createPinDto {
+export class CreatePinDto {
   readonly imageId: String;
   readonly imageWidth: Number;
   readonly imageHeight: Number;
