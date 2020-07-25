@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import * as mongoose from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import { user } from '../types/user';
 import { Email } from '../shared/send-email.service';
@@ -199,6 +200,14 @@ export class UserService {
         { _id: userId },
         { country: updateDTO.country },
       );
+    if (updateDTO.profileImage) {
+      let profileImage = mongoose.Types.ObjectId(updateDTO.profileImage);
+      await this.userModel.updateOne(
+        { _id: userId },
+        { profileImage: profileImage },
+      );
+    }
+
     if (
       updateDTO.email &&
       !(await this.checkMAilExistAndFormat(updateDTO.email))

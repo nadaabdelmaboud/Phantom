@@ -9,5 +9,5 @@ export interface UpdateDTO {
   bio?: string;
   iat?: string;
   exp?: string;
+  profileImage?: string;
 }
-
