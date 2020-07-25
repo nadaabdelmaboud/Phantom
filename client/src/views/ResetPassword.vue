@@ -113,6 +113,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
+@import "../scss/Mixins";
 .main-border {
   margin: 10% auto;
   border: 2px solid $lightBlue;
@@ -132,13 +133,7 @@ h1 {
 
 input,
 input:focus {
-  border-radius: 10px;
-  border: 2px solid $ligthPaige;
-  padding: 6px 8px;
-  margin: 5px 0;
-  outline: none;
-  min-width: 300px;
-  max-height: 300px;
+  @include inputField;
 }
 
 button,

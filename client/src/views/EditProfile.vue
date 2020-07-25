@@ -10,7 +10,7 @@
       <div class="col col2">
         <SideBar />
       </div>
-      <div class="col">
+      <div class="col col3">
         <router-view></router-view>
       </div>
     </div>
@@ -36,11 +36,18 @@ export default {
 }
 
 .col1 {
+  width: 20vw;
   max-width: 300px;
 }
 
 .col2 {
-  max-width: 220px;
+  width: 10vw;
+  max-width: 250px;
+}
+
+.col3 {
+  width: 60vw;
+  min-width: 300px;
 }
 
 a {
