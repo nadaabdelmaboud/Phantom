@@ -167,10 +167,32 @@ export class BoardService {
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
     let retBoards = [];
+    let permissions = {};
     for (var i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
+      let createdOrjoined = 'created';
+      if (user.boards[i].createdOrjoined == 'joined') {
+        createdOrjoined = 'joined';
+        for (var j = 0; j < board.collaborators.length; j++) {
+          if (String(board.collaborators[j].id) == String(userId)) {
+            permissions = {
+              savePin: board.collaborators[j].savePin,
+              createPin: board.collaborators[j].createPin,
+              addCollaborators: board.collaborators[j].addCollaborators,
+              editDescription: board.collaborators[j].editDescription,
+              editTitle: board.collaborators[j].editTitle,
+              personalization: board.collaborators[j].personalization,
+            };
+            break;
+          }
+        }
+      }
       if (board) {
-        retBoards.push(board);
+        retBoards.push({
+          board: board,
+          createdOrjoined: createdOrjoined,
+          permissions: permissions,
+        });
       }
     }
     return retBoards;
@@ -189,14 +211,27 @@ export class BoardService {
     for (var i = 0; i < boardUser.boards.length; i++) {
       let board = await this.boardModel.findById(boardUser.boards[i].boardId);
       if (!board) continue;
-      if (board.status && board.status == 'public') {
-        retBoards.push(board);
-        continue;
-      } else {
-        if (await this.authorizedBoard(board, userId)) {
-          retBoards.push(board);
-          continue;
+      let collaborator = await this.isCollaborator(board, userId);
+      if ((board.status && board.status == 'public') || collaborator) {
+        let isJoined = false;
+        let permissions = {};
+        if (collaborator) {
+          isJoined = true;
+          permissions = {
+            savePin: collaborator.savePin,
+            createPin: collaborator.createPin,
+            addCollaborators: collaborator.addCollaborators,
+            editDescription: collaborator.editDescription,
+            editTitle: collaborator.editTitle,
+            personalization: collaborator.personalization,
+          };
         }
+        retBoards.push({
+          board: board,
+          isJoined: isJoined,
+          permissions: permissions,
+        });
+        continue;
       }
     }
     return retBoards;
