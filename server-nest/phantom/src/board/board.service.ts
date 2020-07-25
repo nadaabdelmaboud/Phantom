@@ -14,6 +14,7 @@ import { ValidationService } from 'src/shared/validation.service';
 import { editBoardDto } from './dto/editBoard.dto';
 import { PinsService } from '../pins/pins.service';
 import { topic } from 'src/types/topic';
+import { editCollaboratoresPermissionsDto } from './dto/editCollaboratoresPermissions.dto';
 @Injectable()
 export class BoardService {
   constructor(
@@ -399,14 +400,15 @@ export class BoardService {
   async editCollaboratoresPermissions(
     userId,
     boardId,
-    collaboratorId,
-    savePin,
-    createPin,
-    addCollaborators,
-    editTitle,
-    personalization,
-    editDescription,
+    editCollaboratoresPermissionsDto: editCollaboratoresPermissionsDto,
   ) {
+    let collaboratorId = editCollaboratoresPermissionsDto.collaboratorId,
+      savePin = editCollaboratoresPermissionsDto.savePin,
+      createPin = editCollaboratoresPermissionsDto.createPin,
+      addCollaborators = editCollaboratoresPermissionsDto.addCollaborators,
+      editTitle = editCollaboratoresPermissionsDto.editTitle,
+      personalization = editCollaboratoresPermissionsDto.personalization,
+      editDescription = editCollaboratoresPermissionsDto.editDescription;
     if (
       (savePin != true && savePin != false) ||
       (createPin != true && createPin != false) ||
@@ -639,4 +641,14 @@ export class BoardService {
     if (isBoardDeleted) return true;
     return false;
   }
+  async merge(boardOriginalId, boardMergedId, userId) {}
+  async createSection(boardId, sectionName, userId) {}
+  async deleteSection(boardId, sectionId, userId) {}
+  //TO-DO
+  //unsave pin from board (section option)
+  //create pin (add it section optionally)
+  //delete pin from board (delete pin)
+  //delete pin from section (delete pin)
+  //2l2tnen dol mfrod 2hndlhm fe delete pin (board is done) 2ms7 2l pin mn 2lsections (2def sectionId gwa user.savedPins , user.pins)
+  //edit pin
 }

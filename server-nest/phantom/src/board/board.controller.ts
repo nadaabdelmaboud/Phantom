@@ -12,12 +12,15 @@ import {
   NotFoundException,
   Query,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
 import { editBoardDto } from './dto/editBoard.dto';
-import { start } from 'repl';
+import { editCollaboratoresPermissionsDto } from './dto/editCollaboratoresPermissions.dto';
+
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -136,6 +139,72 @@ export class BoardController {
       return board;
     } else {
       throw new NotAcceptableException("board couldn't be updated");
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/boards/:boardId/collaboratores')
+  async getCollaboratoresPermissions(
+    @Request() req,
+    @Param('boardId') boardId: string,
+  ) {
+    let userId = req.user._id;
+    let collaboratores = await this.BoardService.getCollaboratoresPermissions(
+      userId,
+      boardId,
+    );
+    if (collaboratores) {
+      return collaboratores;
+    } else {
+      throw new NotAcceptableException('collaboratores not found');
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/:boardId/collaboratores')
+  async editCollaboratoresPermissions(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body() editCollaboratoresPermissionsDto: editCollaboratoresPermissionsDto,
+  ) {
+    let userId = req.user._id;
+    let collaborator = await this.BoardService.editCollaboratoresPermissions(
+      userId,
+      boardId,
+      editCollaboratoresPermissionsDto,
+    );
+    if (collaborator) {
+      return collaborator;
+    } else {
+      throw new NotAcceptableException('collaborator couldnt be edited');
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId/collaboratores')
+  async deleteCollaborator(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body('collaboratorId') collaboratorId: string,
+  ) {
+    let userId = req.user._id;
+    let isdeleted = await this.BoardService.deleteCollaborator(
+      userId,
+      boardId,
+      collaboratorId,
+    );
+    if (isdeleted) {
+      return { success: 'collaborator has been deleted' };
+    } else {
+      throw new NotAcceptableException('collaborator couldnt be deleted');
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId')
+  async deleteBoard(@Request() req, @Param('boardId') boardId: string) {
+    let userId = req.user._id;
+    let deletedBoard = await this.BoardService.deleteBoard(userId, boardId);
+    if (deletedBoard) {
+      return { success: 'Board is deleted succissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'Board is not deleated' });
     }
   }
 }

@@ -11,18 +11,22 @@ import {
   Request,
   UseGuards,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { createPinDto } from './dto/create-pin.dto';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { PinsService } from './pins.service';
 import { ImagesService } from '../images/images.service';
+import { BoardService } from '../board/board.service';
+
 @UseFilters(new HttpExceptionFilter())
 @Controller()
 export class PinsController {
   constructor(
     private PinsService: PinsService,
     private ImagesService: ImagesService,
+    private BoardService: BoardService,
   ) {}
 
   @UseGuards(AuthGuard('jwt'))
@@ -183,6 +187,17 @@ export class PinsController {
       return { success: true };
     } else {
       throw new NotAcceptableException({ message: 'like is not created' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/pins/:pinId')
+  async deletePin(@Request() req, @Param('pinId') pinId: string) {
+    let userId = req.user._id;
+    let deletedPin = await this.BoardService.deletePin(pinId, userId, false);
+    if (deletedPin) {
+      return { success: 'pin is deleted succissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'pin is not deleated' });
     }
   }
 }
