@@ -91,6 +91,7 @@ export class UserService {
       bio: Joi.string().optional(),
       iat: Joi.optional(),
       exp: Joi.optional(),
+      profileImage: Joi.string().optional(),
     });
     const body = updateDTO;
     const validate = shcema.validate(body);
