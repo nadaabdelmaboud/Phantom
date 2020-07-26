@@ -4,7 +4,7 @@
    <Board v-for="board in boards" class="col-sm-3"
    :key="board._id"
    :boardName="board.name"
-   :pinsImages="board.pins"
+   :pinsImages="'0'"
    />
    </div>
   </div>
@@ -31,7 +31,7 @@ export default {
 
 <style lang="scss" scoped>
 .home{
-  padding: 2%;
+ // padding: 2%;
 }
 
 </style>

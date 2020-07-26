@@ -53,6 +53,24 @@ const actions = {
             console.log(error)
           });
       },
+      sortAz({commit}){
+        axios.put("me/boards/sortAZ")
+        .then((response)=>{
+          commit("setBoards", response.data);
+        })
+        .catch(error => {
+          console.log(error)
+        });
+      },
+      sortDate({commit}){
+        axios.put("me/boards/sortDate")
+        .then((response)=>{
+          commit("setBoards", response.data);
+        })
+        .catch(error => {
+          console.log(error)
+        });
+      }
 };
 
 const getters = {
