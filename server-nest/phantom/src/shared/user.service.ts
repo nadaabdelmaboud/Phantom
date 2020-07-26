@@ -87,6 +87,8 @@ export class UserService {
       firstName: Joi.string().optional(),
       lastName: Joi.string().optional(),
       country: Joi.string().optional(),
+      location: Joi.string().optional(),
+      userName: Joi.string().optional(),
       gender: Joi.string().optional(),
       bio: Joi.string().optional(),
       iat: Joi.optional(),
@@ -188,6 +190,16 @@ export class UserService {
       await this.userModel.updateOne(
         { _id: userId },
         { lastName: updateDto.lastName },
+      );
+    if (updateDto.userName)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { userName: updateDto.userName },
+      );
+    if (updateDto.location)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { location: updateDto.location },
       );
     if (updateDto.bio)
       await this.userModel.updateOne({ _id: userId }, { about: updateDto.bio });

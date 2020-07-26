@@ -4,6 +4,8 @@ export interface UpdateDto {
   birthDate?: Date;
   firstName?: string;
   lastName?: string;
+  location?: string;
+  userName?: string;
   country?: string;
   gender?: string;
   bio?: string;
