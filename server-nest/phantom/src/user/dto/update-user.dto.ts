@@ -1,4 +1,4 @@
-export interface UpdateDTO {
+export interface UpdateDto {
   email?: string;
   password?: string;
   birthDate?: Date;

@@ -11,9 +11,9 @@ import * as mongoose from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import { user } from '../types/user';
 import { Email } from '../shared/send-email.service';
-import { LoginDTO } from '../auth/dto/login.dto';
-import { RegisterDTO } from '../auth/dto/register.dto';
-import { UpdateDTO } from '../user/dto/update-user.dto';
+import { LoginDto } from '../auth/dto/login.dto';
+import { RegisterDto } from '../auth/dto/register.dto';
+import { UpdateDto } from '../user/dto/update-user.dto';
 import { Payload } from '../types/payload';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
@@ -24,7 +24,7 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<user>,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -32,20 +32,20 @@ export class UserService {
     return user;
   }
 
-  async findByLogin(LoginDTO: LoginDTO): Promise<any> {
-    console.log(LoginDTO.password);
+  async findByLogin(loginDto: LoginDto): Promise<any> {
+    console.log(loginDto.password);
     const user = await this.userModel
-      .findOne({ email: LoginDTO.email })
+      .findOne({ email: loginDto.email })
       .exec()
       .then(async user => {
         return user ? user : 0;
       });
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
-    if (await bcrypt.compare(LoginDTO.password, user.password)) return user;
+    if (await bcrypt.compare(loginDto.password, user.password)) return user;
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
   }
-  async checkCreateData(RegisterDTO: RegisterDTO) {
+  async checkCreateData(registerDto: RegisterDto) {
     const shcema = Joi.object({
       email: Joi.string()
         .trim()
@@ -63,18 +63,18 @@ export class UserService {
       iat: Joi.optional(),
       exp: Joi.optional(),
     });
-    const body = RegisterDTO;
+    const body = registerDto;
     const validate = shcema.validate(body);
     if (validate.error)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    if (await this.checkMAilExistAndFormat(RegisterDTO.email))
+    if (await this.checkMAilExistAndFormat(registerDto.email))
       throw new HttpException(
         '"email" should not have acount',
         HttpStatus.FORBIDDEN,
       );
   }
 
-  async checkUpdateData(updateDTO: UpdateDTO) {
+  async checkUpdateData(updateDto: UpdateDto) {
     const shcema = Joi.object({
       email: Joi.string()
         .trim()
@@ -93,31 +93,31 @@ export class UserService {
       exp: Joi.optional(),
       profileImage: Joi.string().optional(),
     });
-    const body = updateDTO;
+    const body = updateDto;
     const validate = shcema.validate(body);
     if (validate.error)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    if (updateDTO.email)
-      if (await this.checkMAilExistAndFormat(updateDTO.email))
+    if (updateDto.email)
+      if (await this.checkMAilExistAndFormat(updateDto.email))
         throw new HttpException(
           '"email" should not have acount',
           HttpStatus.FORBIDDEN,
         );
   }
 
-  async createUser(RegisterDTO: RegisterDTO): Promise<any> {
-    await this.checkCreateData(RegisterDTO);
+  async createUser(registerDto: RegisterDto): Promise<any> {
+    await this.checkCreateData(registerDto);
     const salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(RegisterDTO.password, salt);
+    let hash = await bcrypt.hash(registerDto.password, salt);
     var newUser = new this.userModel({
-      firstName: RegisterDTO.firstName,
-      lastName: RegisterDTO.lastName,
-      email: RegisterDTO.email,
+      firstName: registerDto.firstName,
+      lastName: registerDto.lastName,
+      email: registerDto.email,
       password: hash,
-      about: RegisterDTO.bio,
-      gender: RegisterDTO.gender,
-      country: RegisterDTO.country,
-      birthDate: RegisterDTO.birthday,
+      about: registerDto.bio,
+      gender: registerDto.gender,
+      country: registerDto.country,
+      birthDate: registerDto.birthday,
       pins: [],
       uploadedImages: [],
       savedImages: [],
@@ -175,34 +175,34 @@ export class UserService {
    * @param {String} userId -id of user
    */
 
-  async updateUserInfo(userId, updateDTO: UpdateDTO) {
+  async updateUserInfo(userId, updateDto: UpdateDto) {
     // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
     const user = await this.getUserById(userId);
     if (!user) return 0;
-    if (updateDTO.firstName)
+    if (updateDto.firstName)
       await this.userModel.updateOne(
         { _id: userId },
-        { firstName: updateDTO.firstName },
+        { firstName: updateDto.firstName },
       );
-    if (updateDTO.lastName)
+    if (updateDto.lastName)
       await this.userModel.updateOne(
         { _id: userId },
-        { lastName: updateDTO.lastName },
+        { lastName: updateDto.lastName },
       );
-    if (updateDTO.bio)
-      await this.userModel.updateOne({ _id: userId }, { about: updateDTO.bio });
-    if (updateDTO.gender)
+    if (updateDto.bio)
+      await this.userModel.updateOne({ _id: userId }, { about: updateDto.bio });
+    if (updateDto.gender)
       await this.userModel.updateOne(
         { _id: userId },
-        { gender: updateDTO.gender },
+        { gender: updateDto.gender },
       );
-    if (updateDTO.country)
+    if (updateDto.country)
       await this.userModel.updateOne(
         { _id: userId },
-        { country: updateDTO.country },
+        { country: updateDto.country },
       );
-    if (updateDTO.profileImage) {
-      let profileImage = mongoose.Types.ObjectId(updateDTO.profileImage);
+    if (updateDto.profileImage) {
+      let profileImage = mongoose.Types.ObjectId(updateDto.profileImage);
       await this.userModel.updateOne(
         { _id: userId },
         { profileImage: profileImage },
@@ -210,8 +210,8 @@ export class UserService {
     }
 
     if (
-      updateDTO.email &&
-      !(await this.checkMAilExistAndFormat(updateDTO.email))
+      updateDto.email &&
+      !(await this.checkMAilExistAndFormat(updateDto.email))
     ) {
       var token =
         'Bearer ' +
@@ -219,9 +219,9 @@ export class UserService {
           {
             email: user.email,
             _id: user._id,
-            newEmail: updateDTO.email,
-            firstName: updateDTO.firstName
-              ? updateDTO.firstName
+            newEmail: updateDto.email,
+            firstName: updateDto.firstName
+              ? updateDto.firstName
               : user.firstName,
           },
           process.env.SECRET_KEY,
@@ -232,13 +232,13 @@ export class UserService {
         user.email,
         token,
         'change email',
-        updateDTO.firstName ? updateDTO.firstName : user.firstName,
+        updateDto.firstName ? updateDto.firstName : user.firstName,
       );
     }
-    if (updateDTO.birthDate)
+    if (updateDto.birthDate)
       await this.userModel.updateOne(
         { _id: userId },
-        { birthDate: updateDTO.birthDate },
+        { birthDate: updateDto.birthDate },
       );
     return 1;
   }
