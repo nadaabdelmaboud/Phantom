@@ -53,7 +53,7 @@ a:hover {
 }
 
 li {
-  padding: 4px;
+  padding: 8px;
 }
 
 .exact {
