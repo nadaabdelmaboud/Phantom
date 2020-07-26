@@ -13,7 +13,9 @@ const state = {
   validPassword: null,
   errorMessage: null,
   emailConfirm: false,
-  loginState: null
+  loginState: null,
+  sendEmailStatus: null,
+  resetPasswordStatus: null
 };
 
 const mutations = {
@@ -54,6 +56,12 @@ const mutations = {
   },
   setLogin(state, status) {
     state.loginState = status;
+  },
+  setSendEmail(state, status) {
+    state.sendEmailStatus = status;
+  },
+  setResetStatus(state, status) {
+    state.resetPasswordStatus = status;
   }
 };
 
@@ -79,7 +87,7 @@ const actions = {
         {},
         {
           headers: {
-            "x-auth-token": `${token}`
+            Authorization: `${token}`
           }
         }
       )
@@ -87,7 +95,6 @@ const actions = {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
         commit("setEmailConfirm", true);
-        console.log(response.data.token);
       })
       .catch(error => {
         commit("setEmailConfirm", false);
@@ -96,21 +103,48 @@ const actions = {
       });
   },
   login({ commit }, data) {
-    axios.defaults.headers.common["Vary"] ='Origin'
-    axios.defaults.headers.common["Access-Control-Allow-Origin"] ='origin-list'
     axios
       .post("login", data)
       .then(response => {
-        localStorage.setItem("userToken", response.data.token);
+        let token = response.data.token;
+        localStorage.setItem("userToken", token);
         commit("setLogin", true);
       })
       .catch(error => {
+        commit("setLogin", false);
+        if (error.response.data.message == "password is not correct")
+          commit("setErrorMessage", "Password is not correct");
+        else commit("setErrorMessage", "Email is not correct");
+      });
+  },
+  forgetPassword({ commit }, emailAddress) {
+    axios
+      .post("/forget-password", { email: emailAddress })
+      .then(() => {
+        commit("setSendEmail", true);
+      })
+      .catch(error => {
+        commit("setSendEmail", false);
+        if (error.response.data.message == "not user by this email")
+          commit("setErrorMessage", "This Email is not correct");
+      });
+  },
+  resetPassword({ commit }, payload) {
+    axios
+      .put(
+        "/me/reset-password?newPassword=" + payload.newPassword,
+        {},
+        {
+          headers: {
+            Authorization: payload.token
+          }
+        }
+      )
+      .then(() => {
+        commit("setResetStatus", true);
+      })
+      .catch(error => {
         console.log(error);
-        // commit("setLogin", false);
-        // console.log(error.response);
-        // if (error.response.data.error == " password is not correct")
-        //   commit("setErrorMessage", "Password is not correct");
-        // else commit("setErrorMessage", "Email is not correct");
       });
   }
 };

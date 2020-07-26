@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 
-import { UserService } from '../shared/user.service';
+import { UserService } from './user.service';
 import { Payload } from '../types/payload';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   async signPayload(payload) {
     return (

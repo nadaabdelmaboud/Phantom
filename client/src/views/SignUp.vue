@@ -170,8 +170,11 @@ export default {
   },
   watch: {
     signUpState: function() {
-      if (this.signUpState) this.$router.push("confirm");
+      if (this.signUpState) this.$router.push("email-confirm");
     }
+  },
+  created: function() {
+    this.$store.commit("user/setErrorMessage", null);
   }
 };
 </script>

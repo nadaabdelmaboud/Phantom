@@ -11,27 +11,23 @@
 </template>
 
 <script>
-import Board from "../components/Board"
-import {mapGetters} from "vuex"
+import Board from "../components/Board";
+import { mapGetters } from "vuex";
 export default {
   name: "UserBoards",
   mounted() {
     this.$store.dispatch("boards/userBoards");
   },
-  components:{
+  components: {
     Board
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards"
-    }),
-  },
+    })
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.home{
- // padding: 2%;
-}
-
 </style>

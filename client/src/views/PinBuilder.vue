@@ -19,7 +19,7 @@
           class="imageInput doubleBorder"
           :class="{
             dragging: dragover,
-            noImage: validate && !imageFile,
+            noImage: validate && !imageFile
           }"
           v-if="!imageFile"
           @click="$refs.fileInput.click()"
@@ -300,7 +300,7 @@ export default {
       classifier: "",
       validate: false,
       // To store the classification
-      label: "",
+      label: ""
     };
   },
   methods: {
@@ -384,21 +384,21 @@ export default {
             board: this.chosenBoardId,
             imageWidth: this.width,
             imageHeight: this.height,
-            imageId: this.imageFile,
+            imageId: this.imageFile
           };
           if (this.note != "") pin.note = this.note;
           this.$store.dispatch("pins/createPin", { pin, label: this.label });
           //this.$store.commit("popUpsState/toggleNewPin");
         }
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards",
       chosenBoardName: "boards/chosenBoardName",
-      chosenBoardId: "boards/chosenBoardId",
-    }),
-  },
+      chosenBoardId: "boards/chosenBoardId"
+    })
+  }
 };
 </script>

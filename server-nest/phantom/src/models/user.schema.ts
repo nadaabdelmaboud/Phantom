@@ -11,14 +11,21 @@ export const User = new Schema({
   gender: String,
   socketId: String,
   profileImage: mongoose.Types.ObjectId,
-  pins: Array(mongoose.Types.ObjectId),
-  savedPins: Array(mongoose.Types.ObjectId),
+  pins: Array({
+    id: mongoose.Types.ObjectId,
+    boardId: mongoose.Types.ObjectId,
+  }),
+  savedPins: Array({
+    id: mongoose.Types.ObjectId,
+    boardId: mongoose.Types.ObjectId,
+  }),
   confirm: Boolean,
   fcmToken: String,
   notifications: [{}],
   offlineNotifications: [{}],
   followers: Array(mongoose.Types.ObjectId),
   following: Array(mongoose.Types.ObjectId),
+  viewState: String,
   boards: [
     {
       boardId: mongoose.Types.ObjectId,

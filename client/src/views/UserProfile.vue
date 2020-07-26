@@ -49,12 +49,12 @@
         </ul>
       </div>
     <div class="create" v-if="showCreate">
-        <p>Create</p>
-        <ul>
-          <li  @click="createBoardPopup">Board</li>
-          <router-link tag="li" to="/PinBuilder">Pin</router-link>
-        </ul>
-      </div>
+      <p>Create</p>
+      <ul>
+        <li @click="createBoardPopup">Board</li>
+        <router-link tag="li" to="/PinBuilder">Pin</router-link>
+      </ul>
+    </div>
     <router-view> </router-view>
   </div>
 </template>
@@ -103,8 +103,8 @@ export default {
         this.inBoards = false;
         this.inPins = false;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -153,8 +153,8 @@ i {
 i:hover {
   background-color: $lightPink;
 }
-.col2{
-padding: 0 calc((33% - 151px)/2);
+.col2 {
+  padding: 0 60px;
 }
 .buttons {
   @include horizontalDivs;
@@ -172,11 +172,11 @@ padding: 0 calc((33% - 151px)/2);
   background-color: $darkBlue;
   color: $lightPink;
 }
-.create{
+.create {
   @include optionsList;
-  padding:10px;
-  width:200px;
- // top:200;
+  padding: 10px;
+  width: 200px;
+  // top:200;
   right: 30px;
   p{
     font-size: 12px;

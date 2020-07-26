@@ -3,6 +3,8 @@ import * as mongoose from 'mongoose';
 export interface user extends Document {
   firstName: String;
   lastName: String;
+  userName: String;
+  location: String;
   email: String;
   password: String;
   country: String;
@@ -11,8 +13,14 @@ export interface user extends Document {
   gender: String;
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
-  pins: Array<mongoose.Types.ObjectId>;
-  savedPins: Array<mongoose.Types.ObjectId>;
+  pins: Array<{
+    id: mongoose.Types.ObjectId;
+    boardId: mongoose.Types.ObjectId;
+  }>;
+  savedPins: Array<{
+    id: mongoose.Types.ObjectId;
+    boardId: mongoose.Types.ObjectId;
+  }>;
   confirm: Boolean;
   fcmToken: String;
   notifications: [{}];
@@ -27,8 +35,10 @@ export interface user extends Document {
       isJoined: Boolean;
       joiners: Array<mongoose.Types.ObjectId>;
       followers: Array<mongoose.Types.ObjectId>;
+      createdOrjoined: String;
     },
   ];
+  viewState: string;
   counts: {
     likes: Number;
     comments: Number;

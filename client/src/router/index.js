@@ -11,6 +11,11 @@ import LoginView from "../views/LoginView.vue";
 import UserProfile from "../views/UserProfile";
 import UserBoards from "../views/UserBoards";
 import UserPins from "../views/UserPins";
+import EditProfile from "../views/EditProfile";
+import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
+import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
+import ForgetPassword from "../views/ForgetPassword.vue";
+import ResetPassword from "../views/ResetPassword.vue";
 
 Vue.use(VueRouter);
 
@@ -44,16 +49,37 @@ const routes = [
         path: "/UserProfile",
         name: "UserProfile",
         component: UserProfile,
-        children:[
+        children: [
           {
             path: "Boards",
             name: "Boards",
-            component: UserBoards,
+            component: UserBoards
           },
           {
-          path: "Pins",
-          name: "Pins",
-          component: UserPins,
+            path: "Pins",
+            name: "Pins",
+            component: UserPins
+          }
+        ]
+      },
+      {
+        path: "/settings",
+        name: "Settings",
+        redirect: "/settings/edit-profile",
+        component: EditProfile,
+        children: [
+          {
+            path: "/settings/edit-profile",
+            name: "EditProfile",
+            component: EditProfileSettings
+          },
+          {
+            path: "/settings/account-settings",
+            name: "AccountSettings"
+          },
+          {
+            path: "/settings/notifications",
+            name: "Notifications"
           }
         ]
       }
@@ -74,6 +100,22 @@ const routes = [
     name: "confirm",
     query: "token=",
     component: WelcomePage
+  },
+  {
+    path: "/reset_password",
+    name: "Reset Password",
+    query: "token=",
+    component: ResetPassword
+  },
+  {
+    path: "/email-confirm",
+    name: "EmailConfirm",
+    component: EmailConfirm
+  },
+  {
+    path: "/password-reset",
+    name: "ForgetPassword",
+    component: ForgetPassword
   }
 ];
 

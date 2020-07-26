@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-    <CreateBoardPopup v-if="createBoard"/>
-     <NewPinPopup v-if="newPin"/>
+    <CreateBoardPopup v-if="createBoard" />
+    <NewPinPopup v-if="newPin" />
     <div>
-    <HomeNavigationBar />
-    <router-view class="mainComponent" />
-    <i class="fa fa-comment globalIcons"></i>
-    <router-link
-      tag="i"
-      class="fa fa-plus globalIcons"
-      to="/PinBuilder"
-    ></router-link>
-    <i class="fa fa-question-circle globalIcons"></i>
+      <HomeNavigationBar />
+      <router-view class="mainComponent" />
+      <i class="fa fa-comment globalIcons"></i>
+      <router-link
+        tag="i"
+        class="fa fa-plus globalIcons"
+        to="/PinBuilder"
+      ></router-link>
+      <i class="fa fa-question-circle globalIcons"></i>
     </div>
   </div>
 </template>
@@ -23,54 +23,54 @@
   min-height: calc(100vh);
   padding-top: 80px;
 }
-.home{
-.globalIcons{
-  height: 48px;
-  width: 48px;
-  position: fixed;
-  left: 92%;
-  font-size: 24px;
-  color:$darkBlue;
-  border-radius: 50%;
-  padding: 12px;
-  text-align: center;
-  box-shadow: 4px 4px 4px #888888;
-  z-index: 2;
-  transition: background-color 0.5s ease;
-  background-color: $offWhite;
-}
-.globalIcons:hover{
-background-color: $lightPink;
-}
+.home {
+  .globalIcons {
+    height: 48px;
+    width: 48px;
+    position: fixed;
+    left: 92%;
+    font-size: 24px;
+    color: $darkBlue;
+    border-radius: 50%;
+    padding: 12px;
+    text-align: center;
+    box-shadow: 4px 4px 4px #888888;
+    z-index: 2;
+    transition: background-color 0.5s ease;
+    background-color: $offWhite;
+  }
+  .globalIcons:hover {
+    background-color: $lightPink;
+  }
 
-.globalIcons:nth-child(3){
- bottom: 170px;
-}
-.globalIcons:nth-child(4){
-  bottom: 110px;
-}
-.globalIcons:nth-child(5){
-  bottom: 50px;
-}
+  .globalIcons:nth-child(3) {
+    bottom: 170px;
+  }
+  .globalIcons:nth-child(4) {
+    bottom: 110px;
+  }
+  .globalIcons:nth-child(5) {
+    bottom: 50px;
+  }
 }
 </style>
 <script>
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/CreateBoardPopup";
-import NewPinPopup from "../views/NewPinPopup"
-import {mapState} from "vuex"
+import NewPinPopup from "../views/NewPinPopup";
+import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
   components: {
     HomeNavigationBar,
     CreateBoardPopup,
-     NewPinPopup
+    NewPinPopup
   },
-  computed:{
-      ...mapState({
+  computed: {
+    ...mapState({
       createBoard: state => state.popUpsState.createBoardPopup,
       newPin: state => state.popUpsState.newPinPopup
-    }),
+    })
   }
 };
 </script>

@@ -1,21 +1,20 @@
 import axios from "axios";
 
 const state = {
-  userBoards:[],
-  chosenBoardName:"Select",
-  chosenBoardId:""
+  userBoards: [],
+  chosenBoardName: "Select",
+  chosenBoardId: ""
 };
 
 const mutations = {
-  addNewBoard(state,board){
-      state.userBoards.push(board)
+  addNewBoard(state, board) {
+    state.userBoards.push(board);
   },
-  setBoards(state,boards){
-    state.userBoards=boards
+  setBoards(state, boards) {
+    state.userBoards = boards;
   },
-  chooseBoard(state,{name,id}){
-      state.chosenBoardName =name,
-      state.chosenBoardId =id
+  chooseBoard(state, { name, id }) {
+    (state.chosenBoardName = name), (state.chosenBoardId = id);
   }
 };
 
@@ -74,10 +73,10 @@ const actions = {
 };
 
 const getters = {
-    userBoards: state => state.userBoards,
-    chosenBoardName: state => state.chosenBoardName,
-    chosenBoardId: state => state.chosenBoardId
-  };
+  userBoards: state => state.userBoards,
+  chosenBoardName: state => state.chosenBoardName,
+  chosenBoardId: state => state.chosenBoardId
+};
 
 export default {
   namespaced: true,

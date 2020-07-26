@@ -78,10 +78,10 @@ export class TopicService {
         return topic;
       },
     );
-    const pin = await this.pinModel.findById(pinId, (err, pin) => {
-      if (err) return 0;
-      else return pin;
-    });
+    const pin = await this.pinModel.findById(pinId);
+    if (!pin) return false;
+    pin.topic = topicName;
+    await pin.save();
     if (topic && pin) {
       topic[0].pins.push(pinId);
       await topic[0].save();

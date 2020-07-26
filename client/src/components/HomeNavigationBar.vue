@@ -16,11 +16,10 @@
     </router-link>
     <input class="searchInput" placeholder=" Search..." />
     <div class="icons">
-
       <i class="fa fa-bell"></i>
     </div>
     <router-link tag="div" class="icons" to="/UserProfile/Boards">
-      <i class="fa fa-user-circle" ></i> 
+      <i class="fa fa-user-circle"></i>
     </router-link>
     <div class="icons">
       <i class="fa fa-angle-down"></i>
@@ -34,10 +33,10 @@
 
 .navigationBar {
   position: fixed;
-  top:0;
+  top: 0;
   right: 0;
-  left:0;
- // bottom: 80px;
+  left: 0;
+  // bottom: 80px;
   height: 80px;
   width: 100vw;
   padding: 16px 0;
@@ -104,14 +103,12 @@ export default {
       if (this.$route.path == "/") {
         this.inFollowing = false;
         this.inHome = true;
-      } 
-      else if (this.$route.path == "/following") {
+      } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
-      }
-      else{
-         this.inHome = false;
-         this.inFollowing = false;
+      } else {
+        this.inHome = false;
+        this.inFollowing = false;
       }
     }
   }
