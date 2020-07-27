@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../shared/user.service';
 import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service';
-import { UpdateDTO } from './dto/update-user.dto';
+import { UpdateDto } from './dto/update-user.dto';
 import { NotAcceptableException } from '@nestjs/common';
 @nestCommon.Controller()
 export class UserController {
@@ -11,7 +11,7 @@ export class UserController {
     private userService: UserService,
     private authService: AuthService,
     private email: Email,
-  ) {}
+  ) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/me')
@@ -45,7 +45,7 @@ export class UserController {
   @nestCommon.Put('/me/update')
   async updateUser(
     @nestCommon.Request() req,
-    @nestCommon.Body() updateData: UpdateDTO,
+    @nestCommon.Body() updateData: UpdateDto,
   ) {
     await this.userService.checkUpdateData(updateData);
     await this.userService.updateUserInfo(req.user._id, updateData);

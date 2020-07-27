@@ -3,6 +3,8 @@ import * as mongoose from 'mongoose';
 export interface user extends Document {
   firstName: String;
   lastName: String;
+  userName: String;
+  location: String;
   email: String;
   password: String;
   country: String;

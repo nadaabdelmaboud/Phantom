@@ -2,8 +2,8 @@ import * as nestCommon from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../shared/user.service';
 import { Payload } from '../types/payload';
-import { LoginDTO } from './dto/login.dto';
-import { RegisterDTO } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service'
 @nestCommon.Controller()
@@ -15,7 +15,7 @@ export class AuthController {
   ) { }
 
   @nestCommon.Post('/login')
-  async login(@nestCommon.Body() userDTO: LoginDTO) {
+  async login(@nestCommon.Body() userDTO: LoginDto) {
     const user = await this.userService.findByLogin(userDTO);
     if (!user) throw new Error('topic not found');
     const payload: Payload = {
@@ -26,7 +26,7 @@ export class AuthController {
   }
 
   @nestCommon.Post('/sign_up')
-  async sign_up(@nestCommon.Body() userDTO: RegisterDTO) {
+  async sign_up(@nestCommon.Body() userDTO: RegisterDto) {
     const user = await this.userService.checkCreateData(userDTO);
     const token = await this.authService.signPayload(userDTO);
     await this.email.sendEmail(userDTO.email, token, 'confirm', userDTO.firstName)
