@@ -4,6 +4,7 @@ import user from "./modules/user.js";
 import popUpsState from "./modules/popUpsState.js";
 import pins from "./modules/pins.js";
 import boards from "./modules/boards.js";
+import homeCards from "./modules/homeCards.js";
 
 Vue.use(Vuex);
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     user,
     popUpsState,
     pins,
-    boards
+    boards,
+    homeCards
   }
 });
