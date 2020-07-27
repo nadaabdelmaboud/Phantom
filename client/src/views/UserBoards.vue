@@ -1,13 +1,15 @@
 <template>
   <div class="home">
     <div class="row m-0">
-   <Board v-for="board in boards" class="col-sm-3"
-   :key="board.board._id"
-   :boardName="board.board.name"
-   :pinsImages="board.board.coverImages"
-   :pinsCount="board.board.counts.pins"
-   />
-   </div>
+      <Board
+        v-for="board in boards"
+        class="col-sm-3"
+        :key="board.board._id"
+        :boardName="board.board.name"
+        :pinsImages="board.board.coverImages"
+        :pinsCount="board.board.counts.pins"
+      />
+    </div>
   </div>
 </template>
 
@@ -30,5 +32,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

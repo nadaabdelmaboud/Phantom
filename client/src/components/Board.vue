@@ -33,8 +33,8 @@ export default {
     createdAt: {
       type: Date
     },
-    pinsCount:{
-      type:Number
+    pinsCount: {
+      type: Number
     }
   }
 };
