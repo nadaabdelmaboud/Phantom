@@ -358,8 +358,11 @@ export class BoardService {
       (isCreator || (isCollaborator && isCollaborator.addCollaborators)) &&
       editBoardDto.collaboratores
     ) {
-      let collaboratores = editBoardDto.collaboratores.split(',');
+      console.log(editBoardDto.collaboratores);
+      let collaboratores = await editBoardDto.collaboratores.split(',');
+      console.log(collaboratores);
       for (var i = 0; i < collaboratores.length; i++) {
+        console.log(collaboratores.length);
         if (
           (await this.ValidationService.checkMongooseID([collaboratores[i]])) ==
           0
@@ -381,16 +384,16 @@ export class BoardService {
           editDescription: false,
           addCollaborators: false,
         });
-        for (var i = 0; i < creator.boards.length; i++) {
-          if (String(boardId) == String(creator.boards[i].boardId)) {
-            creator.boards[i].joiners.push(id);
+        for (var k = 0; k < creator.boards.length; k++) {
+          if (String(boardId) == String(creator.boards[k].boardId)) {
+            creator.boards[k].joiners.push(id);
             await creator.save();
             break;
           }
         }
         let joiners = [];
-        for (var i = 0; i < board.collaborators.length; i++) {
-          joiners.push(board.collaborators[i].collaboratorId);
+        for (var j = 0; j < board.collaborators.length; j++) {
+          joiners.push(board.collaborators[j].collaboratorId);
         }
         collaborator.boards.push({
           boardId: boardId,
@@ -401,9 +404,10 @@ export class BoardService {
           joiners: joiners,
           followers: board.followers,
         });
+        await collaborator.save();
+        await board.save();
       }
     }
-    await board.save();
 
     return board;
   }
