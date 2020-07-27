@@ -165,8 +165,6 @@ export class BoardService {
       createdAt: board.createdAt,
       isJoined: false,
       createdOrjoined: 'created',
-      joiners: [],
-      followers: [],
     });
     await user.save().catch(err => {
       console.log(err);
@@ -384,27 +382,16 @@ export class BoardService {
           editDescription: false,
           addCollaborators: false,
         });
-        for (var k = 0; k < creator.boards.length; k++) {
-          if (String(boardId) == String(creator.boards[k].boardId)) {
-            creator.boards[k].joiners.push(id);
-            await creator.save();
-            break;
-          }
-        }
-        let joiners = [];
-        for (var j = 0; j < board.collaborators.length; j++) {
-          joiners.push(board.collaborators[j].collaboratorId);
-        }
+
         collaborator.boards.push({
           boardId: boardId,
           name: board.name,
           createdAt: board.createdAt,
           isJoined: board.isJoined,
           createdOrjoined: 'joined',
-          joiners: joiners,
-          followers: board.followers,
         });
         await collaborator.save();
+        console.log(collaborator);
         await board.save();
       }
     }
@@ -557,23 +544,26 @@ export class BoardService {
         );
         board.collaborators.splice(i, 1);
         await board.save();
-        return true;
+        break;
       }
       no++;
     }
+
     if (no == board.collaborators.length) {
       if (collaborator) {
-        for (var i = 0; i < collaborator.boards.length; i++) {
+        console.log(boardId);
+        for (var index = 0; index < collaborator.boards.length; index++) {
+          console.log(collaborator.boards[index]);
           if (
-            String(collaborator.boards[i].boardId) == String(boardId) &&
-            collaborator.boards[i].createdOrjoined == 'joined'
+            String(collaborator.boards[index].boardId) == String(boardId) &&
+            collaborator.boards[index].createdOrjoined == 'joined'
           ) {
-            collaborator.boards.splice(i, 1);
+            console.log('sss');
+            collaborator.boards.splice(index, 1);
             await collaborator.save();
             return true;
           }
         }
-        return false;
       } else {
         throw new NotAcceptableException('collaborator not found');
       }
@@ -653,6 +643,7 @@ export class BoardService {
         }
       }
     }
+    await this.pinModel.deleteOne({ _id: pinId });
     return true;
   }
   async deleteBoard(userId, boardId) {

@@ -32,8 +32,7 @@ export const User = new Schema({
       name: String,
       createdAt: Date,
       isJoined: Boolean,
-      joiners: Array(mongoose.Types.ObjectId),
-      followers: Array(mongoose.Types.ObjectId),
+      createdOrjoined: String,
     },
   ],
   counts: {
