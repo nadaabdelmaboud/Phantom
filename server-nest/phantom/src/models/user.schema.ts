@@ -16,7 +16,7 @@ export const User = new Schema({
     boardId: mongoose.Types.ObjectId,
   }),
   savedPins: Array({
-    id: mongoose.Types.ObjectId,
+    pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
   }),
   confirm: Boolean,

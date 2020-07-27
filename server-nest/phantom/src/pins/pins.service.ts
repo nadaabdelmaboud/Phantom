@@ -139,14 +139,14 @@ export class PinsService {
     }
     let found = false;
     for (var i = 0; i < user.savedPins.length; i++) {
-      if (String(user.savedPins[i].id) == String(pinId)) {
+      if (String(user.savedPins[i].pinId) == String(pinId)) {
         found = true;
         break;
       }
     }
     if (!found) {
       user.savedPins.push({
-        id: pinId,
+        pinId: pinId,
         boardId: boardId,
       });
       pin.savers.push(userId);
@@ -169,7 +169,7 @@ export class PinsService {
     if (!user) return false;
     let retPins = [];
     for (var i = 0; i < user.savedPins.length; i++) {
-      let pinFound = await this.pinModel.findById(user.savedPins[i].id);
+      let pinFound = await this.pinModel.findById(user.savedPins[i].pinId);
       if (pinFound) {
         retPins.push(pinFound);
       }
