@@ -505,16 +505,16 @@ export class BoardService {
         board.collaborators[i].editDescription = editDescription;
 
         await board.save();
+        return {
+          id: board.collaborators[i].collaboratorId,
+          savePin: board.collaborators[i].savePin,
+          createPin: board.collaborators[i].createPin,
+          editTitle: board.collaborators[i].editTitle,
+          addCollaborators: board.collaborators[i].addCollaborators,
+          personalization: board.collaborators[i].personalization,
+          editDescription: board.collaborators[i].editDescription,
+        };
       }
-      return {
-        id: board.collaborators[i].collaboratorId,
-        savePin: board.collaborators[i].savePin,
-        createPin: board.collaborators[i].createPin,
-        editTitle: board.collaborators[i].editTitle,
-        addCollaborators: board.collaborators[i].addCollaborators,
-        personalization: board.collaborators[i].personalization,
-        editDescription: board.collaborators[i].editDescription,
-      };
     }
     return false;
   }
