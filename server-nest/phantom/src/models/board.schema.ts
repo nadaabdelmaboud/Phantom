@@ -20,7 +20,7 @@ export const Board = new Schema({
   createdAt: Date,
   collaborators: [
     {
-      id: mongoose.Types.ObjectId,
+      collaboratorId: mongoose.Types.ObjectId,
       savePin: Boolean,
       createPin: Boolean,
       editTitle: Boolean,

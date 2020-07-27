@@ -17,7 +17,7 @@ export interface board extends Document {
   };
   coverImages: Array<mongoose.Types.ObjectId>;
   collaborators: Array<{
-    id: mongoose.Types.ObjectId;
+    collaboratorId: mongoose.Types.ObjectId;
     savePin: Boolean;
     createPin: Boolean;
     editDescription: Boolean;
