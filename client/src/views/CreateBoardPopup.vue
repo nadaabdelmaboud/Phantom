@@ -30,7 +30,7 @@
         :autoApply="true"
         v-model="dateRange"
         @toggle="checkOpen = !checkOpen"
-        :always-show-calendars ="false"
+        :always-show-calendars="false"
         :linkedCalendars="true"
         @update="updateValues"
       >
@@ -49,7 +49,7 @@
         id="myRange"
         v-model="isPrivate"
         @change="updateValues"
-        :class="{isPrivate:isPrivate==2}"
+        :class="{ isPrivate: isPrivate == 2 }"
       />
       <div class="buttonDiv">
         <button :class="{ disable: boardName == '' }" @click="createBoard">
@@ -76,42 +76,39 @@ export default {
         startDate: new Date(),
         endDate: new Date()
       },
-      checkOpen:false,
+      checkOpen: false,
       isPrivate: 2
     };
   },
   components: {
-    DateRangePicker,
+    DateRangePicker
   },
   methods: {
     // classObject: function () {
-    // return 
+    // return
     //  },
     createBoardPopup(event) {
       if (event.target.id == "createBoard")
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
     createBoard() {
-      if (this.boardName != "")
-       { 
-         let boardData={
-           name:this.boardName,
-           startDate:this.dateRange.startDate,
-           endDate:this.dateRange.endDate,
-           status:"public"
-         }
-         if(this.isPrivate==1)
-           boardData.status="private"
-         this.$store.dispatch("boards/createBoard", boardData);
-         this.$store.commit("popUpsState/toggleCreateBoardPopup");
-       }
+      if (this.boardName != "") {
+        let boardData = {
+          name: this.boardName,
+          startDate: this.dateRange.startDate,
+          endDate: this.dateRange.endDate,
+          status: "public"
+        };
+        if (this.isPrivate == 1) boardData.status = "private";
+        this.$store.dispatch("boards/createBoard", boardData);
+        this.$store.commit("popUpsState/toggleCreateBoardPopup");
+      }
     },
-    updateValues(){
-      console.log("iff pr",this.isPrivate)
+    updateValues() {
+      console.log("iff pr", this.isPrivate);
     }
   },
-  mounted(){
-  }
+  mounted() {}
 };
 </script>
 
@@ -191,8 +188,8 @@ export default {
   background: white;
   cursor: pointer;
 }
-.isPrivate{
-   background:black;
+.isPrivate {
+  background: black;
 }
 .buttonDiv::after {
   content: "";
@@ -215,18 +212,18 @@ button {
   background-color: darkgray;
   color: rgb(87, 87, 87);
 }
-ul{
-  display: none
+ul {
+  display: none;
 }
 
-.vue-daterange-picker{
+.vue-daterange-picker {
   width: 100%;
 }
-.vue-daterange-picker /deep/ .custumClass{
-    padding: 12px;
-    border: #d0d0d0 solid 1px;
-    color: #767676;
-    border-radius: 16px;
-    height: 48px;
+.vue-daterange-picker /deep/ .custumClass {
+  padding: 12px;
+  border: #d0d0d0 solid 1px;
+  color: #767676;
+  border-radius: 16px;
+  height: 48px;
 }
 </style>
