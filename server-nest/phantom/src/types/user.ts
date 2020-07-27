@@ -14,7 +14,7 @@ export interface user extends Document {
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
   pins: Array<{
-    id: mongoose.Types.ObjectId;
+    pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
   }>;
   savedPins: Array<{
