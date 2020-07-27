@@ -91,7 +91,7 @@ export class PinsService {
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
     user.pins.push({
-      id: pinId,
+      pinId: pinId,
       boardId: boardId,
     });
     await user.save();
@@ -105,7 +105,7 @@ export class PinsService {
     if (!user) return false;
     let retPins = [];
     for (var i = 0; i < user.pins.length; i++) {
-      let pinFound = await this.pinModel.findById(user.pins[i].id);
+      let pinFound = await this.pinModel.findById(user.pins[i].pinId);
       if (pinFound) {
         retPins.push(pinFound);
       }

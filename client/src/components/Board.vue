@@ -9,7 +9,7 @@
     </div>
     <div>
       <p>{{ boardName }}</p>
-      <p>{{ pinsImages.length }} pins</p>
+      <p>{{ pinsCount }} pins</p>
     </div>
   </div>
 </template>
@@ -32,6 +32,9 @@ export default {
     },
     createdAt: {
       type: Date
+    },
+    pinsCount: {
+      type: Number
     }
   }
 };

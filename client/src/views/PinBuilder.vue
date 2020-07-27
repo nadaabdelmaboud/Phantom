@@ -72,10 +72,10 @@
         <p><strong>All Boards </strong></p>
         <ul v-for="(b, i) in boards" :key="i">
           <li
-            v-if="b.name.search(new RegExp(searchBoard, 'i')) != -1"
-            @click="chooseBoard(b.name, b._id)"
+            v-if="b.board.name.search(new RegExp(searchBoard, 'i')) != -1"
+            @click="chooseBoard(b.board.name, b.board._id)"
           >
-            {{ b.name }}
+            {{ b.board.name }}
           </li>
         </ul>
         <div class="createBoard" @click="createBoardPopup">

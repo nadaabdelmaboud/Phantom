@@ -17,11 +17,24 @@
       <p v-if="noName" class="invalid">Don't forget to name your board!</p>
       <label>Dates · Optional – this can help you plan!</label>
       <br />
-      <input
-        class="inputFields"
-        type="date"
-        placeholder='E.g "Places to go" or "Receipes to make"'
-      />
+      <date-range-picker
+        ref="picker"
+        :locale-data="{ firstDay: 1, format: 'mm/dd/yyyy' }"
+        :minDate="minDate"
+        :maxDate="maxDate"
+        :opens="'right'"
+        :timePicker="false"
+        :showWeekNumbers="false"
+        :showDropdowns="true"
+        :control-container-class="'custumClass'"
+        :autoApply="true"
+        v-model="dateRange"
+        @toggle="checkOpen = !checkOpen"
+        :always-show-calendars="false"
+        :linkedCalendars="true"
+        @update="updateValues"
+      >
+      </date-range-picker>
       <br />
       <label>
         Keep this board secret <br />
@@ -31,9 +44,12 @@
         type="range"
         min="1"
         max="2"
-        value="1"
+        value="2"
         class="slider"
         id="myRange"
+        v-model="isPrivate"
+        @change="updateValues"
+        :class="{ isPrivate: isPrivate == 2 }"
       />
       <div class="buttonDiv">
         <button :class="{ disable: boardName == '' }" @click="createBoard">
@@ -45,25 +61,54 @@
 </template>
 
 <script>
+import DateRangePicker from "vue2-daterange-picker";
+import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
+
 export default {
   name: "createBoard",
   data: function() {
     return {
       boardName: "",
-      noName: false
+      noName: false,
+      minDate: new Date(),
+      maxDate: null,
+      dateRange: {
+        startDate: new Date(),
+        endDate: new Date()
+      },
+      checkOpen: false,
+      isPrivate: 2
     };
   },
+  components: {
+    DateRangePicker
+  },
   methods: {
+    // classObject: function () {
+    // return
+    //  },
     createBoardPopup(event) {
       if (event.target.id == "createBoard")
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
     createBoard() {
-      if (this.boardName != "")
-        this.$store.dispatch("boards/createBoard", this.boardName);
-      this.$store.commit("popUpsState/toggleCreateBoardPopup");
+      if (this.boardName != "") {
+        let boardData = {
+          name: this.boardName,
+          startDate: this.dateRange.startDate,
+          endDate: this.dateRange.endDate,
+          status: "public"
+        };
+        if (this.isPrivate == 1) boardData.status = "private";
+        this.$store.dispatch("boards/createBoard", boardData);
+        this.$store.commit("popUpsState/toggleCreateBoardPopup");
+      }
+    },
+    updateValues() {
+      console.log("iff pr", this.isPrivate);
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 
@@ -76,8 +121,8 @@ export default {
   z-index: 12;
   top: 0;
   right: 0;
-  // bottom: 0;
-  //left: 0;
+  bottom: 0;
+  left: 0;
   p {
     width: 100%;
     text-align: center;
@@ -143,6 +188,9 @@ export default {
   background: white;
   cursor: pointer;
 }
+.isPrivate {
+  background: black;
+}
 .buttonDiv::after {
   content: "";
   clear: both;
@@ -163,5 +211,19 @@ button {
   cursor: default;
   background-color: darkgray;
   color: rgb(87, 87, 87);
+}
+ul {
+  display: none;
+}
+
+.vue-daterange-picker {
+  width: 100%;
+}
+.vue-daterange-picker /deep/ .custumClass {
+  padding: 12px;
+  border: #d0d0d0 solid 1px;
+  color: #767676;
+  border-radius: 16px;
+  height: 48px;
 }
 </style>

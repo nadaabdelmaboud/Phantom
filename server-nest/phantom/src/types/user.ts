@@ -3,6 +3,8 @@ import * as mongoose from 'mongoose';
 export interface user extends Document {
   firstName: String;
   lastName: String;
+  userName: String;
+  location: String;
   email: String;
   password: String;
   country: String;
@@ -12,7 +14,7 @@ export interface user extends Document {
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
   pins: Array<{
-    id: mongoose.Types.ObjectId;
+    pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
   }>;
   savedPins: Array<{

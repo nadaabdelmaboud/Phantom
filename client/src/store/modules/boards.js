@@ -19,18 +19,16 @@ const mutations = {
 };
 
 const actions = {
-  createBoard({ commit, state }, boardName) {
+  createBoard({ dispatch, state }, boardData) {
     // localStorage.setItem("x-auth-token", token);
-    state.chosenBoardName = boardName;
+    state.chosenBoardName = boardData.name;
     let token = localStorage.getItem("userToken");
     console.log(token);
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .post("me/boards", {
-        name: boardName
-      })
+      .post("me/boards", boardData)
       .then(response => {
-        commit("addNewBoard", response.data);
+        dispatch("userBoards");
         state.chosenBoardId = response.data._id;
       })
       .catch(error => {
@@ -45,6 +43,26 @@ const actions = {
       .get("me/boards")
       .then(response => {
         commit("setBoards", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  sortAz({ dispatch }) {
+    axios
+      .put("me/boards/sortAZ")
+      .then(() => {
+        dispatch("userBoards");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  sortDate({ dispatch }) {
+    axios
+      .put("me/boards/sortDate")
+      .then(() => {
+        dispatch("userBoards");
       })
       .catch(error => {
         console.log(error);

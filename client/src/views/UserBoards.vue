@@ -4,9 +4,10 @@
       <Board
         v-for="board in boards"
         class="col-sm-3"
-        :key="board._id"
-        :boardName="board.name"
-        :pinsImages="board.pins"
+        :key="board.board._id"
+        :boardName="board.board.name"
+        :pinsImages="board.board.coverImages"
+        :pinsCount="board.board.counts.pins"
       />
     </div>
   </div>
@@ -31,8 +32,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.home {
-  padding: 2%;
-}
-</style>
+<style lang="scss" scoped></style>

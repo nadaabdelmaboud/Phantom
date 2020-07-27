@@ -43,13 +43,20 @@ export class BoardService {
     if (!board) return false;
     let pin = await this.pinModel.findById(pinId);
     if (!pin) return false;
-    board.pins.push(pinId);
+    console.log(board);
+    console.log(pin);
+    let pinObjectId = mongoose.Types.ObjectId(pinId);
+    board.pins.push(pinObjectId);
     board.counts.pins = board.counts.pins.valueOf() + 1;
     if (!board.coverImages) board.coverImages = [];
     if (board.coverImages && board.coverImages.length < 3) {
       board.coverImages.push(pin.imageId);
     }
-    await board.save();
+    console.log('pin');
+    await board.save().catch(err => {
+      console.log(err);
+    });
+    console.log('pin saved');
     return true;
   }
   async createBoard(
@@ -88,7 +95,9 @@ export class BoardService {
     await board.save().catch(err => {
       console.log(err);
     });
+    console.log('saved');
     await this.addBoardtoUser(userId, board._id);
+    console.log('saved 2');
     return board;
   }
   async sortBoardsAtoZ(userId): Promise<Array<object>> {
@@ -148,8 +157,9 @@ export class BoardService {
     if (!board) return false;
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
+    let id = mongoose.Types.ObjectId(boardId);
     user.boards.push({
-      boardId: boardId,
+      boardId: id,
       name: board.name,
       createdAt: board.createdAt,
       isJoined: false,
@@ -157,7 +167,9 @@ export class BoardService {
       joiners: [],
       followers: [],
     });
-    await user.save();
+    await user.save().catch(err => {
+      console.log(err);
+    });
     return true;
   }
   async getCurrentUserBoards(userId) {
@@ -574,7 +586,7 @@ export class BoardService {
       throw new NotAcceptableException('not valid pin creator');
     }
     for (var i = 0; i < creator.pins.length; i++) {
-      if (String(creator.pins[i].id) == String(pinId)) {
+      if (String(creator.pins[i].pinId) == String(pinId)) {
         let pinBoard = await this.boardModel.findById(creator.pins[i].boardId);
         for (var j = 0; j < pinBoard.pins.length; j++) {
           if (String(pinBoard.pins[j]) == String(pinId)) {

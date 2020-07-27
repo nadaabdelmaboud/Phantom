@@ -30,7 +30,7 @@
           Pins
         </router-link>
       </div>
-      <div class="col-sm-4 col3">
+      <div class="col-sm-4 col-4 col3">
         <i
           class="fa fa-plus"
           aria-hidden="true"
@@ -38,8 +38,27 @@
           style="float:right;"
           @click="showCreate = !showCreate"
         ></i>
-        <i class="fa fa-list" aria-hidden="true" style="float:right;"></i>
+        <i
+          class="fa fa-list"
+          aria-hidden="true"
+          id="view"
+          style="float:right;"
+          @click="showViewOptions = !showViewOptions"
+        ></i>
       </div>
+    </div>
+    <div class="create view" v-if="showViewOptions">
+      <p>Sort by</p>
+      <ul>
+        <li @click="sortAz">A to Z</li>
+        <li>Drag and drop</li>
+        <li @click="sortDate">Last saved to</li>
+      </ul>
+      <p>View options</p>
+      <ul>
+        <li>Default</li>
+        <li>Compact</li>
+      </ul>
     </div>
     <div class="create" v-if="showCreate">
       <p>Create</p>
@@ -59,15 +78,27 @@ export default {
     return {
       inBoards: true,
       inPins: false,
-      showCreate: false
+      showCreate: false,
+      showViewOptions: false
     };
   },
   methods: {
     clear(event) {
-      if (event.target.id != "create") this.showCreate = false;
+      if (event.target.id != "create") {
+        this.showCreate = false;
+      }
+      if (event.target.id != "view") {
+        this.showViewOptions = false;
+      }
     },
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
+    },
+    sortAz() {
+      this.$store.dispatch("boards/sortAz");
+    },
+    sortDate() {
+      this.$store.dispatch("boards/sortDate");
     }
   },
   watch: {
@@ -157,5 +188,11 @@ i:hover {
   width: 200px;
   // top:200;
   right: 30px;
+  p {
+    font-size: 12px;
+  }
+}
+.view {
+  right: 80px;
 }
 </style>
