@@ -24,7 +24,7 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<user>,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -294,7 +294,10 @@ export class UserService {
     }
     const user = await this.getUserById(userId);
     if (!user) throw new NotFoundException('user not found');
-
+    if (!user.viewState) {
+      user.viewState = 'Default';
+      await user.save();
+    }
     if (user.viewState) return user.viewState;
     return false;
   }
