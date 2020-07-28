@@ -116,7 +116,7 @@ export class TopicService {
     const user = this.UserService.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
-    if (!topic) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
+    if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
     if (!topic.followers) topic.followers = [];
     for (let i = 0; i < topic.followers.length; i++)
       if (String(topic.followers[i] === userId)) return true;
@@ -129,7 +129,7 @@ export class TopicService {
     const user = this.UserService.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
-    if (!topic) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
+    if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
     if (await this.checkFollowTopic(userId, topicId)) throw new BadRequestException('you followed this topic before');
     if (await this.UserService.followTopic(user, topicId)) {
       topic.followers.push(userId);
@@ -145,7 +145,8 @@ export class TopicService {
     const user = this.UserService.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
-    if (!topic) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
+    if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
+    console.log(await this.checkFollowTopic(userId, topicId))
     if (await this.checkFollowTopic(userId, topicId) === false) throw new BadRequestException('you did not follow this topic before');
     if (await this.UserService.unfollowTopic(user, topicId)) {
       if (topic.followers) {

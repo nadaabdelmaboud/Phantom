@@ -422,9 +422,13 @@ export class UserService {
   async followTopic(user, topicId) {
     if ((await this.ValidationService.checkMongooseID([topicId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    console.log(user.followingTopics)
     if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
+    console.log(user.followingTopics)
+
     await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
+    console.log(user.followingTopics)
     return 1;
   }
   async unfollowTopic(user, topicId) {
@@ -434,14 +438,12 @@ export class UserService {
       for (let i = 0; i < user.followingTopics.length; i++) {
         if (String(user.followingTopics[i]) === String(topicId)) {
           user.followingTopics.splice(i, 1);
-          await this.userModel.updateOne({ _id: user._id }, { following: user.followingTopics });
+          await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
           return 1;
         }
       }
     } throw new BadRequestException('you did not follow this topic before');
 
-    await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
-    return 1;
   }
 
 
