@@ -121,4 +121,29 @@ export class UserController {
       throw new NotAcceptableException('cant get view state');
     }
   }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Put('/me/follow-user/:user_id')
+  async followUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+    if (!await this.userService.followUser(req.user._id, params.user_id))
+      throw new nestCommon.BadRequestException('can not follow this user');
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Delete('/me/follow-user/:user_id')
+  async unfollowUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+    if (!await this.userService.unfollowUser(req.user._id, params.user_id))
+      throw new nestCommon.BadRequestException('can not follow this user');
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/me/follow-user/:user_id')
+  async checkfollowingUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+    const user = await this.userService.getUserById(req.user._id);
+    if (!await this.userService.checkFollowUser(user, params.user_id))
+      return { 'follow': 'false' };
+    else
+      return { 'follow': 'true' };
+  }
+
 }

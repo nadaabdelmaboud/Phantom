@@ -24,7 +24,7 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<user>,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -301,4 +301,119 @@ export class UserService {
     if (user.viewState) return user.viewState;
     return false;
   }
+  /**
+     * check if this user follow this user id  
+     * @param {Object} user - user he follow 
+     * @param {String} userId - id of user followed
+     * @returns {boolean}
+     */
+  async checkFollowUser(user, userId) {
+    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    if (!user) throw new BadRequestException('not user');
+    if (!user.following) await this.userModel.updateOne({ _id: user._id }, { following: [] });
+    for (let i = 0; i < user.following.length; i++)
+      if (String(userId) === String(user.following[i]))
+        return true;
+    return false;
+  }
+  /**
+   * followUser:  make frist user id follow second user id 
+   * @param {String} followerId - id of user went to follow 
+   * @param {String} followingId  - id of user wented to be followed 
+   * @returns {Number}
+   */
+  async followUser(followerId, followingId) {
+    if ((await this.ValidationService.checkMongooseID([followerId, followingId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    let userFollow = await this.getUserById(followerId);
+    let followedUser = await this.getUserById(followingId);
+    if (!userFollow || !followedUser) throw new BadRequestException('one of users not correct');
+    if (await this.checkFollowUser(userFollow, followingId)) throw new BadRequestException('you followed this user before');
+    userFollow.following.push(followingId);
+    await this.userModel.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+    if (!followedUser.followers) followedUser.followers = [];
+    followedUser.followers.push(followerId);
+    await this.userModel.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+    return 1;
+  }
+
+  /**
+   * unfollowUser:  make frist user id unfollow second user id 
+   * @param {String} followerId - id of user went to unfollow 
+   * @param {String} followingId  - id of user wented to be unfollowed 
+   * @returns {Number}
+  */
+
+  async unfollowUser(followerId, followingId) {
+    if ((await this.ValidationService.checkMongooseID([followerId, followingId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    let userFollow = await this.getUserById(followerId);
+    let followedUser = await this.getUserById(followingId);
+    if (!userFollow || !followedUser) throw new BadRequestException('one of users not correct');
+    if (!await this.checkFollowUser(userFollow, followingId)) throw new BadRequestException('you did not follow this user before');
+    if (userFollow.following) {
+      for (let i = 0; i < userFollow.following.length; i++) {
+        if (String(userFollow.following[i]) === String(followingId)) {
+          userFollow.following.splice(i, 1);
+          await this.userModel.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+          break;
+        }
+      }
+    } else throw new BadRequestException('you did not follow this user before');
+    if (followedUser.followers) {
+      for (let i = 0; i < followedUser.followers.length; i++) {
+        if (String(followedUser.followers[i]) === String(followerId)) {
+          followedUser.followers.splice(i, 1);
+          await this.userModel.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+          return 1;
+        }
+      }
+    }
+    throw new BadRequestException('you did not follow this user before');
+  }
+  /**
+   * userFollowers: get user followers 
+   * @param {*} userId - user id
+   * @param {*} limit  - the limit 
+   * @param {*} offset - the start
+   * @returns {object} - has array of user object and real number of followers 
+   
+  userFollowers: async function (userId, limit, offset) {
+      const user = await this.getUserById(userId);
+      if (!user) return 0;
+      if (!user.followers || user.followers.length == 0) return { followers: [], numOfFollowers: 0 };
+      const followers = limitOffset(limit, offset, user.followers);
+      var followersInfo = [];
+      for (let i = 0; i < followers.length; i++) {
+          var currentUser = await this.getUserById(followers[i]);
+          if (currentUser)
+              followersInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+      }
+      return { followers: followersInfo, numOfFollowers: user.followers.length };
+
+  },
+
+  /**
+ * userFollowings: get user following 
+ * @param {*} userId - user id
+ * @param {*} limit  - the limit 
+ * @param {*} offset - the start
+ * @returns {object} - has array of user object and real number of followings 
+ 
+  userFollowings: async function (userId, limit, offset) {
+      const user = await this.getUserById(userId);
+      if (!user) return 0;
+      if (!user.following || user.following.length == 0) return { followings: [], numOfFollowings: 0 };
+      const followings = limitOffset(limit, offset, user.following);
+      var followingsInfo = [];
+      for (let i = 0; i < followings.length; i++) {
+          var currentUser = await this.getUserById(followings[i]);
+          if (currentUser)
+              followingsInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+      }
+      return { followings: followersInfo, numOfFollowings: user.following.length };
+
+  }
+  */
 }
