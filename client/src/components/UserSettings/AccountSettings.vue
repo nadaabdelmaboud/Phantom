@@ -166,4 +166,8 @@ select {
   display: flex;
   justify-content: space-between;
 }
+
+.account-changes p {
+  max-width: 400px;
+}
 </style>

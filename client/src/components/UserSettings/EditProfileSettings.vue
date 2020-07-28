@@ -12,22 +12,28 @@
     </div>
     <section>
       <label for="profile-image">Photo</label><br />
-      <img
-        id="profile-image"
-        src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
+      <img id="profile-image" :src="getUserImage()" />
       <button id="change-photo">Change</button>
     </section>
     <br />
     <section class="username">
       <div class="column">
         <label for="fname">First Name</label><br />
-        <input type="text" id="fname" />
+        <input type="text" id="fname" v-model="fname" />
       </div>
       <div class="column">
         <label for="lname">Last Name</label><br />
-        <input type="text" id="lname" />
+        <input type="text" id="lname" v-model="lname" />
       </div>
+      <br />
+    </section>
+    <section>
+      <label for="user-name">Username</label><br />
+      <input type="text" id="user-name" />
+    </section>
+    <section>
+      <label for="location">Location</label><br />
+      <input type="text" placeholder="Ex. Cairo, Egypt" id="location" />
     </section>
     <section>
       <label for="bio">About your profile</label><br />
@@ -37,17 +43,47 @@
         placeholder="Write a little bit about yourself here"
         rows="4"
         cols="50"
+        v-model="about"
       ></textarea>
-    </section>
-    <section>
-      <label for="location">Location</label><br />
-      <input type="text" placeholder="Ex. Cairo, Egypt" id="location" />
     </section>
   </div>
 </template>
 
 <script>
-export default {};
+import getUserImage from "../../mixins/getUserImage";
+export default {
+  created: async function() {
+    this.$store.dispatch("user/getUserProfile");
+    this.updateModels();
+  },
+  data: function() {
+    return {
+      fname: null,
+      lname: null,
+      username: null,
+      location: null,
+      about: null
+    };
+  },
+  methods: {
+    updateModels: function() {
+      this.fname = this.userData.firstName;
+      this.lname = this.userData.lastName;
+      this.about = this.userData.about;
+    }
+  },
+  computed: {
+    userData: function() {
+      return this.$store.state.user.userData;
+    }
+  },
+  watch: {
+    userData: function() {
+      this.updateModels();
+    }
+  },
+  mixins: [getUserImage]
+};
 </script>
 
 <style lang="scss" scoped>
@@ -59,14 +95,7 @@ h1 {
 }
 
 button {
-  border-radius: 400px;
-  padding: 7px 15px;
-  font-weight: bold;
-  background-color: $lightgrey;
-  color: $darkgrey;
-  outline: none;
-  border: 0;
-  margin: 0 2px;
+  @include profileButton;
 }
 
 img {
@@ -97,7 +126,6 @@ textarea {
   @include inputField;
 }
 
-#location,
 textarea {
   width: 40vw;
 }
