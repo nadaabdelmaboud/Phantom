@@ -2,6 +2,7 @@
   <div class="home">
     <CreateBoardPopup v-if="createBoard" />
     <NewPinPopup v-if="newPin" />
+    <EditBoardPopup v-if="editBoard" />
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" />
@@ -58,18 +59,21 @@
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
+import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup"
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
   components: {
     HomeNavigationBar,
     CreateBoardPopup,
-    NewPinPopup
+    NewPinPopup,
+    EditBoardPopup
   },
   computed: {
     ...mapState({
       createBoard: state => state.popUpsState.createBoardPopup,
-      newPin: state => state.popUpsState.newPinPopup
+      newPin: state => state.popUpsState.newPinPopup,
+      editBoard: state =>state.popUpsState.editBoardPopup
     })
   }
 };

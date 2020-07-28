@@ -1,10 +1,16 @@
 <template>
-  <div class="board">
+  <div class="board" @click="toBoard">
     <div style="height:250px">
-      <div class="image"></div>
       <div class="image">
-        <div class="imagesmall"></div>
-        <div class="imagesmall"></div>
+        <img v-if="pinsImages.length" :src="getImage(pinsImages[0])"/>
+      </div>
+      <div class="image">
+        <div class="imagesmall">
+          <img v-if="pinsCount >=2"  :src="getImage(pinsImages[1])" />
+        </div>
+        <div class="imagesmall">
+          <img v-if="pinsCount>=3"  :src="getImage(pinsImages[2])"/>
+        </div>
       </div>
     </div>
     <div>
@@ -15,8 +21,11 @@
 </template>
 
 <script>
+import { default as getImage } from "../mixins/getImage";
+
 export default {
   name: "Board",
+  mixins: [getImage],
   props: {
     boardName: {
       type: String
@@ -33,8 +42,18 @@ export default {
     createdAt: {
       type: Date
     },
-    pinsCount: {
-      type: Number
+    pinsCount:{
+      type:Number
+    },
+    boardObject:{
+      type:Object
+    }
+  },
+  methods:{
+    toBoard(){
+      this.$router.push('/Board/'+ this.boardId +'/Pins');
+      this.$store.commit("boards/chooseBoard", { name:this.boardName, id : this.boardId});
+      this.$store.commit("boards/setCurrentBoard", this.boardObject);
     }
   }
 };
@@ -52,6 +71,12 @@ export default {
   height: 96%;
   width: 66%;
   border-radius: 16px;
+  img{
+    width: 100%;
+    display: block;
+    border-radius: 16px;
+    height: 100%;
+  }
 }
 .image:nth-child(2) {
   width: 26%;
