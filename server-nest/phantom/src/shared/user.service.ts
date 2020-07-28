@@ -374,46 +374,75 @@ export class UserService {
   }
   /**
    * userFollowers: get user followers 
-   * @param {*} userId - user id
-   * @param {*} limit  - the limit 
-   * @param {*} offset - the start
+  * @param {string} userId - user id
+  * @param {Number} limit  - the limit 
+  * @param {Number} offset - the start
    * @returns {object} - has array of user object and real number of followers 
-   
-  userFollowers: async function (userId, limit, offset) {
-      const user = await this.getUserById(userId);
-      if (!user) return 0;
-      if (!user.followers || user.followers.length == 0) return { followers: [], numOfFollowers: 0 };
-      const followers = limitOffset(limit, offset, user.followers);
-      var followersInfo = [];
-      for (let i = 0; i < followers.length; i++) {
-          var currentUser = await this.getUserById(followers[i]);
-          if (currentUser)
-              followersInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
-      }
-      return { followers: followersInfo, numOfFollowers: user.followers.length };
+   */
 
-  },
+  async userFollowers(userId, limit, offset) {
+    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.getUserById(userId);
+    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
+    if (!user.followers || user.followers.length == 0) return { followers: [], numOfFollowers: 0 };
+    const followers = this.ValidationService.limitOffset(limit, offset, user.followers);
+    var followersInfo = [];
+    for (let i = 0; i < followers.length; i++) {
+      var currentUser = await this.getUserById(followers[i]);
+      if (currentUser)
+        followersInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+    }
+    return { followers: followersInfo, numOfFollowers: user.followers.length };
+  }
 
   /**
  * userFollowings: get user following 
- * @param {*} userId - user id
- * @param {*} limit  - the limit 
- * @param {*} offset - the start
+ * @param {string} userId - user id
+ * @param {Number} limit  - the limit 
+ * @param {Number} offset - the start
  * @returns {object} - has array of user object and real number of followings 
- 
-  userFollowings: async function (userId, limit, offset) {
-      const user = await this.getUserById(userId);
-      if (!user) return 0;
-      if (!user.following || user.following.length == 0) return { followings: [], numOfFollowings: 0 };
-      const followings = limitOffset(limit, offset, user.following);
-      var followingsInfo = [];
-      for (let i = 0; i < followings.length; i++) {
-          var currentUser = await this.getUserById(followings[i]);
-          if (currentUser)
-              followingsInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
-      }
-      return { followings: followersInfo, numOfFollowings: user.following.length };
+ */
+  async userFollowings(userId, limit, offset) {
+    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.getUserById(userId);
+    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
+    if (!user.following || user.following.length == 0) return { followings: [], numOfFollowings: 0 };
+    const followings = this.ValidationService.limitOffset(limit, offset, user.following);
+    var followingsInfo = [];
+    for (let i = 0; i < followings.length; i++) {
+      var currentUser = await this.getUserById(followings[i]);
+      if (currentUser)
+        followingsInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+    }
+    return { followings: followingsInfo, numOfFollowings: user.following.length };
 
   }
-  */
+  async followTopic(user, topicId) {
+    if ((await this.ValidationService.checkMongooseID([topicId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    if (!user.followingTopics) user.followingTopics = [];
+    user.followingTopics.push(topicId);
+    await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
+    return 1;
+  }
+  async unfollowTopic(user, topicId) {
+    if ((await this.ValidationService.checkMongooseID([topicId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    if (user.followingTopics) {
+      for (let i = 0; i < user.followingTopics.length; i++) {
+        if (String(user.followingTopics[i]) === String(topicId)) {
+          user.followingTopics.splice(i, 1);
+          await this.userModel.updateOne({ _id: user._id }, { following: user.followingTopics });
+          return 1;
+        }
+      }
+    } throw new BadRequestException('you did not follow this topic before');
+
+    await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
+    return 1;
+  }
+
+
 }

@@ -23,6 +23,7 @@ export interface user extends Document {
   }>;
   confirm: Boolean;
   fcmToken: String;
+  followingTopics: Array<mongoose.Types.ObjectId>;
   notifications: [{}];
   offlineNotifications: [{}];
   followers: Array<mongoose.Types.ObjectId>;

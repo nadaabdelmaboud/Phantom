@@ -146,4 +146,48 @@ export class UserController {
       return { 'follow': 'true' };
   }
 
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/me/follower')
+  async getFollowers(
+    @nestCommon.Request() req,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowers(req.user._id, limit, offset);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/me/following')
+  async getFollowings(
+    @nestCommon.Request() req,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowings(req.user._id, limit, offset);
+  }
+
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/:user_id/follower')
+  async getUserFollowers(
+    @nestCommon.Request() req,
+    @nestCommon.Param() params,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowers(params.user_id, limit, offset);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/:user_id/following')
+  async getUserFollowings(
+    @nestCommon.Request() req,
+    @nestCommon.Param() params,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowings(params.user_id, limit, offset);
+  }
+
+
 }
