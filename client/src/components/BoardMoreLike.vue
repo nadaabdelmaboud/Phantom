@@ -1,14 +1,13 @@
 <template>
   <div>
-      More
+    More
   </div>
 </template>
 
 <script>
 //import { default as getImage } from "../mixins/getImage";
 export default {
-  name: "BoardMoreLike",
-
+  name: "BoardMoreLike"
 };
 </script>
 

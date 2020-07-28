@@ -3,76 +3,66 @@
     <div class="editBoard" v-if="editState == 1">
       <h3>Edit your Board</h3>
       <div class="formBoard">
-      <label>Board cover</label>
-      <br/>
-      <i class="fa fa-plus addCover"></i>
-      <br>
-      <label>Name</label>
-      <br />
-      <input
-        class="inputFields"
-        type="text"
-        value=""
-        v-model="name"
-      />
-      <br />
-      <label>Description</label>
-      <br />
-      <input
-        class="inputFields"
-        type="text"
-        value=""
-        v-model="description"
-      />
-      <br />
-      <label>Dates · Optional – this can help you plan!</label>
-      <br />
-      <date-range-picker
-        ref="picker"
-        :locale-data="{ firstDay: 1, format: 'mm/dd/yyyy' }"
-        :minDate="minDate"
-        :maxDate="maxDate"
-        :opens="'right'"
-        :timePicker="false"
-        :showWeekNumbers="false"
-        :showDropdowns="true"
-        :control-container-class="'custumClass'"
-        :autoApply="true"
-        v-model="dateRange"
-        @toggle="checkOpen = !checkOpen"
-        :always-show-calendars="false"
-        :linkedCalendars="true"
-      >
-      </date-range-picker>
-      <br />
-      <label>
-        Keep this board secret <br />
-        So only you and collaborators can see it. Learn more
-      </label>
-      <input
-        type="range"
-        min="1"
-        max="2"
-        value="1"
-        class="slider"
-        id="myRange"
-        v-model="status"
-        :class="{ isPrivate: status == 2 }"
-      />
-           <br />
-      <label>
-        Personalisation <br />
-        Show Pins inspired by this board in your home feed.
-      </label>
-      <input
-        type="range"
-        min="1"
-        max="2"
-        value="2"
-        class="slider"
-        id="myRange"
-        :class="{ isPrivate: status == 2 }"
-      />
+        <label>Board cover</label>
+        <br />
+        <i class="fa fa-plus addCover"></i>
+        <br />
+        <label>Name</label>
+        <br />
+        <input class="inputFields" type="text" value="" v-model="name" />
+        <br />
+        <label>Description</label>
+        <br />
+        <input class="inputFields" type="text" value="" v-model="description" />
+        <br />
+        <label>Dates · Optional – this can help you plan!</label>
+        <br />
+        <date-range-picker
+          ref="picker"
+          :locale-data="{ firstDay: 1, format: 'mm/dd/yyyy' }"
+          :minDate="minDate"
+          :maxDate="maxDate"
+          :opens="'right'"
+          :timePicker="false"
+          :showWeekNumbers="false"
+          :showDropdowns="true"
+          :control-container-class="'custumClass'"
+          :autoApply="true"
+          v-model="dateRange"
+          @toggle="checkOpen = !checkOpen"
+          :always-show-calendars="false"
+          :linkedCalendars="true"
+        >
+        </date-range-picker>
+        <br />
+        <label>
+          Keep this board secret <br />
+          So only you and collaborators can see it. Learn more
+        </label>
+        <input
+          type="range"
+          min="1"
+          max="2"
+          value="1"
+          class="slider"
+          id="myRange"
+          v-model="status"
+          :class="{ isPrivate: status == 2 }"
+        />
+        <br />
+        <label>
+          Personalisation <br />
+          Show Pins inspired by this board in your home feed.
+        </label>
+        <input
+          type="range"
+          min="1"
+          max="2"
+          value="2"
+          class="slider"
+          id="myRange"
+          :class="{ isPrivate: status == 2 }"
+        />
       </div>
       <div class="buttonDiv">
         <button @click="editBoard">
@@ -84,7 +74,7 @@
         <button @click="editState = 3" class="leftButton">
           Merge
         </button>
-        <button  class="leftButton">
+        <button class="leftButton">
           Archeive
         </button>
       </div>
@@ -121,14 +111,14 @@ export default {
       maxDate: null,
       dateRange: {
         startDate: new Date(),
-        endDate: new Date(),
+        endDate: new Date()
       },
       checkOpen: false
     };
   },
 
   components: {
-    DateRangePicker,
+    DateRangePicker
   },
   methods: {
     editPopup(event) {
@@ -137,32 +127,31 @@ export default {
       }
     },
     editBoard() {
-        let newBoard={
-            name:this.name,
-            description:this.description,
-            status:"public"
-        }
-        if(this.status==2)
-           newBoard.status="private"
-        this.$store.dispatch("boards/editBoard",newBoard)
-        this.$store.commit("popUpsState/toggleEditBoardPopup");
+      let newBoard = {
+        name: this.name,
+        description: this.description,
+        status: "public"
+      };
+      if (this.status == 2) newBoard.status = "private";
+      this.$store.dispatch("boards/editBoard", newBoard);
+      this.$store.commit("popUpsState/toggleEditBoardPopup");
     },
     deleteBoard() {
       this.$store.dispatch("boards/deleteBoard");
       this.$store.commit("popUpsState/toggleEditBoardPopup");
       this.$router.go(-1);
-    },
+    }
   },
   computed: {
     ...mapGetters({
-      board: "boards/currentBoard",
-    }),
+      board: "boards/currentBoard"
+    })
   },
   created() {
     this.name = this.board.board.name;
     this.description = this.board.board.description;
     if (this.board.board.status == "public") this.status = 1;
-  },
+  }
 };
 </script>
 
@@ -202,9 +191,9 @@ h3 {
   background-color: $lightPink;
   color: $darkBlue;
 }
-.formBoard{
-    height: 500px;
-    overflow-y: auto;
+.formBoard {
+  height: 500px;
+  overflow-y: auto;
 }
 i {
   height: 150px;
@@ -221,14 +210,13 @@ i {
 i:hover {
   background-color: $lightPink;
 }
-.buttonDiv{
-    padding-top: 30px;
-    .leftButton{
-        float: left;
-        background-color: $lightPink;
-        color: $darkBlue;
-        margin-right: 5px;
-
-    }
+.buttonDiv {
+  padding-top: 30px;
+  .leftButton {
+    float: left;
+    background-color: $lightPink;
+    color: $darkBlue;
+    margin-right: 5px;
+  }
 }
 </style>

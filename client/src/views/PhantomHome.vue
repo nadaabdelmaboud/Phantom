@@ -59,7 +59,7 @@
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
-import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup"
+import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
@@ -73,7 +73,7 @@ export default {
     ...mapState({
       createBoard: state => state.popUpsState.createBoardPopup,
       newPin: state => state.popUpsState.newPinPopup,
-      editBoard: state =>state.popUpsState.editBoardPopup
+      editBoard: state => state.popUpsState.editBoardPopup
     })
   }
 };

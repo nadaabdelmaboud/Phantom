@@ -21,7 +21,7 @@ import ForgetPassword from "../views/ForgetPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
 import BoardView from "../views/BoardView.vue";
 import BoardPins from "../components/BoardPins";
-import BoardMoreLike from "../components/BoardMoreLike"
+import BoardMoreLike from "../components/BoardMoreLike";
 
 Vue.use(VueRouter);
 
@@ -69,21 +69,21 @@ const routes = [
         ]
       },
       {
-          path: "Board/:boardId",
-          name: "Board",
-          component: BoardView,
-          children:[
-            {
-              path: "Pins",
-              name: "Pins",
-              component: BoardPins
-            },
-            {
-              path: "More",
-              name: "More",
-              component: BoardMoreLike
-            }
-          ]
+        path: "Board/:boardId",
+        name: "Board",
+        component: BoardView,
+        children: [
+          {
+            path: "Pins",
+            name: "Pins",
+            component: BoardPins
+          },
+          {
+            path: "More",
+            name: "More",
+            component: BoardMoreLike
+          }
+        ]
       },
       {
         path: "/settings",

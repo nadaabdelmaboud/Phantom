@@ -11,14 +11,13 @@
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
-        <i class="fa fa-pencil" aria-hidden="true"
-        @click="editBoard"></i>
+        <i class="fa fa-pencil" aria-hidden="true" @click="editBoard"></i>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
         <router-link
           class="buttons"
-          :to="{path:'/Board/'+ boardId+ '/Pins'}"
+          :to="{ path: '/Board/' + boardId + '/Pins' }"
           tag="div"
           :class="{ inRoute: inPins }"
         >
@@ -26,7 +25,7 @@
         </router-link>
         <router-link
           class="buttons"
-          :to="{path:'/Board/'+ boardId + '/More'}"
+          :to="{ path: '/Board/' + boardId + '/More' }"
           tag="div"
           :class="{ inRoute: inMore }"
         >
@@ -34,28 +33,40 @@
         </router-link>
       </div>
       <div class="col-sm-4 col-4 col3">
-        <i class="fa fa-plus" aria-hidden="true" id="create" style="float:right;" @click="showCreate = !showCreate"></i>
-        <i class="fa fa-list" aria-hidden="true" id="view" style="float:right;" @click="showViewOptions = !showViewOptions"></i>
+        <i
+          class="fa fa-plus"
+          aria-hidden="true"
+          id="create"
+          style="float:right;"
+          @click="showCreate = !showCreate"
+        ></i>
+        <i
+          class="fa fa-list"
+          aria-hidden="true"
+          id="view"
+          style="float:right;"
+          @click="showViewOptions = !showViewOptions"
+        ></i>
       </div>
     </div>
-     <div class="create view" v-if="showViewOptions">
-        <p>Organise</p>
-        <ul>
-          <li>Select pins to move or delete</li>
-        </ul>
-          <p>View options</p>
-        <ul>
-          <li>Default</li>
-          <li>Compact</li>
-        </ul>
-      </div>
+    <div class="create view" v-if="showViewOptions">
+      <p>Organise</p>
+      <ul>
+        <li>Select pins to move or delete</li>
+      </ul>
+      <p>View options</p>
+      <ul>
+        <li>Default</li>
+        <li>Compact</li>
+      </ul>
+    </div>
     <div class="create" v-if="showCreate">
       <p>Create</p>
       <ul>
         <li @click="createBoardPopup">Board</li>
         <router-link tag="li" to="/PinBuilder">Pin</router-link>
       </ul>
-       <p>Add</p>
+      <p>Add</p>
       <ul>
         <li>Section</li>
         <li>Date</li>
@@ -66,7 +77,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
 export default {
   name: "BoardView",
   data: function() {
@@ -74,29 +85,25 @@ export default {
       inPins: true,
       inMore: false,
       showCreate: false,
-      showViewOptions:false,
-      boardId:""
+      showViewOptions: false,
+      boardId: ""
     };
   },
-  methods:{
-    clear(event){
-      if(event.target.id != "create")
-      {
-       this.showCreate = false;
+  methods: {
+    clear(event) {
+      if (event.target.id != "create") {
+        this.showCreate = false;
       }
-      if(event.target.id != "view")
-      {
-       this.showViewOptions =false;
+      if (event.target.id != "view") {
+        this.showViewOptions = false;
       }
     },
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
-    addCollaborator(){
-
-    },
-    editBoard(){
-        this.$store.commit("popUpsState/toggleEditBoardPopup")
+    addCollaborator() {},
+    editBoard() {
+      this.$store.commit("popUpsState/toggleEditBoardPopup");
     }
   },
   watch: {
@@ -116,9 +123,9 @@ export default {
   computed: {
     ...mapGetters({
       boardName: "boards/chosenBoardName"
-    }),
+    })
   },
-  mounted(){
+  mounted() {
     this.boardId = this.$route.params.boardId;
   }
 };
@@ -135,8 +142,8 @@ export default {
     margin: 0 0 10px calc((100vw - 96px) / 2);
     height: 48px;
     display: inline-block;
-   }
-   i {
+  }
+  i {
     height: 48px;
     width: 48px;
     font-size: 24px;
@@ -153,7 +160,6 @@ export default {
   i:hover {
     background-color: $lightPink;
   }
-
 }
 h1,
 h6 {
@@ -213,11 +219,11 @@ i:hover {
   width: 200px;
   // top:200;
   right: 30px;
-  p{
+  p {
     font-size: 12px;
   }
 }
-.view{
+.view {
   right: 80px;
 }
 </style>

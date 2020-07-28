@@ -1,29 +1,28 @@
 <template>
   <div>
-      Pins
+    Pins
   </div>
 </template>
 
 <script>
 //import { default as getImage } from "../mixins/getImage";
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
 export default {
   name: "BoardPins",
   data: function() {
     return {
-      boardId:""
-    }
+      boardId: ""
+    };
   },
   computed: {
     ...mapGetters({
       board: "boards/currentBoard"
-    }),
+    })
   },
   created: function() {
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/getBoard", this.$route.params.boardId);
   }
-
 };
 </script>
 

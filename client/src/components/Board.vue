@@ -2,14 +2,14 @@
   <div class="board" @click="toBoard">
     <div style="height:250px">
       <div class="image">
-        <img v-if="pinsImages.length" :src="getImage(pinsImages[0])"/>
+        <img v-if="pinsImages.length" :src="getImage(pinsImages[0])" />
       </div>
       <div class="image">
         <div class="imagesmall">
-          <img v-if="pinsCount >=2"  :src="getImage(pinsImages[1])" />
+          <img v-if="pinsCount >= 2" :src="getImage(pinsImages[1])" />
         </div>
         <div class="imagesmall">
-          <img v-if="pinsCount>=3"  :src="getImage(pinsImages[2])"/>
+          <img v-if="pinsCount >= 3" :src="getImage(pinsImages[2])" />
         </div>
       </div>
     </div>
@@ -42,17 +42,20 @@ export default {
     createdAt: {
       type: Date
     },
-    pinsCount:{
-      type:Number
+    pinsCount: {
+      type: Number
     },
-    boardObject:{
-      type:Object
+    boardObject: {
+      type: Object
     }
   },
-  methods:{
-    toBoard(){
-      this.$router.push('/Board/'+ this.boardId +'/Pins');
-      this.$store.commit("boards/chooseBoard", { name:this.boardName, id : this.boardId});
+  methods: {
+    toBoard() {
+      this.$router.push("/Board/" + this.boardId + "/Pins");
+      this.$store.commit("boards/chooseBoard", {
+        name: this.boardName,
+        id: this.boardId
+      });
       this.$store.commit("boards/setCurrentBoard", this.boardObject);
     }
   }
@@ -72,7 +75,7 @@ export default {
   height: 96%;
   width: 66%;
   border-radius: 16px;
-  img{
+  img {
     width: 100%;
     display: block;
     border-radius: 16px;

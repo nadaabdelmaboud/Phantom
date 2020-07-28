@@ -76,7 +76,7 @@ export default {
         startDate: new Date(),
         endDate: new Date()
       },
-      checkOpen:false,
+      checkOpen: false,
       isPrivate: 1
     };
   },
@@ -92,19 +92,17 @@ export default {
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
     createBoard() {
-      if (this.boardName != "")
-       { 
-         let boardData={
-           name:this.boardName,
-           startDate:this.dateRange.startDate,
-           endDate:this.dateRange.endDate,
-           status:"public"
-         }
-         if(this.isPrivate==2)
-           boardData.status="private"
-         this.$store.dispatch("boards/createBoard", boardData);
-         this.$store.commit("popUpsState/toggleCreateBoardPopup");
-       }
+      if (this.boardName != "") {
+        let boardData = {
+          name: this.boardName,
+          startDate: this.dateRange.startDate,
+          endDate: this.dateRange.endDate,
+          status: "public"
+        };
+        if (this.isPrivate == 2) boardData.status = "private";
+        this.$store.dispatch("boards/createBoard", boardData);
+        this.$store.commit("popUpsState/toggleCreateBoardPopup");
+      }
     },
     updateValues() {
       console.log("iff pr", this.isPrivate);
