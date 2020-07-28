@@ -3,7 +3,8 @@ import axios from "axios";
 const state = {
   userBoards: [],
   chosenBoardName: "Select",
-  chosenBoardId: ""
+  chosenBoardId: "",
+  currentBoard:""
 };
 
 const mutations = {
@@ -15,6 +16,9 @@ const mutations = {
   },
   chooseBoard(state, { name, id }) {
     (state.chosenBoardName = name), (state.chosenBoardId = id);
+  },
+  setCurrentBoard(state , board){
+    state.currentBoard = board
   }
 };
 
@@ -50,6 +54,16 @@ const actions = {
             console.log(error)
           });
       },
+      getBoard({ commit },boardId) {
+        axios
+          .get("users/"+boardId+"/boards")
+          .then((response) => {
+            commit("setCurrentBoard", response.data[0]);
+          })
+          .catch(error => {
+            console.log(error)
+          });
+      },
       sortAz({dispatch}){
         axios.put("me/boards/sortAZ")
         .then(()=>{
@@ -73,7 +87,8 @@ const actions = {
 const getters = {
   userBoards: state => state.userBoards,
   chosenBoardName: state => state.chosenBoardName,
-  chosenBoardId: state => state.chosenBoardId
+  chosenBoardId: state => state.chosenBoardId,
+  currentBoard: state => state.currentBoard
 };
 
 export default {

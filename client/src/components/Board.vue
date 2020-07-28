@@ -1,5 +1,5 @@
 <template>
-  <div class="board">
+  <div class="board" @click="toBoard">
     <div style="height:250px">
       <div class="image">
         <img v-if="pinsImages.length" :src="getImage(pinsImages[0])"/>
@@ -44,6 +44,12 @@ export default {
     },
     pinsCount:{
       type:Number
+    }
+  },
+  methods:{
+    toBoard(){
+      this.$router.push('/Board/'+ this.boardId);
+      this.$store.commit("boards/chooseBoard", { name:this.boardName, id : this.boardId});
     }
   }
 };
