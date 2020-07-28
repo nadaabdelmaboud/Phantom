@@ -82,8 +82,17 @@ const actions = {
           console.log(error)
         });
       },
+      reorderBoards({dispatch},{from,to}){
+        axios.put("me/boards/reorderBoards?startIndex="+from+"&positionIndex="+to)
+        .then(()=>{
+          dispatch("userBoards");
+        })
+        .catch(error => {
+          console.log(error)
+        });
+      },
       editBoard({dispatch,state},newBoard){
-        axios.put("boards/edit/" + state.chosenBoardId,newBoard)
+        axios.put("me/boards/edit/" + state.chosenBoardId,newBoard)
         .then(()=>{
           dispatch("userBoards");
         })

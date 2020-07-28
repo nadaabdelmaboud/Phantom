@@ -62,6 +62,7 @@ export default {
 <style lang="scss" scoped>
 .board {
   margin-top: 20px;
+  display: inline-block;
   cursor: pointer;
 }
 .image {
