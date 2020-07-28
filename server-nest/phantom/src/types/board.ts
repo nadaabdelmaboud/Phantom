@@ -25,6 +25,12 @@ export interface board extends Document {
     editTitle: Boolean;
     addCollaborators: Boolean;
   }>;
+  sections: Array<{
+    sectionName: String;
+    pins: Array<mongoose.Types.ObjectId>;
+    creatorId: mongoose.Types.ObjectId;
+    coverImages: Array<mongoose.Types.ObjectId>;
+  }>;
   isJoined: Boolean;
   followers: Array<mongoose.Types.ObjectId>;
   pins: Array<mongoose.Types.ObjectId>;

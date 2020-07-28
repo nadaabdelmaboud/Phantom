@@ -18,6 +18,14 @@ export const Board = new Schema({
   coverImages: [mongoose.Types.ObjectId],
   pins: [mongoose.Types.ObjectId],
   createdAt: Date,
+  sections: [
+    {
+      sectionName: String,
+      pins: [mongoose.Types.ObjectId],
+      creatorId: mongoose.Types.ObjectId,
+      coverImages: [mongoose.Types.ObjectId],
+    },
+  ],
   collaborators: [
     {
       collaboratorId: mongoose.Types.ObjectId,

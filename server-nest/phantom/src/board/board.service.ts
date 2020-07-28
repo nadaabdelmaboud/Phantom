@@ -79,6 +79,7 @@ export class BoardService {
       description: '',
       personalization: false,
       collaborators: [],
+      sections: [],
       isJoined: false,
       followers: [],
       counts: {
@@ -395,7 +396,7 @@ export class BoardService {
         await board.save();
       }
     }
-
+    await board.save();
     return board;
   }
   async getCollaboratoresPermissions(userId, boardId) {
@@ -696,8 +697,32 @@ export class BoardService {
     if (isBoardDeleted) return true;
     return false;
   }
+  async createSection(boardId, sectionName, userId) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    if (!sectionName || sectionName == '') {
+      throw new BadRequestException('not valid section name');
+    }
+    if (!board.sections) board.sections = [];
+    board.sections.push({
+      sectionName: sectionName,
+      creatorId: userId,
+      pins: [],
+      coverImages: [],
+    });
+  }
   async merge(boardOriginalId, boardMergedId, userId) {}
-  async createSection(boardId, sectionName, userId) {}
   async deleteSection(boardId, sectionId, userId) {}
   //TO-DO
   //unsave pin from board (section option)
