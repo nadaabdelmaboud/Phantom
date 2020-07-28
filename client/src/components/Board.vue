@@ -51,7 +51,7 @@ export default {
   },
   methods:{
     toBoard(){
-      this.$router.push('/Board/'+ this.boardId +'Pins');
+      this.$router.push('/Board/'+ this.boardId +'/Pins');
       this.$store.commit("boards/chooseBoard", { name:this.boardName, id : this.boardId});
       this.$store.commit("boards/setCurrentBoard", this.boardObject);
     }

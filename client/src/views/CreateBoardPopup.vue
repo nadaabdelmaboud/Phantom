@@ -44,7 +44,7 @@
         type="range"
         min="1"
         max="2"
-        value="2"
+        value="1"
         class="slider"
         id="myRange"
         v-model="isPrivate"
@@ -77,7 +77,7 @@ export default {
         endDate: new Date()
       },
       checkOpen:false,
-      isPrivate: 2
+      isPrivate: 1
     };
   },
   components: {
@@ -100,7 +100,7 @@ export default {
            endDate:this.dateRange.endDate,
            status:"public"
          }
-         if(this.isPrivate==1)
+         if(this.isPrivate==2)
            boardData.status="private"
          this.$store.dispatch("boards/createBoard", boardData);
          this.$store.commit("popUpsState/toggleCreateBoardPopup");

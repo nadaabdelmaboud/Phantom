@@ -82,6 +82,15 @@ const actions = {
           console.log(error)
         });
       },
+      editBoard({dispatch,state},newBoard){
+        axios.put("boards/edit/" + state.chosenBoardId,newBoard)
+        .then(()=>{
+          dispatch("userBoards");
+        })
+        .catch(error => {
+          console.log(error)
+        });
+      },
       deleteBoard({dispatch,state}){
         axios.delete("me/boards/"+state.chosenBoardId)
         .then(()=>{
