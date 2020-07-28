@@ -73,3 +73,25 @@
         border: $lightBlue 4px solid;
       }
   }
+
+  @mixin inputField {
+    border-radius: 10px;
+    border: 2px solid $ligthPaige;
+    padding: 6px 8px;
+    margin: 5px 2px 5px 0px;
+    outline: none;
+    width: 20vw;
+    min-width: 200px;
+    max-height: 300px;
+  }
+
+  @mixin profileButton {
+    border-radius: 400px;
+    padding: 7px 15px;
+    font-weight: bold;
+    background-color: $lightgrey;
+    color: $darkgrey;
+    outline: none;
+    border: 0;
+    margin: 0 2px;
+  }
