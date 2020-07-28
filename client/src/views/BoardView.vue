@@ -11,7 +11,8 @@
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <i class="fa fa-pencil" aria-hidden="true"
+        @click="editBoard"></i>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
@@ -93,6 +94,9 @@ export default {
     },
     addCollaborator(){
 
+    },
+    editBoard(){
+        this.$store.commit("popUpsState/toggleEditBoardPopup")
     }
   },
   watch: {

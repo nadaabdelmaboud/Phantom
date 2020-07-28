@@ -81,6 +81,15 @@ const actions = {
         .catch(error => {
           console.log(error)
         });
+      },
+      deleteBoard({dispatch,state}){
+        axios.delete("me/boards/"+state.chosenBoardId)
+        .then(()=>{
+          dispatch("userBoards");
+        })
+        .catch(error => {
+          console.log(error)
+        });
       }
 };
 

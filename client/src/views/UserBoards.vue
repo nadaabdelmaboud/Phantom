@@ -7,6 +7,7 @@
    :boardName="board.board.name"
    :pinsImages="board.board.coverImages"
    :pinsCount="board.board.counts.pins"
+   :boardObject="board"
    />
    </div>
   </div>

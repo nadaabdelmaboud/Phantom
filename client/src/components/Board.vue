@@ -44,12 +44,16 @@ export default {
     },
     pinsCount:{
       type:Number
+    },
+    boardObject:{
+      type:Object
     }
   },
   methods:{
     toBoard(){
-      this.$router.push('/Board/'+ this.boardId);
+      this.$router.push('/Board/'+ this.boardId +'Pins');
       this.$store.commit("boards/chooseBoard", { name:this.boardName, id : this.boardId});
+      this.$store.commit("boards/setCurrentBoard", this.boardObject);
     }
   }
 };
