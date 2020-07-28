@@ -3,6 +3,7 @@ import {
   BadRequestException,
   UnauthorizedException,
   NotAcceptableException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Model, Mongoose } from 'mongoose';
 import * as mongoose from 'mongoose';
@@ -164,8 +165,6 @@ export class BoardService {
       createdAt: board.createdAt,
       isJoined: false,
       createdOrjoined: 'created',
-      joiners: [],
-      followers: [],
     });
     await user.save().catch(err => {
       console.log(err);
@@ -186,7 +185,7 @@ export class BoardService {
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';
         for (var j = 0; j < board.collaborators.length; j++) {
-          if (String(board.collaborators[j].id) == String(userId)) {
+          if (String(board.collaborators[j].collaboratorId) == String(userId)) {
             permissions = {
               savePin: board.collaborators[j].savePin,
               createPin: board.collaborators[j].createPin,
@@ -357,8 +356,11 @@ export class BoardService {
       (isCreator || (isCollaborator && isCollaborator.addCollaborators)) &&
       editBoardDto.collaboratores
     ) {
-      let collaboratores = editBoardDto.collaboratores.split(',');
+      console.log(editBoardDto.collaboratores);
+      let collaboratores = await editBoardDto.collaboratores.split(',');
+      console.log(collaboratores);
       for (var i = 0; i < collaboratores.length; i++) {
+        console.log(collaboratores.length);
         if (
           (await this.ValidationService.checkMongooseID([collaboratores[i]])) ==
           0
@@ -372,7 +374,7 @@ export class BoardService {
         if (!board.collaborators) board.collaborators = [];
         let id = mongoose.Types.ObjectId(collaboratores[i]);
         board.collaborators.push({
-          id: id,
+          collaboratorId: id,
           savePin: true,
           createPin: true,
           personalization: true,
@@ -380,29 +382,19 @@ export class BoardService {
           editDescription: false,
           addCollaborators: false,
         });
-        for (var i = 0; i < creator.boards.length; i++) {
-          if (String(boardId) == String(creator.boards[i].boardId)) {
-            creator.boards[i].joiners.push(id);
-            await creator.save();
-            break;
-          }
-        }
-        let joiners = [];
-        for (var i = 0; i < board.collaborators.length; i++) {
-          joiners.push(board.collaborators[i].id);
-        }
+
         collaborator.boards.push({
           boardId: boardId,
           name: board.name,
           createdAt: board.createdAt,
           isJoined: board.isJoined,
           createdOrjoined: 'joined',
-          joiners: joiners,
-          followers: board.followers,
         });
+        await collaborator.save();
+        console.log(collaborator);
+        await board.save();
       }
     }
-    await board.save();
 
     return board;
   }
@@ -428,7 +420,7 @@ export class BoardService {
     let retCollaborators = [];
     for (var i = 0; i < board.collaborators.length; i++) {
       let collaborator = await this.UserService.getUserById(
-        board.collaborators[i].id,
+        board.collaborators[i].collaboratorId,
       );
       retCollaborators.push({
         id: collaborator._id,
@@ -489,7 +481,9 @@ export class BoardService {
       );
     }
     for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i].id) == String(collaboratorId)) {
+      if (
+        String(board.collaborators[i].collaboratorId) == String(collaboratorId)
+      ) {
         board.collaborators[i].savePin = savePin;
         board.collaborators[i].createPin = createPin;
         board.collaborators[i].editTitle = editTitle;
@@ -498,16 +492,16 @@ export class BoardService {
         board.collaborators[i].editDescription = editDescription;
 
         await board.save();
+        return {
+          id: board.collaborators[i].collaboratorId,
+          savePin: board.collaborators[i].savePin,
+          createPin: board.collaborators[i].createPin,
+          editTitle: board.collaborators[i].editTitle,
+          addCollaborators: board.collaborators[i].addCollaborators,
+          personalization: board.collaborators[i].personalization,
+          editDescription: board.collaborators[i].editDescription,
+        };
       }
-      return {
-        id: board.collaborators[i].id,
-        savePin: board.collaborators[i].savePin,
-        createPin: board.collaborators[i].createPin,
-        editTitle: board.collaborators[i].editTitle,
-        addCollaborators: board.collaborators[i].addCollaborators,
-        personalization: board.collaborators[i].personalization,
-        editDescription: board.collaborators[i].editDescription,
-      };
     }
     return false;
   }
@@ -535,31 +529,44 @@ export class BoardService {
         'this user is unauthorized to get this board permissions',
       );
     }
-    let collaborator = undefined;
+    let collaborator;
+    console.log(collaboratorId);
+    if (board.collaborators.length == 0) {
+      throw new NotFoundException('this board has no collaboratores');
+    }
+    let no = 1;
     for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i].id) == String(collaboratorId)) {
+      if (
+        String(board.collaborators[i].collaboratorId) == String(collaboratorId)
+      ) {
         collaborator = await this.UserService.getUserById(
-          board.collaborators[i].id,
+          board.collaborators[i].collaboratorId,
         );
         board.collaborators.splice(i, 1);
         await board.save();
         break;
       }
+      no++;
     }
-    if (collaborator) {
-      for (var i = 0; i < collaborator.boards.length; i++) {
-        if (
-          String(collaborator.boards[i].boardId) == String(boardId) &&
-          collaborator.boards[i].createdOrjoined == 'joined'
-        ) {
-          collaborator.boards.splice(i, 1);
-          await collaborator.save();
-          return true;
+
+    if (no == board.collaborators.length) {
+      if (collaborator) {
+        console.log(boardId);
+        for (var index = 0; index < collaborator.boards.length; index++) {
+          console.log(collaborator.boards[index]);
+          if (
+            String(collaborator.boards[index].boardId) == String(boardId) &&
+            collaborator.boards[index].createdOrjoined == 'joined'
+          ) {
+            console.log('sss');
+            collaborator.boards.splice(index, 1);
+            await collaborator.save();
+            return true;
+          }
         }
+      } else {
+        throw new NotAcceptableException('collaborator not found');
       }
-      return false;
-    } else {
-      throw new NotAcceptableException('collaborator not found');
     }
   }
   async deletePin(pinId, userId, isBoard) {
@@ -636,6 +643,7 @@ export class BoardService {
         }
       }
     }
+    await this.pinModel.deleteOne({ _id: pinId });
     return true;
   }
   async deleteBoard(userId, boardId) {
@@ -666,7 +674,7 @@ export class BoardService {
     }
     for (var k = 0; k < board.collaborators.length; k++) {
       let collaborator = await this.UserService.getUserById(
-        board.collaborators[k].id,
+        board.collaborators[k].collaboratorId,
       );
       if (collaborator) {
         for (var i = 0; i < collaborator.boards.length; i++) {

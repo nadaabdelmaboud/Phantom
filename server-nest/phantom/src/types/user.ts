@@ -18,11 +18,12 @@ export interface user extends Document {
     boardId: mongoose.Types.ObjectId;
   }>;
   savedPins: Array<{
-    id: mongoose.Types.ObjectId;
+    pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
   }>;
   confirm: Boolean;
   fcmToken: String;
+  followingTopics: Array<mongoose.Types.ObjectId>;
   notifications: [{}];
   offlineNotifications: [{}];
   followers: Array<mongoose.Types.ObjectId>;
@@ -33,8 +34,6 @@ export interface user extends Document {
       name: String;
       createdAt: Date;
       isJoined: Boolean;
-      joiners: Array<mongoose.Types.ObjectId>;
-      followers: Array<mongoose.Types.ObjectId>;
       createdOrjoined: String;
     },
   ];

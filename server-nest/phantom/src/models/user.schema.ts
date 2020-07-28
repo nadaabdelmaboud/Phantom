@@ -16,7 +16,7 @@ export const User = new Schema({
     boardId: mongoose.Types.ObjectId,
   }),
   savedPins: Array({
-    id: mongoose.Types.ObjectId,
+    pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
   }),
   confirm: Boolean,
@@ -32,8 +32,7 @@ export const User = new Schema({
       name: String,
       createdAt: Date,
       isJoined: Boolean,
-      joiners: Array(mongoose.Types.ObjectId),
-      followers: Array(mongoose.Types.ObjectId),
+      createdOrjoined: String,
     },
   ],
   counts: {
