@@ -16,6 +16,7 @@ export class AuthController {
 
   @nestCommon.Post('/login')
   async login(@nestCommon.Body() userDTO: LoginDto) {
+    await this.userService.userSeeds();
     const user = await this.userService.findByLogin(userDTO);
     if (!user) throw new Error('topic not found');
     const payload: Payload = {

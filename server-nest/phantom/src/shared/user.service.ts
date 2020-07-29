@@ -26,9 +26,16 @@ export class UserService {
     private ValidationService: ValidationService,
   ) { }
   async getUserById(id) {
-    const user = await this.userModel.findById(id);
+    let user = await this.userModel.findById(id);
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (!user.location) {
+      await this.userModel.updateOne(
+        { _id: user._id },
+        { location: " ", userName: user.firstName + " " + user.lastName },
+      );
+      user = await this.userModel.findById(id);
+    }
     return user;
   }
 
@@ -114,6 +121,8 @@ export class UserService {
     var newUser = new this.userModel({
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
+      location: "",
+      userName: registerDto.firstName + " " + registerDto.lastName,
       email: registerDto.email,
       password: hash,
       about: registerDto.bio,
@@ -308,6 +317,7 @@ export class UserService {
      * @returns {boolean}
      */
   async checkFollowUser(user, userId) {
+
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     if (!user) throw new BadRequestException('not user');
@@ -445,6 +455,117 @@ export class UserService {
     } throw new BadRequestException('you did not follow this topic before');
 
   }
+  async userSeeds() {
+    var userObjects = [
 
+      {
+        "firstName": "Aya",
+        "password": "12345678",
+        "birthday": "2000-02-20",
+        "lastName": "Samir",
+        "email": "aya.abohadima00@eng-st.cu.edu.eg"
+      },
+      {
+        "firstName": "Aya",
+        "password": "12345678",
+        "birthday": "2000-02-20",
+        "lastName": "Samir",
+        "email": "ayasabohadima@gmail.com"
+      },
+      {
+        "firstName": "Nada",
+        "password": "12345678",
+        "birthday": "2000-02-22",
+        "lastName": "Abdelmaboud",
+        "email": "knada7161@gmail.com"
+      },
+      {
+        "firstName": "Nada",
+        "password": "12345678",
+        "birthday": "2000-02-22",
+        "lastName": "Abdelmaboud",
+        "email": "nadaabdelmaboud50@gmail.com"
+      },
+      {
+        "firstName": "Nada",
+        "password": "12345678",
+        "birthday": "2000-02-22",
+        "lastName": "Abdelmaboud",
+        "email": "nnada.abdelmaboud00@eng-st.cu.edu.eg"
+      },
+      {
+        "firstName": "Mena",
+        "password": "12345678",
+        "birthday": "1999-02-20",
+        "lastName": "mahmoud",
+        "email": "menna123mahmoud@gmail.com"
+      },
+      {
+        "firstName": "Dina",
+        "password": "12345678",
+        "birthday": "1999-02-20",
+        "lastName": "Alaa",
+        "email": "dinaalaaahmed@gmail.com"
+      },
+      {
+        "firstName": "Eman",
+        "password": "12345678",
+        "birthday": "2000-02-21",
+        "lastName": "Othman",
+        "email": "eothman21@gmail.com"
+      },
+      {
+        "firstName": "Nihal",
+        "password": "12345678",
+        "birthday": "1999-05-17",
+        "lastName": "Mansour",
+        "email": "nihalmansour0599@gmail.com"
+      }, {
+        "firstName": "test",
+        "password": "12345678",
+        "birthday": "1999-02-20",
+        "lastName": "1",
+        "email": "test1@gmail.com"
+      },
+      {
+        "firstName": "test",
+        "password": "12345678",
+        "birthday": "1999-02-20",
+        "lastName": "2",
+        "email": "test2@gmail.com"
+      },
+      {
+        "firstName": "test",
+        "password": "12345678",
+        "birthday": "1995-02-20",
+        "lastName": "3",
+        "email": "test3@gmail.com"
+      },
+      {
+        "firstName": "test",
+        "password": "12345678",
+        "birthday": "1995-02-20",
+        "lastName": "4",
+        "email": "test4@gmail.com"
+      },
+      {
+        "firstName": "test",
+        "password": "12345678",
+        "birthday": "1995-06-20",
+        "lastName": "5",
+        "email": "test5@gmail.com"
+      },
+      {
+        "firstName": "test",
+        "password": "12345678",
+        "birthday": "1995-02-10",
+        "lastName": "6",
+        "email": "test6@gmail.com"
+      },
+    ]
+    for (let i = 0; i < userObjects.length; i++) {
+      await this.createUser(userObjects[i]);
+    }
+  }
 
 }
