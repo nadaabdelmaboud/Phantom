@@ -117,9 +117,15 @@ export class TopicService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
-    if (!topic.followers) topic.followers = [];
-    for (let i = 0; i < topic.followers.length; i++)
-      if (String(topic.followers[i] === userId)) return true;
+    if (!topic.followers)
+      topic.followers = [];
+    await this.topicModel.updateOne({ _id: topicId }, { followers: topic.followers });
+    for (let i = 0; i < topic.followers.length; i++) {
+      //console.log(String(topic.followers[i]))
+      //console.log(String(userId))
+      //console.log(String(topic.followers[i] == userId));
+      if (String(topic.followers[i]) == String(userId)) return true;
+    }
     return false;
 
   }
@@ -131,7 +137,9 @@ export class TopicService {
     const topic = await this.getTopicById(topicId, userId);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
     if (await this.checkFollowTopic(userId, topicId)) throw new BadRequestException('you followed this topic before');
-    if (await this.UserService.followTopic(user, topicId)) {
+    //console.log(12);
+    if (await this.UserService.followTopic(userId, topicId)) {
+      // console.log(34);
       topic.followers.push(userId);
       await this.topicModel.updateOne({ _id: topicId }, { followers: topic.followers });
       return 1;
@@ -146,9 +154,11 @@ export class TopicService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
-    console.log(await this.checkFollowTopic(userId, topicId))
-    if (await this.checkFollowTopic(userId, topicId) === false) throw new BadRequestException('you did not follow this topic before');
-    if (await this.UserService.unfollowTopic(user, topicId)) {
+    // console.log(await this.checkFollowTopic(userId, topicId))
+    if (!await this.checkFollowTopic(userId, topicId)) throw new BadRequestException('you did not follow this topic before');
+    //console.log(500);
+    if (await this.UserService.unfollowTopic(userId, topicId)) {
+      //console.log(501)
       if (topic.followers) {
         for (let i = 0; i < topic.followers.length; i++) {
           if (String(topic.followers[i]) === String(userId)) {

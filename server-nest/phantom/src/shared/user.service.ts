@@ -26,16 +26,9 @@ export class UserService {
     private ValidationService: ValidationService,
   ) { }
   async getUserById(id) {
-    let user = await this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
-    if (!user.location) {
-      await this.userModel.updateOne(
-        { _id: user._id },
-        { location: " ", userName: user.firstName + " " + user.lastName },
-      );
-      user = await this.userModel.findById(id);
-    }
     return user;
   }
 
@@ -136,6 +129,7 @@ export class UserService {
       offlineNotifications: [],
       followers: [],
       following: [],
+      followingTopics: [],
       boards: [],
       counts: {
         likes: 0,
@@ -429,26 +423,34 @@ export class UserService {
     return { followings: followingsInfo, numOfFollowings: user.following.length };
 
   }
-  async followTopic(user, topicId) {
-    if ((await this.ValidationService.checkMongooseID([topicId])) === 0)
+  async followTopic(userId, topicId) {
+    if ((await this.ValidationService.checkMongooseID([topicId, userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.getUserById(userId);
+    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     console.log(user.followingTopics)
     if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
     console.log(user.followingTopics)
-
-    await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
-    console.log(user.followingTopics)
+    await this.userModel.updateOne({ _id: userId }, { followingTopics: user.followingTopics });
+    console.log(user.followingTopics);
+    const UserTest = await this.getUserById(userId);
+    console.log(UserTest.followingTopics);
     return 1;
   }
-  async unfollowTopic(user, topicId) {
-    if ((await this.ValidationService.checkMongooseID([topicId])) === 0)
+  async unfollowTopic(userId, topicId) {
+    if ((await this.ValidationService.checkMongooseID([topicId, userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.getUserById(userId);
+    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
+    //console.log(user.followingTopics)
     if (user.followingTopics) {
       for (let i = 0; i < user.followingTopics.length; i++) {
-        if (String(user.followingTopics[i]) === String(topicId)) {
+        //  console.log(user.followingTopics[i])
+        //console.log(topicId);
+        if (String(user.followingTopics[i]) == String(topicId)) {
           user.followingTopics.splice(i, 1);
-          await this.userModel.updateOne({ _id: user._id }, { followingTopics: user.followingTopics });
+          await this.userModel.updateOne({ _id: userId }, { followingTopics: user.followingTopics });
           return 1;
         }
       }
@@ -458,6 +460,13 @@ export class UserService {
   async userSeeds() {
     var userObjects = [
 
+      {
+        "firstName": "Nada",
+        "password": "12345678",
+        "birthday": "2000-02-22",
+        "lastName": "Abdelmaboud",
+        "email": "nada5aled52@gmail.com"
+      },
       {
         "firstName": "Aya",
         "password": "12345678",
