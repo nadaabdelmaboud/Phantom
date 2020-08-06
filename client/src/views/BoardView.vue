@@ -93,7 +93,7 @@ export default {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
     addCollaborator(){
-
+      this.$store.commit("popUpsState/toggleCollaboratorsPopup");
     },
     editBoard(){
         this.$store.commit("popUpsState/toggleEditBoardPopup")

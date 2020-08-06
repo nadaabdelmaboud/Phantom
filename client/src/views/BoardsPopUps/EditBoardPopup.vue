@@ -98,7 +98,8 @@
       </button>
     </div>
     <div class="editBoard" v-if="editState == 3" @click="hideBoard">
-      <h3>Move all pins to...</h3>
+      <h3 v-if="MergeTo == 'Pick a board'">Move all pins to...</h3>
+      <h3 v-if="MergeTo != 'Pick a board'">Move Pins and delete board?</h3>
       <div class="mergeOptions" id="showControl" @click="showBoard = !showBoard">{{MergeTo}}</div>
       <div v-if="MergeTo != 'Pick a board'">
         <br/>
@@ -125,7 +126,8 @@
         :class="{disable: MergeTo == 'Pick a board'}"
         @click="mergeBoard">
         Move Pins and Delete Board</button>
-        <button @click="editState = 1"
+        <button 
+        @click="editState = 1,MergeTo = 'Pick a board',MergeToId=''"
         class="leftButton"
         >Cancel</button>
 
@@ -253,7 +255,7 @@ h3 {
   color: $darkBlue;
 }
 .formBoard{
-    height: 500px;
+    height: 400px;
     overflow-y: auto;
 }
 .buttonDiv{

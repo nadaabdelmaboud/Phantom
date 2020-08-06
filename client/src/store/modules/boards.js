@@ -18,7 +18,10 @@ const mutations = {
     (state.chosenBoardName = name), (state.chosenBoardId = id);
   },
   setCurrentBoard(state , board){
-    state.currentBoard = board
+    state.currentBoard = board;
+  },
+  setCollaborators(state, collaborators){
+    state.collaborators= collaborators;
   }
 };
 
@@ -108,6 +111,36 @@ const actions = {
         .catch(error => {
           console.log(error)
         });
+      },
+      getCollaborators({ state,commit }) {
+        axios
+          .get("me/boards/"+state.currentBoard.board._id+"/collaboratores")
+          .then((response) => {
+            commit("setCollaborators", response.data[0]);
+          })
+          .catch(error => {
+            console.log(error)
+          });
+      },
+      editCollaborators({dispatch},payload){
+        axios
+        .put("me/boards/"+state.currentBoard.board._id+"/collaboratores",payload)
+        .then(() => {
+          dispatch("getCollaborators");
+        })
+        .catch(error => {
+          console.log(error)
+        });
+      },
+      deletaCollaborator({dispatch},payload){
+        axios
+        .put("me/boards/"+state.currentBoard.board._id+"/collaboratores",payload)
+        .then(() => {
+          dispatch("getCollaborators");
+        })
+        .catch(error => {
+          console.log(error)
+        });
       }
 };
 
@@ -115,7 +148,8 @@ const getters = {
   userBoards: state => state.userBoards,
   chosenBoardName: state => state.chosenBoardName,
   chosenBoardId: state => state.chosenBoardId,
-  currentBoard: state => state.currentBoard
+  currentBoard: state => state.currentBoard,
+  collaborators: state => state.collaborators
 };
 
 export default {
