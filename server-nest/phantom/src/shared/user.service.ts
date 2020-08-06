@@ -24,7 +24,7 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<user>,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -114,8 +114,8 @@ export class UserService {
     var newUser = new this.userModel({
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
-      location: "",
-      userName: registerDto.firstName + " " + registerDto.lastName,
+      location: '',
+      userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
       about: registerDto.bio,
@@ -305,62 +305,84 @@ export class UserService {
     return false;
   }
   /**
-     * check if this user follow this user id  
-     * @param {Object} user - user he follow 
-     * @param {String} userId - id of user followed
-     * @returns {boolean}
-     */
+   * check if this user follow this user id
+   * @param {Object} user - user he follow
+   * @param {String} userId - id of user followed
+   * @returns {boolean}
+   */
   async checkFollowUser(user, userId) {
-
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     if (!user) throw new BadRequestException('not user');
-    if (!user.following) await this.userModel.updateOne({ _id: user._id }, { following: [] });
+    if (!user.following)
+      await this.userModel.updateOne({ _id: user._id }, { following: [] });
     for (let i = 0; i < user.following.length; i++)
-      if (String(userId) === String(user.following[i]))
-        return true;
+      if (String(userId) === String(user.following[i])) return true;
     return false;
   }
   /**
-   * followUser:  make frist user id follow second user id 
-   * @param {String} followerId - id of user went to follow 
-   * @param {String} followingId  - id of user wented to be followed 
+   * followUser:  make frist user id follow second user id
+   * @param {String} followerId - id of user went to follow
+   * @param {String} followingId  - id of user wented to be followed
    * @returns {Number}
    */
   async followUser(followerId, followingId) {
-    if ((await this.ValidationService.checkMongooseID([followerId, followingId])) === 0)
+    if (
+      (await this.ValidationService.checkMongooseID([
+        followerId,
+        followingId,
+      ])) === 0
+    )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.getUserById(followerId);
     let followedUser = await this.getUserById(followingId);
-    if (!userFollow || !followedUser) throw new BadRequestException('one of users not correct');
-    if (await this.checkFollowUser(userFollow, followingId)) throw new BadRequestException('you followed this user before');
+    if (!userFollow || !followedUser)
+      throw new BadRequestException('one of users not correct');
+    if (await this.checkFollowUser(userFollow, followingId))
+      throw new BadRequestException('you followed this user before');
     userFollow.following.push(followingId);
-    await this.userModel.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+    await this.userModel.updateOne(
+      { _id: userFollow._id },
+      { following: userFollow.following },
+    );
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
-    await this.userModel.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+    await this.userModel.updateOne(
+      { _id: followedUser._id },
+      { followers: followedUser.followers },
+    );
     return 1;
   }
 
   /**
-   * unfollowUser:  make frist user id unfollow second user id 
-   * @param {String} followerId - id of user went to unfollow 
-   * @param {String} followingId  - id of user wented to be unfollowed 
+   * unfollowUser:  make frist user id unfollow second user id
+   * @param {String} followerId - id of user went to unfollow
+   * @param {String} followingId  - id of user wented to be unfollowed
    * @returns {Number}
-  */
+   */
 
   async unfollowUser(followerId, followingId) {
-    if ((await this.ValidationService.checkMongooseID([followerId, followingId])) === 0)
+    if (
+      (await this.ValidationService.checkMongooseID([
+        followerId,
+        followingId,
+      ])) === 0
+    )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.getUserById(followerId);
     let followedUser = await this.getUserById(followingId);
-    if (!userFollow || !followedUser) throw new BadRequestException('one of users not correct');
-    if (!await this.checkFollowUser(userFollow, followingId)) throw new BadRequestException('you did not follow this user before');
+    if (!userFollow || !followedUser)
+      throw new BadRequestException('one of users not correct');
+    if (!(await this.checkFollowUser(userFollow, followingId)))
+      throw new BadRequestException('you did not follow this user before');
     if (userFollow.following) {
       for (let i = 0; i < userFollow.following.length; i++) {
         if (String(userFollow.following[i]) === String(followingId)) {
           userFollow.following.splice(i, 1);
-          await this.userModel.updateOne({ _id: userFollow._id }, { following: userFollow.following });
+          await this.userModel.updateOne(
+            { _id: userFollow._id },
+            { following: userFollow.following },
+          );
           break;
         }
       }
@@ -369,7 +391,10 @@ export class UserService {
       for (let i = 0; i < followedUser.followers.length; i++) {
         if (String(followedUser.followers[i]) === String(followerId)) {
           followedUser.followers.splice(i, 1);
-          await this.userModel.updateOne({ _id: followedUser._id }, { followers: followedUser.followers });
+          await this.userModel.updateOne(
+            { _id: followedUser._id },
+            { followers: followedUser.followers },
+          );
           return 1;
         }
       }
@@ -377,11 +402,11 @@ export class UserService {
     throw new BadRequestException('you did not follow this user before');
   }
   /**
-   * userFollowers: get user followers 
-  * @param {string} userId - user id
-  * @param {Number} limit  - the limit 
-  * @param {Number} offset - the start
-   * @returns {object} - has array of user object and real number of followers 
+   * userFollowers: get user followers
+   * @param {string} userId - user id
+   * @param {Number} limit  - the limit
+   * @param {Number} offset - the start
+   * @returns {object} - has array of user object and real number of followers
    */
 
   async userFollowers(userId, limit, offset) {
@@ -389,50 +414,73 @@ export class UserService {
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    if (!user.followers || user.followers.length == 0) return { followers: [], numOfFollowers: 0 };
-    const followers = this.ValidationService.limitOffset(limit, offset, user.followers);
+    if (!user.followers || user.followers.length == 0)
+      return { followers: [], numOfFollowers: 0 };
+    const followers = this.ValidationService.limitOffset(
+      limit,
+      offset,
+      user.followers,
+    );
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
       var currentUser = await this.getUserById(followers[i]);
       if (currentUser)
-        followersInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+        followersInfo.push({
+          _id: currentUser._id,
+          firstName: currentUser.firstName,
+          lastName: currentUser.lastName,
+        });
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
   }
 
   /**
- * userFollowings: get user following 
- * @param {string} userId - user id
- * @param {Number} limit  - the limit 
- * @param {Number} offset - the start
- * @returns {object} - has array of user object and real number of followings 
- */
+   * userFollowings: get user following
+   * @param {string} userId - user id
+   * @param {Number} limit  - the limit
+   * @param {Number} offset - the start
+   * @returns {object} - has array of user object and real number of followings
+   */
   async userFollowings(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    if (!user.following || user.following.length == 0) return { followings: [], numOfFollowings: 0 };
-    const followings = this.ValidationService.limitOffset(limit, offset, user.following);
+    if (!user.following || user.following.length == 0)
+      return { followings: [], numOfFollowings: 0 };
+    const followings = this.ValidationService.limitOffset(
+      limit,
+      offset,
+      user.following,
+    );
     var followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
       var currentUser = await this.getUserById(followings[i]);
       if (currentUser)
-        followingsInfo.push({ _id: currentUser._id, firstName: currentUser.firstName, lastName: currentUser.lastName });
+        followingsInfo.push({
+          _id: currentUser._id,
+          firstName: currentUser.firstName,
+          lastName: currentUser.lastName,
+        });
     }
-    return { followings: followingsInfo, numOfFollowings: user.following.length };
-
+    return {
+      followings: followingsInfo,
+      numOfFollowings: user.following.length,
+    };
   }
   async followTopic(userId, topicId) {
     if ((await this.ValidationService.checkMongooseID([topicId, userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    console.log(user.followingTopics)
+    console.log(user.followingTopics);
     if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
-    console.log(user.followingTopics)
-    await this.userModel.updateOne({ _id: userId }, { followingTopics: user.followingTopics });
+    console.log(user.followingTopics);
+    await this.userModel.updateOne(
+      { _id: userId },
+      { followingTopics: user.followingTopics },
+    );
     console.log(user.followingTopics);
     const UserTest = await this.getUserById(userId);
     console.log(UserTest.followingTopics);
@@ -450,131 +498,133 @@ export class UserService {
         //console.log(topicId);
         if (String(user.followingTopics[i]) == String(topicId)) {
           user.followingTopics.splice(i, 1);
-          await this.userModel.updateOne({ _id: userId }, { followingTopics: user.followingTopics });
+          await this.userModel.updateOne(
+            { _id: userId },
+            { followingTopics: user.followingTopics },
+          );
           return 1;
         }
       }
-    } throw new BadRequestException('you did not follow this topic before');
-
+    }
+    throw new BadRequestException('you did not follow this topic before');
   }
   async userSeeds() {
     var userObjects = [
-
       {
-        "firstName": "Nada",
-        "password": "12345678",
-        "birthday": "2000-02-22",
-        "lastName": "Abdelmaboud",
-        "email": "nada5aled52@gmail.com"
+        firstName: 'Nada',
+        password: '12345678',
+        birthday: '2000-02-22',
+        lastName: 'Abdelmaboud',
+        email: 'nada5aled52@gmail.com',
       },
       {
-        "firstName": "Aya",
-        "password": "12345678",
-        "birthday": "2000-02-20",
-        "lastName": "Samir",
-        "email": "aya.abohadima00@eng-st.cu.edu.eg"
+        firstName: 'Aya',
+        password: '12345678',
+        birthday: '2000-02-20',
+        lastName: 'Samir',
+        email: 'aya.abohadima00@eng-st.cu.edu.eg',
       },
       {
-        "firstName": "Aya",
-        "password": "12345678",
-        "birthday": "2000-02-20",
-        "lastName": "Samir",
-        "email": "ayasabohadima@gmail.com"
+        firstName: 'Aya',
+        password: '12345678',
+        birthday: '2000-02-20',
+        lastName: 'Samir',
+        email: 'ayasabohadima@gmail.com',
       },
       {
-        "firstName": "Nada",
-        "password": "12345678",
-        "birthday": "2000-02-22",
-        "lastName": "Abdelmaboud",
-        "email": "knada7161@gmail.com"
+        firstName: 'Nada',
+        password: '12345678',
+        birthday: '2000-02-22',
+        lastName: 'Abdelmaboud',
+        email: 'knada7161@gmail.com',
       },
       {
-        "firstName": "Nada",
-        "password": "12345678",
-        "birthday": "2000-02-22",
-        "lastName": "Abdelmaboud",
-        "email": "nadaabdelmaboud50@gmail.com"
+        firstName: 'Nada',
+        password: '12345678',
+        birthday: '2000-02-22',
+        lastName: 'Abdelmaboud',
+        email: 'nadaabdelmaboud50@gmail.com',
       },
       {
-        "firstName": "Nada",
-        "password": "12345678",
-        "birthday": "2000-02-22",
-        "lastName": "Abdelmaboud",
-        "email": "nnada.abdelmaboud00@eng-st.cu.edu.eg"
+        firstName: 'Nada',
+        password: '12345678',
+        birthday: '2000-02-22',
+        lastName: 'Abdelmaboud',
+        email: 'nada.abdelmaboud00@eng-st.cu.edu.eg',
       },
       {
-        "firstName": "Mena",
-        "password": "12345678",
-        "birthday": "1999-02-20",
-        "lastName": "mahmoud",
-        "email": "menna123mahmoud@gmail.com"
+        firstName: 'Mena',
+        password: '12345678',
+        birthday: '1999-02-20',
+        lastName: 'mahmoud',
+        email: 'menna123mahmoud@gmail.com',
       },
       {
-        "firstName": "Dina",
-        "password": "12345678",
-        "birthday": "1999-02-20",
-        "lastName": "Alaa",
-        "email": "dinaalaaahmed@gmail.com"
+        firstName: 'Dina',
+        password: '12345678',
+        birthday: '1999-02-20',
+        lastName: 'Alaa',
+        email: 'dinaalaaahmed@gmail.com',
       },
       {
-        "firstName": "Eman",
-        "password": "12345678",
-        "birthday": "2000-02-21",
-        "lastName": "Othman",
-        "email": "eothman21@gmail.com"
+        firstName: 'Eman',
+        password: '12345678',
+        birthday: '2000-02-21',
+        lastName: 'Othman',
+        email: 'eothman21@gmail.com',
       },
       {
-        "firstName": "Nihal",
-        "password": "12345678",
-        "birthday": "1999-05-17",
-        "lastName": "Mansour",
-        "email": "nihalmansour0599@gmail.com"
-      }, {
-        "firstName": "test",
-        "password": "12345678",
-        "birthday": "1999-02-20",
-        "lastName": "1",
-        "email": "test1@gmail.com"
+        firstName: 'Nihal',
+        password: '12345678',
+        birthday: '1999-05-17',
+        lastName: 'Mansour',
+        email: 'nihalmansour0599@gmail.com',
       },
       {
-        "firstName": "test",
-        "password": "12345678",
-        "birthday": "1999-02-20",
-        "lastName": "2",
-        "email": "test2@gmail.com"
+        firstName: 'test',
+        password: '12345678',
+        birthday: '1999-02-20',
+        lastName: '1',
+        email: 'test1@gmail.com',
       },
       {
-        "firstName": "test",
-        "password": "12345678",
-        "birthday": "1995-02-20",
-        "lastName": "3",
-        "email": "test3@gmail.com"
+        firstName: 'test',
+        password: '12345678',
+        birthday: '1999-02-20',
+        lastName: '2',
+        email: 'test2@gmail.com',
       },
       {
-        "firstName": "test",
-        "password": "12345678",
-        "birthday": "1995-02-20",
-        "lastName": "4",
-        "email": "test4@gmail.com"
+        firstName: 'test',
+        password: '12345678',
+        birthday: '1995-02-20',
+        lastName: '3',
+        email: 'test3@gmail.com',
       },
       {
-        "firstName": "test",
-        "password": "12345678",
-        "birthday": "1995-06-20",
-        "lastName": "5",
-        "email": "test5@gmail.com"
+        firstName: 'test',
+        password: '12345678',
+        birthday: '1995-02-20',
+        lastName: '4',
+        email: 'test4@gmail.com',
       },
       {
-        "firstName": "test",
-        "password": "12345678",
-        "birthday": "1995-02-10",
-        "lastName": "6",
-        "email": "test6@gmail.com"
+        firstName: 'test',
+        password: '12345678',
+        birthday: '1995-06-20',
+        lastName: '5',
+        email: 'test5@gmail.com',
       },
-    ]
+      {
+        firstName: 'test',
+        password: '12345678',
+        birthday: '1995-02-10',
+        lastName: '6',
+        email: 'test6@gmail.com',
+      },
+    ];
     for (let i = 0; i < userObjects.length; i++) {
       await this.createUser(userObjects[i]);
     }
   }
-
 }
