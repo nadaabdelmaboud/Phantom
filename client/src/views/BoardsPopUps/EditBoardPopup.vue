@@ -3,10 +3,6 @@
     <div class="editBoard" v-if="editState == 1">
       <h3>Edit your Board</h3>
       <div class="formBoard">
-      <label>Board cover</label>
-      <br/>
-      <i class="fa fa-plus addCover"></i>
-      <br>
       <label>Name</label>
       <br />
       <input
@@ -101,7 +97,40 @@
         Delete forever
       </button>
     </div>
-    <div class="editBoard" v-if="editState == 3"></div>
+    <div class="editBoard" v-if="editState == 3" @click="hideBoard">
+      <h3>Move all pins to...</h3>
+      <div class="mergeOptions" id="showControl" @click="showBoard = !showBoard">{{MergeTo}}</div>
+      <div v-if="MergeTo != 'Pick a board'">
+        <br/>
+      <p>
+        You're about to move all the Pins from your "{{name}}" board to a new section in your "{{MergeTo}}" board.
+      </p>
+      <p>
+         When you delete "{{name}}", you'll lose all followers of that board.
+      </p>
+      </div>
+      <div class="boards" v-if="showBoard">
+        <input type="text" v-model="searchBoard" placeholder="Search" />
+        <ul v-for="(b, i) in userBoards" :key="i">
+          <li
+            v-if="b.board.name.search(new RegExp(searchBoard, 'i')) != -1 && board.board._id != b.board._id"
+            @click="selectMerge(b.board.name,b.board._id)"
+          >
+            {{ b.board.name }}
+          </li>
+        </ul>
+      </div>
+      <div class="buttonDiv">
+        <button 
+        :class="{disable: MergeTo == 'Pick a board'}"
+        @click="mergeBoard">
+        Move Pins and Delete Board</button>
+        <button @click="editState = 1"
+        class="leftButton"
+        >Cancel</button>
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -123,7 +152,11 @@ export default {
         startDate: new Date(),
         endDate: new Date(),
       },
-      checkOpen: false
+      checkOpen: false,
+      MergeTo:"Pick a board",
+      MergeToId:"",
+      showBoard:false,
+      searchBoard:""
     };
   },
 
@@ -152,22 +185,39 @@ export default {
       this.$store.commit("popUpsState/toggleEditBoardPopup");
       this.$router.go(-1);
     },
+    selectMerge(name,id){
+      this.MergeTo = name;
+      this.MergeToId = id;
+      this.showBoard = false;
+    },
+    mergeBoard(){
+      if(this.MergeToId != "")
+        this.$store.commit("popUpsState/toggleEditBoardPopup");
+    },
+    hideBoard(event){
+      console.log(event.target.id)
+      if(event.target.id != 'showControl')
+        this.showBoard =false
+    }
   },
   computed: {
     ...mapGetters({
       board: "boards/currentBoard",
+      userBoards: "boards/userBoards"
     }),
   },
   created() {
     this.name = this.board.board.name;
     this.description = this.board.board.description;
     if (this.board.board.status == "public") this.status = 1;
+    this.$store.dispatch("boards/userBoards");
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
+@import '../../scss/Mixins';
 @import "../../scss/GlobalPopup";
 
 #edit {
@@ -206,29 +256,35 @@ h3 {
     height: 500px;
     overflow-y: auto;
 }
-i {
-  height: 150px;
-  width: 150px;
-  font-size: 24px;
-  color: $darkBlue;
-  border-radius: 16px;
-  padding: 63px;
-  text-align: center;
-  transition: background-color 0.5s ease;
-  background-color: $offWhite;
-  cursor: pointer;
-}
-i:hover {
-  background-color: $lightPink;
-}
 .buttonDiv{
     padding-top: 30px;
     .leftButton{
-        float: left;
         background-color: $lightPink;
         color: $darkBlue;
         margin-right: 5px;
 
     }
+}
+.mergeOptions{
+  text-align: center;
+  height: 48px;
+  border-radius: 16px;
+  padding: 9px 0;
+  font-size: 20px;
+  color:$darkBlue;
+  background-color: $lightPink;
+  transition: 0.5s linear;
+  cursor: pointer;
+  margin-top:30px
+}
+.mergeOptions:hover{
+   background-color: $lightPinkHover;
+}
+.boards {
+  @include optionsList;
+  width:400px;
+  margin-top: 10px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 </style>
