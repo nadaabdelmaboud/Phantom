@@ -227,6 +227,25 @@ export class BoardController {
     }
   }
   @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId/section/:sectionId')
+  async deleteSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Param('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let deleteSection = await this.BoardService.deleteSection(
+      boardId,
+      sectionId,
+      userId,
+    );
+    if (deleteSection) {
+      return { success: 'section deleted succissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'Section is not deleated' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
   @Put('/me/boards/merge')
   async mergeBoards(
     @Request() req,

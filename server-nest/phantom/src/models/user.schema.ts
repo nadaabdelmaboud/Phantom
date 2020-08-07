@@ -11,6 +11,7 @@ export const User = new Schema({
   location: String,
   userName: String,
   about: String,
+  sortType: String,
   gender: String,
   socketId: String,
   profileImage: mongoose.Types.ObjectId,

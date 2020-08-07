@@ -11,6 +11,7 @@ export interface user extends Document {
   birthDate: Date;
   about: String;
   gender: String;
+  sortType: String;
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
   pins: Array<{

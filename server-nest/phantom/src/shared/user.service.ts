@@ -118,6 +118,7 @@ export class UserService {
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
+      sortType: 'Date',
       about: registerDto.bio,
       gender: registerDto.gender,
       country: registerDto.country,

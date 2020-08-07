@@ -128,6 +128,7 @@ export class BoardService {
     let user = await this.UserService.getUserById(userId);
 
     await user.boards.sort((a, b) => a.name.localeCompare(b.name.toString()));
+    user.sortType = 'A-Z';
     await user.save();
     return user.boards;
   }
@@ -144,6 +145,7 @@ export class BoardService {
       }
       return 0;
     });
+    user.sortType = 'Date';
     await user.save();
     console.log(user.boards);
     return user.boards;
@@ -168,6 +170,7 @@ export class BoardService {
     }
     let desiredBorder = await user.boards.splice(startIndex, 1);
     await user.boards.splice(positionIndex - 1, 0, desiredBorder[0]);
+    user.sortType = 'Reorder';
     await user.save();
     return user.boards;
   }
@@ -893,7 +896,52 @@ export class BoardService {
     await boardOriginal.save();
     return boardOriginal;
   }
-  async deleteSection(boardId, sectionId, userId) {}
+  async deleteSection(boardId, sectionId, userId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        boardId,
+        userId,
+        sectionId,
+      ])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+
+    for (let i = 0; i < board.sections.length; i++) {
+      if (String(board.sections[i]._id) == String(sectionId)) {
+        let isAuthorized =
+          board.sections[i].creatorId == userId ||
+          String(board.creator.id) == String(userId);
+        if (!isAuthorized) {
+          throw new UnauthorizedException(
+            'this user is unauthorized to delete the section',
+          );
+        }
+        for (let k = 0; k < board.sections[i].pins.length; k++) {
+          let isDeleted = await this.deletePin(
+            board.sections[i].pins[k],
+            undefined,
+            true,
+          );
+          if (!isDeleted) {
+            throw new Error("error while deleting section's pins");
+          }
+        }
+        board.sections.slice(i, 1);
+        await board.save();
+        return true;
+      }
+    }
+    return false;
+  }
   //TO-DO
   //unsave pin from board (section option)
   //edit pin
