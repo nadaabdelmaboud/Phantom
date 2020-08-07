@@ -12,7 +12,7 @@ import { board } from '../types/board';
 import { UserService } from 'src/shared/user.service';
 import { pin } from 'src/types/pin';
 import { ValidationService } from 'src/shared/validation.service';
-import { PinsService } from '../pins/pins.service';
+import { section } from '../types/board';
 import { topic } from 'src/types/topic';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
@@ -35,25 +35,47 @@ export class BoardService {
       throw new Error('not found');
     }
   }
-  async addPintoBoard(pinId, boardId) {
+  async addPintoBoard(pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([pinId, boardId])) == 0) {
       return false;
     }
-
+    if (sectionId) {
+      if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
+        throw new BadRequestException('not valid section id');
+      }
+    } else {
+      sectionId = null;
+    }
     let board = await this.getBoardById(boardId);
     if (!board) return false;
     let pin = await this.pinModel.findById(pinId);
     if (!pin) return false;
-    console.log(board);
-    console.log(pin);
+
     let pinObjectId = mongoose.Types.ObjectId(pinId);
-    board.pins.push(pinObjectId);
-    board.counts.pins = board.counts.pins.valueOf() + 1;
-    if (!board.coverImages) board.coverImages = [];
-    if (board.coverImages && board.coverImages.length < 3) {
-      board.coverImages.push(pin.imageId);
+    if (sectionId) {
+      for (let i = 0; i < board.sections.length; i++) {
+        if (String(board.sections[i]._id) == String(sectionId)) {
+          board.sections[i].pins.push(pinObjectId);
+          if (!board.sections[i].coverImages)
+            board.sections[i].coverImages = [];
+          if (
+            board.sections[i].coverImages &&
+            board.sections[i].coverImages.length < 3
+          ) {
+            board.sections[i].coverImages.push(pin.imageId);
+          }
+          break;
+        }
+      }
+    } else {
+      board.pins.push(pinObjectId);
+      board.counts.pins = board.counts.pins.valueOf() + 1;
+      if (!board.coverImages) board.coverImages = [];
+      if (board.coverImages && board.coverImages.length < 3) {
+        board.coverImages.push(pin.imageId);
+      }
     }
-    console.log('pin');
+
     await board.save().catch(err => {
       console.log(err);
     });
@@ -593,38 +615,54 @@ export class BoardService {
     if (!creator) {
       throw new NotAcceptableException('not valid pin creator');
     }
-    for (var i = 0; i < creator.pins.length; i++) {
+    for (let i = 0; i < creator.pins.length; i++) {
       if (String(creator.pins[i].pinId) == String(pinId)) {
         let pinBoard = await this.boardModel.findById(creator.pins[i].boardId);
-        for (var j = 0; j < pinBoard.pins.length; j++) {
-          if (String(pinBoard.pins[j]) == String(pinId)) {
-            pinBoard.pins.splice(i, 1);
-            await pinBoard.save();
-            break;
+        let pinSection = pin.section;
+        if (pinSection) {
+          for (let j = 0; j < pinBoard.sections.length; j++) {
+            if (pinBoard.sections[j]._id == pinSection) {
+              for (let k = 0; k < pinBoard.sections[j].pins.length; k++) {
+                if (String(pinBoard.sections[j].pins[k]) == String(pinId)) {
+                  pinBoard.sections[j].pins.splice(k, 1);
+                  await pinBoard.save();
+                  break;
+                }
+              }
+            }
+          }
+        } else {
+          for (let j = 0; j < pinBoard.pins.length; j++) {
+            if (String(pinBoard.pins[j]) == String(pinId)) {
+              pinBoard.pins.splice(j, 1);
+              await pinBoard.save();
+              break;
+            }
           }
         }
+
         creator.pins.splice(i, 1);
         await creator.save();
         break;
       }
     }
     let savers = [];
-    for (var i = 0; i < pin.savers.length; i++) {
+    for (let i = 0; i < pin.savers.length; i++) {
       let saverUser = await this.UserService.getUserById(pin.savers[i]);
       if (saverUser) {
         savers.push(saverUser);
       }
     }
 
-    for (var k = 0; k < savers.length; k++) {
-      for (var i = 0; i < savers[k].savedPins.length; i++) {
+    for (let k = 0; k < savers.length; k++) {
+      for (let i = 0; i < savers[k].savedPins.length; i++) {
         if (String(savers[k].savedPins[i].id) == String(pinId)) {
           let pinBoard = await this.boardModel.findById(
             savers[k].savedPins[i].boardId,
           );
-          for (var j = 0; j < pinBoard.pins.length; j++) {
+          for (let j = 0; j < pinBoard.pins.length; j++) {
             if (String(pinBoard.pins[j]) == String(pinId)) {
-              pinBoard.pins.splice(i, 1);
+              pinBoard.pins.splice(j, 1);
               await pinBoard.save();
               break;
             }
@@ -663,7 +701,7 @@ export class BoardService {
     }
     if (String(board.creator.id) != String(userId)) {
       throw new UnauthorizedException(
-        'this user is unauthorized to get this board permissions',
+        'this user is unauthorized to delete this board ',
       );
     }
     for (var i = 0; i < user.boards.length; i++) {
@@ -687,12 +725,70 @@ export class BoardService {
         }
       }
     }
-    for (var i = 0; i < board.pins.length; i++) {
+    for (let i = 0; i < board.pins.length; i++) {
       let isDeleted = await this.deletePin(board.pins[i], undefined, true);
       if (!isDeleted) {
         throw new Error("error while deleting board's pins");
       }
     }
+    for (let i = 0; i < board.sections.length; i++) {
+      for (let k = 0; k < board.sections[i].pins.length; k++) {
+        let isDeleted = await this.deletePin(
+          board.sections[i].pins[k],
+          undefined,
+          true,
+        );
+        if (!isDeleted) {
+          throw new Error("error while deleting board's pins");
+        }
+      }
+    }
+    let isBoardDeleted = await board.deleteOne();
+    if (isBoardDeleted) return true;
+    return false;
+  }
+
+  async deleteBoardInMerge(userId, boardId) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    if (String(board.creator.id) != String(userId)) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to delete this board ',
+      );
+    }
+    for (var i = 0; i < user.boards.length; i++) {
+      if (String(user.boards[i].boardId) == String(boardId)) {
+        user.boards.splice(i, 1);
+        await user.save();
+        break;
+      }
+    }
+    for (var k = 0; k < board.collaborators.length; k++) {
+      let collaborator = await this.UserService.getUserById(
+        board.collaborators[k].collaboratorId,
+      );
+      if (collaborator) {
+        for (var i = 0; i < collaborator.boards.length; i++) {
+          if (String(collaborator.boards[i].boardId) == String(boardId)) {
+            collaborator.boards.splice(i, 1);
+            await collaborator.save();
+            break;
+          }
+        }
+      }
+    }
+
     let isBoardDeleted = await board.deleteOne();
     if (isBoardDeleted) return true;
     return false;
@@ -711,24 +807,94 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
+    if (!(await this.authorizedBoard(board, userId))) {
+      throw new UnauthorizedException(
+        'this user is unauthorized to create section in this board',
+      );
+    }
     if (!sectionName || sectionName == '') {
       throw new BadRequestException('not valid section name');
     }
     if (!board.sections) board.sections = [];
-    board.sections.push({
+    let section = <section>(<unknown>{
       sectionName: sectionName,
       creatorId: userId,
       pins: [],
       coverImages: [],
     });
+    board.sections.push(section);
+    await board.save();
+    return section;
   }
-  async merge(boardOriginalId, boardMergedId, userId) {}
+  async checkBoardHasSection(board, sectionId): Promise<Boolean> {
+    if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
+      throw new BadRequestException('not valid section id');
+    }
+    for (let i = 0; i < board.sections.length; i++) {
+      if (String(board.sections[i]._id) == String(sectionId)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  async merge(boardOriginalId, boardMergedId, userId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        boardOriginalId,
+        boardMergedId,
+        userId,
+      ])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let boardOriginal = await this.boardModel.findById(boardOriginalId);
+    let boardMerged = await this.boardModel.findById(boardMergedId);
+    if (!boardOriginal || !boardMerged) {
+      throw new BadRequestException('not valid boards');
+    }
+    let isCreator = user._id == boardMerged.creator.id;
+    let isAuthorized = await this.authorizedBoard(boardOriginal, userId);
+    if (!isCreator || !isAuthorized) {
+      throw new UnauthorizedException(
+        'user is unauthorized to merge these boards',
+      );
+    }
+    if (!boardOriginal.sections) boardOriginal.sections = [];
+
+    let originalName =
+      boardMerged.sections.length == 0
+        ? boardMerged.name
+        : `${boardMerged.name}-Other`;
+    let section = <section>(<unknown>{
+      sectionName: originalName,
+      pins: boardMerged.pins,
+      creatorId: userId,
+      coverImages: boardMerged.coverImages,
+    });
+    boardOriginal.sections.push(section);
+
+    for (let i = 0; i < boardMerged.sections.length; i++) {
+      let section = <section>(<unknown>{
+        sectionName: `${boardMerged.name}-${boardMerged.sections[i].sectionName}`,
+        pins: boardMerged.sections[i].pins,
+        creatorId: userId,
+        coverImages: boardMerged.sections[i].coverImages,
+      });
+      boardOriginal.sections.push(section);
+    }
+    let checkDeleted = await this.deleteBoardInMerge(userId, boardMergedId);
+    if (!checkDeleted) {
+      throw new Error('boards couldnt be merged');
+    }
+    await boardOriginal.save();
+    return boardOriginal;
+  }
   async deleteSection(boardId, sectionId, userId) {}
   //TO-DO
   //unsave pin from board (section option)
-  //create pin (add it section optionally)
-  //delete pin from board (delete pin)
-  //delete pin from section (delete pin)
-  //2l2tnen dol mfrod 2hndlhm fe delete pin (board is done) 2ms7 2l pin mn 2lsections (2def sectionId gwa user.savedPins , user.pins)
   //edit pin
 }

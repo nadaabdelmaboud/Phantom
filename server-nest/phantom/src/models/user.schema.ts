@@ -17,10 +17,12 @@ export const User = new Schema({
   pins: Array({
     pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
+    sectionId: mongoose.Types.ObjectId,
   }),
   savedPins: Array({
     pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
+    sectionId: mongoose.Types.ObjectId,
   }),
   confirm: Boolean,
   fcmToken: String,

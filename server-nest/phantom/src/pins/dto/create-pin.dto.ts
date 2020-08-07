@@ -5,5 +5,6 @@ export class CreatePinDto {
   readonly note: String;
   readonly title: String;
   readonly board: String;
+  readonly section: String;
   readonly link: String;
 }

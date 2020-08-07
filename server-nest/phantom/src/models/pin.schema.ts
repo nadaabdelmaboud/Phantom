@@ -14,6 +14,7 @@ export const Pin = new Schema({
   },
   savers: Array(mongoose.Types.ObjectId),
   board: mongoose.Types.ObjectId,
+  section: mongoose.Types.ObjectId,
   createdAt: Date,
   topic: String,
   note: String,

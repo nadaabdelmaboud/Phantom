@@ -37,8 +37,13 @@ export class PinsService {
     }
   }
   async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
-    if ((await this.ValidationService.checkMongooseID([userId])) == 0)
-      throw new BadRequestException({ message: 'user id not valid' });
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        createPinDto.board,
+      ])) == 0
+    )
+      throw new BadRequestException({ message: 'user/board id not valid' });
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new NotFoundException({ message: 'user not found' });
     let board = await this.BoardService.getBoardById(createPinDto.board);
@@ -52,11 +57,22 @@ export class PinsService {
         'this user is unauthorized to add pin to this board',
       );
     }
+    let section = null;
+    if (createPinDto.section) {
+      let checkSection = await this.BoardService.checkBoardHasSection(
+        board,
+        createPinDto.section,
+      );
+      if (checkSection) {
+        section = createPinDto.section;
+      }
+    }
     let pin = new this.pinModel({
       imageId: createPinDto.imageId,
       imageWidth: createPinDto.imageWidth,
       imageHeight: createPinDto.imageHeight,
       destLink: createPinDto.link,
+      section: section,
       title: createPinDto.title,
       creator: {
         firstName: user.firstName,
@@ -78,13 +94,29 @@ export class PinsService {
       reacts: [],
     });
     await pin.save();
-    await this.BoardService.addPintoBoard(pin._id, createPinDto.board);
-    await this.addPintoUser(userId, pin._id, createPinDto.board);
+    await this.BoardService.addPintoBoard(
+      pin._id,
+      createPinDto.board,
+      createPinDto.section,
+    );
+    await this.addPintoUser(
+      userId,
+      pin._id,
+      createPinDto.board,
+      createPinDto.section,
+    );
     return pin;
   }
-  async addPintoUser(userId, pinId, boardId) {
+  async addPintoUser(userId, pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
+    }
+    if (sectionId) {
+      if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
+        throw new BadRequestException('not valid id');
+      }
+    } else {
+      sectionId = null;
     }
     let pin = await this.getPinById(pinId);
     if (!pin) return false;
@@ -93,6 +125,7 @@ export class PinsService {
     user.pins.push({
       pinId: pinId,
       boardId: boardId,
+      sectionId: sectionId,
     });
     await user.save();
     return true;
@@ -112,7 +145,7 @@ export class PinsService {
     }
     return retPins;
   }
-  async savePin(userId, pinId, boardId) {
+  async savePin(userId, pinId, boardId, sectionId) {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -120,8 +153,9 @@ export class PinsService {
         boardId,
       ])) == 0
     ) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
+
     let user = await this.UserService.getUserById(userId);
     if (!user) return 0;
     let pin = await this.getPinById(pinId);
@@ -145,9 +179,24 @@ export class PinsService {
       }
     }
     if (!found) {
+      let section = null;
+      if (sectionId) {
+        if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
+          throw new BadRequestException('not valid section id');
+        }
+        let checkSection = await this.BoardService.checkBoardHasSection(
+          board,
+          sectionId,
+        );
+        if (checkSection) {
+          section = sectionId;
+        }
+      }
+
       user.savedPins.push({
         pinId: pinId,
         boardId: boardId,
+        sectionId: section,
       });
       pin.savers.push(userId);
     } else {
@@ -155,7 +204,7 @@ export class PinsService {
     }
     if (boardId && boardId != undefined) {
       if ((await this.ValidationService.checkMongooseID([boardId])) != 0) {
-        await this.BoardService.addPintoBoard(pinId, boardId);
+        await this.BoardService.addPintoBoard(pinId, boardId, sectionId);
       }
     }
     await user.save();

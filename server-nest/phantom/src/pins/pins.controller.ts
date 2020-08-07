@@ -59,9 +59,15 @@ export class PinsController {
     @Request() req,
     @Param('id') pinId: string,
     @Query('boardId') boardId: string,
+    @Query('sectionId') sectionId: string,
   ) {
     let userId = req.user._id;
-    let savedPin = await this.PinsService.savePin(userId, pinId, boardId);
+    let savedPin = await this.PinsService.savePin(
+      userId,
+      pinId,
+      boardId,
+      sectionId,
+    );
     if (savedPin) {
       return { success: true };
     } else {

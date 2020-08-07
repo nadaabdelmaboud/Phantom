@@ -20,6 +20,7 @@ export const Board = new Schema({
   createdAt: Date,
   sections: [
     {
+      sectionId: mongoose.Types.ObjectId,
       sectionName: String,
       pins: [mongoose.Types.ObjectId],
       creatorId: mongoose.Types.ObjectId,

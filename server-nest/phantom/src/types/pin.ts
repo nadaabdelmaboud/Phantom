@@ -34,6 +34,7 @@ export interface pin extends Document {
     profileUrl: String;
   };
   board: mongoose.Types.ObjectId;
+  section: mongoose.Types.ObjectId;
   createdAt: Date;
   note: String;
   destLink: String;

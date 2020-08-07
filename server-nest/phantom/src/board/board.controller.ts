@@ -207,4 +207,42 @@ export class BoardController {
       throw new NotAcceptableException({ message: 'Board is not deleated' });
     }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/me/boards/:boardId/section')
+  async createSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body('sectionName') sectionName: string,
+  ) {
+    let userId = req.user._id;
+    let createSection = await this.BoardService.createSection(
+      boardId,
+      sectionName,
+      userId,
+    );
+    if (createSection) {
+      return createSection;
+    } else {
+      throw new NotAcceptableException({ message: 'Section is not created' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/merge')
+  async mergeBoards(
+    @Request() req,
+    @Body('originalBoardId') originalBoardId: string,
+    @Body('mergedBoardId') mergedBoardId: string,
+  ) {
+    let userId = req.user._id;
+    let board = await this.BoardService.merge(
+      originalBoardId,
+      mergedBoardId,
+      userId,
+    );
+    if (board) {
+      return board;
+    } else {
+      throw new NotAcceptableException({ message: 'Boards are not merged' });
+    }
+  }
 }
