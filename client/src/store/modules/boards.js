@@ -3,7 +3,8 @@ import axios from "axios";
 const state = {
   userBoards: [],
   chosenBoardName: "Select",
-  chosenBoardId: ""
+  chosenBoardId: "",
+  currentBoard: ""
 };
 
 const mutations = {
@@ -15,22 +16,23 @@ const mutations = {
   },
   chooseBoard(state, { name, id }) {
     (state.chosenBoardName = name), (state.chosenBoardId = id);
+  },
+  setCurrentBoard(state, board) {
+    state.currentBoard = board;
   }
 };
 
 const actions = {
-  createBoard({ commit, state }, boardName) {
+  createBoard({ dispatch, state }, boardData) {
     // localStorage.setItem("x-auth-token", token);
-    state.chosenBoardName = boardName;
+    state.chosenBoardName = boardData.name;
     let token = localStorage.getItem("userToken");
     console.log(token);
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .post("me/boards", {
-        name: boardName
-      })
+      .post("me/boards", boardData)
       .then(response => {
-        commit("addNewBoard", response.data);
+        dispatch("userBoards");
         state.chosenBoardId = response.data._id;
       })
       .catch(error => {
@@ -49,13 +51,76 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  getBoard({ commit }, boardId) {
+    axios
+      .get("users/" + boardId + "/boards")
+      .then(response => {
+        commit("setCurrentBoard", response.data[0]);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  sortAz({ dispatch }) {
+    axios
+      .put("me/boards/sortAZ")
+      .then(() => {
+        dispatch("userBoards");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  sortDate({ dispatch }) {
+    axios
+      .put("me/boards/sortDate")
+      .then(() => {
+        dispatch("userBoards");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  reorderBoards({ dispatch }, { from, to }) {
+    axios
+      .put(
+        "me/boards/reorderBoards?startIndex=" + from + "&positionIndex=" + to
+      )
+      .then(() => {
+        dispatch("userBoards");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  editBoard({ dispatch, state }, newBoard) {
+    axios
+      .put("me/boards/edit/" + state.chosenBoardId, newBoard)
+      .then(() => {
+        dispatch("userBoards");
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  deleteBoard({ dispatch, state }) {
+    axios
+      .delete("me/boards/" + state.chosenBoardId)
+      .then(() => {
+        dispatch("userBoards");
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 
 const getters = {
   userBoards: state => state.userBoards,
   chosenBoardName: state => state.chosenBoardName,
-  chosenBoardId: state => state.chosenBoardId
+  chosenBoardId: state => state.chosenBoardId,
+  currentBoard: state => state.currentBoard
 };
 
 export default {

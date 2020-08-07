@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../shared/user.service';
 import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service';
-import { UpdateDTO } from './dto/update-user.dto';
+import { UpdateDto } from './dto/update-user.dto';
 import { NotAcceptableException } from '@nestjs/common';
 @nestCommon.Controller()
 export class UserController {
@@ -45,7 +45,7 @@ export class UserController {
   @nestCommon.Put('/me/update')
   async updateUser(
     @nestCommon.Request() req,
-    @nestCommon.Body() updateData: UpdateDTO,
+    @nestCommon.Body() updateData: UpdateDto,
   ) {
     await this.userService.checkUpdateData(updateData);
     await this.userService.updateUserInfo(req.user._id, updateData);
@@ -120,5 +120,73 @@ export class UserController {
     } else {
       throw new NotAcceptableException('cant get view state');
     }
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Put('/me/follow-user/:user_id')
+  async followUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+    if (!(await this.userService.followUser(req.user._id, params.user_id)))
+      throw new nestCommon.BadRequestException('can not follow this user');
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Delete('/me/follow-user/:user_id')
+  async unfollowUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+    if (!(await this.userService.unfollowUser(req.user._id, params.user_id)))
+      throw new nestCommon.BadRequestException('can not follow this user');
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/me/follow-user/:user_id')
+  async checkfollowingUser(
+    @nestCommon.Param() params,
+    @nestCommon.Request() req,
+  ) {
+    const user = await this.userService.getUserById(req.user._id);
+    if (!(await this.userService.checkFollowUser(user, params.user_id)))
+      return { follow: 'false' };
+    else return { follow: 'true' };
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/me/follower')
+  async getFollowers(
+    @nestCommon.Request() req,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowers(req.user._id, limit, offset);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/me/following')
+  async getFollowings(
+    @nestCommon.Request() req,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowings(req.user._id, limit, offset);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/:user_id/follower')
+  async getUserFollowers(
+    @nestCommon.Request() req,
+    @nestCommon.Param() params,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowers(params.user_id, limit, offset);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Get('/:user_id/following')
+  async getUserFollowings(
+    @nestCommon.Request() req,
+    @nestCommon.Param() params,
+    @nestCommon.Query('limit') limit: Number,
+    @nestCommon.Query('offset') offset: Number,
+  ) {
+    return await this.userService.userFollowings(params.user_id, limit, offset);
   }
 }

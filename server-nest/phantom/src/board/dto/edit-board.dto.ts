@@ -1,4 +1,4 @@
-export class editBoardDto {
+export class EditBoardDto {
   readonly name: string;
   readonly description: string;
   readonly topic: string;

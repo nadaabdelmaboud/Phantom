@@ -12,12 +12,15 @@ import {
   NotFoundException,
   Query,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { HttpExceptionFilter } from '../shared/http-exception.filter';
 import { BoardService } from './board.service';
-import { editBoardDto } from './dto/editBoard.dto';
-import { start } from 'repl';
+import { EditBoardDto } from './dto/edit-board.dto';
+import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
+
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -124,7 +127,7 @@ export class BoardController {
   async editBoard(
     @Request() req,
     @Param('boardId') boardId: string,
-    @Body() editBoardDto: editBoardDto,
+    @Body() editBoardDto: EditBoardDto,
   ) {
     let userId = req.user._id;
     let board = await this.BoardService.editBoard(
@@ -136,6 +139,129 @@ export class BoardController {
       return board;
     } else {
       throw new NotAcceptableException("board couldn't be updated");
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/boards/:boardId/collaboratores')
+  async getCollaboratoresPermissions(
+    @Request() req,
+    @Param('boardId') boardId: string,
+  ) {
+    let userId = req.user._id;
+    let collaboratores = await this.BoardService.getCollaboratoresPermissions(
+      userId,
+      boardId,
+    );
+    if (collaboratores) {
+      return collaboratores;
+    } else {
+      throw new NotAcceptableException('collaboratores not found');
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/:boardId/collaboratores')
+  async editCollaboratoresPermissions(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body() editCollaboratoresPermissionsDto: EditCollaboratoresPermissionsDto,
+  ) {
+    let userId = req.user._id;
+    let collaborator = await this.BoardService.editCollaboratoresPermissions(
+      userId,
+      boardId,
+      editCollaboratoresPermissionsDto,
+    );
+    if (collaborator) {
+      return collaborator;
+    } else {
+      throw new NotAcceptableException('collaborator couldnt be edited');
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId/collaboratores')
+  async deleteCollaborator(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body('collaboratorId') collaboratorId: string,
+  ) {
+    let userId = req.user._id;
+    let isdeleted = await this.BoardService.deleteCollaborator(
+      userId,
+      boardId,
+      collaboratorId,
+    );
+    if (isdeleted) {
+      return { success: 'collaborator has been deleted' };
+    } else {
+      throw new NotAcceptableException('collaborator couldnt be deleted');
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId')
+  async deleteBoard(@Request() req, @Param('boardId') boardId: string) {
+    let userId = req.user._id;
+    let deletedBoard = await this.BoardService.deleteBoard(userId, boardId);
+    if (deletedBoard) {
+      return { success: 'Board is deleted succissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'Board is not deleated' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/me/boards/:boardId/section')
+  async createSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body('sectionName') sectionName: string,
+  ) {
+    let userId = req.user._id;
+    let createSection = await this.BoardService.createSection(
+      boardId,
+      sectionName,
+      userId,
+    );
+    if (createSection) {
+      return createSection;
+    } else {
+      throw new NotAcceptableException({ message: 'Section is not created' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId/section/:sectionId')
+  async deleteSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Param('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let deleteSection = await this.BoardService.deleteSection(
+      boardId,
+      sectionId,
+      userId,
+    );
+    if (deleteSection) {
+      return { success: 'section deleted succissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'Section is not deleated' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/merge')
+  async mergeBoards(
+    @Request() req,
+    @Body('originalBoardId') originalBoardId: string,
+    @Body('mergedBoardId') mergedBoardId: string,
+  ) {
+    let userId = req.user._id;
+    let board = await this.BoardService.merge(
+      originalBoardId,
+      mergedBoardId,
+      userId,
+    );
+    if (board) {
+      return board;
+    } else {
+      throw new NotAcceptableException({ message: 'Boards are not merged' });
     }
   }
 }

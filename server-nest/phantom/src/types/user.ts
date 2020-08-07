@@ -3,18 +3,30 @@ import * as mongoose from 'mongoose';
 export interface user extends Document {
   firstName: String;
   lastName: String;
+  userName: String;
+  location: String;
   email: String;
   password: String;
   country: String;
   birthDate: Date;
   about: String;
   gender: String;
+  sortType: String;
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
-  pins: Array<mongoose.Types.ObjectId>;
-  savedPins: Array<mongoose.Types.ObjectId>;
+  pins: Array<{
+    pinId: mongoose.Types.ObjectId;
+    boardId: mongoose.Types.ObjectId;
+    sectionId: mongoose.Types.ObjectId;
+  }>;
+  savedPins: Array<{
+    pinId: mongoose.Types.ObjectId;
+    boardId: mongoose.Types.ObjectId;
+    sectionId: mongoose.Types.ObjectId;
+  }>;
   confirm: Boolean;
   fcmToken: String;
+  followingTopics: Array<mongoose.Types.ObjectId>;
   notifications: [{}];
   offlineNotifications: [{}];
   followers: Array<mongoose.Types.ObjectId>;
@@ -25,8 +37,6 @@ export interface user extends Document {
       name: String;
       createdAt: Date;
       isJoined: Boolean;
-      joiners: Array<mongoose.Types.ObjectId>;
-      followers: Array<mongoose.Types.ObjectId>;
       createdOrjoined: String;
     },
   ];

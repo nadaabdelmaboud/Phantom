@@ -3,7 +3,8 @@ const state = {
   genderPopUp: false,
   countryPopUp: false,
   createBoardPopup: false,
-  newPinPopup: false
+  newPinPopup: false,
+  editBoardPopup: false
 };
 
 const mutations = {
@@ -21,6 +22,9 @@ const mutations = {
   },
   toggleNewPin(state) {
     state.newPinPopup = !state.newPinPopup;
+  },
+  toggleEditBoardPopup(state) {
+    state.editBoardPopup = !state.editBoardPopup;
   }
 };
 export default {

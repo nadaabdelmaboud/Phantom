@@ -19,6 +19,12 @@
           Notifications</router-link
         >
       </li>
+      <li>
+        <i class="fa fa-lock"></i>
+        <router-link to="/settings/privacy" exact id="privacy">
+          Privacy and data</router-link
+        >
+      </li>
     </ul>
   </div>
 </template>
@@ -47,7 +53,7 @@ a:hover {
 }
 
 li {
-  padding: 4px;
+  padding: 8px;
 }
 
 .exact {

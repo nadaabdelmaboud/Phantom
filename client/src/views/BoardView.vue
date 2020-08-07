@@ -1,33 +1,35 @@
 <template>
   <div class="profile" @click="clear">
-    <div class="profileInfo">
+    <div class="boardInfo">
+      <h1>{{ boardName }}</h1>
+      <!-- <div> -->
       <img
         src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
       />
-      <h1>Menna Mahmoud</h1>
-      <h6>16 following</h6>
+      <i class="fa fa-plus globalIcons" @click="addCollaborator"></i>
+      <!-- </div> -->
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <i class="fa fa-pencil" aria-hidden="true" @click="editBoard"></i>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
         <router-link
           class="buttons"
-          to="/UserProfile/Boards"
-          tag="div"
-          :class="{ inRoute: inBoards }"
-        >
-          Boards
-        </router-link>
-        <router-link
-          class="buttons"
-          to="/UserProfile/Pins"
+          :to="{ path: '/Board/' + boardId + '/Pins' }"
           tag="div"
           :class="{ inRoute: inPins }"
         >
           Pins
+        </router-link>
+        <router-link
+          class="buttons"
+          :to="{ path: '/Board/' + boardId + '/More' }"
+          tag="div"
+          :class="{ inRoute: inMore }"
+        >
+          MoreIdeas
         </router-link>
       </div>
       <div class="col-sm-4 col-4 col3">
@@ -48,11 +50,9 @@
       </div>
     </div>
     <div class="create view" v-if="showViewOptions">
-      <p>Sort by</p>
+      <p>Organise</p>
       <ul>
-        <li @click="sortAz">A to Z</li>
-        <li>Drag and drop</li>
-        <li @click="sortDate">Last saved to</li>
+        <li>Select pins to move or delete</li>
       </ul>
       <p>View options</p>
       <ul>
@@ -66,20 +66,27 @@
         <li @click="createBoardPopup">Board</li>
         <router-link tag="li" to="/PinBuilder">Pin</router-link>
       </ul>
+      <p>Add</p>
+      <ul>
+        <li>Section</li>
+        <li>Date</li>
+      </ul>
     </div>
     <router-view> </router-view>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  name: "UserProfile",
+  name: "BoardView",
   data: function() {
     return {
-      inBoards: true,
-      inPins: false,
+      inPins: true,
+      inMore: false,
       showCreate: false,
-      showViewOptions: false
+      showViewOptions: false,
+      boardId: ""
     };
   },
   methods: {
@@ -94,26 +101,32 @@ export default {
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
-    sortAz() {
-      this.$store.dispatch("boards/sortAz");
-    },
-    sortDate() {
-      this.$store.dispatch("boards/sortDate");
+    addCollaborator() {},
+    editBoard() {
+      this.$store.commit("popUpsState/toggleEditBoardPopup");
     }
   },
   watch: {
     $route: function() {
-      if (this.$route.path == "/UserProfile/Pins") {
-        this.inBoards = false;
+      if (this.$route.path.includes("/Pins")) {
+        this.inMore = false;
         this.inPins = true;
-      } else if (this.$route.path == "/UserProfile/Boards") {
-        this.inBoards = true;
+      } else if (this.$route.path.includes("/More")) {
+        this.inMore = true;
         this.inPins = false;
       } else {
-        this.inBoards = false;
+        this.inMore = false;
         this.inPins = false;
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      boardName: "boards/chosenBoardName"
+    })
+  },
+  mounted() {
+    this.boardId = this.$route.params.boardId;
   }
 };
 </script>
@@ -121,13 +134,31 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/Colors";
 @import "../scss/mixins";
-.profileInfo {
+.boardInfo {
   margin-bottom: 40px;
   img {
-    width: 120px;
+    width: 48px;
     border-radius: 50%;
-    margin: 10px calc((100vw - 120px) / 2);
-    height: 120px;
+    margin: 0 0 10px calc((100vw - 96px) / 2);
+    height: 48px;
+    display: inline-block;
+  }
+  i {
+    height: 48px;
+    width: 48px;
+    font-size: 24px;
+    color: $darkBlue;
+    border-radius: 50%;
+    padding: 12px;
+    text-align: center;
+    z-index: 2;
+    transition: background-color 0.5s ease;
+    background-color: white;
+    margin-top: 20px;
+    margin-left: -24px;
+  }
+  i:hover {
+    background-color: $lightPink;
   }
 }
 h1,
