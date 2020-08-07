@@ -198,7 +198,7 @@ export class PinsController {
   @Delete('/me/pins/:pinId')
   async deletePin(@Request() req, @Param('pinId') pinId: string) {
     let userId = req.user._id;
-    let deletedPin = await this.BoardService.deletePin(pinId, userId, false);
+    let deletedPin = await this.BoardService.deletePin(pinId, userId);
     if (deletedPin) {
       return { success: 'pin is deleted succissfully' };
     } else {
