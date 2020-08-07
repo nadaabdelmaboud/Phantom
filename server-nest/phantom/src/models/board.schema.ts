@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
+
 export const Board = new Schema({
   url: String,
   name: String,
@@ -27,3 +29,4 @@ export const Board = new Schema({
     pins: Number,
   },
 });
+Board.index({name:"text",topic:"text",description:"text",status:"text"});

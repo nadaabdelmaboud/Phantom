@@ -10,6 +10,8 @@ import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
 import { TopicModule } from './topic/topic.module';
 import { UserModule } from './user/user.module';
+import { SearchModule } from './search/search.module';
+
 @Module({
   imports: [
     MongooseModule.forRoot(process.env.CONNECTION_STRING),
@@ -20,6 +22,7 @@ import { UserModule } from './user/user.module';
     SharedModule,
     AuthModule,
     UserModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],

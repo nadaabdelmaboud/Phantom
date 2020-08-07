@@ -1,4 +1,6 @@
 import * as mongoose from 'mongoose';
+import * as mongoosastic from 'mongoosastic'
+import { hostname } from 'os';
 const Schema = mongoose.Schema;
 export const Pin = new Schema({
   imageId: mongoose.Types.ObjectId,
@@ -51,3 +53,4 @@ export const Pin = new Schema({
     },
   ],
 });
+Pin.index({title:"text",note:"text"});
