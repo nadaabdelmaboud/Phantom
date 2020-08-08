@@ -9,8 +9,8 @@ export interface section extends Document {
 export interface board extends Document {
   url: String;
   name: String;
-  startDate: Date;
-  endDate: Date;
+  startDate: String;
+  endDate: String;
   status: String;
   topic: String;
   description: String;

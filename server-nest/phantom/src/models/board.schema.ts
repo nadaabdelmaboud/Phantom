@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 export const Board = new Schema({
   url: String,
   name: String,
-  startDate: Date,
-  endDate: Date,
+  startDate: String,
+  endDate: String,
   status: String,
   topic: String,
   description: String,
@@ -48,4 +48,9 @@ export const Board = new Schema({
     pins: Number,
   },
 });
-Board.index({name:"text",topic:"text",description:"text",status:"text"});
+Board.index({
+  name: 'text',
+  topic: 'text',
+  description: 'text',
+  status: 'text',
+});

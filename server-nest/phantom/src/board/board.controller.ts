@@ -20,7 +20,6 @@ import { BoardService } from './board.service';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
 
-@UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -35,10 +34,11 @@ export class BoardController {
     @Body('status') status: string,
   ) {
     let userId = req.user._id;
+    console.log(userId);
     let createdBoard = await this.BoardService.createBoard(
       name,
-      new Date(startDate),
-      new Date(endDate),
+      startDate,
+      endDate,
       status,
       userId,
     );
@@ -262,6 +262,39 @@ export class BoardController {
       return board;
     } else {
       throw new NotAcceptableException({ message: 'Boards are not merged' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/boards/:boardId')
+  async getFullBoard(@Request() req, @Param('boardId') boardId: string) {
+    let userId = req.user._id;
+    let board = await this.BoardService.getBoardFull(boardId, userId);
+    if (board) {
+      return board;
+    } else {
+      throw new NotAcceptableException({ message: 'Board is not found' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/savedPins/:pinId')
+  async unsavePinFromBoard(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Query('boardId') boardId: string,
+    @Query('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let unsavedPin = await this.BoardService.unsavePin(
+      pinId,
+      boardId,
+      sectionId,
+      userId,
+      false,
+    );
+    if (unsavedPin) {
+      return { success: 'pin is unsaved suucissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'pin hasnt been unsaved' });
     }
   }
 }

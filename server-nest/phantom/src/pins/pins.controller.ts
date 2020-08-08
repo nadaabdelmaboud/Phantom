@@ -33,6 +33,7 @@ export class PinsController {
   @Post('/me/pins')
   async createPin(@Request() req, @Body() createPinDto: CreatePinDto) {
     let userId = req.user._id;
+    console.log(userId);
     let createdPin = await this.PinsService.createPin(userId, createPinDto);
     if (createdPin) {
       return createdPin;

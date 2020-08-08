@@ -45,6 +45,7 @@ export class PinsService {
     )
       throw new BadRequestException({ message: 'user/board id not valid' });
     let user = await this.UserService.getUserById(userId);
+    console.log(user);
     if (!user) throw new NotFoundException({ message: 'user not found' });
     let board = await this.BoardService.getBoardById(createPinDto.board);
     if (!board) {

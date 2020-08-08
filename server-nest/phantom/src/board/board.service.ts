@@ -84,19 +84,22 @@ export class BoardService {
   }
   async createBoard(
     name: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: string,
+    endDate: string,
     status: string,
     userId: string,
   ) {
     let user = await this.UserService.getUserById(userId);
     if (!user) return 0;
+    let sd = startDate ? startDate : null;
+    let ed = endDate ? endDate : null;
+
     let board = new this.boardModel({
       name: name,
       pins: [],
-      startDate: startDate,
-      endDate: endDate,
       status: status,
+      startDate: sd,
+      endDate: ed,
       createdAt: Date.now(),
       description: '',
       personalization: false,
@@ -306,7 +309,7 @@ export class BoardService {
       await board.save();
     }
     for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i] == userId)) {
+      if (String(board.collaborators[i]) == String(userId)) {
         return board.collaborators[i];
       }
     }
@@ -352,10 +355,10 @@ export class BoardService {
       }
     }
     if (isCreator && editBoardDto.endDate) {
-      board.endDate = new Date(editBoardDto.endDate);
+      board.endDate = editBoardDto.endDate;
     }
     if (isCreator && editBoardDto.startDate) {
-      board.startDate = new Date(editBoardDto.startDate);
+      board.startDate = editBoardDto.startDate;
     }
     if (
       (isCreator || (isCollaborator && isCollaborator.editDescription)) &&
@@ -622,7 +625,7 @@ export class BoardService {
         let pinSection = pin.section;
         if (pinSection) {
           for (let j = 0; j < pinBoard.sections.length; j++) {
-            if (pinBoard.sections[j]._id == pinSection) {
+            if (String(pinBoard.sections[j]._id) == String(pinSection)) {
               for (let k = 0; k < pinBoard.sections[j].pins.length; k++) {
                 if (String(pinBoard.sections[j].pins[k]) == String(pinId)) {
                   pinBoard.sections[j].pins.splice(k, 1);
@@ -677,7 +680,7 @@ export class BoardService {
     let topic = await this.topicModel.findOne({ name: pin.topic });
     if (topic) {
       for (var i = 0; i < topic.pins.length; i++) {
-        if (String(topic.pins[i]) == pinId) {
+        if (String(topic.pins[i]) == String(pinId)) {
           topic.pins.splice(i, 1);
           await topic.save();
         }
@@ -710,23 +713,27 @@ export class BoardService {
       );
     }
     let found = false;
-    found = await this.unsavePin(pinId, boardId, sectionId, userId);
+    console.log(pinId);
+    found = await this.unsavePin(pinId, boardId, sectionId, userId, true);
     if (found) return true;
+
     for (let i = 0; i < user.pins.length; i++) {
-      if (user.pins[i].pinId == pinId) {
+      if (String(user.pins[i].pinId) == String(pinId)) {
         await this.deletePin(pinId, userId);
         found = true;
         break;
       }
     }
+
     if (!found) {
+      console.log('ssss3');
       for (let i = 0; i < board.collaborators.length; i++) {
         let collaborator = await this.UserService.getUserById(
           board.collaborators[i].collaboratorId,
         );
         if (collaborator) {
           for (let j = 0; j < collaborator.pins.length; j++) {
-            if (collaborator.pins[j].pinId == pinId) {
+            if (String(collaborator.pins[j].pinId) == String(pinId)) {
               await this.deletePin(
                 pinId,
                 board.collaborators[i].collaboratorId,
@@ -917,9 +924,12 @@ export class BoardService {
     if (!boardOriginal || !boardMerged) {
       throw new BadRequestException('not valid boards');
     }
-    let isCreator = user._id == boardMerged.creator.id;
+
     let isAuthorized = await this.authorizedBoard(boardOriginal, userId);
-    if (!isCreator || !isAuthorized) {
+    if (
+      !(String(user._id) == String(boardMerged.creator.id)) ||
+      !isAuthorized
+    ) {
       throw new UnauthorizedException(
         'user is unauthorized to merge these boards',
       );
@@ -992,7 +1002,7 @@ export class BoardService {
     for (let i = 0; i < board.sections.length; i++) {
       if (String(board.sections[i]._id) == String(sectionId)) {
         let isAuthorized =
-          board.sections[i].creatorId == userId ||
+          String(board.sections[i].creatorId) == String(userId) ||
           String(board.creator.id) == String(userId);
         if (!isAuthorized) {
           throw new UnauthorizedException(
@@ -1001,23 +1011,25 @@ export class BoardService {
         }
         for (let k = 0; k < board.sections[i].pins.length; k++) {
           let isDeleted = await this.deletePinFromBoardSection(
-            board.sections[i].pins[k],
+            String(board.sections[i].pins[k]),
             userId,
             boardId,
-            board.sections[i]._id,
+            String(board.sections[i]._id),
           );
           if (!isDeleted) {
             throw new Error("error while deleting section's pins");
           }
         }
-        board.sections.slice(i, 1);
-        await board.save();
+        board.sections.splice(i, 1);
+        await board.save().catch(err => {
+          console.log(err);
+        });
         return true;
       }
     }
     return false;
   }
-  async unsavePin(pinId, boardId, sectionId, userId) {
+  async unsavePin(pinId, boardId, sectionId, userId, isDelete) {
     if (
       (await this.ValidationService.checkMongooseID([
         boardId,
@@ -1045,33 +1057,39 @@ export class BoardService {
       throw new UnauthorizedException();
     }
     let found = false;
-    if (sectionId) {
-      for (let k = 0; k < board.sections.length; k++) {
-        if (board.sections[k]._id == sectionId) {
-          for (let i = 0; i < board.sections[k].pins.length; i++) {
-            if (board.sections[k].pins[i] == pinId) {
-              board.sections[k].pins.slice(i, 1);
-              await board.save();
-              break;
+    if (!isDelete) {
+      if (sectionId) {
+        for (let k = 0; k < board.sections.length; k++) {
+          if (String(board.sections[k]._id) == String(sectionId)) {
+            for (let i = 0; i < board.sections[k].pins.length; i++) {
+              if (String(board.sections[k].pins[i]) == String(pinId)) {
+                board.sections[k].pins.splice(i, 1);
+                await board.save();
+                break;
+              }
             }
+            break;
           }
-          break;
         }
-      }
-    } else {
-      for (let i = 0; i < board.pins.length; i++) {
-        if (board.pins[i] == pinId) {
-          board.pins.slice(i, 1);
-          await board.save();
-          break;
+      } else {
+        for (let i = 0; i < board.pins.length; i++) {
+          if (String(board.pins[i]) == String(pinId)) {
+            board.pins.splice(i, 1);
+            await board.save();
+            break;
+          }
         }
       }
     }
     for (let j = 0; j < user.savedPins.length; j++) {
       if (String(user.savedPins[j].pinId) == String(pinId)) {
-        user.savedPins.slice(j, 1);
+        user.savedPins.splice(j, 1);
+        console.log('aaa');
         found = true;
-        await user.save();
+        await user.save().catch(err => {
+          console.log(err);
+        });
+        console.log(user.savedPins);
         break;
       }
     }
@@ -1082,8 +1100,8 @@ export class BoardService {
         );
         if (collaborator) {
           for (let j = 0; j < collaborator.savedPins.length; j++) {
-            if (collaborator.savedPins[j].pinId == pinId) {
-              collaborator.savedPins.slice(j, 1);
+            if (String(collaborator.savedPins[j].pinId) == String(pinId)) {
+              collaborator.savedPins.splice(j, 1);
               found = true;
               break;
             }
@@ -1146,7 +1164,7 @@ export class BoardService {
         );
         if (collaborator) {
           for (let j = 0; j < collaborator.pins.length; j++) {
-            if (collaborator.pins[j].pinId == pinId) {
+            if (String(collaborator.pins[j].pinId) == String(pinId)) {
               user.pins.push({
                 pinId: collaborator.pins[j].pinId,
                 boardId: boardId,
@@ -1157,7 +1175,7 @@ export class BoardService {
               pin.creator.firstName = user.firstName;
               pin.board = boardId;
               pin.section = sectionId;
-              collaborator.pins.slice(j, 1);
+              collaborator.pins.splice(j, 1);
               await user.save();
               await collaborator.save();
               await pin.save();
@@ -1167,14 +1185,14 @@ export class BoardService {
           }
           if (!found) {
             for (let j = 0; j < collaborator.savedPins.length; j++) {
-              if (collaborator.savedPins[j].pinId == pinId) {
+              if (String(collaborator.savedPins[j].pinId) == String(pinId)) {
                 user.savedPins.push({
                   pinId: collaborator.savedPins[j].pinId,
                   boardId: boardId,
                   sectionId: sectionId,
                   note: '',
                 });
-                collaborator.savedPins.slice(j, 1);
+                collaborator.savedPins.splice(j, 1);
                 await user.save();
                 await collaborator.save();
                 found = true;
@@ -1210,11 +1228,11 @@ export class BoardService {
     for (let i = 0; i < board.pins.length; i++) {
       let pinType = 'none';
       let pin = await this.pinModel.findById(board.pins[i]);
-      if (pin.creator.id == userId) {
+      if (String(pin.creator.id) == String(userId)) {
         pinType = 'creator';
       } else {
         for (let k = 0; k < user.savedPins.length; k++) {
-          if (user.savedPins[k].pinId == pin._id) {
+          if (String(user.savedPins[k].pinId) == String(pin._id)) {
             pinType = 'saved';
             break;
           }
@@ -1226,11 +1244,11 @@ export class BoardService {
     }
     let type = 'none';
     let permissions = {};
-    if (userId == board.creator.id) {
+    if (String(userId) == String(board.creator.id)) {
       type = 'creator';
     } else {
       for (let i = 0; i < board.collaborators.length; i++) {
-        if (userId == board.collaborators[i].collaboratorId) {
+        if (String(userId) == String(board.collaborators[i].collaboratorId)) {
           type = 'collaborator';
           permissions = {
             savePin: board.collaborators[i].savePin,
