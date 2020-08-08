@@ -197,6 +197,7 @@ export class PinsService {
         pinId: pinId,
         boardId: boardId,
         sectionId: section,
+        note: '',
       });
       pin.savers.push(userId);
     } else {
@@ -415,5 +416,136 @@ export class PinsService {
       }
     }
     return false;
+  }
+  //edit pin
+  async editCreatedPin(
+    pinId,
+    userId,
+    boardId,
+    sectionId,
+    description,
+    title,
+    link,
+  ) {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let pin = await this.pinModel.findById(pinId);
+    if (!pin) {
+      throw new BadRequestException('not valid pin');
+    }
+    if (pin.creator.id != userId) {
+      throw new UnauthorizedException();
+    }
+    for (let i = 0; i < user.pins.length; i++) {
+      if (String(user.pins[i].pinId) == String(pinId)) {
+        if (
+          boardId &&
+          (await this.ValidationService.checkMongooseID([boardId])) != 0
+        ) {
+          let board = await this.boardModel.findById(boardId);
+          let checkBoard = await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          if (checkBoard) {
+            user.pins[i].boardId = boardId;
+            pin.board = boardId;
+          }
+        }
+        if (
+          sectionId &&
+          (await this.ValidationService.checkMongooseID([sectionId])) != 0
+        ) {
+          let board = await this.boardModel.findById(boardId);
+          let checkBoard = await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          let checkSection = await this.BoardService.checkBoardHasSection(
+            board,
+            sectionId,
+          );
+          if (checkBoard && checkSection) {
+            user.pins[i].boardId = boardId;
+            pin.board = boardId;
+            user.pins[i].sectionId = sectionId;
+            pin.section = sectionId;
+          }
+        }
+        if (title) {
+          pin.title = title;
+        }
+        if (description) {
+          pin.note = description;
+        }
+        if (link) {
+          pin.destLink = link;
+        }
+        await user.save();
+        await pin.save();
+        break;
+      }
+    }
+    return pin;
+  }
+  async editSavedPin(pinId, userId, boardId, sectionId, note) {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let pin = await this.pinModel.findById(pinId);
+    if (!pin) {
+      throw new BadRequestException('not valid pin');
+    }
+
+    for (let i = 0; i < user.savedPins.length; i++) {
+      if (String(user.savedPins[i].pinId) == String(pinId)) {
+        if (
+          boardId &&
+          (await this.ValidationService.checkMongooseID([boardId])) != 0
+        ) {
+          let board = await this.boardModel.findById(boardId);
+          let checkBoard = await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          if (checkBoard) {
+            user.savedPins[i].boardId = boardId;
+          }
+        }
+        if (
+          sectionId &&
+          (await this.ValidationService.checkMongooseID([sectionId])) != 0
+        ) {
+          let board = await this.boardModel.findById(boardId);
+          let checkBoard = await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          let checkSection = await this.BoardService.checkBoardHasSection(
+            board,
+            sectionId,
+          );
+          if (checkBoard && checkSection) {
+            user.savedPins[i].boardId = boardId;
+            user.savedPins[i].sectionId = sectionId;
+          }
+        }
+        if (note) {
+          user.savedPins[i].note = note;
+        }
+        await user.save();
+        break;
+      }
+    }
+    return true;
   }
 }

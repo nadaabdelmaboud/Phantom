@@ -23,6 +23,7 @@ export interface user extends Document {
     pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
     sectionId: mongoose.Types.ObjectId;
+    note: String;
   }>;
   confirm: Boolean;
   fcmToken: String;

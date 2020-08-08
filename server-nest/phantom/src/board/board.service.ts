@@ -1018,15 +1018,6 @@ export class BoardService {
     return false;
   }
   async unsavePin(pinId, boardId, sectionId, userId) {
-    //sa7b 2lboard hwa 2lli y unsave
-    //sa7b 2lsection 2w sa7b 2l board homa 2lli y2dro y unsave
-    //b4el 2l pin mn 2l user.savedins
-    //b4el 2l pin mn 2lboard
-
-    //delete pin only the creator could do this
-    //delete board pins fa di htt2sm l delete + unsave
-    //merge boards 2na sa7b 2l board - ll created pins h8yr 2l 2sl board we section - llsaved pins h8yr 2l me.savedpins bl board we section 2l godad
-
     if (
       (await this.ValidationService.checkMongooseID([
         boardId,
@@ -1181,6 +1172,7 @@ export class BoardService {
                   pinId: collaborator.savedPins[j].pinId,
                   boardId: boardId,
                   sectionId: sectionId,
+                  note: '',
                 });
                 collaborator.savedPins.slice(j, 1);
                 await user.save();
@@ -1199,7 +1191,59 @@ export class BoardService {
 
     return true;
   }
-  //TO-DO
-  //unsave pin from board (section option)
-  //edit pin
+
+  async getBoardFull(boardId, userId) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    let pins = [];
+    for (let i = 0; i < board.pins.length; i++) {
+      let pinType = 'none';
+      let pin = await this.pinModel.findById(board.pins[i]);
+      if (pin.creator.id == userId) {
+        pinType = 'creator';
+      } else {
+        for (let k = 0; k < user.savedPins.length; k++) {
+          if (user.savedPins[k].pinId == pin._id) {
+            pinType = 'saved';
+            break;
+          }
+        }
+      }
+      if (pin) {
+        pins.push({ pin: pin, type: pinType });
+      }
+    }
+    let type = 'none';
+    let permissions = {};
+    if (userId == board.creator.id) {
+      type = 'creator';
+    } else {
+      for (let i = 0; i < board.collaborators.length; i++) {
+        if (userId == board.collaborators[i].collaboratorId) {
+          type = 'collaborator';
+          permissions = {
+            savePin: board.collaborators[i].savePin,
+            createPin: board.collaborators[i].createPin,
+            addCollaborators: board.collaborators[i].addCollaborators,
+            editDescription: board.collaborators[i].editDescription,
+            editTitle: board.collaborators[i].editTitle,
+            personalization: board.collaborators[i].personalization,
+          };
+          break;
+        }
+      }
+    }
+    return { board: board, pins: pins, type: type, permissions: permissions };
+  }
 }

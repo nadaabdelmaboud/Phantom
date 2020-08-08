@@ -12,6 +12,7 @@ import {
   UseGuards,
   Query,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreatePinDto } from './dto/create-pin.dto';
@@ -203,6 +204,56 @@ export class PinsController {
       return { success: 'pin is deleted succissfully' };
     } else {
       throw new NotAcceptableException({ message: 'pin is not deleated' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/pins/:pinId')
+  async editCreatedPin(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Body('description') description: string,
+    @Body('boardId') boardId: string,
+    @Body('sectionId') sectionId: string,
+    @Body('title') title: string,
+    @Body('destLink') destLink: string,
+  ) {
+    let userId = req.user._id;
+    let editedPin = await this.PinsService.editCreatedPin(
+      pinId,
+      userId,
+      boardId,
+      sectionId,
+      description,
+      title,
+      destLink,
+    );
+    if (editedPin) {
+      return editedPin;
+    } else {
+      throw new NotAcceptableException({ message: 'pin is not edited' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/savedPins/:pinId')
+  async editSavedPin(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Body('note') note: string,
+    @Body('boardId') boardId: string,
+    @Body('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let editedPin = await this.PinsService.editSavedPin(
+      pinId,
+      userId,
+      boardId,
+      sectionId,
+      note,
+    );
+    if (editedPin) {
+      return { success: 'pin has been edited' };
+    } else {
+      throw new NotAcceptableException({ message: 'pin is not edited' });
     }
   }
 }

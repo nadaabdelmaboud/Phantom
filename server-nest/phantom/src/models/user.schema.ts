@@ -24,6 +24,7 @@ export const User = new Schema({
     pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
     sectionId: mongoose.Types.ObjectId,
+    note: String,
   }),
   confirm: Boolean,
   fcmToken: String,
