@@ -101,9 +101,11 @@ export default {
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
-    addCollaborator() {},
-    editBoard() {
-      this.$store.commit("popUpsState/toggleEditBoardPopup");
+    addCollaborator(){
+      this.$store.commit("popUpsState/toggleCollaboratorsPopup");
+    },
+    editBoard(){
+        this.$store.commit("popUpsState/toggleEditBoardPopup")
     }
   },
   watch: {

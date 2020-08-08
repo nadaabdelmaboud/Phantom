@@ -80,6 +80,14 @@
     clear: both;
     display: table;
   }
+  .buttonDiv{
+    padding-top: 30px;
+    .leftButton{
+        background-color: $lightPink;
+        color: $darkBlue;
+        margin-right: 5px;
+    }
+}
   button {
     float: right;
     position: relative;
@@ -96,10 +104,6 @@
     background-color: darkgray;
     color: rgb(87, 87, 87);
   }
-  ul{
-    display: none
-  }
-  
   .vue-daterange-picker{
     width: 100%;
   }
