@@ -10,22 +10,21 @@ import { SharedModule } from 'src/shared/shared.module';
 import { Board } from 'src/models/board.schema';
 import { User } from 'src/models/user.schema';
 import { UserModule } from 'src/user/user.module';
-import {FuzzySearch} from 'fuzzy-search'
+import * as search from 'fuzzy-search';
 @Module({
-    imports: [
-      SharedModule,
-      ImagesModule,
-      UserModule,
-      BoardModule,
-      PinsModule,
-      MongooseModule.forFeature([
-        { name: 'Board', schema: Board },
-        { name: 'Pin', schema: Pin },
-        { name: 'User', schema: User },
-
-      ]),
-    ],
-    controllers: [SearchController],
-    providers: [SearchService],
-  })
+  imports: [
+    SharedModule,
+    ImagesModule,
+    UserModule,
+    BoardModule,
+    PinsModule,
+    MongooseModule.forFeature([
+      { name: 'Board', schema: Board },
+      { name: 'Pin', schema: Pin },
+      { name: 'User', schema: User },
+    ]),
+  ],
+  controllers: [SearchController],
+  providers: [SearchService],
+})
 export class SearchModule {}

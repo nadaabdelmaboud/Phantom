@@ -1,10 +1,9 @@
 import * as mongoose from 'mongoose';
-import * as mongoosastic from 'mongoosastic'
 
 const Schema = mongoose.Schema;
 export const User = new Schema({
-  firstName:  String,
-  lastName:  String,
+  firstName: String,
+  lastName: String,
   email: String,
   password: String,
   country: String,
@@ -53,4 +52,4 @@ export const User = new Schema({
   createdAt: Date,
 });
 
-User.index({firstName:String, lastName:String})
+User.index({ firstName: String, lastName: String });
