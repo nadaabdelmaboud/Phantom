@@ -258,15 +258,6 @@ h3 {
     height: 400px;
     overflow-y: auto;
 }
-.buttonDiv{
-    padding-top: 30px;
-    .leftButton{
-        background-color: $lightPink;
-        color: $darkBlue;
-        margin-right: 5px;
-
-    }
-}
 .mergeOptions{
   text-align: center;
   height: 48px;

@@ -13,7 +13,7 @@ const mutations = {
 const actions = {
     getFollowers({ commit }, boardData) {
         axios
-          .post("me/follower", 
+          .get("me/follower", 
           boardData
           )
           .then((response) => {

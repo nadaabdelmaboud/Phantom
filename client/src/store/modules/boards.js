@@ -4,7 +4,8 @@ const state = {
   userBoards: [],
   chosenBoardName: "Select",
   chosenBoardId: "",
-  currentBoard:""
+  currentBoard:"",
+  collaborators:[]
 };
 
 const mutations = {
@@ -116,7 +117,7 @@ const actions = {
         axios
           .get("me/boards/"+state.currentBoard.board._id+"/collaboratores")
           .then((response) => {
-            commit("setCollaborators", response.data[0]);
+            commit("setCollaborators", response.data);
           })
           .catch(error => {
             console.log(error)
@@ -134,7 +135,7 @@ const actions = {
       },
       deletaCollaborator({dispatch},payload){
         axios
-        .put("me/boards/"+state.currentBoard.board._id+"/collaboratores",payload)
+        .delete("me/boards/"+state.currentBoard.board._id+"/collaboratores",payload)
         .then(() => {
           dispatch("getCollaborators");
         })

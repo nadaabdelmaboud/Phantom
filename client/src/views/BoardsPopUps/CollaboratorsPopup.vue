@@ -2,10 +2,24 @@
   <div id="add" @click="editPopup">
        <div class="addCollab">
            <h3>Invite Collaborators</h3>
+           <div class="collabCard">
            <label>
                Collaborators can...
            </label>
-           <CallaboratorsCard/>
+           <CallaboratorsCard
+            v-for="c in collaborators"
+            :key="c.id"
+            :id="c.id"
+            :imageId="c.imageId"
+            :collabName="c.name"
+            :savePin="c.savePin"
+            :createPin="c.createPin"
+            :editTitle="c.editTitle"
+            :personalization="c.personalization"
+            :editDescription="c.editDescription"
+            :addCollaborators="c.addCollaborators"
+            />
+           </div>
        </div>
   </div>
 </template>
@@ -24,17 +38,23 @@ export default {
   },
   methods: {
     editPopup(event) {
-      if (event.target.id == "addCollab") {
+      if (event.target.id == "add") {
         this.$store.commit("popUpsState/toggleCollaboratorsPopup");
       }
     }
   },
   computed: {
     ...mapGetters({
+        collaborators: "boards/collaborators",
+        followers: "followers/userFollowers"
     }),
   },
-  created() {
+  mounted(){
+      this.$store.dispatch("boards/getCollaborators");
+      this.$store.dispatch("followers/getFollowers");
   },
+  created() {
+  }
 };
 </script>
 
@@ -55,7 +75,7 @@ export default {
   height: 100%;
 }
 .addCollab {
-  margin: 90px auto;
+  margin: 50px auto;
   background-color: white;
   width: 450px;
   padding: 20px;
@@ -64,5 +84,9 @@ export default {
 h3 {
   width: 100%;
   text-align: center;
+}
+.collabCard{
+    height: 550px;
+    overflow-y: auto;
 }
 </style>
