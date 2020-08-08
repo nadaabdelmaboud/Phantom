@@ -3,6 +3,7 @@
     <CreateBoardPopup v-if="createBoard" />
     <NewPinPopup v-if="newPin" />
     <EditBoardPopup v-if="editBoard" />
+    <CollaboratorsPopup v-if="collaborators"/>
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" />
@@ -60,6 +61,10 @@ import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
+<<<<<<< HEAD
+=======
+import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup"
+>>>>>>> FE_Boards
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
@@ -67,13 +72,19 @@ export default {
     HomeNavigationBar,
     CreateBoardPopup,
     NewPinPopup,
-    EditBoardPopup
+    EditBoardPopup,
+    CollaboratorsPopup
   },
   computed: {
     ...mapState({
       createBoard: state => state.popUpsState.createBoardPopup,
       newPin: state => state.popUpsState.newPinPopup,
+<<<<<<< HEAD
       editBoard: state => state.popUpsState.editBoardPopup
+=======
+      editBoard: state =>state.popUpsState.editBoardPopup,
+      collaborators: state =>state.popUpsState.CollaboratorsPopup
+>>>>>>> FE_Boards
     })
   }
 };
