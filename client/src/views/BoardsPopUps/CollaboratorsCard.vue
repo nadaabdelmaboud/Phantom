@@ -156,7 +156,8 @@ export default {
           this.$store.dispatch("editCollaborators",this.callaborator)
       },
       deleteCollab(){
-          this.$store.dispatch("boards/deletaCollaborator",{collaboratorId:this.id})
+          let payload={collaboratorId:this.id}
+          this.$store.dispatch("boards/deletaCollaborator",payload)
       }
   }
 };
