@@ -16,10 +16,10 @@
         type="range"
         min="0"
         max="1"
-        v-model="callaborator.canSavePin"
+        v-model=" collaborator.canSavePin"
         class="slider"
         id="myRange"
-        :class="{ isPrivate: callaborator.canSavePin=='1'}"
+        :class="{ isPrivate:  collaborator.canSavePin=='1'}"
       />
       </div>
             </div>
@@ -31,10 +31,10 @@
         type="range"
         min="0"
         max="1"
-        v-model="callaborator.canCreatePin"
+        v-model=" collaborator.canCreatePin"
         class="slider"
         id="myRange"
-        :class="{ isPrivate: callaborator.canCreatePin=='1'}"
+        :class="{ isPrivate:  collaborator.canCreatePin=='1'}"
       />
       </div>
            <div class="inputDiv">
@@ -45,10 +45,10 @@
         type="range"
         min="0"
         max="1"
-        v-model="callaborator.canEditTitle"
+        v-model=" collaborator.canEditTitle"
         class="slider"
         id="myRange"
-        :class="{ isPrivate: callaborator.canEditTitle=='1'}"
+        :class="{ isPrivate:  collaborator.canEditTitle=='1'}"
       />
       </div>
            <div class="inputDiv">
@@ -59,10 +59,10 @@
         type="range"
         min="0"
         max="1"
-        v-model="callaborator.canPersonalize"
+        v-model=" collaborator.canPersonalize"
         class="slider"
         id="myRange"
-        :class="{ isPrivate: callaborator.canPersonalize=='1'}"
+        :class="{ isPrivate:  collaborator.canPersonalize=='1'}"
       />
       </div>
            <div class="inputDiv">
@@ -73,10 +73,10 @@
         type="range"
         min="0"
         max="1"
-        v-model="callaborator.canEditDescription"
+        v-model=" collaborator.canEditDescription"
         class="slider"
         id="myRange"
-        :class="{ isPrivate: callaborator.canEditDescription=='1'}"
+        :class="{ isPrivate:  collaborator.canEditDescription=='1'}"
       />
       </div>
            <div class="inputDiv">
@@ -87,10 +87,10 @@
         type="range"
         min="0"
         max="1"
-        v-model="callaborator.canAddCollaborators"
+        v-model=" collaborator.canAddCollaborators"
         class="slider"
         id="myRange"
-        :class="{ isPrivate: callaborator.canAddCollaborators=='1'}"
+        :class="{ isPrivate:  collaborator.canAddCollaborators=='1'}"
       />
       
   </div>
@@ -140,7 +140,7 @@ export default {
   },
   data: function() {
     return {
-        callaborator:{
+         collaborator:{
             canSavePin:this.savePin ?"1":"0",
             canCreatePin:this.createPin ?"1":"0",
             canEditTitle:this.editTitle?"1":"0",
@@ -153,11 +153,18 @@ export default {
   },
   methods: {
       editCollab(){
-          this.$store.dispatch("editCollaborators",this.callaborator)
+          let collab ={
+            savePin:this.collaborator.canSavePin=="1" ? true: false,
+            createPin: this. collaborator.canCreatePin=="1" ? true: false,
+            editTitle: this. collaborator.canEditTitle=="1" ? true: false,
+            personalization: this. collaborator.canPersonalize =="1" ? true: false,
+            editDescription: this. collaborator.canEditDescription=="1" ? true: false,
+            addCollaborators: this. collaborator.canAddCollaborators =="1" ? true: false
+          }
+          this.$store.dispatch("boards/editCollaborators",collab)
       },
       deleteCollab(){
-          let payload={collaboratorId:this.id}
-          this.$store.dispatch("boards/deletaCollaborator",payload)
+          this.$store.dispatch("boards/deletaCollaborator",{data:{collaboratorId:this.id}})
       }
   }
 };

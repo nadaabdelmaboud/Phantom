@@ -140,6 +140,7 @@ const actions = {
           dispatch("getCollaborators");
         })
         .catch(error => {
+          dispatch("getCollaborators");
           console.log(error)
         });
       }
