@@ -104,6 +104,15 @@ const actions = {
           console.log(error)
         });
       },
+      mergeBoard({dispatch},merge){
+        axios.put("me/boards/merge",merge)
+        .then(()=>{
+          dispatch("userBoards");
+        })
+        .catch(error => {
+          console.log(error)
+        });
+      },
       deleteBoard({dispatch,state}){
         axios.delete("me/boards/"+state.chosenBoardId)
         .then(()=>{
