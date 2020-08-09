@@ -470,6 +470,7 @@ export class BoardService {
     boardId,
     editCollaboratoresPermissionsDto: EditCollaboratoresPermissionsDto,
   ) {
+    console.log(editCollaboratoresPermissionsDto);
     let collaboratorId = editCollaboratoresPermissionsDto.collaboratorId,
       savePin = editCollaboratoresPermissionsDto.savePin,
       createPin = editCollaboratoresPermissionsDto.createPin,

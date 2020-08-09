@@ -143,13 +143,15 @@ const actions = {
   },
   deletaCollaborator({ dispatch }, payload) {
     axios
-      .delete("me/boards/" + state.currentBoard.board._id + "/collaboratores", {
-        data: payload,
-      })
+      .delete(
+        "me/boards/" + state.currentBoard.board._id + "/collaboratores",
+        payload
+      )
       .then(() => {
         dispatch("getCollaborators");
       })
       .catch((error) => {
+        dispatch("getCollaborators");
         console.log(error);
       });
   },
