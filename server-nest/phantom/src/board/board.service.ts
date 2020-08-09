@@ -562,7 +562,8 @@ export class BoardService {
     if (board.collaborators.length == 0) {
       throw new NotFoundException('this board has no collaboratores');
     }
-
+    console.log(collaboratorId);
+    console.log(board.collaborators);
     for (let i = 0; i < board.collaborators.length; i++) {
       if (
         String(board.collaborators[i].collaboratorId) == String(collaboratorId)
@@ -575,6 +576,7 @@ export class BoardService {
         break;
       }
     }
+    console.log(collaborator.boards);
     if (collaborator) {
       console.log(boardId);
       for (let index = 0; index < collaborator.boards.length; index++) {
