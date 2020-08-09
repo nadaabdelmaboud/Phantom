@@ -1,66 +1,102 @@
 <template>
   <div id="add" @click="editPopup">
-       <div class="addCollab">
-           <h3>Invite Collaborators</h3>
-           <div class="collabCard">
-           <label>
-               Collaborators can...
-           </label>
-           <CallaboratorsCard
-            v-for="c in collaborators"
-            :key="c.id"
-            :id="c.id"
-            :imageId="c.imageId"
-            :collabName="c.name"
-            :savePin="c.savePin"
-            :createPin="c.createPin"
-            :editTitle="c.editTitle"
-            :personalization="c.personalization"
-            :editDescription="c.editDescription"
-            :addCollaborators="c.addCollaborators"
-            />
-           </div>
-       </div>
+    <div class="addCollab">
+      <h3>Invite Collaborators</h3>
+      <div class="collabCard">
+        <label v-if="collaborators.length">
+          Collaborators can...
+        </label>
+        <label v-if="!collaborators.length">
+          No Collaborators for this board yet...
+        </label>
+        <CallaboratorsCard
+          v-for="c in collaborators"
+          :key="c.id"
+          :id="c.id"
+          :imageId="c.imageId"
+          :collabName="c.name"
+          :savePin="c.savePin"
+          :createPin="c.createPin"
+          :editTitle="c.editTitle"
+          :personalization="c.personalization"
+          :editDescription="c.editDescription"
+          :addCollaborators="c.addCollaborators"
+        />
+      </div>
+      <div>
+        <input
+          :value="'http://localhost:8080' + $route.path"
+          id="boardLink"
+          readonly
+        />
+        <button id="copyLink" @click="copyLink">Copy link</button>
+      </div>
+      <div class="confirmCopy" v-if="copied">Copied to the clipboard</div>
+
+      <div class="followerInfo" v-for="follower in followers" :key="follower._id">
+        <img :src="getImage(follower.imageId)" />
+        <span>{{ follower.name }}</span>
+        <button class="editButton" @click="addCollaborator(follower._id)">
+          Invite
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import CallaboratorsCard from "./CollaboratorsCard"
+import CallaboratorsCard from "./CollaboratorsCard";
+import { default as getImage } from "../../mixins/getImage";
+
 export default {
   name: "CollaboratorsPopup",
+  mixins: [getImage],
   data: function() {
     return {
+      copied: false,
     };
   },
-  components:{
-      CallaboratorsCard
+  components: {
+    CallaboratorsCard,
   },
   methods: {
     editPopup(event) {
       if (event.target.id == "add") {
         this.$store.commit("popUpsState/toggleCollaboratorsPopup");
       }
+    },
+    copyLink() {
+      this.copied = true;
+      var copyText = document.getElementById("boardLink");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      setTimeout(() => {
+        this.copied = false;
+      }, 3000);
+    },
+    addCollaborator(id){
+      this.$store.dispatch("boards/editBoard",{collaboratores:id})
     }
   },
   computed: {
     ...mapGetters({
-        collaborators: "boards/collaborators",
-        followers: "followers/userFollowers"
+      collaborators: "boards/collaborators",
+      followers: "followers/userFollowers",
     }),
   },
-  mounted(){
-      this.$store.dispatch("boards/getCollaborators");
-      this.$store.dispatch("followers/getFollowers");
+  mounted() {
+    this.$store.dispatch("boards/getCollaborators");
+    this.$store.dispatch("followers/getFollowers");
   },
-  created() {
-  }
+  created() {},
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
-@import '../../scss/Mixins';
+@import "../../scss/Mixins";
 @import "../../scss/GlobalPopup";
 
 #add {
@@ -85,8 +121,66 @@ h3 {
   width: 100%;
   text-align: center;
 }
-.collabCard{
-    height: 550px;
-    overflow-y: auto;
+.collabCard {
+  max-height: 550px;
+  overflow-y: auto;
+}
+#boardLink {
+  width: 70%;
+  height: 48px;
+  margin-top: 3px;
+  font-size: 12px;
+  border: $powderBlue solid 2px;
+  border-radius: 16px;
+  padding: 0 12px;
+  transition: linear 0.5s;
+  color: $darkBlue;
+}
+#copyLink {
+  color: $darkBlue;
+  background-color: $powderBlue;
+  transition: background-color linear 0.5s;
+}
+#copyLink:hover {
+  background-color: $lightBlue;
+}
+#copyLink:active {
+  transform: scale(0.96);
+}
+.confirmCopy {
+  position: fixed;
+  top: 650px;
+  left: 45%;
+  animation: pop 0.5s linear, fade 1s linear 2s;
+  height: 68px;
+  background-color: black;
+  color: white;
+  width: 200px;
+  text-align: center;
+  border-radius: 32px;
+  padding: 20px 0;
+}
+@keyframes pop {
+  0% {
+    top: 1000px;
+  }
+  100% {
+    top: 650px;
+  }
+}
+@keyframes fade {
+  0% {
+  }
+  100% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+}
+.followerInfo{
+img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
 }
 </style>

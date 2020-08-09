@@ -154,6 +154,7 @@ export default {
   methods: {
       editCollab(){
           let collab ={
+            collaboratorId:this.id,
             savePin:this.collaborator.canSavePin=="1" ? true: false,
             createPin: this. collaborator.canCreatePin=="1" ? true: false,
             editTitle: this. collaborator.canEditTitle=="1" ? true: false,
@@ -161,7 +162,8 @@ export default {
             editDescription: this. collaborator.canEditDescription=="1" ? true: false,
             addCollaborators: this. collaborator.canAddCollaborators =="1" ? true: false
           }
-          this.$store.dispatch("boards/editCollaborators",collab)
+          this.$store.dispatch("boards/editCollaborators",collab),
+          this.edit=false;
       },
       deleteCollab(){
           this.$store.dispatch("boards/deletaCollaborator",{data:{collaboratorId:this.id}})
@@ -196,8 +198,6 @@ label{
 }
 .inputDiv:hover{
     border: $lightPinkHover solid 2px;
-    border-radius: 16px;
-    padding: 0 12px;
 }
 .collab{
     margin: 5px 0;
