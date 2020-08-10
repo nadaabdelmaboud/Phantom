@@ -1,7 +1,7 @@
 <template>
   <div class="profile" @click="clear">
     <div class="boardInfo">
-      <h1>{{ boardName }}</h1>
+      <h1>{{ board.board.name }}</h1>
       <!-- <div> -->
       <img
         src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
@@ -124,11 +124,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      boardName: "boards/chosenBoardName"
+      board: "boards/currentBoard"
     })
   },
   mounted() {
     this.boardId = this.$route.params.boardId;
+
+  },
+  created(){
+    this.boardId = this.$route.params.boardId;
+    this.$store.dispatch("boards/getBoard", this.$route.params.boardId);
   }
 };
 </script>
@@ -219,7 +224,6 @@ i:hover {
   @include optionsList;
   padding: 10px;
   width: 200px;
-  // top:200;
   right: 30px;
   p {
     font-size: 12px;

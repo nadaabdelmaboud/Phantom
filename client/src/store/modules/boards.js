@@ -59,10 +59,12 @@ const actions = {
           });
       },
       getBoard({ commit },boardId) {
+        let token =localStorage.getItem("userToken");
+        axios.defaults.headers.common["Authorization"] =token
         axios
-          .get("users/"+boardId+"/boards")
+          .get("boards/"+boardId)
           .then((response) => {
-            commit("setCurrentBoard", response.data[0]);
+            commit("setCurrentBoard", response.data);
           })
           .catch(error => {
             console.log(error)
