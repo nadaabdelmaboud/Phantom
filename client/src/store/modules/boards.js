@@ -4,8 +4,8 @@ const state = {
   userBoards: [],
   chosenBoardName: "Select",
   chosenBoardId: "",
-  currentBoard:"",
-  collaborators:[]
+  currentBoard: "",
+  collaborators: [],
 };
 
 const mutations = {
@@ -18,12 +18,12 @@ const mutations = {
   chooseBoard(state, { name, id }) {
     (state.chosenBoardName = name), (state.chosenBoardId = id);
   },
-  setCurrentBoard(state , board){
+  setCurrentBoard(state, board) {
     state.currentBoard = board;
   },
-  setCollaborators(state, collaborators){
-    state.collaborators= collaborators;
-  }
+  setCollaborators(state, collaborators) {
+    state.collaborators = collaborators;
+  },
 };
 
 const actions = {
@@ -158,11 +158,11 @@ const actions = {
 };
 
 const getters = {
-  userBoards: state => state.userBoards,
-  chosenBoardName: state => state.chosenBoardName,
-  chosenBoardId: state => state.chosenBoardId,
-  currentBoard: state => state.currentBoard,
-  collaborators: state => state.collaborators
+  userBoards: (state) => state.userBoards,
+  chosenBoardName: (state) => state.chosenBoardName,
+  chosenBoardId: (state) => state.chosenBoardId,
+  currentBoard: (state) => state.currentBoard,
+  collaborators: (state) => state.collaborators,
 };
 
 export default {
@@ -170,5 +170,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };
