@@ -156,27 +156,23 @@ export default {
     };
   },
   methods: {
-    editCollab() {
-      let collab = {
-        collaboratorId: this.collaborator.collaboratorId,
-        savePin: this.collaborator.canSavePin == "1" ? true : false,
-        createPin: this.collaborator.canCreatePin == "1" ? true : false,
-        editTitle: this.collaborator.canEditTitle == "1" ? true : false,
-        personalization: this.collaborator.canPersonalize == "1" ? true : false,
-        editDescription:
-          this.collaborator.canEditDescription == "1" ? true : false,
-        addCollaborators:
-          this.collaborator.canAddCollaborators == "1" ? true : false,
-      };
-      console.log(collab);
-      this.$store.dispatch("boards/editCollaborators", collab);
-    },
-    deleteCollab() {
-      this.$store.dispatch("boards/deletaCollaborator", {
-        data: { collaboratorId: this.id },
-      });
-    },
-  },
+      editCollab(){
+          let collab ={
+            collaboratorId:this.id,
+            savePin:this.collaborator.canSavePin=="1" ? true: false,
+            createPin: this. collaborator.canCreatePin=="1" ? true: false,
+            editTitle: this. collaborator.canEditTitle=="1" ? true: false,
+            personalization: this. collaborator.canPersonalize =="1" ? true: false,
+            editDescription: this. collaborator.canEditDescription=="1" ? true: false,
+            addCollaborators: this. collaborator.canAddCollaborators =="1" ? true: false
+          }
+          this.$store.dispatch("boards/editCollaborators",collab),
+          this.edit=false;
+      },
+      deleteCollab(){
+          this.$store.dispatch("boards/deletaCollaborator",{data:{collaboratorId:this.id}})
+      }
+  }
 };
 </script>
 
@@ -204,10 +200,8 @@ label {
   transition: linear 0.5s;
   margin-top: 10px;
 }
-.inputDiv:hover {
-  border: $lightPinkHover solid 2px;
-  border-radius: 16px;
-  padding: 0 12px;
+.inputDiv:hover{
+    border: $lightPinkHover solid 2px;
 }
 .collab {
   margin: 5px 0;

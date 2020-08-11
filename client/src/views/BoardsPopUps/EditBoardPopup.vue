@@ -193,7 +193,16 @@ export default {
     },
     mergeBoard(){
       if(this.MergeToId != "")
+       { 
+        let merge={
+          mergedBoardId: this.board.board._id,
+          originalBoardId: this.MergeToId
+        }
+        this.$store.dispatch("boards/mergeBoard",merge);
         this.$store.commit("popUpsState/toggleEditBoardPopup");
+        this.$router.go(-1);
+       }
+
     },
     hideBoard(event){
       console.log(event.target.id)
