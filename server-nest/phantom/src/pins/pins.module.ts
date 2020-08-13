@@ -23,4 +23,4 @@ import { Topic } from 'src/models/topic.schema';
   providers: [PinsService],
   exports: [PinsService],
 })
-export class PinsModule {}
+export class PinsModule { }

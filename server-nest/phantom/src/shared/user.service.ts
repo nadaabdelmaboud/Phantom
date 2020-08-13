@@ -17,14 +17,16 @@ import { UpdateDto } from '../user/dto/update-user.dto';
 import { Payload } from '../types/payload';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
+import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
+    private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -42,7 +44,10 @@ export class UserService {
       });
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
-    if (await bcrypt.compare(loginDto.password, user.password)) return user;
+    if (await bcrypt.compare(loginDto.password, user.password)) {
+      await this.notification.sendOfflineNotification(user.offlineNotifications, user.fcmToken)
+      return user;
+    }
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
   }
   async checkCreateData(registerDto: RegisterDto) {
@@ -119,6 +124,7 @@ export class UserService {
       email: registerDto.email,
       password: hash,
       sortType: 'Date',
+      fcmToken: ' ',
       about: registerDto.bio,
       gender: registerDto.gender,
       country: registerDto.country,
@@ -352,6 +358,7 @@ export class UserService {
       { _id: followedUser._id },
       { followers: followedUser.followers },
     );
+    await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
 

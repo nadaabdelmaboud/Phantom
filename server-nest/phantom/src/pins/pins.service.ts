@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   NotAcceptableException,
 } from '@nestjs/common';
+import { NotificationService } from '../notification/notification.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserService } from 'src/shared/user.service';
@@ -16,6 +17,7 @@ import { reply } from '../types/pin';
 import { BoardService } from '../board/board.service';
 import { board } from 'src/types/board';
 import { topic } from 'src/types/topic';
+import { pid } from 'process';
 @Injectable()
 export class PinsService {
   constructor(
@@ -25,7 +27,8 @@ export class PinsService {
     private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
-  ) {}
+    private NotificationService: NotificationService
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -233,6 +236,8 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
+    let ownerUser = await this.UserService.getUserById(pin.creator.id);
+
     var cs = <comment>(<unknown>{
       commenter: userId,
       comment: commentText,
@@ -247,6 +252,7 @@ export class PinsService {
     pin.comments.push(cs);
     pin.counts.comments = pin.counts.comments.valueOf() + 1;
     await pin.save();
+    // await this.NotificationService.commentPin(ownerUser, user, commentText, pin.title, pinId, pin.imageId);
     return true;
   }
   async createReply(pinId, replyText, userId, commentId) {
@@ -339,7 +345,7 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
-
+    let pinOwner = await this.getPinById(pin.creator.id);
     if (!user || !pin) return false;
     pin.reacts.push({
       reactType: reactType,
@@ -361,6 +367,7 @@ export class PinsService {
       case 'Good idea':
         pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() + 1;
         break;
+      // await this.NotificationService.reactPin(pinOwner, user, pin.title, pinId, String(reactType), pin.imageId);
     }
     await pin.save();
     return true;
