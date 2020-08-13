@@ -8,6 +8,8 @@ import { ImagesModule } from '../images/images.module';
 import { Board } from 'src/models/board.schema';
 import { SharedModule } from 'src/shared/shared.module';
 import { Topic } from 'src/models/topic.schema';
+import { NotificationService } from '../notification/notification.service';
+
 @Module({
   imports: [
     SharedModule,
@@ -20,7 +22,7 @@ import { Topic } from 'src/models/topic.schema';
     ]),
   ],
   controllers: [PinsController],
-  providers: [PinsService],
+  providers: [PinsService, NotificationService],
   exports: [PinsService],
 })
 export class PinsModule { }
