@@ -144,6 +144,18 @@ export class PinsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @Get('/pins/:pinId')
+  async getPinFull(@Request() req, @Param('pinId') pinId: string) {
+    let userId = req.user._id;
+    let pin = await this.PinsService.getPinFull(pinId, userId);
+    if (pin) {
+      return pin;
+    } else {
+      throw new NotFoundException({ message: 'pin not found' });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Post('/pins/:pinId/reacts')
   async createReact(
     @Request() req,
