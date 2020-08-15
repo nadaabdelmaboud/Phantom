@@ -41,7 +41,7 @@ const routes = [
         component: PinBuilder
       },
       {
-        path: "PostPage",
+        path: "PostPage/:postPageId",
         name: "PostPage",
         component: PostPage
       },

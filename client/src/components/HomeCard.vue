@@ -1,6 +1,6 @@
 <template>
   <div class="card" id="homeCard">
-    <router-link to="/PostPage">
+    <router-link :to="{ path: '/PostPage/' + postPageId }">
       <img :src="getImage(cardImage)" class="card-img" alt="Card image" />
       <div class="card-img-overlay d-flex flex-column align-items-end">
         <button class="save-post" id="saveImage" @click.capture="clicked">
@@ -44,7 +44,6 @@
 .card {
   width: 252px;
   border-radius: 25px;
-  margin-left: 15px;
   &:hover {
     .save-post,
     .share-icon,

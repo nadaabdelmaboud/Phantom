@@ -3,7 +3,7 @@
     <div class="container">
       <div class="box">
         <div class="imagebox">
-          <img src="../assets/dress.jpg" alt="Post Image" />
+          <img :src="getImage(this.postImage)" alt="Post Image" />
         </div>
       </div>
       <div class="box">
@@ -30,19 +30,17 @@
             </div>
           </div>
           <div class="secondsection">
-            <div class="imageTitle">Awesome Dress</div>
+            <div class="imageTitle">{{this.postTitle}}</div>
             <div class="imagedescription">
-              beautiful blue dress beautiful blue dress beautiful blue dress
-              beautiful blue dress beautiful blue dress beautiful blue dress
-              beautiful blue dress beautiful blue dress beautiful blue dress
+              {{this.postDescribtion}}
             </div>
             <div class="followuserbox">
               <div class="userimage">
-                <img src="../assets/user.png" alt="User Image" />
+                <img :src="getImage(this.userImage)" alt="User Image" />
               </div>
               <div class="userinfo">
-                <h5 class="username">User</h5>
-                <span class="followersnumber">15 followers</span>
+                <h5 class="username">{{this.userFirstName}} {{this.userLastName}}</h5>
+                <span class="followersnumber">16 followers</span>
               </div>
               <div class="followbutton">
                 <button
@@ -474,6 +472,8 @@ li button {
 </style>
 
 <script>
+import { mapGetters } from "vuex";
+import { default as getImage } from "../mixins/getImage";
 export default {
   name: "postpagecard",
   data: function() {
@@ -484,6 +484,7 @@ export default {
       showComments: false
     };
   },
+  mixins: [getImage],
   methods: {
     showToast() {
       var mytoast = document.getElementById("toastId");
@@ -519,6 +520,16 @@ export default {
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
-  }
+  },
+    computed: {
+    ...mapGetters({
+     postImage: "homeCards/postImage",
+     userImage: "homeCards/userImage",
+     postTitle: "homeCards/postTitle",
+     postDescribtion: "homeCards/postDescribtion",
+     userFirstName: "homeCards/userFirstName",
+     userLastName: "homeCards/userLastName",
+    })
+    }
 };
 </script>
