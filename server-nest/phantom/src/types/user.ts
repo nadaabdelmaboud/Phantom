@@ -11,18 +11,23 @@ export interface user extends Document {
   birthDate: Date;
   about: String;
   gender: String;
+  sortType: String;
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
   pins: Array<{
     pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
+    sectionId: mongoose.Types.ObjectId;
   }>;
   savedPins: Array<{
-    id: mongoose.Types.ObjectId;
+    pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
+    sectionId: mongoose.Types.ObjectId;
+    note: String;
   }>;
   confirm: Boolean;
   fcmToken: String;
+  followingTopics: Array<mongoose.Types.ObjectId>;
   notifications: [{}];
   offlineNotifications: [{}];
   followers: Array<mongoose.Types.ObjectId>;
@@ -33,8 +38,6 @@ export interface user extends Document {
       name: String;
       createdAt: Date;
       isJoined: Boolean;
-      joiners: Array<mongoose.Types.ObjectId>;
-      followers: Array<mongoose.Types.ObjectId>;
       createdOrjoined: String;
     },
   ];

@@ -1,10 +1,12 @@
 import * as mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
+
 export const Board = new Schema({
   url: String,
   name: String,
-  startDate: Date,
-  endDate: Date,
+  startDate: String,
+  endDate: String,
   status: String,
   topic: String,
   description: String,
@@ -18,9 +20,18 @@ export const Board = new Schema({
   coverImages: [mongoose.Types.ObjectId],
   pins: [mongoose.Types.ObjectId],
   createdAt: Date,
+  sections: [
+    {
+      sectionId: mongoose.Types.ObjectId,
+      sectionName: String,
+      pins: [mongoose.Types.ObjectId],
+      creatorId: mongoose.Types.ObjectId,
+      coverImages: [mongoose.Types.ObjectId],
+    },
+  ],
   collaborators: [
     {
-      id: mongoose.Types.ObjectId,
+      collaboratorId: mongoose.Types.ObjectId,
       savePin: Boolean,
       createPin: Boolean,
       editTitle: Boolean,
@@ -36,4 +47,10 @@ export const Board = new Schema({
     joiners: Number,
     pins: Number,
   },
+});
+Board.index({
+  name: 'text',
+  topic: 'text',
+  description: 'text',
+  status: 'text',
 });

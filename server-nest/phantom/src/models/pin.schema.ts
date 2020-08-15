@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 export const Pin = new Schema({
   imageId: mongoose.Types.ObjectId,
@@ -14,6 +15,7 @@ export const Pin = new Schema({
   },
   savers: Array(mongoose.Types.ObjectId),
   board: mongoose.Types.ObjectId,
+  section: mongoose.Types.ObjectId,
   createdAt: Date,
   topic: String,
   note: String,
@@ -53,3 +55,4 @@ export const Pin = new Schema({
     },
   ],
 });
+Pin.index({ title: 'text', note: 'text' });

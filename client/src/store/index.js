@@ -5,6 +5,7 @@ import popUpsState from "./modules/popUpsState.js";
 import pins from "./modules/pins.js";
 import boards from "./modules/boards.js";
 import homeCards from "./modules/homeCards.js";
+import followers from "./modules/followers.js";
 
 Vue.use(Vuex);
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     popUpsState,
     pins,
     boards,
-    homeCards
+    homeCards,
+    followers
   }
 });

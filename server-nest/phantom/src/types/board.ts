@@ -1,10 +1,16 @@
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+export interface section extends Document {
+  sectionName: String;
+  pins: Array<mongoose.Types.ObjectId>;
+  creatorId: mongoose.Types.ObjectId;
+  coverImages: Array<mongoose.Types.ObjectId>;
+}
 export interface board extends Document {
   url: String;
   name: String;
-  startDate: Date;
-  endDate: Date;
+  startDate: String;
+  endDate: String;
   status: String;
   topic: String;
   description: String;
@@ -17,7 +23,7 @@ export interface board extends Document {
   };
   coverImages: Array<mongoose.Types.ObjectId>;
   collaborators: Array<{
-    id: mongoose.Types.ObjectId;
+    collaboratorId: mongoose.Types.ObjectId;
     savePin: Boolean;
     createPin: Boolean;
     editDescription: Boolean;
@@ -25,6 +31,7 @@ export interface board extends Document {
     editTitle: Boolean;
     addCollaborators: Boolean;
   }>;
+  sections: Array<section>;
   isJoined: Boolean;
   followers: Array<mongoose.Types.ObjectId>;
   pins: Array<mongoose.Types.ObjectId>;

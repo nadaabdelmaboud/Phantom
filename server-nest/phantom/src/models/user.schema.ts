@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 export const User = new Schema({
   firstName: String,
@@ -7,17 +8,24 @@ export const User = new Schema({
   password: String,
   country: String,
   birthDate: Date,
+  followingTopics: Array(mongoose.Types.ObjectId),
+  location: String,
+  userName: String,
   about: String,
+  sortType: String,
   gender: String,
   socketId: String,
   profileImage: mongoose.Types.ObjectId,
   pins: Array({
     pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
+    sectionId: mongoose.Types.ObjectId,
   }),
   savedPins: Array({
-    id: mongoose.Types.ObjectId,
+    pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
+    sectionId: mongoose.Types.ObjectId,
+    note: String,
   }),
   confirm: Boolean,
   fcmToken: String,
@@ -32,8 +40,7 @@ export const User = new Schema({
       name: String,
       createdAt: Date,
       isJoined: Boolean,
-      joiners: Array(mongoose.Types.ObjectId),
-      followers: Array(mongoose.Types.ObjectId),
+      createdOrjoined: String,
     },
   ],
   counts: {
@@ -44,3 +51,5 @@ export const User = new Schema({
   },
   createdAt: Date,
 });
+
+User.index({ firstName: String, lastName: String });

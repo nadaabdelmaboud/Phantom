@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import getUserToken from "../../mixins/getUserToken";
 const state = {
   signUpState: null,
   userToken: "",
@@ -15,7 +15,8 @@ const state = {
   emailConfirm: false,
   loginState: null,
   sendEmailStatus: null,
-  resetPasswordStatus: null
+  resetPasswordStatus: null,
+  userData: null
 };
 
 const mutations = {
@@ -62,6 +63,9 @@ const mutations = {
   },
   setResetStatus(state, status) {
     state.resetPasswordStatus = status;
+  },
+  setUserData(state, payload) {
+    state.userData = payload;
   }
 };
 
@@ -144,6 +148,24 @@ const actions = {
         commit("setResetStatus", true);
       })
       .catch(error => {
+        console.log(error);
+      });
+  },
+  getUserProfile({ commit }) {
+    let token = getUserToken.methods.getUserToken();
+    console.log(token);
+    axios
+      .get("/me", {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(response => {
+        console.log(response.data.user);
+        commit("setUserData", response.data.user);
+      })
+      .catch(error => {
+        console.log("axios caught an error");
         console.log(error);
       });
   }

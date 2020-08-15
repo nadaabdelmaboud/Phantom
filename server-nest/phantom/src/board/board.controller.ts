@@ -20,7 +20,6 @@ import { BoardService } from './board.service';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
 
-@UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}
@@ -35,10 +34,11 @@ export class BoardController {
     @Body('status') status: string,
   ) {
     let userId = req.user._id;
+    console.log(userId);
     let createdBoard = await this.BoardService.createBoard(
       name,
-      new Date(startDate),
-      new Date(endDate),
+      startDate,
+      endDate,
       status,
       userId,
     );
@@ -205,6 +205,96 @@ export class BoardController {
       return { success: 'Board is deleted succissfully' };
     } else {
       throw new NotAcceptableException({ message: 'Board is not deleated' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/me/boards/:boardId/section')
+  async createSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Body('sectionName') sectionName: string,
+  ) {
+    let userId = req.user._id;
+    let createSection = await this.BoardService.createSection(
+      boardId,
+      sectionName,
+      userId,
+    );
+    if (createSection) {
+      return createSection;
+    } else {
+      throw new NotAcceptableException({ message: 'Section is not created' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/boards/:boardId/section/:sectionId')
+  async deleteSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Param('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let deleteSection = await this.BoardService.deleteSection(
+      boardId,
+      sectionId,
+      userId,
+    );
+    if (deleteSection) {
+      return { success: 'section deleted succissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'Section is not deleated' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/merge')
+  async mergeBoards(
+    @Request() req,
+    @Body('originalBoardId') originalBoardId: string,
+    @Body('mergedBoardId') mergedBoardId: string,
+  ) {
+    let userId = req.user._id;
+    let board = await this.BoardService.merge(
+      originalBoardId,
+      mergedBoardId,
+      userId,
+    );
+    if (board) {
+      return board;
+    } else {
+      throw new NotAcceptableException({ message: 'Boards are not merged' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/boards/:boardId')
+  async getFullBoard(@Request() req, @Param('boardId') boardId: string) {
+    let userId = req.user._id;
+    let board = await this.BoardService.getBoardFull(boardId, userId);
+    if (board) {
+      return board;
+    } else {
+      throw new NotAcceptableException({ message: 'Board is not found' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/savedPins/:pinId')
+  async unsavePinFromBoard(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Query('boardId') boardId: string,
+    @Query('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let unsavedPin = await this.BoardService.unsavePin(
+      pinId,
+      boardId,
+      sectionId,
+      userId,
+      false,
+    );
+    if (unsavedPin) {
+      return { success: 'pin is unsaved suucissfully' };
+    } else {
+      throw new NotAcceptableException({ message: 'pin hasnt been unsaved' });
     }
   }
 }
