@@ -15,9 +15,10 @@
       Following
     </router-link>
     <input class="searchInput" placeholder=" Search..." />
-    <div class="icons">
+    <div class="icons" @click="shownNotification = !shownNotification">
       <i class="fa fa-bell"></i>
     </div>
+    <NotificationDropDown v-if="shownNotification"/>
     <router-link tag="div" class="icons" to="/UserProfile/Boards">
       <i class="fa fa-user-circle"></i>
     </router-link>
@@ -41,7 +42,7 @@
   width: 100vw;
   padding: 16px 0;
   background-color: $offWhite;
-  z-index: 1;
+  z-index: 11;
 }
 .buttons {
   @include horizontalDivs;
@@ -90,13 +91,18 @@
 }
 </style>
 <script>
+import NotificationDropDown from "./Notification/NotificationDropdown"
 export default {
   name: "HomeNavigationBar",
   data: function() {
     return {
       inHome: true,
-      inFollowing: false
+      inFollowing: false,
+      shownNotification:false
     };
+  },
+  components:{
+    NotificationDropDown
   },
   watch: {
     $route: function() {
