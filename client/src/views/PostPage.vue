@@ -29,6 +29,9 @@ export default {
   name: "postpage",
   components: {
     PostPageCard
+  },
+  mounted() {
+    this.$store.dispatch("homeCards/Postpage", this.$route.params.postPageId);
   }
 };
 </script>

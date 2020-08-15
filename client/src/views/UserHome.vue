@@ -1,13 +1,18 @@
 <template>
   <div class="home">
-    <div class="container">
-      <HomeCard
-        class="box"
-        v-for="homecard in cards"
-        :key="homecard._id"
-        :cardImage="homecard.imageId"
-        :postPageId="homecard._id"
-      />
+    <div v-if="isLoggedIn() == false">
+      <p>Home Page ,Signup or Login</p>
+    </div>
+    <div v-if="isLoggedIn() == true">
+      <div class="container">
+        <HomeCard
+          class="box"
+          v-for="homecard in cards"
+          :key="homecard._id"
+          :cardImage="homecard.imageId"
+          :postPageId="homecard._id"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -52,7 +57,7 @@ img {
 
 @media (max-width: 990px) {
   .container {
-    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-template-rows: minmax(auto, auto);
   }
   .container .box {
@@ -65,18 +70,20 @@ img {
 <script>
 import HomeCard from "../components/HomeCard";
 import { mapGetters } from "vuex";
+import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {
   name: "UserHome",
   components: {
-    HomeCard,
+    HomeCard
   },
+  mixins: [isLoggedIn],
   mounted() {
     this.$store.dispatch("homeCards/userHome");
   },
   computed: {
     ...mapGetters({
-      cards: "homeCards/userHomePage",
-    }),
-  },
+      cards: "homeCards/userHomePage"
+    })
+  }
 };
 </script>

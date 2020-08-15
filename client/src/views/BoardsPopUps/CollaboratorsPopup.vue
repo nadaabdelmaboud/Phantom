@@ -33,7 +33,11 @@
       </div>
       <div class="confirmCopy" v-if="copied">Copied to the clipboard</div>
 
-      <div class="followerInfo" v-for="follower in followers" :key="follower._id">
+      <div
+        class="followerInfo"
+        v-for="follower in followers"
+        :key="follower._id"
+      >
         <img :src="getImage(follower.imageId)" />
         <span>{{ follower.name }}</span>
         <button class="editButton" @click="addCollaborator(follower._id)">
@@ -54,11 +58,11 @@ export default {
   mixins: [getImage],
   data: function() {
     return {
-      copied: false,
+      copied: false
     };
   },
   components: {
-    CallaboratorsCard,
+    CallaboratorsCard
   },
   methods: {
     editPopup(event) {
@@ -76,21 +80,21 @@ export default {
         this.copied = false;
       }, 3000);
     },
-    addCollaborator(id){
-      this.$store.dispatch("boards/editBoard",{collaboratores:id})
+    addCollaborator(id) {
+      this.$store.dispatch("boards/editBoard", { collaboratores: id });
     }
   },
   computed: {
     ...mapGetters({
       collaborators: "boards/collaborators",
-      followers: "followers/userFollowers",
-    }),
+      followers: "followers/userFollowers"
+    })
   },
   mounted() {
     this.$store.dispatch("boards/getCollaborators");
     this.$store.dispatch("followers/getFollowers");
   },
-  created() {},
+  created() {}
 };
 </script>
 
@@ -176,11 +180,11 @@ h3 {
     opacity: 0;
   }
 }
-.followerInfo{
-img{
+.followerInfo {
+  img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-}
+  }
 }
 </style>

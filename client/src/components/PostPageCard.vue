@@ -30,17 +30,21 @@
             </div>
           </div>
           <div class="secondsection">
-            <div class="imageTitle">{{this.postTitle}}</div>
+            <div class="imageTitle">{{ this.postTitle }}</div>
             <div class="imagedescription">
-              {{this.postDescribtion}}
+              {{ this.postDescribtion }}
             </div>
             <div class="followuserbox">
               <div class="userimage">
-                <img :src="getImage(this.userImage)" alt="User Image" />
+                <img :src="getImage(this.userImageId)" alt="User Image" />
               </div>
               <div class="userinfo">
-                <h5 class="username">{{this.userFirstName}} {{this.userLastName}}</h5>
-                <span class="followersnumber">16 followers</span>
+                <h5 class="username">
+                  {{ this.userFirstName }} {{ this.userLastName }}
+                </h5>
+                <span class="followersnumber"
+                  >{{ this.numberofFollowers }} followers</span
+                >
               </div>
               <div class="followbutton">
                 <button
@@ -63,38 +67,18 @@
               <li>
                 <button
                   class="underlineLink"
-                  id="photobutton"
-                  @click="
-                    addPhoto(), (showPhotos = true), (showComments = false)
-                  "
-                >
-                  Photos
-                </button>
-              </li>
-              <li>
-                <button
-                  class="underlineLink"
                   id="commentbutton"
-                  @click="
-                    addComment(), (showPhotos = false), (showComments = true)
-                  "
+                  @click="addComment()"
                 >
                   Comments
                 </button>
               </li>
             </div>
-            <div class="AddPhotos" v-if="showPhotos == true">
-              <p>Tried this pin?</p>
-              <div>
-                Add a photo to show how it went
-                <button class="addphotobutton">Add Photo</button>
-              </div>
-            </div>
-            <div class="AddComments" v-if="showComments == true">
+            <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
               <div class="displaycomments">
                 <div class="userimage">
-                  <img src="../assets/user.png" alt="User Image" />
+                  <img :src="getImage(this.userImageId)" alt="User Image" />
                 </div>
                 <div class="commentsfield">
                   <input type="text" placeholder="Add a Comment" />
@@ -106,10 +90,16 @@
       </div>
     </div>
     <div class="toast" id="toastId">
-      <img src="../assets/user.png" alt="User Image" class="toastimage" />
+      <img
+        :src="getImage(this.userImageId)"
+        alt="User Image"
+        class="toastimage"
+      />
       <div class="userinfo">
         <div id="toastmessage">Now Following</div>
-        <div class="toastusername">User</div>
+        <div class="toastusername">
+          {{ this.userFirstName }} {{ this.userLastName }}
+        </div>
       </div>
     </div>
   </div>
@@ -134,7 +124,7 @@
 .box {
   width: 50%;
   //margin:top right bottom left
-  margin: 20px 20px 20px 5px;
+  margin: 20px 20px 40px 5px;
   box-sizing: border-box;
 }
 img {
@@ -354,26 +344,7 @@ li button {
   width: 100%;
   transition: width 0.3s;
 }
-.AddPhotos {
-  margin: 12px;
-  p {
-    margin: 0;
-    color: black;
-  }
-}
-.addphotobutton {
-  letter-spacing: 1px;
-  background-color: $lightBlue;
-  float: right;
-  color: white;
-  border-radius: 500px;
-  border-color: transparent;
-  align-content: center;
-  padding: 10px;
-  &:hover {
-    background-color: $darkBlue;
-  }
-}
+
 .AddComments {
   margin: 12px;
   p {
@@ -402,6 +373,12 @@ li button {
   }
 }
 
+@media screen and (max-width: 1540px) {
+  .container {
+    width: 1000px;
+  }
+}
+
 @media screen and (max-width: 993px) {
   .container {
     flex-flow: wrap;
@@ -415,6 +392,7 @@ li button {
     margin-left: 0;
   }
 }
+
 @media screen and (max-width: 950px) {
   .toast {
     left: 30%;
@@ -479,9 +457,7 @@ export default {
   data: function() {
     return {
       followuser: false,
-      show: false,
-      showPhotos: true,
-      showComments: false
+      show: false
     };
   },
   mixins: [getImage],
@@ -508,9 +484,6 @@ export default {
         this.show = false;
       }
     },
-    addPhoto() {
-      //add Photos Here
-    },
     addComment() {
       //add Comments Here
     }
@@ -521,15 +494,16 @@ export default {
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
   },
-    computed: {
+  computed: {
     ...mapGetters({
-     postImage: "homeCards/postImage",
-     userImage: "homeCards/userImage",
-     postTitle: "homeCards/postTitle",
-     postDescribtion: "homeCards/postDescribtion",
-     userFirstName: "homeCards/userFirstName",
-     userLastName: "homeCards/userLastName",
+      postImage: "homeCards/postImage",
+      userImageId: "homeCards/userImageId",
+      postTitle: "homeCards/postTitle",
+      postDescribtion: "homeCards/postDescribtion",
+      userFirstName: "homeCards/userFirstName",
+      userLastName: "homeCards/userLastName",
+      numberofFollowers: "homeCards/numberofFollowers"
     })
-    }
+  }
 };
 </script>

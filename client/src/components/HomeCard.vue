@@ -134,6 +134,9 @@ export default {
   props: {
     cardImage: {
       type: String
+    },
+    postPageId: {
+      type: String
     }
   },
   methods: {

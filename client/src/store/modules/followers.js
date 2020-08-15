@@ -5,25 +5,23 @@ const state = {
 };
 
 const mutations = {
-  setFollowers(state, followers){
-    state.userFollowers= followers;
+  setFollowers(state, followers) {
+    state.userFollowers = followers;
   }
 };
 
 const actions = {
-    getFollowers({ commit }, boardData) {
-        axios
-          .get("me/follower", 
-          boardData
-          )
-          .then((response) => {
-            let followers =response.data.followers
-            commit("setFollowers",followers);
-          })
-          .catch(error => {
-            console.log(error)
-          });
-      }
+  getFollowers({ commit }, boardData) {
+    axios
+      .get("me/follower", boardData)
+      .then(response => {
+        let followers = response.data.followers;
+        commit("setFollowers", followers);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 };
 
 const getters = {
