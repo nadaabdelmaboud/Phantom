@@ -65,11 +65,7 @@
             </div>
             <div class="actionsbox">
               <li>
-                <button
-                  class="underlineLink"
-                  id="commentbutton"
-                  @click="addComment()"
-                >
+                <button class="underlineLink" id="commentbutton">
                   Comments
                 </button>
               </li>
@@ -81,9 +77,21 @@
                   <img :src="getImage(this.userImageId)" alt="User Image" />
                 </div>
                 <div class="commentsfield">
-                  <input type="text" placeholder="Add a Comment" />
+                  <input
+                    type="text"
+                    placeholder="Add a Comment"
+                    id="inputfield-comments"
+                    @click="inputFieldIsActive()"
+                  />
                 </div>
               </div>
+              <div class="finishingComment" v-if="typingComment == true">
+                <button class="save-comment" @click="addComment()">Done</button>
+                <button class="cancel-comment" @click="cancelComment()">
+                  Cancel
+                </button>
+              </div>
+              <div id="postComments"></div>
             </div>
           </div>
         </div>
@@ -141,7 +149,9 @@ img {
 #navbar {
   overflow: hidden;
 }
-.save-post {
+.save-post,
+.save-comment,
+.cancel-comment {
   letter-spacing: 1px;
   background-color: $lightBlue;
   float: right;
@@ -158,6 +168,17 @@ img {
 button:focus {
   outline: 0 !important;
 }
+
+.cancel-comment {
+  background-color: grey;
+  width: 70px;
+}
+
+.cancel-comment,
+.save-comment {
+  margin: 15px 5px 5px 5px;
+}
+
 .share-icon {
   @include circleButtons;
   background: transparent;
@@ -373,6 +394,10 @@ li button {
   }
 }
 
+#postComments {
+  color: red;
+}
+
 @media screen and (max-width: 1540px) {
   .container {
     width: 1000px;
@@ -452,12 +477,14 @@ li button {
 <script>
 import { mapGetters } from "vuex";
 import { default as getImage } from "../mixins/getImage";
+import io from "socket.io-client";
 export default {
   name: "postpagecard",
   data: function() {
     return {
       followuser: false,
-      show: false
+      show: false,
+      typingComment: false,
     };
   },
   mixins: [getImage],
@@ -484,9 +511,35 @@ export default {
         this.show = false;
       }
     },
+    inputFieldIsActive() {
+      this.typingComment = true;
+    },
+    cancelComment() {
+      this.typingComment = false;
+      var inputField = document.getElementById("inputfield-comments");
+      inputField.value = "";
+    },
     addComment() {
-      //add Comments Here
-    }
+      const socket = io.connect("http://localhost:3000");
+      var inputField = document.getElementById("inputfield-comments");
+      var comments = document.getElementById("postComments");
+      let token = localStorage.getItem("userToken");
+      socket.emit("comment", {
+        commentText: inputField.value,
+        pinId: this.$route.params.postPageId,
+        token: token,
+        text: inputField.value,
+      });
+      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL",token)
+      socket.on("sendComment", function(data) {
+        console.log("NIHAAAAAAAAAAAAAAAAAL");
+        comments.innerHTML += "<p>" + data.commentText + "</p>";
+      });
+      this.$store.dispatch(
+        "postPage/postPageAddedComments",
+        this.$route.params.postPageId
+      );
+    },
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -502,8 +555,8 @@ export default {
       postDescribtion: "homeCards/postDescribtion",
       userFirstName: "homeCards/userFirstName",
       userLastName: "homeCards/userLastName",
-      numberofFollowers: "homeCards/numberofFollowers"
-    })
-  }
+      numberofFollowers: "homeCards/numberofFollowers",
+    }),
+  },
 };
 </script>

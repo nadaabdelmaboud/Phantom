@@ -6,6 +6,7 @@ import pins from "./modules/pins.js";
 import boards from "./modules/boards.js";
 import homeCards from "./modules/homeCards.js";
 import followers from "./modules/followers.js";
+import postPage from "./modules/postPage.js";
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     pins,
     boards,
     homeCards,
-    followers
+    followers,
+    postPage
   }
 });
