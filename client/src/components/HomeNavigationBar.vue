@@ -3,7 +3,12 @@
     <router-link class="icons" to="/" tag="div">
       <i class="fa fa-pinterest"></i>
     </router-link>
-    <router-link class="buttons" to="/" tag="div" :class="{ inRoute: inHome }">
+    <router-link 
+     class="buttons"
+     to="/" 
+     tag="div"
+     :class="{ inRoute: inHome }"
+     v-if="isLoggedIn()">
       Home
     </router-link>
     <router-link
@@ -11,19 +16,44 @@
       to="/following"
       tag="div"
       :class="{ inRoute: inFollowing }"
+      v-if="isLoggedIn()"
     >
       Following
     </router-link>
-    <input class="searchInput" placeholder=" Search..." />
-    <div class="icons" @click="shownNotification = !shownNotification">
+    <input class="searchInput" v-if="isLoggedIn()" placeholder=" Search..." />
+    <div v-if="isLoggedIn()" class="icons" @click="shownNotification = !shownNotification">
       <i class="fa fa-bell"></i>
     </div>
     <NotificationDropDown v-if="shownNotification"/>
-    <router-link tag="div" class="icons" to="/UserProfile/Boards">
+    <router-link v-if="isLoggedIn()" tag="div" class="icons" to="/UserProfile/Boards">
       <i class="fa fa-user-circle"></i>
     </router-link>
-    <div class="icons">
+    <div class="icons" v-if="isLoggedIn()" @click="showList = !showList">
       <i class="fa fa-angle-down"></i>
+    </div>
+    <router-link
+      class="buttons right"
+      to="/signUp"
+      tag="div"
+      v-if="!isLoggedIn()"
+     > SignUp</router-link>
+     <router-link
+      class="buttons inRoute right"
+      to="/Login"
+      tag="div"
+      v-if="!isLoggedIn()"
+     >LogIn</router-link>
+    <div class="create view" v-if="showList">
+      <p>Accounts</p>
+      <ul>
+        <li>Add another account</li>
+      </ul>
+      <p>More options</p>
+      <ul>
+        <router-link tag="li" to="/settings">Settings</router-link>
+        <li>tune your home feed</li>
+        <li @click="logout">Logout</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -40,7 +70,7 @@
   // bottom: 80px;
   height: 80px;
   width: 100vw;
-  padding: 16px 0;
+  padding: 16px 10px;
   background-color: $offWhite;
   z-index: 11;
 }
@@ -89,20 +119,50 @@
   background-color: $darkBlue;
   color: $lightPink;
 }
+.right{
+  float: right;
+  margin: 0px 10px;
+}
+.create {
+  @include optionsList;
+  padding: 10px;
+  width: 200px;
+  right: 30px;
+  p {
+    font-size: 12px;
+  }
+}
+.view {
+  right: 40px;
+}
 </style>
 <script>
-import NotificationDropDown from "./Notification/NotificationDropdown"
+import NotificationDropDown from "./Notification/NotificationDropdown";
+import isLoggedIn from "../mixins/isLoggedIn.js"
+import removeUser from "../mixins/removeUserData.js"
 export default {
   name: "HomeNavigationBar",
   data: function() {
     return {
       inHome: true,
       inFollowing: false,
-      shownNotification:false
+      shownNotification:false,
+      showList:false
     };
   },
   components:{
     NotificationDropDown
+  },
+  mixins:[
+    isLoggedIn,
+    removeUser
+  ],
+  methods:{
+    logout(){
+      this.removeUserData();
+      console.log(this.isLoggedIn())
+      this.showList= false
+    }
   },
   watch: {
     $route: function() {
@@ -112,7 +172,8 @@ export default {
       } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
-      } else {
+      } 
+      else {
         this.inHome = false;
         this.inFollowing = false;
       }
