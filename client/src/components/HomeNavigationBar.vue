@@ -50,7 +50,7 @@
       </ul>
       <p>More options</p>
       <ul>
-        <router-link tag="li" to="/settings">Settings</router-link>
+        <li @click="toSetting">Settings</li>
         <li>tune your home feed</li>
         <li @click="logout">Logout</li>
       </ul>
@@ -162,6 +162,10 @@ export default {
       this.removeUserData();
       console.log(this.isLoggedIn())
       this.showList= false
+    },
+    toSetting(){
+      this.showList=false;
+      this.$router.push('/settings')
     }
   },
   watch: {

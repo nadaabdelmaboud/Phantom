@@ -9,7 +9,7 @@
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <router-link to="/settings" tag="i" class="fa fa-pencil" aria-hidden="true"></router-link>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">

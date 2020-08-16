@@ -69,6 +69,23 @@ const routes = [
         ]
       },
       {
+        path: "/User/:userId",
+        name: "anotherUser",
+        component: UserProfile,
+        children: [
+          {
+            path: "Boards",
+            name: "Boards",
+            component: UserBoards
+          },
+          {
+            path: "Pins",
+            name: "Pins",
+            component: UserPins
+          }
+        ]
+      },
+      {
         path: "Board/:boardId",
         name: "Board",
         component: BoardView,
