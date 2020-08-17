@@ -18,10 +18,7 @@
     </div>
 
     <div class="row m-0">
-      <HomeCard  
-      v-for="b in board.pins" 
-      :key="b.pin._id"
-      />
+      <HomeCard v-for="b in board.pins" :key="b.pin._id" />
     </div>
   </div>
 </template>
@@ -35,7 +32,7 @@ export default {
   name: "BoardPins",
   data: function() {
     return {
-      boardId: "",
+      boardId: ""
     };
   },
   components: {
@@ -44,13 +41,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      board: "boards/currentBoard",
-    }),
+      board: "boards/currentBoard"
+    })
   },
   created: function() {
     this.boardId = this.$route.params.boardId;
     //this.$store.dispatch("boards/getBoard", this.$route.params.boardId);
-  },
+  }
 };
 </script>
 

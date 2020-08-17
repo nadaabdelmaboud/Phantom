@@ -101,11 +101,11 @@ export default {
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
-    addCollaborator(){
+    addCollaborator() {
       this.$store.commit("popUpsState/toggleCollaboratorsPopup");
     },
-    editBoard(){
-        this.$store.commit("popUpsState/toggleEditBoardPopup")
+    editBoard() {
+      this.$store.commit("popUpsState/toggleEditBoardPopup");
     }
   },
   watch: {
@@ -129,9 +129,8 @@ export default {
   },
   mounted() {
     this.boardId = this.$route.params.boardId;
-
   },
-  created(){
+  created() {
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/getBoard", this.$route.params.boardId);
   }

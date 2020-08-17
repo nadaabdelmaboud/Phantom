@@ -208,12 +208,12 @@ export class BoardService {
     if (!user) return false;
     let retBoards = [];
     let permissions = {};
-    for (var i = 0; i < user.boards.length; i++) {
+    for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';
-        for (var j = 0; j < board.collaborators.length; j++) {
+        for (let j = 0; j < board.collaborators.length; j++) {
           if (String(board.collaborators[j].collaboratorId) == String(userId)) {
             permissions = {
               savePin: board.collaborators[j].savePin,
@@ -228,6 +228,7 @@ export class BoardService {
         }
       }
       if (board) {
+        console.log(board);
         retBoards.push({
           board: board,
           createdOrjoined: createdOrjoined,
@@ -833,19 +834,19 @@ export class BoardService {
         'this user is unauthorized to delete this board ',
       );
     }
-    for (var i = 0; i < user.boards.length; i++) {
+    for (let i = 0; i < user.boards.length; i++) {
       if (String(user.boards[i].boardId) == String(boardId)) {
         user.boards.splice(i, 1);
         await user.save();
         break;
       }
     }
-    for (var k = 0; k < board.collaborators.length; k++) {
+    for (let k = 0; k < board.collaborators.length; k++) {
       let collaborator = await this.UserService.getUserById(
         board.collaborators[k].collaboratorId,
       );
       if (collaborator) {
-        for (var i = 0; i < collaborator.boards.length; i++) {
+        for (let i = 0; i < collaborator.boards.length; i++) {
           if (String(collaborator.boards[i].boardId) == String(boardId)) {
             collaborator.boards.splice(i, 1);
             await collaborator.save();

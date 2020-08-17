@@ -5,8 +5,8 @@ const state = {
 };
 
 const mutations = {
-  setFollowers(state, followers){
-    state.userFollowers= followers;
+  setFollowers(state, followers) {
+    state.userFollowers = followers;
   }
 };
 
