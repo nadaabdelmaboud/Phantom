@@ -8,6 +8,7 @@ import homeCards from "./modules/homeCards.js";
 import followers from "./modules/followers.js";
 import phantomUser from "./modules/phantomUser.js";
 import postPage from "./modules/postPage.js";
+import topics from "./modules/topics.js"
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     phantomUser,
     homeCards,
     followers,
-    postPage
+    postPage,
+    topics
   }
 });
