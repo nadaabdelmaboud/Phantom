@@ -11,17 +11,39 @@ const mutations = {
 };
 
 const actions = {
-  getFollowers({ commit }, boardData) {
-    axios
-      .get("me/follower", boardData)
-      .then(response => {
-        let followers = response.data.followers;
-        commit("setFollowers", followers);
+    followUser({ dispatch },userId){
+      axios
+      .put("me/follow-user/"+userId)
+      .then(() => {
+       dispatch("getFollowers")
+       dispatch("phantomUser/isFollowed",userId,{root:true});
       })
       .catch(error => {
-        console.log(error);
+        console.log(error)
       });
-  }
+    },
+    unfollowUser({ dispatch },userId){
+      axios
+      .delete("me/follow-user/"+userId)
+      .then(() => {
+       dispatch("getFollowers");
+       dispatch("phantomUser/isFollowed",userId,{root:true});
+      })
+      .catch(error => {
+        console.log(error)
+      });
+    },
+    getFollowers({ commit }) {
+        axios
+          .get("me/follower")
+          .then((response) => {
+            let followers =response.data.followers
+            commit("setFollowers",followers);
+          })
+          .catch(error => {
+            console.log(error)
+          });
+      }
 };
 
 const getters = {
