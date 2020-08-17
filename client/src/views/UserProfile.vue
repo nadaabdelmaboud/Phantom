@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters , mapState} from "vuex";
 import getImage from "../mixins/getImage.js"
 export default {
   name: "UserProfile",
@@ -129,6 +129,9 @@ export default {
       ...mapGetters({
       user: "phantomUser/user",
       isFollowed:"phantomUser/isFollowed"
+    }),
+    ...mapState({
+       meUser: state => state.user.userData,
     })
   },
   watch: {
@@ -145,12 +148,15 @@ export default {
       }
     }
   },
-   beforeCreate(){
+   created(){
     this.myprofile = (this.$route.path.includes("/UserProfile"));
     if(!this.myprofile){
       let userId = this.$route.params.userId;
       this.$store.dispatch("phantomUser/getUser",userId);
       this.$store.dispatch("phantomUser/isFollowed",userId);
+    }
+    else{
+      this.$store.dispatch("user/getUserProfile");
     }
   },
   mounted(){
@@ -160,6 +166,12 @@ export default {
       this.userName= this.user.firstName +' '+ this.user.lastName;
       this.imageId = this.user.profileImage;
       this.followers= this.user.followers.length;
+     }
+     else{
+       console.log("meee",this.meUser)
+        this.userName= this.meUser.userName;
+      this.imageId = this.meUser.profileImage;
+      this.followers= this.meUser.followers.length;
      }
     },4000)
   }
