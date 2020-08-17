@@ -2,30 +2,37 @@ import axios from "axios";
 
 const state = {
   user: [],
-  isFollowed:false
+  isFollowed:''
 };
 
 const mutations = {
-  setUser(state, followers){
-    state.userFollowers= followers;
+  setUser(state, user){
+    state.user= user;
   },
   setIsFollowed(state,isFollowed){
-    state.isFollowed = isFollowed;
+    if(isFollowed =='true')
+        state.isFollowed = 'unfollow';
+    else
+        state.isFollowed = 'follow'
   }
 };
 
 const actions = {
     getUser({ commit },userId){
+        let token =localStorage.getItem("userToken");
+        axios.defaults.headers.common["Authorization"] =token
       axios
       .get("user/"+ userId)
       .then((response) => {
-       commit("setUser",response.data)
+       commit("setUser",response.data.user)
       })
       .catch(error => {
         console.log(error)
       });
     },
     isFollowed({ commit },userId){
+        let token =localStorage.getItem("userToken");
+        axios.defaults.headers.common["Authorization"] =token
       axios
       .get("me/follow-user/"+userId)
       .then((response) => {
@@ -38,7 +45,8 @@ const actions = {
 };
 
 const getters = {
-  user: state => state.user
+  user: state => state.user,
+  isFollowed: state => state.isFollowed,
 };
 
 export default {

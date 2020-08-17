@@ -16,6 +16,7 @@ const actions = {
       .put("me/follow-user/"+userId)
       .then(() => {
        dispatch("getFollowers")
+       dispatch("phantomUser/isFollowed",userId,{root:true});
       })
       .catch(error => {
         console.log(error)
@@ -25,7 +26,8 @@ const actions = {
       axios
       .delete("me/follow-user/"+userId)
       .then(() => {
-       dispatch("getFollowers")
+       dispatch("getFollowers");
+       dispatch("phantomUser/isFollowed",userId,{root:true});
       })
       .catch(error => {
         console.log(error)

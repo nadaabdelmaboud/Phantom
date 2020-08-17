@@ -2,10 +2,18 @@
   <div class="profile" @click="clear">
     <div class="profileInfo">
       <img
-        src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+        :src="getImage(imageId)"
       />
-      <h1>Menna Mahmoud</h1>
-      <h6>16 following</h6>
+      <h1>{{userName}}</h1>
+      <h6>{{followers}} following</h6>
+      <div 
+      class="buttons inRoute follow"
+      v-if="!myprofile"
+      :class="{ unfollow: isFollowed=='unfollow' }"
+      @click="alterFollow"
+      >
+      {{isFollowed}}
+       </div>
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
@@ -72,6 +80,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+import getImage from "../mixins/getImage.js"
 export default {
   name: "UserProfile",
   data: function() {
@@ -79,9 +89,14 @@ export default {
       inBoards: true,
       inPins: false,
       showCreate: false,
-      showViewOptions: false
+      showViewOptions: false,
+      myprofile:false,
+      userName:'',
+      imageId:'',
+      followers:''
     };
   },
+  mixins:[getImage],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
@@ -99,7 +114,22 @@ export default {
     },
     sortDate() {
       this.$store.dispatch("boards/sortDate");
+    },
+    alterFollow(){
+       let userId = this.$route.params.userId;
+      if(this.isFollowed == 'unfollow'){
+        this.$store.dispatch("followers/unfollowUser",userId);
+      }
+      else{
+        this.$store.dispatch("followers/followUser",userId);
+      }
     }
+  },
+  computed:{
+      ...mapGetters({
+      user: "phantomUser/user",
+      isFollowed:"phantomUser/isFollowed"
+    })
   },
   watch: {
     $route: function() {
@@ -114,6 +144,24 @@ export default {
         this.inPins = false;
       }
     }
+  },
+   beforeCreate(){
+    this.myprofile = (this.$route.path.includes("/UserProfile"));
+    if(!this.myprofile){
+      let userId = this.$route.params.userId;
+      this.$store.dispatch("phantomUser/getUser",userId);
+      this.$store.dispatch("phantomUser/isFollowed",userId);
+    }
+  },
+  mounted(){
+    setTimeout(()=>{
+       if(!this.myprofile){
+       console.log("user",this.user)
+      this.userName= this.user.firstName +' '+ this.user.lastName;
+      this.imageId = this.user.profileImage;
+      this.followers= this.user.followers.length;
+     }
+    },4000)
   }
 };
 </script>
@@ -182,11 +230,23 @@ i:hover {
   background-color: $darkBlue;
   color: $lightPink;
 }
+.follow{
+  display:block;
+  width: 100px;
+  margin: 15px auto;
+}
+.unfollow{
+  background-color:  $lightPink;
+  color: $darkBlue;
+}
+.unfollow:hover{
+  background-color:  $lightPink;
+  color: $darkBlue;
+}
 .create {
   @include optionsList;
   padding: 10px;
   width: 200px;
-  // top:200;
   right: 30px;
   p {
     font-size: 12px;
