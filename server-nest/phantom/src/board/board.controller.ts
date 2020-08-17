@@ -20,6 +20,7 @@ import { BoardService } from './board.service';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
 
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
   constructor(private BoardService: BoardService) {}

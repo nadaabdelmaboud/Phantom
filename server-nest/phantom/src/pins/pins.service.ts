@@ -17,13 +17,11 @@ import { reply } from '../types/pin';
 import { BoardService } from '../board/board.service';
 import { board } from 'src/types/board';
 import { topic } from 'src/types/topic';
-import { pid } from 'process';
 @Injectable()
 export class PinsService {
   constructor(
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
-    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
@@ -73,6 +71,11 @@ export class PinsService {
           followers: creator.followers.length,
         };
       }
+      if (user.history) user.history = [];
+      user.history.push({
+        topic: pin.topic,
+        pinId: pin._id,
+      });
       return {
         pin: pin,
         type: pinType,

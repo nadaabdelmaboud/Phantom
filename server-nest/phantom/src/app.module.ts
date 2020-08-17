@@ -11,6 +11,7 @@ import { ImagesModule } from './images/images.module';
 import { TopicModule } from './topic/topic.module';
 import { UserModule } from './user/user.module';
 import { SearchModule } from './search/search.module';
+import { RecommendationModule } from './recommendation/recommendation.module';
 
 @Module({
   imports: [
@@ -23,8 +24,9 @@ import { SearchModule } from './search/search.module';
     AuthModule,
     UserModule,
     SearchModule,
+    RecommendationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

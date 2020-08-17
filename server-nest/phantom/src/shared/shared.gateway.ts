@@ -29,7 +29,10 @@ export class SharedGateway {
     let commentText = data.commentText;
     let pinId = data.pinId;
     let pin = await this.pinModel.findById(pinId);
-    const token = data.token;
+    let token = data.token;
+    console.log(token);
+    token = token.substring(7);
+    console.log(token);
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let commenterId = decoded._id;
     let commenter = await this.userModel.findById(commenterId);
