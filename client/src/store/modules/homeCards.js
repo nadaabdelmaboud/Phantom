@@ -8,7 +8,7 @@ const state = {
   postDescribtion: "",
   userFirstName: "",
   userLastName: "",
-  numberofFollowers: 0
+  numberofFollowers: 0,
 };
 
 const mutations = {
@@ -35,7 +35,7 @@ const mutations = {
   },
   setnumberofFollowers(state, numberofFollowers) {
     state.numberofFollowers = numberofFollowers;
-  }
+  },
 };
 
 const actions = {
@@ -43,11 +43,11 @@ const actions = {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .get("me/pins")
-      .then(response => {
+      .get("me/home")
+      .then((response) => {
         commit("sethomeCards", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -57,7 +57,7 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("/pins/" + postPageID)
-      .then(response => {
+      .then((response) => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
         commit("setpostTitle", res.pin.title);
@@ -67,21 +67,21 @@ const actions = {
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 
 const getters = {
-  userHomePage: state => state.homeCards,
-  postImage: state => state.postImage,
-  userImageId: state => state.userImage,
-  postTitle: state => state.postTitle,
-  postDescribtion: state => state.postDescribtion,
-  userFirstName: state => state.userFirstName,
-  userLastName: state => state.userLastName,
-  numberofFollowers: state => state.numberofFollowers
+  userHomePage: (state) => state.homeCards,
+  postImage: (state) => state.postImage,
+  userImageId: (state) => state.userImage,
+  postTitle: (state) => state.postTitle,
+  postDescribtion: (state) => state.postDescribtion,
+  userFirstName: (state) => state.userFirstName,
+  userLastName: (state) => state.userLastName,
+  numberofFollowers: (state) => state.numberofFollowers,
 };
 
 export default {
@@ -89,5 +89,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };
