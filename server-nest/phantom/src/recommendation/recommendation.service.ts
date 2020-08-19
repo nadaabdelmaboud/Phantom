@@ -137,4 +137,65 @@ export class RecommendationService {
     }
     return a;
   }
+  async pinMoreLike(userId, pinId) {
+    if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0)
+      throw new Error('not valid id');
+    let user = await this.UserService.getUserById(userId);
+    if (!user) throw new Error('no such user');
+    let pin = await this.pinModel.findById(pinId);
+    if (!pin) throw new Error('no such user');
+    let topic = await this.topicModel.findOne({ name: pin.topic });
+    let pins = [];
+    for (let i = 0; i < topic.pins.length; i++) {
+      if (String(topic.pins[i]) != String(pinId)) {
+        let pinTopic = await this.pinModel.findById(topic.pins[i]);
+        if (pinTopic) {
+          pins.push(pinTopic);
+        }
+      }
+    }
+    return pins;
+  }
+  async boardMoreLike(userId, boardId) {
+    if ((await this.ValidationService.checkMongooseID([userId, boardId])) == 0)
+      throw new Error('not valid id');
+    let user = await this.UserService.getUserById(userId);
+    if (!user) throw new Error('no such user');
+    let board = await this.boardModel.findById(boardId);
+    if (!board) throw new Error('no such user');
+    let pins = [];
+    for (let i = 0; i < board.pins.length; i++) {
+      let similarPins = await this.pinMoreLike(userId, board.pins[i]);
+      for (let j = 0; j < similarPins.length; j++) {
+        pins.push(similarPins[j]);
+      }
+    }
+    if (board.topic && board.topic != '') {
+      let topic = await this.topicModel.findOne({ name: board.topic });
+      for (let i = 0; i < topic.pins.length; i++) {
+        let pinTopic = await this.pinModel.findById(topic.pins[i]);
+        if (pinTopic) {
+          pins.push(pinTopic);
+        }
+      }
+    }
+    let allpins = await this.pinModel.find({});
+    for (let i = 0; i < allpins.length; i++) {
+      if (
+        allpins[i].note.includes(String(board.name)) ||
+        allpins[i].title.includes(String(board.name))
+      ) {
+        pins.push(allpins[i]);
+      }
+    }
+    for (let i = 0; i < board.pins.length; i++) {
+      for (let j = 0; j < pins.length; j++) {
+        if (String(pins[j]._id) == String(board.pins[i])) {
+          pins.splice(j, 1);
+        }
+      }
+    }
+    pins = await this.shuffle(pins);
+    return pins;
+  }
 }
