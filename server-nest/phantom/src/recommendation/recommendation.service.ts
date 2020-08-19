@@ -146,6 +146,7 @@ export class RecommendationService {
     if (!pin) throw new Error('no such user');
     let topic = await this.topicModel.findOne({ name: pin.topic });
     let pins = [];
+    console.log('sssssss');
     for (let i = 0; i < topic.pins.length; i++) {
       if (String(topic.pins[i]) != String(pinId)) {
         let pinTopic = await this.pinModel.findById(topic.pins[i]);
@@ -154,17 +155,20 @@ export class RecommendationService {
         }
       }
     }
+    console.log('sss');
     let allpins = await this.pinModel.find({});
     for (let i = 0; i < allpins.length; i++) {
       if (
-        allpins[i].note.includes(String(pin.title)) ||
-        allpins[i].note.includes(String(pin.note)) ||
+        (allpins[i].note &&
+          (allpins[i].note.includes(String(pin.title)) ||
+            allpins[i].note.includes(String(pin.note)))) ||
         allpins[i].title.includes(String(pin.title)) ||
         allpins[i].title.includes(String(pin.note))
       ) {
         pins.push(allpins[i]);
       }
     }
+    console.log(pins);
     pins = await this.shuffle(pins);
     return pins;
   }
@@ -194,7 +198,7 @@ export class RecommendationService {
     let allpins = await this.pinModel.find({});
     for (let i = 0; i < allpins.length; i++) {
       if (
-        allpins[i].note.includes(String(board.name)) ||
+        (allpins[i].note && allpins[i].note.includes(String(board.name))) ||
         allpins[i].title.includes(String(board.name))
       ) {
         pins.push(allpins[i]);
@@ -243,9 +247,10 @@ export class RecommendationService {
     let allpins = await this.pinModel.find({});
     for (let i = 0; i < allpins.length; i++) {
       if (
-        allpins[i].note.includes(
-          String(board.sections[sectionIndex].sectionName),
-        ) ||
+        (allpins[i].note &&
+          allpins[i].note.includes(
+            String(board.sections[sectionIndex].sectionName),
+          )) ||
         allpins[i].title.includes(
           String(board.sections[sectionIndex].sectionName),
         )
