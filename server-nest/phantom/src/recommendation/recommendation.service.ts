@@ -146,12 +146,16 @@ export class RecommendationService {
     if (!pin) throw new Error('no such user');
     let topic = await this.topicModel.findOne({ name: pin.topic });
     let pins = [];
-    console.log('sssssss');
+    let pinExist = {};
+
     for (let i = 0; i < topic.pins.length; i++) {
       if (String(topic.pins[i]) != String(pinId)) {
         let pinTopic = await this.pinModel.findById(topic.pins[i]);
         if (pinTopic) {
-          pins.push(pinTopic);
+          if (pinExist[String(pinTopic._id)] != true) {
+            pins.push(pinTopic);
+          }
+          pinExist[String(pinTopic._id)] = true;
         }
       }
     }
@@ -165,7 +169,10 @@ export class RecommendationService {
         allpins[i].title.includes(String(pin.title)) ||
         allpins[i].title.includes(String(pin.note))
       ) {
-        pins.push(allpins[i]);
+        if (pinExist[String(allpins[i]._id)] != true) {
+          pins.push(allpins[i]);
+        }
+        pinExist[String(allpins[i]._id)] = true;
       }
     }
     console.log(pins);
@@ -180,10 +187,14 @@ export class RecommendationService {
     let board = await this.boardModel.findById(boardId);
     if (!board) throw new Error('no such user');
     let pins = [];
+    let pinExist = {};
     for (let i = 0; i < board.pins.length; i++) {
       let similarPins = await this.pinMoreLike(userId, board.pins[i]);
       for (let j = 0; j < similarPins.length; j++) {
-        pins.push(similarPins[j]);
+        if (pinExist[String(similarPins[j]._id)] != true) {
+          pins.push(similarPins[j]);
+        }
+        pinExist[String(similarPins[j]._id)] = true;
       }
     }
     if (board.topic && board.topic != '') {
@@ -191,7 +202,10 @@ export class RecommendationService {
       for (let i = 0; i < topic.pins.length; i++) {
         let pinTopic = await this.pinModel.findById(topic.pins[i]);
         if (pinTopic) {
-          pins.push(pinTopic);
+          if (pinExist[String(pinTopic._id)] != true) {
+            pins.push(pinTopic);
+          }
+          pinExist[String(pinTopic._id)] = true;
         }
       }
     }
@@ -201,7 +215,10 @@ export class RecommendationService {
         (allpins[i].note && allpins[i].note.includes(String(board.name))) ||
         allpins[i].title.includes(String(board.name))
       ) {
-        pins.push(allpins[i]);
+        if (pinExist[String(allpins[i]._id)] != true) {
+          pins.push(allpins[i]);
+        }
+        pinExist[String(allpins[i]._id)] = true;
       }
     }
     for (let i = 0; i < board.pins.length; i++) {
@@ -228,6 +245,7 @@ export class RecommendationService {
     let board = await this.boardModel.findById(boardId);
     if (!board) throw new Error('no such user');
     let pins = [];
+    let pinExist = {};
     let sectionIndex = null;
     for (let k = 0; k < board.sections.length; k++) {
       if (String(sectionId) == String(board.sections[k]._id)) {
@@ -238,7 +256,10 @@ export class RecommendationService {
             board.sections[k].pins[i],
           );
           for (let j = 0; j < similarPins.length; j++) {
-            pins.push(similarPins[j]);
+            if (pinExist[String(similarPins[j]._id)] != true) {
+              pins.push(similarPins[j]);
+            }
+            pinExist[String(similarPins[j]._id)] = true;
           }
         }
       }
@@ -255,7 +276,10 @@ export class RecommendationService {
           String(board.sections[sectionIndex].sectionName),
         )
       ) {
-        pins.push(allpins[i]);
+        if (pinExist[String(allpins[i]._id)] != true) {
+          pins.push(allpins[i]);
+        }
+        pinExist[String(allpins[i]._id)] = true;
       }
     }
     for (let i = 0; i < board.sections[sectionIndex].pins.length; i++) {
