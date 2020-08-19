@@ -32,4 +32,45 @@ export class RecommendationController {
       throw new NotFoundException();
     }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/more/pins/:pinId')
+  async pinMoreLike(@Request() req, @Param('pinId') pinId: string) {
+    let userId = req.user._id;
+    let pins = await this.RecommendationService.pinMoreLike(userId, pinId);
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/more/boards/:boardId')
+  async boardMoreLike(@Request() req, @Param('boardId') boardId: string) {
+    let userId = req.user._id;
+    let pins = await this.RecommendationService.boardMoreLike(userId, boardId);
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/more/sections/:boardId/:sectionId')
+  async sectionMoreLike(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Param('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let pins = await this.RecommendationService.sectionMoreLike(
+      userId,
+      boardId,
+      sectionId,
+    );
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }
