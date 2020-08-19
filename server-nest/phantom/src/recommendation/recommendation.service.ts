@@ -154,6 +154,18 @@ export class RecommendationService {
         }
       }
     }
+    let allpins = await this.pinModel.find({});
+    for (let i = 0; i < allpins.length; i++) {
+      if (
+        allpins[i].note.includes(String(pin.title)) ||
+        allpins[i].note.includes(String(pin.note)) ||
+        allpins[i].title.includes(String(pin.title)) ||
+        allpins[i].title.includes(String(pin.note))
+      ) {
+        pins.push(allpins[i]);
+      }
+    }
+    pins = await this.shuffle(pins);
     return pins;
   }
   async boardMoreLike(userId, boardId) {
@@ -191,6 +203,61 @@ export class RecommendationService {
     for (let i = 0; i < board.pins.length; i++) {
       for (let j = 0; j < pins.length; j++) {
         if (String(pins[j]._id) == String(board.pins[i])) {
+          pins.splice(j, 1);
+        }
+      }
+    }
+    pins = await this.shuffle(pins);
+    return pins;
+  }
+  async sectionMoreLike(userId, boardId, sectionId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        boardId,
+        sectionId,
+      ])) == 0
+    )
+      throw new Error('not valid id');
+    let user = await this.UserService.getUserById(userId);
+    if (!user) throw new Error('no such user');
+    let board = await this.boardModel.findById(boardId);
+    if (!board) throw new Error('no such user');
+    let pins = [];
+    let sectionIndex = null;
+    for (let k = 0; k < board.sections.length; k++) {
+      if (String(sectionId) == String(board.sections[k]._id)) {
+        sectionIndex = k;
+        for (let i = 0; i < board.sections[k].pins.length; i++) {
+          let similarPins = await this.pinMoreLike(
+            userId,
+            board.sections[k].pins[i],
+          );
+          for (let j = 0; j < similarPins.length; j++) {
+            pins.push(similarPins[j]);
+          }
+        }
+      }
+    }
+
+    let allpins = await this.pinModel.find({});
+    for (let i = 0; i < allpins.length; i++) {
+      if (
+        allpins[i].note.includes(
+          String(board.sections[sectionIndex].sectionName),
+        ) ||
+        allpins[i].title.includes(
+          String(board.sections[sectionIndex].sectionName),
+        )
+      ) {
+        pins.push(allpins[i]);
+      }
+    }
+    for (let i = 0; i < board.sections[sectionIndex].pins.length; i++) {
+      for (let j = 0; j < pins.length; j++) {
+        if (
+          String(pins[j]._id) == String(board.sections[sectionIndex].pins[i])
+        ) {
           pins.splice(j, 1);
         }
       }
