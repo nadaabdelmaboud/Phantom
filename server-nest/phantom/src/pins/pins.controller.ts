@@ -21,6 +21,7 @@ import { PinsService } from './pins.service';
 import { ImagesService } from '../images/images.service';
 import { BoardService } from '../board/board.service';
 
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class PinsController {
   constructor(

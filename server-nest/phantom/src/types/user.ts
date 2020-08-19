@@ -14,6 +14,10 @@ export interface user extends Document {
   sortType: String;
   socketId: String;
   profileImage: mongoose.Types.ObjectId;
+  history: Array<{
+    topic: String;
+    pinId: mongoose.Types.ObjectId;
+  }>;
   pins: Array<{
     pinId: mongoose.Types.ObjectId;
     boardId: mongoose.Types.ObjectId;
@@ -27,7 +31,7 @@ export interface user extends Document {
   }>;
   confirm: Boolean;
   fcmToken: String;
-  followingTopics: Array<mongoose.Types.ObjectId>;
+  followingTopics: Array<String>;
   notifications: [{}];
   offlineNotifications: [{}];
   followers: Array<mongoose.Types.ObjectId>;
