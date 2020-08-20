@@ -23,7 +23,8 @@
   background-repeat: no-repeat;
   cursor: pointer;
   text-align: right;
-  margin: 20px;
+  margin: 10px;
+  position: relative;
   p {
     color: white;
     text-align: left;
@@ -83,9 +84,11 @@ export default {
   },
   computed: {
     getImg() {
-      let img =
-        "https://images.unsplash.com/photo-1592908742295-025c922c468f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60";
-      // this.$url + "/api/images/" + this.images + "?belongs_to=playlist";
+      let img;
+      if(this.imageId == '')
+      img = "http://localhost:3000/api/image/5f3dcf45414a7552a0630962" + this.imageId;
+      else
+       img = "http://localhost:3000/api/image/" + this.imageId;
       return img;
     }
   }

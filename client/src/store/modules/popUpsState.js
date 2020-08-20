@@ -5,7 +5,8 @@ const state = {
   createBoardPopup: false,
   newPinPopup: false,
   editBoardPopup: false,
-  CollaboratorsPopup: false
+  CollaboratorsPopup: false,
+  TopicsPopup:true
 };
 
 const mutations = {
@@ -29,6 +30,9 @@ const mutations = {
   },
   toggleCollaboratorsPopup(state) {
     state.CollaboratorsPopup = !state.CollaboratorsPopup;
+  },
+  toggleTopicsPopup(state) {
+    state.TopicsPopup = !state.TopicsPopup;
   }
 };
 export default {
