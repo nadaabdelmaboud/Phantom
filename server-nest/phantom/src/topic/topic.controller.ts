@@ -145,4 +145,12 @@ export class TopicController {
       return { 'follow': 'true' };
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/following-topics')
+  async followingTopics(@Request() req) {
+    const topics = await this.TopicService.followingTopics(req.user._id);
+    return topics;
+
+  }
+
 }

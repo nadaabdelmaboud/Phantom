@@ -26,7 +26,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -113,6 +113,18 @@ export class UserService {
           '"email" should not have acount',
           HttpStatus.FORBIDDEN,
         );
+  }
+
+  async updateFCMTocken(fcmToken, userId) {
+    const user = await this.getUserById(userId);
+    await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
+    return 1;
+  }
+
+  async followingTopics(userId) {
+    const user = await this.getUserById(userId);
+
+    return user.followingTopics;
   }
 
   async createUser(registerDto: RegisterDto): Promise<any> {

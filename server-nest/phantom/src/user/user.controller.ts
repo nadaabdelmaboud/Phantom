@@ -11,7 +11,7 @@ export class UserController {
     private userService: UserService,
     private authService: AuthService,
     private email: Email,
-  ) {}
+  ) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/me')
@@ -134,6 +134,23 @@ export class UserController {
   async unfollowUser(@nestCommon.Param() params, @nestCommon.Request() req) {
     if (!(await this.userService.unfollowUser(req.user._id, params.user_id)))
       throw new nestCommon.BadRequestException('can not follow this user');
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Put('/me/:fcmToken')
+  async setFCMToken(
+    @nestCommon.Param() params,
+    @nestCommon.Request() req,
+  ) {
+    const user = await this.userService.updateFCMTocken(params.fcmToken, req.user._id);
+  }
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Put('/log-out')
+  async logOut(
+    @nestCommon.Request() req,
+  ) {
+    const user = await this.userService.updateFCMTocken(' ', req.user._id);
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
