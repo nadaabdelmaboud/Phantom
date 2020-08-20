@@ -173,4 +173,15 @@ export class TopicService {
     return 0;
   }
 
+  async followingTopics(userId) {
+    const followingTopics = await this.UserService.followingTopics(userId);
+    if (!followingTopics || followingTopics.length == 0) return [];
+    var topics = [];
+    for (let i = 0; i < followingTopics.length; i++) {
+      const topic = await this.topicModel.findById(followingTopics[i]);
+      if (topic) topics.push(topic);
+    }
+    return topics;
+
+  }
 }
