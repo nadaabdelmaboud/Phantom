@@ -11,6 +11,9 @@ import { ImagesModule } from './images/images.module';
 import { TopicModule } from './topic/topic.module';
 import { UserModule } from './user/user.module';
 import { SearchModule } from './search/search.module';
+import { ChatController } from './chat/chat.controller';
+import { ChatService } from './chat/chat.service';
+import { ChatModule } from './chat/chat.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
 
 @Module({
@@ -24,9 +27,10 @@ import { RecommendationModule } from './recommendation/recommendation.module';
     AuthModule,
     UserModule,
     SearchModule,
+    ChatModule,
     RecommendationModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ChatController],
+  providers: [AppService, ChatService],
 })
 export class AppModule {}

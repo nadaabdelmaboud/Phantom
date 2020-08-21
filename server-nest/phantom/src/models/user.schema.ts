@@ -25,6 +25,20 @@ export const User = new Schema({
     boardId: mongoose.Types.ObjectId,
     sectionId: mongoose.Types.ObjectId,
   }),
+  sentMessages: Array({
+    message:Array({
+      note: String,
+      time: Date
+     }),
+    userId: mongoose.Types.ObjectId
+  }),
+  recievedMessages: Array({
+    message:Array({
+      note: String,
+      time: Date
+    }),
+    userId: mongoose.Types.ObjectId
+  }),
   savedPins: Array({
     pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
