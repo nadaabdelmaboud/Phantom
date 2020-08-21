@@ -6,13 +6,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
 import { BoardModule } from './board/board.module';
-import { ImagesService } from './images/images.service';
 import { ImagesModule } from './images/images.module';
 import { TopicModule } from './topic/topic.module';
 import { UserModule } from './user/user.module';
 import { SearchModule } from './search/search.module';
-import { ChatController } from './chat/chat.controller';
-import { ChatService } from './chat/chat.service';
 import { ChatModule } from './chat/chat.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
 
@@ -30,7 +27,7 @@ import { RecommendationModule } from './recommendation/recommendation.module';
     ChatModule,
     RecommendationModule,
   ],
-  controllers: [AppController, ChatController],
-  providers: [AppService, ChatService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

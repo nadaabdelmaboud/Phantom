@@ -8,7 +8,7 @@ export const User = new Schema({
   password: String,
   country: String,
   birthDate: Date,
-  followingTopics: Array(String),
+  followingTopics: Array(mongoose.Types.ObjectId),
   location: String,
   userName: String,
   about: String,
@@ -26,18 +26,18 @@ export const User = new Schema({
     sectionId: mongoose.Types.ObjectId,
   }),
   sentMessages: Array({
-    message:Array({
+    message: Array({
       note: String,
-      time: Date
-     }),
-    userId: mongoose.Types.ObjectId
+      time: Date,
+    }),
+    userId: mongoose.Types.ObjectId,
   }),
   recievedMessages: Array({
-    message:Array({
+    message: Array({
       note: String,
-      time: Date
+      time: Date,
     }),
-    userId: mongoose.Types.ObjectId
+    userId: mongoose.Types.ObjectId,
   }),
   savedPins: Array({
     pinId: mongoose.Types.ObjectId,

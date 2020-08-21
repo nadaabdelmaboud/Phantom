@@ -30,22 +30,22 @@ export interface user extends Document {
     note: String;
   }>;
   sentMessages: Array<{
-    message:Array<{
-      note: String,
-      time: Date
-    }>,
-    userId: mongoose.Types.ObjectId
-  }>,
+    message: Array<{
+      note: String;
+      time: Date;
+    }>;
+    userId: mongoose.Types.ObjectId;
+  }>;
   recievedMessages: Array<{
-    message:Array<{
-      note: String,
-      time: Date
-    }>,
-    userId: mongoose.Types.ObjectId
-  }>,
+    message: Array<{
+      note: String;
+      time: Date;
+    }>;
+    userId: mongoose.Types.ObjectId;
+  }>;
   confirm: Boolean;
   fcmToken: String;
-  followingTopics: Array<String>;
+  followingTopics: Array<mongoose.Types.ObjectId>;
   notifications: [{}];
   offlineNotifications: [{}];
   followers: Array<mongoose.Types.ObjectId>;

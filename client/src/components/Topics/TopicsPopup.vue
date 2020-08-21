@@ -51,12 +51,12 @@ export default {
         console.log(topic);
         this.$store.dispatch("topics/followTopic", topic);
       });
-       this.$store.commit("popUpsState/toggleTopicsPopup");
+      this.$store.commit("popUpsState/toggleTopicsPopup");
     },
-    closePopup(event){
-        if(event.target.id =="createBoard")
-          this.$store.commit("popUpsState/toggleTopicsPopup");
-    }
+    closePopup(event) {
+      if (event.target.id == "createBoard")
+        this.$store.commit("popUpsState/toggleTopicsPopup");
+    },
   },
   computed: {
     ...mapGetters({
@@ -84,14 +84,14 @@ h2 {
   margin: 30px auto;
   width: 70%;
 }
-.dots{
-    display: flex;
-    justify-content: center;
-    color: $darkBlue;
-    i{
-        font-size: 12px;
-        margin: 7px;
-    }
+.dots {
+  display: flex;
+  justify-content: center;
+  color: $darkBlue;
+  i {
+    font-size: 12px;
+    margin: 7px;
+  }
 }
 .topicsContainer {
   display: flex;

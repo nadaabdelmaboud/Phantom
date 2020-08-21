@@ -1,4 +1,9 @@
-import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { topic } from '../types/topic';
@@ -16,7 +21,7 @@ export class TopicService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async topicsSeeds(topics) {
     console.log(topics);
     for (var i = 0; i < topics.length; i++) {
@@ -117,9 +122,11 @@ export class TopicService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
-    if (!topic.followers)
-      topic.followers = [];
-    await this.topicModel.updateOne({ _id: topicId }, { followers: topic.followers });
+    if (!topic.followers) topic.followers = [];
+    await this.topicModel.updateOne(
+      { _id: topicId },
+      { followers: topic.followers },
+    );
     for (let i = 0; i < topic.followers.length; i++) {
       //console.log(String(topic.followers[i]))
       //console.log(String(userId))
@@ -127,7 +134,6 @@ export class TopicService {
       if (String(topic.followers[i]) == String(userId)) return true;
     }
     return false;
-
   }
   async followTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
@@ -136,12 +142,16 @@ export class TopicService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     const topic = await this.getTopicById(topicId, userId);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
-    if (await this.checkFollowTopic(userId, topicId)) throw new BadRequestException('you followed this topic before');
+    if (await this.checkFollowTopic(userId, topicId))
+      throw new BadRequestException('you followed this topic before');
     //console.log(12);
     if (await this.UserService.followTopic(userId, topicId)) {
       // console.log(34);
       topic.followers.push(userId);
-      await this.topicModel.updateOne({ _id: topicId }, { followers: topic.followers });
+      await this.topicModel.updateOne(
+        { _id: topicId },
+        { followers: topic.followers },
+      );
       return 1;
     }
     return 0;
@@ -155,7 +165,8 @@ export class TopicService {
     const topic = await this.getTopicById(topicId, userId);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
     // console.log(await this.checkFollowTopic(userId, topicId))
-    if (!await this.checkFollowTopic(userId, topicId)) throw new BadRequestException('you did not follow this topic before');
+    if (!(await this.checkFollowTopic(userId, topicId)))
+      throw new BadRequestException('you did not follow this topic before');
     //console.log(500);
     if (await this.UserService.unfollowTopic(userId, topicId)) {
       //console.log(501)
@@ -163,7 +174,10 @@ export class TopicService {
         for (let i = 0; i < topic.followers.length; i++) {
           if (String(topic.followers[i]) === String(userId)) {
             topic.followers.splice(i, 1);
-            await this.topicModel.updateOne({ _id: topicId }, { followers: topic.followers });
+            await this.topicModel.updateOne(
+              { _id: topicId },
+              { followers: topic.followers },
+            );
             return 1;
           }
         }
@@ -182,6 +196,5 @@ export class TopicService {
       if (topic) topics.push(topic);
     }
     return topics;
-
   }
 }
