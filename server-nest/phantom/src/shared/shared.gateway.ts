@@ -43,6 +43,25 @@ export class SharedGateway {
       });
     }
   }
+  @SubscribeMessage('message')
+  async message(socket: Socket, data: any) {
+    let messageText = data.message;
+    let senderId = data.senderId;
+    let sender = await this.userModel.findById(senderId);
+    let recieverId = data.recieverId;
+    let reciever = await this.userModel.findById(recieverId);
+    if (sender && reciever && messageText) {
+      socket.to(reciever.socketId).emit('sendMessage', {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + ' ' + reciever.lastName,
+        senderName: sender.firstName + ' ' + sender.lastName,
+        message: messageText,
+        senderId: data.senderId,
+        date: Date.now(),
+      });
+    }
+  }
 
   @SubscribeMessage('reply')
   async reply(socket: Socket, data: any) {

@@ -12,7 +12,7 @@ export interface user extends Document {
   about: String;
   gender: String;
   sortType: String;
-  socketId: String;
+  socketId: string;
   profileImage: mongoose.Types.ObjectId;
   pins: Array<{
     pinId: mongoose.Types.ObjectId;
@@ -25,6 +25,20 @@ export interface user extends Document {
     sectionId: mongoose.Types.ObjectId;
     note: String;
   }>;
+  sentMessages: Array<{
+    message:Array<{
+      note: String,
+      time: Date
+    }>,
+    userId: mongoose.Types.ObjectId
+  }>,
+  recievedMessages: Array<{
+    message:Array<{
+      note: String,
+      time: Date
+    }>,
+    userId: mongoose.Types.ObjectId
+  }>,
   confirm: Boolean;
   fcmToken: String;
   followingTopics: Array<mongoose.Types.ObjectId>;

@@ -10,4 +10,4 @@ import { Email } from '../shared/send-email.service'
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, Email],
 })
-export class AuthModule { }
+export class AuthModule {}
