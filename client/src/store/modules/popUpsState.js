@@ -4,8 +4,9 @@ const state = {
   countryPopUp: false,
   createBoardPopup: false,
   newPinPopup: false,
-  editBoardPopup:false,
-  CollaboratorsPopup:false
+  editBoardPopup: false,
+  CollaboratorsPopup: false,
+  TopicsPopup:true
 };
 
 const mutations = {
@@ -25,10 +26,13 @@ const mutations = {
     state.newPinPopup = !state.newPinPopup;
   },
   toggleEditBoardPopup(state) {
-    state.editBoardPopup= !state.editBoardPopup;
+    state.editBoardPopup = !state.editBoardPopup;
   },
-  toggleCollaboratorsPopup(state){
+  toggleCollaboratorsPopup(state) {
     state.CollaboratorsPopup = !state.CollaboratorsPopup;
+  },
+  toggleTopicsPopup(state) {
+    state.TopicsPopup = !state.TopicsPopup;
   }
 };
 export default {

@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   NotAcceptableException,
 } from '@nestjs/common';
+import { NotificationService } from '../notification/notification.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserService } from 'src/shared/user.service';
@@ -21,20 +22,69 @@ export class PinsService {
   constructor(
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
-    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
+    private NotificationService: NotificationService,
   ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
-        throw new Error('not mongoose id');
+        throw new Error('not valid id');
       const pin = await this.pinModel.findById(pinId);
       return pin;
     } catch (ex) {
       throw new Error('pin not found');
     }
+  }
+  async getPinFull(pinId, userId): Promise<Object> {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0)
+      throw new Error('not valid id');
+
+    let pinType = 'none';
+    let pin = await this.pinModel.findById(pinId);
+    let user = await this.UserService.getUserById(userId);
+    let creator = await this.UserService.getUserById(pin.creator.id);
+    if (!user) throw new NotFoundException({ message: 'user not found' });
+    if (String(pin.creator.id) == String(userId)) {
+      pinType = 'creator';
+    } else {
+      for (let k = 0; k < user.savedPins.length; k++) {
+        if (String(user.savedPins[k].pinId) == String(pin._id)) {
+          pinType = 'saved';
+          break;
+        }
+      }
+    }
+    let react = 'none';
+    for (let i = 0; i < pin.reacts.length; i++) {
+      if (String(pin.reacts[i].userId) == String(userId)) {
+        react = pin.reacts[i].reactType.toString();
+        break;
+      }
+    }
+    if (pin) {
+      let creatorInfo = {};
+      if (creator) {
+        creatorInfo = {
+          creatorImage: creator.profileImage,
+          followers: creator.followers.length,
+        };
+      }
+      if (user.history) user.history = [];
+      user.history.push({
+        topic: pin.topic,
+        pinId: pin._id,
+      });
+      return {
+        pin: pin,
+        type: pinType,
+        creatorInfo: creatorInfo,
+        react: react,
+      };
+    }
+
+    return { success: false };
   }
   async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
     if (
@@ -233,6 +283,8 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
+    let ownerUser = await this.UserService.getUserById(pin.creator.id);
+
     var cs = <comment>(<unknown>{
       commenter: userId,
       comment: commentText,
@@ -247,6 +299,14 @@ export class PinsService {
     pin.comments.push(cs);
     pin.counts.comments = pin.counts.comments.valueOf() + 1;
     await pin.save();
+    await this.NotificationService.commentPin(
+      ownerUser,
+      user,
+      commentText,
+      pin.title,
+      pinId,
+      pin.imageId,
+    );
     return true;
   }
   async createReply(pinId, replyText, userId, commentId) {
@@ -339,7 +399,7 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
-
+    let pinOwner = await this.getPinById(pin.creator.id);
     if (!user || !pin) return false;
     pin.reacts.push({
       reactType: reactType,
@@ -361,6 +421,14 @@ export class PinsService {
       case 'Good idea':
         pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() + 1;
         break;
+        await this.NotificationService.reactPin(
+          pinOwner,
+          user,
+          pin.title,
+          pinId,
+          String(reactType),
+          pin.imageId,
+        );
     }
     await pin.save();
     return true;

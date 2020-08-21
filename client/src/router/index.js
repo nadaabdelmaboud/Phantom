@@ -47,13 +47,30 @@ const routes = [
         component: PinBuilder
       },
       {
-        path: "PostPage",
+        path: "PostPage/:postPageId",
         name: "PostPage",
         component: PostPage
       },
       {
         path: "/UserProfile",
         name: "UserProfile",
+        component: UserProfile,
+        children: [
+          {
+            path: "Boards",
+            name: "Boards",
+            component: UserBoards
+          },
+          {
+            path: "Pins",
+            name: "Pins",
+            component: UserPins
+          }
+        ]
+      },
+      {
+        path: "/User/:userId",
+        name: "anotherUser",
         component: UserProfile,
         children: [
           {

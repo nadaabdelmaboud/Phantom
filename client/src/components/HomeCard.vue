@@ -1,7 +1,7 @@
 <template>
   <div class="card" id="homeCard">
-    <router-link to="/PostPage">
-      <img src="../assets/dress.jpg" class="card-img" alt="Card image" />
+    <router-link :to="{ path: '/PostPage/' + postPageId }">
+      <img :src="getImage(cardImage)" class="card-img" alt="Card image" />
       <div class="card-img-overlay d-flex flex-column align-items-end">
         <button class="save-post" id="saveImage" @click.capture="clicked">
           Save
@@ -44,7 +44,6 @@
 .card {
   width: 252px;
   border-radius: 25px;
-  margin-left: 15px;
   &:hover {
     .save-post,
     .share-icon,
@@ -124,11 +123,21 @@ button:focus {
 }
 </style>
 <script>
+import { default as getImage } from "../mixins/getImage";
 export default {
   data: function() {
     return {
       show: false
     };
+  },
+  mixins: [getImage],
+  props: {
+    cardImage: {
+      type: String
+    },
+    postPageId: {
+      type: String
+    }
   },
   methods: {
     showDropdownlist() {

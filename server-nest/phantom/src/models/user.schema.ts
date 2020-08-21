@@ -8,13 +8,17 @@ export const User = new Schema({
   password: String,
   country: String,
   birthDate: Date,
-  followingTopics: Array(mongoose.Types.ObjectId),
+  followingTopics: Array(String),
   location: String,
   userName: String,
   about: String,
   sortType: String,
   gender: String,
   socketId: String,
+  history: Array({
+    topic: String,
+    pinId: mongoose.Types.ObjectId,
+  }),
   profileImage: mongoose.Types.ObjectId,
   pins: Array({
     pinId: mongoose.Types.ObjectId,

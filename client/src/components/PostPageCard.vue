@@ -3,7 +3,7 @@
     <div class="container">
       <div class="box">
         <div class="imagebox">
-          <img src="../assets/dress.jpg" alt="Post Image" />
+          <img :src="getImage(this.postImage)" alt="Post Image" />
         </div>
       </div>
       <div class="box">
@@ -30,19 +30,21 @@
             </div>
           </div>
           <div class="secondsection">
-            <div class="imageTitle">Awesome Dress</div>
+            <div class="imageTitle">{{ this.postTitle }}</div>
             <div class="imagedescription">
-              beautiful blue dress beautiful blue dress beautiful blue dress
-              beautiful blue dress beautiful blue dress beautiful blue dress
-              beautiful blue dress beautiful blue dress beautiful blue dress
+              {{ this.postDescribtion }}
             </div>
             <div class="followuserbox">
               <div class="userimage">
-                <img src="../assets/user.png" alt="User Image" />
+                <img :src="getImage(this.userImageId)" alt="User Image" />
               </div>
               <div class="userinfo">
-                <h5 class="username">User</h5>
-                <span class="followersnumber">15 followers</span>
+                <h5 class="username">
+                  {{ this.userFirstName }} {{ this.userLastName }}
+                </h5>
+                <span class="followersnumber"
+                  >{{ this.numberofFollowers }} followers</span
+                >
               </div>
               <div class="followbutton">
                 <button
@@ -63,55 +65,49 @@
             </div>
             <div class="actionsbox">
               <li>
-                <button
-                  class="underlineLink"
-                  id="photobutton"
-                  @click="
-                    addPhoto(), (showPhotos = true), (showComments = false)
-                  "
-                >
-                  Photos
-                </button>
-              </li>
-              <li>
-                <button
-                  class="underlineLink"
-                  id="commentbutton"
-                  @click="
-                    addComment(), (showPhotos = false), (showComments = true)
-                  "
-                >
+                <button class="underlineLink" id="commentbutton">
                   Comments
                 </button>
               </li>
             </div>
-            <div class="AddPhotos" v-if="showPhotos == true">
-              <p>Tried this pin?</p>
-              <div>
-                Add a photo to show how it went
-                <button class="addphotobutton">Add Photo</button>
-              </div>
-            </div>
-            <div class="AddComments" v-if="showComments == true">
+            <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
               <div class="displaycomments">
                 <div class="userimage">
-                  <img src="../assets/user.png" alt="User Image" />
+                  <img :src="getImage(this.userImageId)" alt="User Image" />
                 </div>
                 <div class="commentsfield">
-                  <input type="text" placeholder="Add a Comment" />
+                  <input
+                    type="text"
+                    placeholder="Add a Comment"
+                    id="inputfield-comments"
+                    @click="inputFieldIsActive()"
+                  />
                 </div>
               </div>
+              <div class="finishingComment" v-if="typingComment == true">
+                <button class="save-comment" @click="addComment()">Done</button>
+                <button class="cancel-comment" @click="cancelComment()">
+                  Cancel
+                </button>
+              </div>
+              <div id="postComments"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="toast" id="toastId">
-      <img src="../assets/user.png" alt="User Image" class="toastimage" />
+      <img
+        :src="getImage(this.userImageId)"
+        alt="User Image"
+        class="toastimage"
+      />
       <div class="userinfo">
         <div id="toastmessage">Now Following</div>
-        <div class="toastusername">User</div>
+        <div class="toastusername">
+          {{ this.userFirstName }} {{ this.userLastName }}
+        </div>
       </div>
     </div>
   </div>
@@ -136,7 +132,7 @@
 .box {
   width: 50%;
   //margin:top right bottom left
-  margin: 20px 20px 20px 5px;
+  margin: 20px 20px 40px 5px;
   box-sizing: border-box;
 }
 img {
@@ -153,7 +149,9 @@ img {
 #navbar {
   overflow: hidden;
 }
-.save-post {
+.save-post,
+.save-comment,
+.cancel-comment {
   letter-spacing: 1px;
   background-color: $lightBlue;
   float: right;
@@ -170,6 +168,17 @@ img {
 button:focus {
   outline: 0 !important;
 }
+
+.cancel-comment {
+  background-color: grey;
+  width: 70px;
+}
+
+.cancel-comment,
+.save-comment {
+  margin: 15px 5px 5px 5px;
+}
+
 .share-icon {
   @include circleButtons;
   background: transparent;
@@ -356,26 +365,7 @@ li button {
   width: 100%;
   transition: width 0.3s;
 }
-.AddPhotos {
-  margin: 12px;
-  p {
-    margin: 0;
-    color: black;
-  }
-}
-.addphotobutton {
-  letter-spacing: 1px;
-  background-color: $lightBlue;
-  float: right;
-  color: white;
-  border-radius: 500px;
-  border-color: transparent;
-  align-content: center;
-  padding: 10px;
-  &:hover {
-    background-color: $darkBlue;
-  }
-}
+
 .AddComments {
   margin: 12px;
   p {
@@ -404,6 +394,16 @@ li button {
   }
 }
 
+#postComments {
+  color: red;
+}
+
+@media screen and (max-width: 1540px) {
+  .container {
+    width: 1000px;
+  }
+}
+
 @media screen and (max-width: 993px) {
   .container {
     flex-flow: wrap;
@@ -417,6 +417,7 @@ li button {
     margin-left: 0;
   }
 }
+
 @media screen and (max-width: 950px) {
   .toast {
     left: 30%;
@@ -474,16 +475,19 @@ li button {
 </style>
 
 <script>
+import { mapGetters } from "vuex";
+import { default as getImage } from "../mixins/getImage";
+import io from "socket.io-client";
 export default {
   name: "postpagecard",
   data: function() {
     return {
       followuser: false,
       show: false,
-      showPhotos: true,
-      showComments: false
+      typingComment: false,
     };
   },
+  mixins: [getImage],
   methods: {
     showToast() {
       var mytoast = document.getElementById("toastId");
@@ -507,18 +511,52 @@ export default {
         this.show = false;
       }
     },
-    addPhoto() {
-      //add Photos Here
+    inputFieldIsActive() {
+      this.typingComment = true;
+    },
+    cancelComment() {
+      this.typingComment = false;
+      var inputField = document.getElementById("inputfield-comments");
+      inputField.value = "";
     },
     addComment() {
-      //add Comments Here
-    }
+      const socket = io.connect("http://localhost:3000");
+      var inputField = document.getElementById("inputfield-comments");
+      var comments = document.getElementById("postComments");
+      let token = localStorage.getItem("userToken");
+      socket.emit("comment", {
+        commentText: inputField.value,
+        pinId: this.$route.params.postPageId,
+        token: token,
+        text: inputField.value,
+      });
+      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL",token)
+      socket.on("sendComment", function(data) {
+        console.log("NIHAAAAAAAAAAAAAAAAAL");
+        comments.innerHTML += "<p>" + data.commentText + "</p>";
+      });
+      this.$store.dispatch(
+        "postPage/postPageAddedComments",
+        this.$route.params.postPageId
+      );
+    },
   },
   created: function() {
     window.addEventListener("click", this.hideList);
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
-  }
+  },
+  computed: {
+    ...mapGetters({
+      postImage: "homeCards/postImage",
+      userImageId: "homeCards/userImageId",
+      postTitle: "homeCards/postTitle",
+      postDescribtion: "homeCards/postDescribtion",
+      userFirstName: "homeCards/userFirstName",
+      userLastName: "homeCards/userLastName",
+      numberofFollowers: "homeCards/numberofFollowers",
+    }),
+  },
 };
 </script>

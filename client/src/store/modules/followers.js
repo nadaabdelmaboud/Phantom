@@ -5,17 +5,37 @@ const state = {
 };
 
 const mutations = {
-  setFollowers(state, followers){
-    state.userFollowers= followers;
+  setFollowers(state, followers) {
+    state.userFollowers = followers;
   }
 };
 
 const actions = {
-    getFollowers({ commit }, boardData) {
+    followUser({ dispatch },userId){
+      axios
+      .put("me/follow-user/"+userId)
+      .then(() => {
+       dispatch("getFollowers")
+       dispatch("phantomUser/isFollowed",userId,{root:true});
+      })
+      .catch(error => {
+        console.log(error)
+      });
+    },
+    unfollowUser({ dispatch },userId){
+      axios
+      .delete("me/follow-user/"+userId)
+      .then(() => {
+       dispatch("getFollowers");
+       dispatch("phantomUser/isFollowed",userId,{root:true});
+      })
+      .catch(error => {
+        console.log(error)
+      });
+    },
+    getFollowers({ commit }) {
         axios
-          .get("me/follower", 
-          boardData
-          )
+          .get("me/follower")
           .then((response) => {
             let followers =response.data.followers
             commit("setFollowers",followers);

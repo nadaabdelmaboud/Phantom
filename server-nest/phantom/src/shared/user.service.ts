@@ -17,14 +17,16 @@ import { UpdateDto } from '../user/dto/update-user.dto';
 import { Payload } from '../types/payload';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
+import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
+    private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -42,7 +44,13 @@ export class UserService {
       });
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
-    if (await bcrypt.compare(loginDto.password, user.password)) return user;
+    if (await bcrypt.compare(loginDto.password, user.password)) {
+      await this.notification.sendOfflineNotification(
+        user.offlineNotifications,
+        user.fcmToken,
+      );
+      return user;
+    }
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
   }
   async checkCreateData(registerDto: RegisterDto) {
@@ -107,6 +115,18 @@ export class UserService {
         );
   }
 
+  async updateFCMTocken(fcmToken, userId) {
+    const user = await this.getUserById(userId);
+    await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
+    return 1;
+  }
+
+  async followingTopics(userId) {
+    const user = await this.getUserById(userId);
+
+    return user.followingTopics;
+  }
+
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
     const salt = await bcrypt.genSalt(10);
@@ -119,6 +139,8 @@ export class UserService {
       email: registerDto.email,
       password: hash,
       sortType: 'Date',
+      fcmToken: ' ',
+      history: [],
       about: registerDto.bio,
       gender: registerDto.gender,
       country: registerDto.country,
@@ -352,6 +374,7 @@ export class UserService {
       { _id: followedUser._id },
       { followers: followedUser.followers },
     );
+    await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
 
@@ -469,14 +492,14 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
-  async followTopic(userId, topicId) {
-    if ((await this.ValidationService.checkMongooseID([topicId, userId])) === 0)
+  async followTopic(userId, topicName) {
+    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     console.log(user.followingTopics);
     if (!user.followingTopics) user.followingTopics = [];
-    user.followingTopics.push(topicId);
+    user.followingTopics.push(topicName);
     console.log(user.followingTopics);
     await this.userModel.updateOne(
       { _id: userId },
@@ -487,17 +510,16 @@ export class UserService {
     console.log(UserTest.followingTopics);
     return 1;
   }
-  async unfollowTopic(userId, topicId) {
-    if ((await this.ValidationService.checkMongooseID([topicId, userId])) === 0)
+  async unfollowTopic(userId, topicName) {
+    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    //console.log(user.followingTopics)
     if (user.followingTopics) {
       for (let i = 0; i < user.followingTopics.length; i++) {
         //  console.log(user.followingTopics[i])
         //console.log(topicId);
-        if (String(user.followingTopics[i]) == String(topicId)) {
+        if (String(user.followingTopics[i]) == String(topicName)) {
           user.followingTopics.splice(i, 1);
           await this.userModel.updateOne(
             { _id: userId },

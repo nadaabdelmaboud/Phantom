@@ -114,32 +114,32 @@ export default {
   mixins: [getImage],
   props: {
     id: {
-      type: String,
+      type: String
     },
     imageId: {
-      type: String,
+      type: String
     },
     collabName: {
-      type: String,
+      type: String
     },
     savePin: {
-      type: Boolean,
+      type: Boolean
     },
     createPin: {
-      type: Boolean,
+      type: Boolean
     },
     editTitle: {
-      type: Boolean,
+      type: Boolean
     },
     personalization: {
-      type: Boolean,
+      type: Boolean
     },
     editDescription: {
-      type: Boolean,
+      type: Boolean
     },
     addCollaborators: {
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data: function() {
     return {
@@ -150,28 +150,32 @@ export default {
         canEditTitle: this.editTitle ? "1" : "0",
         canPersonalize: this.personalization ? "1" : "0",
         canEditDescription: this.editDescription ? "1" : "0",
-        canAddCollaborators: this.addCollaborators ? "1" : "0",
+        canAddCollaborators: this.addCollaborators ? "1" : "0"
       },
-      edit: false,
+      edit: false
     };
   },
   methods: {
-      editCollab(){
-          let collab ={
-            collaboratorId:this.id,
-            savePin:this.collaborator.canSavePin=="1" ? true: false,
-            createPin: this. collaborator.canCreatePin=="1" ? true: false,
-            editTitle: this. collaborator.canEditTitle=="1" ? true: false,
-            personalization: this. collaborator.canPersonalize =="1" ? true: false,
-            editDescription: this. collaborator.canEditDescription=="1" ? true: false,
-            addCollaborators: this. collaborator.canAddCollaborators =="1" ? true: false
-          }
-          this.$store.dispatch("boards/editCollaborators",collab),
-          this.edit=false;
-      },
-      deleteCollab(){
-          this.$store.dispatch("boards/deletaCollaborator",{data:{collaboratorId:this.id}})
-      }
+    editCollab() {
+      let collab = {
+        collaboratorId: this.id,
+        savePin: this.collaborator.canSavePin == "1" ? true : false,
+        createPin: this.collaborator.canCreatePin == "1" ? true : false,
+        editTitle: this.collaborator.canEditTitle == "1" ? true : false,
+        personalization: this.collaborator.canPersonalize == "1" ? true : false,
+        editDescription:
+          this.collaborator.canEditDescription == "1" ? true : false,
+        addCollaborators:
+          this.collaborator.canAddCollaborators == "1" ? true : false
+      };
+      this.$store.dispatch("boards/editCollaborators", collab),
+        (this.edit = false);
+    },
+    deleteCollab() {
+      this.$store.dispatch("boards/deletaCollaborator", {
+        data: { collaboratorId: this.id }
+      });
+    }
   }
 };
 </script>
@@ -200,8 +204,8 @@ label {
   transition: linear 0.5s;
   margin-top: 10px;
 }
-.inputDiv:hover{
-    border: $lightPinkHover solid 2px;
+.inputDiv:hover {
+  border: $lightPinkHover solid 2px;
 }
 .collab {
   margin: 5px 0;

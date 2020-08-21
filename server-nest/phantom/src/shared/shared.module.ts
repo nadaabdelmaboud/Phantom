@@ -11,7 +11,8 @@ import { JwtStrategy } from '../shared/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from 'src/models/pin.schema';
-import { Email } from './send-email.service'
+import { Email } from './send-email.service';
+import { NotificationService } from '../notification/notification.service'
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -26,6 +27,7 @@ import { Email } from './send-email.service'
     AuthService,
     JwtStrategy,
     Email,
+    NotificationService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
