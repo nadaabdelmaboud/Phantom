@@ -8,7 +8,7 @@
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" />
-      <i class="fa fa-comment globalIcons"></i>
+      <i class="fa fa-comment globalIcons" @click="toggleChat"></i>
       <router-link
         tag="i"
         class="fa fa-plus globalIcons"
@@ -16,6 +16,7 @@
       ></router-link>
       <i class="fa fa-question-circle globalIcons"></i>
     </div>
+    <ChatWindow v-if="chat" id="chat"/>
   </div>
 </template>
 
@@ -56,6 +57,18 @@
     bottom: 50px;
   }
 }
+.away{
+    animation: away 0.1s linear forwards;
+}
+@keyframes away{
+    from{
+        right: 140px;
+    }
+    to{
+        right: 0;
+        opacity: 0;
+    }
+}
 </style>
 <script>
 import HomeNavigationBar from "../components/HomeNavigationBar";
@@ -64,18 +77,39 @@ import NewPinPopup from "../views/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
 import TopicsPopup from "../components/Topics/TopicsPopup";
+import ChatWindow from "../components/Chat/ChatWindow"
 
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
+  data:function(){
+    return{
+      chat:false
+    };
+  },
   components: {
     HomeNavigationBar,
     CreateBoardPopup,
     NewPinPopup,
     EditBoardPopup,
     CollaboratorsPopup,
-    TopicsPopup
+    TopicsPopup,
+    ChatWindow
 
+  },
+  methods:{
+    toggleChat(){
+      if(this.chat){
+        let chat = document.getElementById("chat");
+        chat.classList.add("away")
+        setTimeout(()=>{
+          this.chat = false;
+        },500)
+      }
+      else{
+        this.chat=true;
+      }
+    }
   },
   computed: {
     ...mapState({
