@@ -32,7 +32,10 @@ export class RecommendationService {
         pinExist[String(user.history[i].pinId)] = true;
     }
     for (let i = 0; i < user.followingTopics.length; i++) {
-      topics.push(user.followingTopics[i]);
+      let followTopic = await this.topicModel.findById(user.followingTopics[i]);
+      if (followTopic) {
+        topics.push(followTopic.name);
+      }
     }
     for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
@@ -61,6 +64,7 @@ export class RecommendationService {
       }
     }
     var freq = {};
+    console.log(topics);
     for (let i = 0; i < topics.length; i++) {
       if (!freq[topics[i]]) {
         freq[topics[i]] = 0;
@@ -68,6 +72,7 @@ export class RecommendationService {
       freq[topics[i]]++;
     }
     let allHome = 0;
+    console.log(freq);
     let sortedTopics = [];
     for (let item in freq) {
       sortedTopics.push([item, freq[item]]);

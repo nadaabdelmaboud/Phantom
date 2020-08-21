@@ -25,7 +25,7 @@ export class TopicController {
   constructor(
     private TopicService: TopicService,
     private ImageService: ImagesService,
-  ) { }
+  ) {}
   //get all the topics
   @UseGuards(AuthGuard('jwt'))
   @Get('/topic')
@@ -125,24 +125,25 @@ export class TopicController {
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/follow-topic/:topic_id')
   async followTopic(@Param() params, @Request() req) {
-    if (!await this.TopicService.followTopic(req.user._id, params.topic_id))
+    if (!(await this.TopicService.followTopic(req.user._id, params.topic_id)))
       throw new BadRequestException('can not follow this topic');
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete('/me/follow-topic/:topic_id')
   async unfollowTopic(@Param() params, @Request() req) {
-    if (!await this.TopicService.unfollowTopic(req.user._id, params.topic_id))
+    if (!(await this.TopicService.unfollowTopic(req.user._id, params.topic_id)))
       throw new BadRequestException('can not unfollow this topic');
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/follow-topic/:topic_id')
   async checkFollowTopic(@Param() params, @Request() req) {
-    if (!await this.TopicService.checkFollowTopic(req.user._id, params.topic_id))
-      return { 'follow': 'false' };
-    else
-      return { 'follow': 'true' };
+    if (
+      !(await this.TopicService.checkFollowTopic(req.user._id, params.topic_id))
+    )
+      return { follow: 'false' };
+    else return { follow: 'true' };
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -150,7 +151,5 @@ export class TopicController {
   async followingTopics(@Request() req) {
     const topics = await this.TopicService.followingTopics(req.user._id);
     return topics;
-
   }
-
 }
