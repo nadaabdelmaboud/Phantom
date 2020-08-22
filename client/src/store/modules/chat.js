@@ -17,7 +17,7 @@ const actions = {
     getChat({ commit },payload){
         let token =localStorage.getItem("userToken");
         axios.defaults.headers.common["Authorization"] =token
-        let chat;
+        let chat=[];
         axios
         .get("/getMessagesSent/"+payload.senderId+"/"+payload.recieverId)
         .then((response) => {
@@ -27,9 +27,10 @@ const actions = {
             console.log(error)
         });
         axios
-        .get("/getMessagesRecieved/"+payload.senderId+"/"+payload.recieverId)
+        .get("/getMessagesSent/"+payload.recieverId+"/"+payload.senderId)
         .then((response) => {
-           chat = [...chat,...response.data];
+            console.log(chat)
+           chat = chat.concat(response.data);
            commit("setChat",chat)
         })
         .catch(error => {

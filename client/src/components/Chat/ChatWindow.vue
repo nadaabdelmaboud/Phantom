@@ -9,6 +9,8 @@
           @click="
             toChat({
               name: f.firstName + ' ' + f.lastName,
+              firstName:f.firstName,
+              lastName:f.lastName,
               id: f._id,
               imageId: '',
             })
@@ -24,6 +26,8 @@
           @click="
             toChat({
               name: f.firstName + ' ' + f.lastName,
+              firstName:f.firstName,
+              lastName:f.lastName,
               id: f._id,
               imageId: '',
             })
@@ -35,11 +39,11 @@
         </div>
       </div>
 
-      <div class="currentUser" v-else>
+      <div class="currentUser" v-if="inchat">
         <i class="fa fa-arrow-left" @click="inchat = !inchat"></i>
         <p>{{ chatWith.name }}</p>
       </div>
-      <div class="msgBox">
+      <div class="msgBox" v-if="inchat">
         <ChatMessage
           v-for="(msg, i) in msgs"
           :key="i"
@@ -50,7 +54,7 @@
           class="ChatMsg"
         />
       </div>
-      <div id="msg">
+      <div id="msg"  v-if="inchat">
         <input type="text" v-model="currentMsg" @keydown.enter="sendMsg" />
         <button type="submit" @click="sendMsg">
           <i class="fa fa-angle-double-right"></i>
@@ -64,6 +68,7 @@
 import ChatMessage from "./ChatMessage";
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../../mixins/getImage";
+import io from "socket.io-client";
 
 export default {
   name: "BoardPins",
@@ -76,6 +81,7 @@ export default {
         imageId: "",
         id: "",
       },
+      socket:"",
       msgs: [
         {
           imageId: "",
@@ -121,12 +127,24 @@ export default {
           recieverId: this.chatWith.id,
           message: this.currentMsg,
         };
-        this.currentMsg = "";
         this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
           msgBox.scrollTop = msgBox.scrollWidth;
         });
         this.$store.dispatch("chat/sendMsg", payload);
+
+        this.socket.emit("message", {
+        recieverImage: this.getImage(this.myData.profileImage),
+        senderImage: this.getImage(this.myData.profileImage),
+        recieverName: this.chatWith.name,
+        recieverId: this.chatWith.id,
+        senderName: this.myData.firstName + ' ' + this.myData.lastName,
+        message: this.currentMsg,
+        senderId: this.myData._id,
+        date: Date.now(),
+      })
+      this.currentMsg = "";
+      console.log("jjjj")
       }
     },
     toChat(chatWith) {
@@ -136,8 +154,7 @@ export default {
       };
       this.$store.dispatch("chat/getChat", payload);
       this.chatWith = chatWith;
-      console.log("kkk");
-      this.inchat = !this.inchat;
+      this.inchat = !this.inchat;;
     },
   },
   computed: {
@@ -153,6 +170,22 @@ export default {
   created() {
     this.$store.dispatch("followers/getFollowers");
     this.$store.dispatch("followers/getFollowing");
+    this.socket = io.connect("http://localhost:3000");
+    //this.socket.on("",()=>{
+       let token = localStorage.getItem("userToken");
+       token = token.substring(7);
+       this.socket.emit("setUserId", {
+        token: token
+      })
+      
+   // })
+    this.socket.on("sendMessage", function(data) {
+        let ping = new Audio();
+        ping.src = require("../../assets/Ping.mp3")
+        ping.play();
+        console.log("got Message");
+        console.log(data);
+      });
   },
 };
 </script>

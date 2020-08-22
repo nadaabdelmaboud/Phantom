@@ -20,6 +20,7 @@ export class SharedGateway {
     let userId = decoded._id;
     let user = await this.UserService.getUserById(userId);
     if (user) {
+      console.log("user",socket.id)
       user.socketId = socket.id;
       await user.save();
     }
@@ -54,6 +55,7 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     if (sender && reciever && messageText) {
+      console.log("ola olaaaaa", reciever.socketId);
       socket.to(reciever.socketId).emit('sendMessage', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
