@@ -4,32 +4,13 @@
       <div v-if="!inchat">
         <div
           class="userInfo"
-          v-for="f in followers"
-          :key="f._id"
-          @click="
-            toChat({
-              name: f.firstName + ' ' + f.lastName,
-              firstName:f.firstName,
-              lastName:f.lastName,
-              id: f._id,
-              imageId: '',
-            })
-          "
-        >
-          <img :src="getImage('')" />
-          <span>{{ f.firstName }}</span>
-        </div>
-        <div
-          class="userInfo"
           v-for="f in following"
           :key="f._id"
           @click="
             toChat({
               name: f.firstName + ' ' + f.lastName,
-              firstName:f.firstName,
-              lastName:f.lastName,
               id: f._id,
-              imageId: '',
+              imageId: ''
             })
           "
         >
@@ -45,12 +26,12 @@
       </div>
       <div class="msgBox" v-if="inchat">
         <ChatMessage
-          v-for="(msg, i) in msgs"
+          v-for="(msg,i) in chat"
           :key="i"
-          :imageId="msg.imageId"
-          :msgText="msg.msgText"
+          :imageId="msg.senderImage"
+          :msgText="msg.note"
           :owner="msg.owner"
-          :timeStamp="msg.ts"
+          :timeStamp="msg.date"
           class="ChatMsg"
         />
       </div>
@@ -117,11 +98,12 @@ export default {
   methods: {
     sendMsg() {
       if (this.currentMsg != "") {
-        this.msgs.push({
-          msgText: this.currentMsg,
-          timeStamp: new Date(),
-          owner: true,
-        });
+         let msg ={
+            owner: true,
+            note: this.currentMsg,
+            time: Date.now()
+        }
+        this.$store.commit("chat/addMsg",msg)
         let payload = {
           senderId: this.myData._id,
           recieverId: this.chatWith.id,
@@ -129,22 +111,21 @@ export default {
         };
         this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
-          msgBox.scrollTop = msgBox.scrollWidth;
+          msgBox.scrollTop = msgBox.scrollHeight;
         });
         this.$store.dispatch("chat/sendMsg", payload);
 
         this.socket.emit("message", {
-        recieverImage: this.getImage(this.myData.profileImage),
-        senderImage: this.getImage(this.myData.profileImage),
-        recieverName: this.chatWith.name,
-        recieverId: this.chatWith.id,
-        senderName: this.myData.firstName + ' ' + this.myData.lastName,
-        message: this.currentMsg,
-        senderId: this.myData._id,
-        date: Date.now(),
-      })
-      this.currentMsg = "";
-      console.log("jjjj")
+            recieverImage: this.getImage(this.myData.profileImage),
+            senderImage: this.getImage(this.myData.profileImage),
+            recieverName: this.chatWith.name,
+            recieverId: this.chatWith.id,
+            senderName: this.myData.firstName + ' ' + this.myData.lastName,
+            message: this.currentMsg,
+            senderId: this.myData._id,
+            date: Date.now(),
+        })
+        this.currentMsg = "";
       }
     },
     toChat(chatWith) {
@@ -154,12 +135,19 @@ export default {
       };
       this.$store.dispatch("chat/getChat", payload);
       this.chatWith = chatWith;
-      this.inchat = !this.inchat;;
+      this.inchat = !this.inchat;
+      this.$nextTick(() => {
+          let msgBox = document.getElementsByClassName("msgBox")[0];
+          msgBox.scrollTop = msgBox.scrollHeight;
+      });
+      setTimeout(()=>{
+          let msgBox = document.getElementsByClassName("msgBox")[0];
+          msgBox.scrollTop = msgBox.scrollHeight;
+      },1000)
     },
   },
   computed: {
     ...mapGetters({
-      followers: "followers/userFollowers",
       following: "followers/userFollowing",
       chat: "chat/currentChat",
     }),
@@ -168,21 +156,29 @@ export default {
     }),
   },
   created() {
-    this.$store.dispatch("followers/getFollowers");
     this.$store.dispatch("followers/getFollowing");
     this.socket = io.connect("http://localhost:3000");
-    //this.socket.on("",()=>{
-       let token = localStorage.getItem("userToken");
-       token = token.substring(7);
-       this.socket.emit("setUserId", {
-        token: token
-      })
-      
-   // })
-    this.socket.on("sendMessage", function(data) {
+    let token = localStorage.getItem("userToken");
+    token = token.substring(7);
+    this.socket.emit("setUserId", {
+    token: token
+    })
+    this.socket.on("sendMessage", (data) =>{
         let ping = new Audio();
         ping.src = require("../../assets/Ping.mp3")
         ping.play();
+        if(data.senderId == this.chatWith.id){
+        let msg ={
+            owner:false,
+            note: data.message,
+            time: data.date
+        }
+        this.$store.commit("chat/addMsg",msg)
+          this.$nextTick(() => {
+          let msgBox = document.getElementsByClassName("msgBox")[0];
+          msgBox.scrollTop = msgBox.scrollHeight;
+         });
+        }
         console.log("got Message");
         console.log(data);
       });

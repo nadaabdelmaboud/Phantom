@@ -22,6 +22,9 @@ const actions = {
         .get("/getMessagesSent/"+payload.senderId+"/"+payload.recieverId)
         .then((response) => {
            chat = response.data;
+           chat.forEach(msg=> {
+            msg.owner = true;
+          });
         })
         .catch(error => {
             console.log(error)
@@ -29,8 +32,12 @@ const actions = {
         axios
         .get("/getMessagesSent/"+payload.recieverId+"/"+payload.senderId)
         .then((response) => {
-            console.log(chat)
-           chat = chat.concat(response.data);
+           console.log(chat)
+           let received=response.data;
+           received.forEach(msg=> {
+            msg.owner = false;
+          });
+           chat = chat.concat(received);
            commit("setChat",chat)
         })
         .catch(error => {
@@ -38,8 +45,12 @@ const actions = {
         });
     },
     sendMsg({ commit },msg){
-        commit("addMsg",msg);
+        if(msg.note == "")
+           console.log(commit)
         axios.post("/sentMessage",msg)
+        .catch(error =>{
+            console.log(error)
+        })
     }
 };
 
