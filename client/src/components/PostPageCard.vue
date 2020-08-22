@@ -91,9 +91,9 @@
                   Cancel
                 </button>
               </div>
-              <div id="postComments"></div>
             </div>
           </div>
+          <div class="commentsBox"><li id="postComments"></li></div>
         </div>
       </div>
     </div>
@@ -394,8 +394,17 @@ li button {
   }
 }
 
-#postComments {
-  color: red;
+.commentsBox{
+  padding: 20px;
+  margin: 0;
+  margin-top: 50px;
+}
+
+.commentsBox #postComments {
+  width: 20%;
+  height: auto;
+  border: red;
+
 }
 
 @media screen and (max-width: 1540px) {
@@ -527,12 +536,10 @@ export default {
       socket.emit("comment", {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
-        token: token,
+        token: token.substring(7),
         text: inputField.value,
       });
-      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL",token)
       socket.on("sendComment", function(data) {
-        console.log("NIHAAAAAAAAAAAAAAAAAL");
         comments.innerHTML += "<p>" + data.commentText + "</p>";
       });
       this.$store.dispatch(
