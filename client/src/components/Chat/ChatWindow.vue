@@ -62,7 +62,8 @@ export default {
         imageId: "",
         id: "",
       },
-      socket:""
+      socket:"",
+      allowNotify:false
     };
   },
   mixins: [getImage],
@@ -153,9 +154,32 @@ export default {
           msgBox.scrollTop = msgBox.scrollHeight;
          });
         }
+        let options={
+            body:data.senderName +" has sent you a new msg \n" + data.message,
+            silent:true
+        }
+
+        if(this.allowNotify){
+            let notify = new Notification("phantom new message", options);
+            setTimeout(()=>{
+                notify.close();
+            },5000)
+        }
+        else{
+            console.log("notification disabled")
+        }
         console.log("got Message");
         console.log(data);
       });
+
+       Notification.requestPermission().then((permission) =>{ 
+            if(permission =="granted"){
+                this.allowNotify = true;
+            }
+            else{
+                console.log("notification disabled")
+            }
+         });
   },
 };
 </script>
