@@ -10,7 +10,7 @@ import {
   import { chat } from '../types/chat';
 
   import { ValidationService } from '../shared/validation.service';
-import { from } from 'rxjs';
+  import { from } from 'rxjs';
 @Injectable()
 export class ChatService {
     constructor(
@@ -32,10 +32,12 @@ export class ChatService {
 
           if(String(toUser.sentMessages[i].userId) == String(secondUserId)){
             return toUser.sentMessages[i].message
+            
           }
              
 
         }
+
   
       }
 

@@ -28,7 +28,7 @@ import { Board } from 'src/models/board.schema';
     @Param('recieverId') recieverId: string) {
         let messages = await this.ChatService.getMessagesSent(senderId, recieverId);
         if (messages) return messages; 
-        return new NotFoundException();
+        throw new NotFoundException();
     }
     @Post('/sentMessage')
     async sentMessage(
@@ -38,6 +38,6 @@ import { Board } from 'src/models/board.schema';
                      ){
         let messages = await this.ChatService.sentMessage(senderId, recieverId, message);
         if (messages) return messages; 
-        return new NotFoundException();
+        throw new NotFoundException();
     }
   }
