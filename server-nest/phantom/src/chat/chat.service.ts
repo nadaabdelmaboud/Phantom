@@ -47,19 +47,19 @@ export class ChatService {
         const sender = await this.userModel.findById(senderId);
         const reciever = await this.userModel.findById(recieverId);
         if (!sender||!reciever)
-          new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED)
+          throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED)
         if(!sender.sentMessages){
             sender.sentMessages = []
         }
         for( let i=0;i<sender.sentMessages.length;i++){
           if(String(sender.sentMessages[i].userId) == String(recieverId)){
             sender.sentMessages[i].message.push({note:message, time:new Date()})
-            await sender.save();
-            return 1;
+            break;
           }
         }
         sender.sentMessages.push({message:[{note:message, time:new Date()}],userId:recieverId})
-        
+        sender.save();
+        return 1;
       }
 
 
