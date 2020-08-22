@@ -13,6 +13,7 @@ import { SharedModule } from 'src/shared/shared.module';
       ],
       controllers: [ChatController],
       providers: [ChatService],
+      exports:[ChatService]
 
 })
 export class ChatModule {}

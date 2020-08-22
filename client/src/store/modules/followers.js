@@ -1,12 +1,16 @@
 import axios from "axios";
 
 const state = {
-  userFollowers: []
+  userFollowers: [],
+  userFollowing: []
 };
 
 const mutations = {
   setFollowers(state, followers) {
     state.userFollowers = followers;
+  },
+  setFollowing(state,following){
+    state.userFollowing = following;
   }
 };
 
@@ -43,11 +47,23 @@ const actions = {
           .catch(error => {
             console.log(error)
           });
+      },
+      getFollowing({ commit }) {
+        axios
+          .get("me/following")
+          .then((response) => {
+            let following =response.data.followings
+            commit("setFollowing",following);
+          })
+          .catch(error => {
+            console.log(error)
+          });
       }
 };
 
 const getters = {
-  userFollowers: state => state.userFollowers
+  userFollowers: state => state.userFollowers,
+  userFollowing: state => state.userFollowing
 };
 
 export default {
