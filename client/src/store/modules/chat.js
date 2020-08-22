@@ -38,6 +38,10 @@ const actions = {
             msg.owner = false;
           });
            chat = chat.concat(received);
+           chat.sort(function(a, b){ 
+                return new Date(a.time) - new Date(b.time); 
+            }); 
+      
            commit("setChat",chat)
         })
         .catch(error => {

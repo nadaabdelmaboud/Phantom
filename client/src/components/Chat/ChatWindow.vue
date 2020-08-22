@@ -62,33 +62,7 @@ export default {
         imageId: "",
         id: "",
       },
-      socket:"",
-      msgs: [
-        {
-          imageId: "",
-          msgText: "hii",
-          owner: true,
-          timeStamp: "9999",
-        },
-        {
-          imageId: "",
-          msgText: "hello",
-          owner: false,
-          timeStamp: "9999",
-        },
-        {
-          imageId: "",
-          msgText: "mmmmmm",
-          owner: false,
-          timeStamp: "9999",
-        },
-        {
-          imageId: "",
-          msgText: "kkkkk",
-          owner: true,
-          timeStamp: "9999",
-        },
-      ],
+      socket:""
     };
   },
   mixins: [getImage],
@@ -143,7 +117,7 @@ export default {
       setTimeout(()=>{
           let msgBox = document.getElementsByClassName("msgBox")[0];
           msgBox.scrollTop = msgBox.scrollHeight;
-      },1000)
+      },3000)
     },
   },
   computed: {
