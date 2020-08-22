@@ -26,15 +26,9 @@ import { Board } from 'src/models/board.schema';
     @Get('/getMessagesSent/:senderId/:recieverId')
     async getMessagesSent(@Param('senderId') senderId: string,
     @Param('recieverId') recieverId: string) {
-        let messages = await this.ChatService.getMessagesRecieved(senderId, recieverId);
+        let messages = await this.ChatService.getMessagesSent(senderId, recieverId);
         if (messages) return messages; 
-        return new NotFoundException();
-    }
-    @Get('/getMessagesRecieved/:senderId/:recieverId')
-    async getMessagesRecieved(@Param('senderId') senderId: string, @Param('recieverId') recieverId: string){
-        let messages = await this.ChatService.getMessagesRecieved(recieverId, senderId);
-        if (messages) return messages; 
-        return new NotFoundException();
+        throw new NotFoundException();
     }
     @Post('/sentMessage')
     async sentMessage(
@@ -42,8 +36,8 @@ import { Board } from 'src/models/board.schema';
                       @Body('recieverId') recieverId: string,
                       @Body('message') message: string
                      ){
-        let messages = await this.ChatService.sentMessage(recieverId, senderId, message);
+        let messages = await this.ChatService.sentMessage(senderId, recieverId, message);
         if (messages) return messages; 
-        return new NotFoundException();
+        throw new NotFoundException();
     }
   }
