@@ -453,6 +453,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
+          profileImage: currentUser.profileImage
         });
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -485,6 +486,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
+          profileImage: currentUser.profileImage
         });
     }
     return {
