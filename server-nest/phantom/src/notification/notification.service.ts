@@ -67,17 +67,21 @@ export class NotificationService {
                 body: followerUser.firstName + " " + followerUser.lastName + " has followed You 😮"
             }
         };
+        console.log(message);
         if (!followedUser.notifications) followedUser.notifications = [];
         followedUser.notifications.push(message);
+        console.log(followedUser.notifications);
         if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
             if (!followedUser.offlineNotifications) followedUser.offlineNotifications = [];
             followedUser.offlineNotifications.push(message);
             await followedUser.save();
+            console.log(followedUser.offlineNotifications);
         }
         else {
             await followedUser.save();
             message.tokens = [followedUser.fcmToken];
             let checkFailed = await this.sendNotification([followedUser.fcmToken], message);
+            console.log(checkFailed);
             if (checkFailed) {
                 message.tokens = null;
                 followedUser.offlineNotifications.push(message);
