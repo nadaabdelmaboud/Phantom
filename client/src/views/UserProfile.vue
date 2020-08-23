@@ -8,11 +8,17 @@
       <h6>{{followers}} following</h6>
       <div 
       class="buttons inRoute follow"
-      v-if="!myprofile"
-      :class="{ unfollow: isFollowed=='unfollow' }"
+      v-if="!myprofile && !isFollowed"
       @click="alterFollow"
       >
-      {{isFollowed}}
+       follow
+       </div>
+       <div 
+      class="buttons inRoute follow unfollow"
+      v-if="!myprofile && isFollowed"
+      @click="alterFollow"
+       >
+       unfollow
        </div>
     </div>
     <div class="stickyBar row  m-0">
@@ -117,7 +123,7 @@ export default {
     },
     alterFollow(){
        let userId = this.$route.params.userId;
-      if(this.isFollowed == 'unfollow'){
+      if(this.isFollowed){
         this.$store.dispatch("followers/unfollowUser",userId);
       }
       else{
