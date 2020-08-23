@@ -10,10 +10,7 @@ const mutations = {
     state.user= user;
   },
   setIsFollowed(state,isFollowed){
-    if(isFollowed =='true')
-        state.isFollowed = 'unfollow';
-    else
-        state.isFollowed = 'follow'
+    state.isFollowed = isFollowed == "true";
   }
 };
 
