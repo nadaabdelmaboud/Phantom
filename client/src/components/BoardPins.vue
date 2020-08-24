@@ -53,7 +53,6 @@ export default {
   },
   created: function() {
     this.boardId = this.$route.params.boardId;
-    //this.$store.dispatch("boards/getBoard", this.$route.params.boardId);
   }
 };
 </script>

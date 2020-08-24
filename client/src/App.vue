@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view :key="newKey"></router-view>
+    <router-view ></router-view>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   },
   watch: {
     $route() {
-      this.newKey = (this.newKey + 1) % 4;
+      //this.newKey = (this.newKey + 1) % 4;
       }
   }
 };
