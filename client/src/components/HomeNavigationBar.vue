@@ -3,12 +3,13 @@
     <router-link class="icons" to="/" tag="div">
       <i class="fa fa-pinterest"></i>
     </router-link>
-    <router-link 
-     class="buttons"
-     to="/" 
-     tag="div"
-     :class="{ inRoute: inHome }"
-     v-if="isLoggedIn()">
+    <router-link
+      class="buttons"
+      to="/"
+      tag="div"
+      :class="{ inRoute: inHome }"
+      v-if="isLoggedIn()"
+    >
       Home
     </router-link>
     <router-link
@@ -21,11 +22,20 @@
       Following
     </router-link>
     <input class="searchInput" v-if="isLoggedIn()" placeholder=" Search..." />
-    <div v-if="isLoggedIn()" class="icons" @click="shownNotification = !shownNotification">
+    <div
+      v-if="isLoggedIn()"
+      class="icons"
+      @click="shownNotification = !shownNotification"
+    >
       <i class="fa fa-bell"></i>
     </div>
-    <NotificationDropDown v-if="shownNotification"/>
-    <router-link v-if="isLoggedIn()" tag="div" class="icons" to="/UserProfile/Boards">
+    <NotificationDropDown v-if="shownNotification" />
+    <router-link
+      v-if="isLoggedIn()"
+      tag="div"
+      class="icons"
+      to="/UserProfile/Boards"
+    >
       <i class="fa fa-user-circle"></i>
     </router-link>
     <div class="icons" v-if="isLoggedIn()" @click="showList = !showList">
@@ -36,13 +46,16 @@
       to="/signUp"
       tag="div"
       v-if="!isLoggedIn()"
-     > SignUp</router-link>
-     <router-link
+    >
+      SignUp</router-link
+    >
+    <router-link
       class="buttons inRoute right"
       to="/Login"
       tag="div"
       v-if="!isLoggedIn()"
-     >LogIn</router-link>
+      >LogIn</router-link
+    >
     <div class="create view" v-if="showList">
       <p>Accounts</p>
       <ul>
@@ -119,7 +132,7 @@
   background-color: $darkBlue;
   color: $lightPink;
 }
-.right{
+.right {
   float: right;
   margin: 0px 10px;
 }
@@ -138,34 +151,31 @@
 </style>
 <script>
 import NotificationDropDown from "./Notification/NotificationDropdown";
-import isLoggedIn from "../mixins/isLoggedIn.js"
-import removeUser from "../mixins/removeUserData.js"
+import isLoggedIn from "../mixins/isLoggedIn.js";
+import removeUser from "../mixins/removeUserData.js";
 export default {
   name: "HomeNavigationBar",
   data: function() {
     return {
       inHome: true,
       inFollowing: false,
-      shownNotification:false,
-      showList:false
+      shownNotification: false,
+      showList: false
     };
   },
-  components:{
+  components: {
     NotificationDropDown
   },
-  mixins:[
-    isLoggedIn,
-    removeUser
-  ],
-  methods:{
-    logout(){
+  mixins: [isLoggedIn, removeUser],
+  methods: {
+    logout() {
       this.removeUserData();
-      console.log(this.isLoggedIn())
-      this.showList= false
+      console.log(this.isLoggedIn());
+      this.showList = false;
     },
-    toSetting(){
-      this.showList=false;
-      this.$router.push('/settings')
+    toSetting() {
+      this.showList = false;
+      this.$router.push("/settings");
     }
   },
   watch: {
@@ -176,8 +186,7 @@ export default {
       } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
-      } 
-      else {
+      } else {
         this.inHome = false;
         this.inFollowing = false;
       }

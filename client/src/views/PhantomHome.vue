@@ -4,7 +4,7 @@
     <NewPinPopup v-if="newPin" />
     <EditBoardPopup v-if="editBoard" />
     <CollaboratorsPopup v-if="collaborators" />
-    <TopicsPopup v-if="topics"/>
+    <TopicsPopup v-if="topics" />
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" />
@@ -16,7 +16,7 @@
       ></router-link>
       <i class="fa fa-question-circle globalIcons"></i>
     </div>
-    <ChatWindow v-if="chat" id="chat"/>
+    <ChatWindow v-if="chat" id="chat" />
   </div>
 </template>
 
@@ -57,17 +57,17 @@
     bottom: 50px;
   }
 }
-.away{
-    animation: away 0.1s linear forwards;
+.away {
+  animation: away 0.1s linear forwards;
 }
-@keyframes away{
-    from{
-        right: 140px;
-    }
-    to{
-        right: 0;
-        opacity: 0;
-    }
+@keyframes away {
+  from {
+    right: 140px;
+  }
+  to {
+    right: 0;
+    opacity: 0;
+  }
 }
 </style>
 <script>
@@ -77,14 +77,14 @@ import NewPinPopup from "../views/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
 import TopicsPopup from "../components/Topics/TopicsPopup";
-import ChatWindow from "../components/Chat/ChatWindow"
+import ChatWindow from "../components/Chat/ChatWindow";
 
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
-  data:function(){
-    return{
-      chat:false
+  data: function() {
+    return {
+      chat: false
     };
   },
   components: {
@@ -95,19 +95,17 @@ export default {
     CollaboratorsPopup,
     TopicsPopup,
     ChatWindow
-
   },
-  methods:{
-    toggleChat(){
-      if(this.chat){
+  methods: {
+    toggleChat() {
+      if (this.chat) {
         let chat = document.getElementById("chat");
-        chat.classList.add("away")
-        setTimeout(()=>{
+        chat.classList.add("away");
+        setTimeout(() => {
           this.chat = false;
-        },500)
-      }
-      else{
-        this.chat=true;
+        }, 500);
+      } else {
+        this.chat = true;
       }
     }
   },

@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const state = {
-  comments: false,
+  comments: false
 };
 
 const mutations = {
   commentIsAdded(state, comment) {
     state.comments = comment;
-  },
+  }
 };
 
 const actions = {
@@ -16,14 +16,14 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .post("pins/" + postPageId + "/comments")
-      .then((response) => {
+      .then(response => {
         commit("commentIsAdded", response.data.success);
         console.log("Comments", response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 const getters = {};
@@ -33,5 +33,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

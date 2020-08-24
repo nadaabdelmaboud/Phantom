@@ -7,18 +7,18 @@
 <script>
 export default {
   name: "App",
-  data:function(){
-    return{
-      newKey:0
+  data: function() {
+    return {
+      newKey: 0
     };
   },
-  created(){
+  created() {
     this.$store.dispatch("user/getUserProfile");
   },
   watch: {
     $route() {
       this.newKey = (this.newKey + 1) % 4;
-      }
+    }
   }
 };
 </script>

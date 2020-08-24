@@ -484,7 +484,7 @@ export default {
     return {
       followuser: false,
       show: false,
-      typingComment: false,
+      typingComment: false
     };
   },
   mixins: [getImage],
@@ -528,9 +528,9 @@ export default {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
         token: token,
-        text: inputField.value,
+        text: inputField.value
       });
-      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL",token)
+      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL", token);
       socket.on("sendComment", function(data) {
         console.log("NIHAAAAAAAAAAAAAAAAAL");
         comments.innerHTML += "<p>" + data.commentText + "</p>";
@@ -539,7 +539,7 @@ export default {
         "postPage/postPageAddedComments",
         this.$route.params.postPageId
       );
-    },
+    }
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -555,8 +555,8 @@ export default {
       postDescribtion: "homeCards/postDescribtion",
       userFirstName: "homeCards/userFirstName",
       userLastName: "homeCards/userLastName",
-      numberofFollowers: "homeCards/numberofFollowers",
-    }),
-  },
+      numberofFollowers: "homeCards/numberofFollowers"
+    })
+  }
 };
 </script>
