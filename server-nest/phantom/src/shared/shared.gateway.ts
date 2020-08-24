@@ -47,6 +47,38 @@ export class SharedGateway {
       });
     }
   }
+  @SubscribeMessage('typing')
+  async type(socket: Socket, data: any) {
+    let senderId = data.senderId;
+    let sender = await this.userModel.findById(senderId);
+    let recieverId = data.recieverId;
+    let reciever = await this.userModel.findById(recieverId);
+    if (sender && reciever) {
+      socket.to(reciever.socketId).emit('is typing', {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + ' ' + reciever.lastName,
+        senderName: sender.firstName + ' ' + sender.lastName,
+        senderId: data.senderId,
+      });
+    }
+  }
+  @SubscribeMessage('connection')
+  async connect(socket: Socket, data: any) {
+    let senderId = data.senderId;
+    let sender = await this.userModel.findById(senderId);
+    let recieverId = data.recieverId;
+    let reciever = await this.userModel.findById(recieverId);
+    if (sender && reciever) {
+      socket.to(reciever.socketId).emit('connected', {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + ' ' + reciever.lastName,
+        senderName: sender.firstName + ' ' + sender.lastName,
+        senderId: data.senderId,
+      });
+    }
+  }
   @SubscribeMessage('message')
   async message(socket: Socket, data: any) {
     let messageText = data.message;
@@ -55,7 +87,6 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     if (sender && reciever && messageText) {
-      console.log("ola olaaaaa", reciever.socketId);
       socket.to(reciever.socketId).emit('sendMessage', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
