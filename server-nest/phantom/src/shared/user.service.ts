@@ -26,7 +26,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -283,7 +283,10 @@ export class UserService {
       );
     return 1;
   }
-  async updateSettings(userId, settings: { facebook?: Boolean, google?: Boolean, deleteflag?: Boolean }) {
+  async updateSettings(
+    userId,
+    settings: { facebook?: Boolean; google?: Boolean; deleteflag?: Boolean },
+  ) {
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {
       await this.deleteUser(userId);
@@ -295,7 +298,6 @@ export class UserService {
     login with google
      */
     return 1;
-
   }
 
   /**
@@ -470,7 +472,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
-          profileImage: currentUser.profileImage
+          profileImage: currentUser.profileImage,
         });
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -503,7 +505,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
-          profileImage: currentUser.profileImage
+          profileImage: currentUser.profileImage,
         });
     }
     return {
@@ -511,14 +513,14 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
-  async followTopic(userId, topicName) {
-    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
+  async followTopic(userId, topicId) {
+    if ((await this.ValidationService.checkMongooseID([userId, topicId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     console.log(user.followingTopics);
     if (!user.followingTopics) user.followingTopics = [];
-    user.followingTopics.push(topicName);
+    user.followingTopics.push(topicId);
     console.log(user.followingTopics);
     await this.userModel.updateOne(
       { _id: userId },

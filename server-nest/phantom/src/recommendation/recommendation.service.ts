@@ -20,6 +20,8 @@ export class RecommendationService {
     private ValidationService: ValidationService,
   ) {}
   async homeFeed(userId): Promise<Object> {
+    console.log('fff');
+    console.log(process.hrtime());
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let pinExist = {};
@@ -28,18 +30,35 @@ export class RecommendationService {
     if (!user) throw new Error('no such user');
     if (!user.history) user.history = [];
     if (!user.followingTopics) user.followingTopics = [];
-
+    let hrstart = process.hrtime();
     for (let i = 0; i < user.history.length; i++) {
       topics.push(user.history[i].topic);
       if (!pinExist[String(user.history[i].pinId)])
         pinExist[String(user.history[i].pinId)] = true;
     }
+    let hrend = process.hrtime(hrstart);
+    console.info(
+      'Execution time This history loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
+    console.log(user);
+    hrstart = process.hrtime();
     for (let i = 0; i < user.followingTopics.length; i++) {
       let followTopic = await this.topicModel.findById(user.followingTopics[i]);
+      console.log(followTopic.name);
       if (followTopic) {
         topics.push(followTopic.name);
       }
     }
+    hrend = process.hrtime(hrstart);
+    console.info(
+      'Execution time This following topics loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
+
+    hrstart = process.hrtime();
     for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
       if (board) {
@@ -66,26 +85,50 @@ export class RecommendationService {
         }
       }
     }
+    hrend = process.hrtime(hrstart);
+
+    console.info(
+      'Execution time This board loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
+
+    hrstart = process.hrtime();
     var freq = {};
-    console.log(topics);
     for (let i = 0; i < topics.length; i++) {
       if (!freq[topics[i]]) {
         freq[topics[i]] = 0;
       }
       freq[topics[i]]++;
     }
+    hrend = process.hrtime(hrstart);
+    console.info(
+      'Execution time This freq loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
+
     let allHome = 0;
-    console.log(freq);
     let sortedTopics = [];
+    hrstart = process.hrtime();
     for (let item in freq) {
       sortedTopics.push([item, freq[item]]);
       allHome += freq[item];
     }
+    console.log(freq);
     sortedTopics.sort(function(a, b) {
       return b[1] - a[1];
     });
+    hrend = process.hrtime(hrstart);
+    console.info(
+      'Execution time This sorting loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
+
     const MAX_HOME = 50;
     let pinsHome = [];
+    hrstart = process.hrtime();
     for (let i = 0; i < sortedTopics.length; i++) {
       let noOfPins = sortedTopics[i][1];
       let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
@@ -101,6 +144,14 @@ export class RecommendationService {
         pinsHome.push(pin);
       }
     }
+    hrend = process.hrtime(hrstart);
+
+    console.info(
+      'Execution time This topics loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
+    hrstart = process.hrtime();
     if (pinsHome.length < MAX_HOME) {
       for (let i = 0; i < sortedTopics.length; i++) {
         let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
@@ -120,7 +171,7 @@ export class RecommendationService {
         }
       }
     }
-    if (pinsHome.length < MAX_HOME) {
+    if (pinsHome.length == 0) {
       let allTopics = await this.topicModel.find({});
       for (let i = 0; i < allTopics.length; i++) {
         for (let k = 0; k < allTopics[i].pins.length; k++) {
@@ -134,8 +185,15 @@ export class RecommendationService {
           break;
         }
       }
-      pinsHome = await this.shuffle(pinsHome);
     }
+    pinsHome = await this.shuffle(pinsHome);
+    hrend = process.hrtime(hrstart);
+
+    console.info(
+      'Execution time This last loop took (hr): %ds %dms',
+      hrend[0],
+      hrend[1] / 1000000,
+    );
     return pinsHome;
   }
 
@@ -156,7 +214,7 @@ export class RecommendationService {
     //let topics
     //hgm3 topics based on interst de howa 3amlha follow
     //based on people you follow - hgeb topics 2l boards bta3thom
-    //based on recent activity hgeb topics 2l pins
+    //based on recent activity hgeb topics 2l pinsr
     //bltali da kolo hytms7
     let followers = [];
     let user = await this.UserService.getUserById(userId);
