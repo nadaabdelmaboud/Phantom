@@ -31,6 +31,7 @@ export class UserService {
     const user = await this.userModel.findById(id);
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about = '';
     return user;
   }
 
@@ -141,7 +142,9 @@ export class UserService {
       sortType: 'Date',
       fcmToken: ' ',
       history: [],
-      about: registerDto.bio,
+      facebook: false,
+      google: false,
+      about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
       country: registerDto.country,
       birthDate: registerDto.birthday,
@@ -279,6 +282,20 @@ export class UserService {
         { birthDate: updateDto.birthDate },
       );
     return 1;
+  }
+  async updateSettings(userId, settings: { facebook?: Boolean, google?: Boolean, deleteflag?: Boolean }) {
+    const user = await this.getUserById(userId);
+    if (settings.deleteflag) {
+      await this.deleteUser(userId);
+    }
+    await this.userModel.updateOne({ _id: userId }, settings);
+    /*if(settings.facebook)
+    login with facebook
+    else if(settings.google)
+    login with google
+     */
+    return 1;
+
   }
 
   /**
