@@ -20,6 +20,7 @@ export class SharedGateway {
     let userId = decoded._id;
     let user = await this.UserService.getUserById(userId);
     if (user) {
+      console.log("user",socket.id)
       user.socketId = socket.id;
       await user.save();
     }
@@ -43,6 +44,38 @@ export class SharedGateway {
         commenterImage: commenter.profileImage,
         pinId: data.pinId,
         date: Date.now(),
+      });
+    }
+  }
+  @SubscribeMessage('typing')
+  async type(socket: Socket, data: any) {
+    let senderId = data.senderId;
+    let sender = await this.userModel.findById(senderId);
+    let recieverId = data.recieverId;
+    let reciever = await this.userModel.findById(recieverId);
+    if (sender && reciever) {
+      socket.to(reciever.socketId).emit('is typing', {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + ' ' + reciever.lastName,
+        senderName: sender.firstName + ' ' + sender.lastName,
+        senderId: data.senderId,
+      });
+    }
+  }
+  @SubscribeMessage('connection')
+  async connect(socket: Socket, data: any) {
+    let senderId = data.senderId;
+    let sender = await this.userModel.findById(senderId);
+    let recieverId = data.recieverId;
+    let reciever = await this.userModel.findById(recieverId);
+    if (sender && reciever) {
+      socket.to(reciever.socketId).emit('connected', {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + ' ' + reciever.lastName,
+        senderName: sender.firstName + ' ' + sender.lastName,
+        senderId: data.senderId,
       });
     }
   }

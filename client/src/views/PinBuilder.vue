@@ -388,7 +388,6 @@ export default {
           };
           if (this.note != "") pin.note = this.note;
           this.$store.dispatch("pins/createPin", { pin, label: this.label });
-          //this.$store.commit("popUpsState/toggleNewPin");
         }
       }
     }

@@ -89,11 +89,12 @@ export class BoardService {
     status: string,
     userId: string,
   ) {
+
     let user = await this.UserService.getUserById(userId);
     if (!user) return 0;
     let sd = startDate ? startDate : null;
     let ed = endDate ? endDate : null;
-
+  
     let board = new this.boardModel({
       name: name,
       pins: [],

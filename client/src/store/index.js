@@ -9,6 +9,7 @@ import followers from "./modules/followers.js";
 import phantomUser from "./modules/phantomUser.js";
 import postPage from "./modules/postPage.js";
 import topics from "./modules/topics.js"
+import chat from "./modules/chat"
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     homeCards,
     followers,
     postPage,
-    topics
+    topics,
+    chat
   }
 });
