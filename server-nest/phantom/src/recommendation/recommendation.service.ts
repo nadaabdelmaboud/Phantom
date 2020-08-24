@@ -6,6 +6,8 @@ import { pin } from 'src/types/pin';
 import { topic } from 'src/types/topic';
 import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
+import { pipe } from 'rxjs';
+import { user } from 'src/types/user';
 
 @Injectable()
 export class RecommendationService {
@@ -13,6 +15,7 @@ export class RecommendationService {
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('User') private readonly userModel: Model<user>,
     private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
@@ -135,12 +138,99 @@ export class RecommendationService {
     }
     return pinsHome;
   }
+
   async shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+  }
+  async topicRecommendation(topicName) {
+    //nas 3ndha board bnfs 2l2sm
+    //nas 3ndha board 2l topic bta3ha nfs 2l topic
+    //nas 2l2sm bta3ha nfs 2sm 2ltopic
+    //nas 3ndha board 2l description leh 2sm 2ltopic
+  }
+  async followRecommendation(userId) {
+    //let topics
+    //hgm3 topics based on interst de howa 3amlha follow
+    //based on people you follow - hgeb topics 2l boards bta3thom
+    //based on recent activity hgeb topics 2l pins
+    //bltali da kolo hytms7
+    let followers = [];
+    let user = await this.UserService.getUserById(userId);
+    if (!user) throw new Error('no such user');
+    let userExist = {};
+    let users = await this.userModel.find({});
+    for (let i = 0; i < user.followingTopics.length; i++) {
+      for (let j = 0; j < users.length; j++) {
+        if (users[j].followingTopics.includes(user.followingTopics[i])) {
+          if (userExist[String(users[j]._id)] != true) {
+            followers.push({
+              user: users[j],
+              recommendType: 'based on you interest',
+            });
+            userExist[String(users[j]._id)] = true;
+          }
+        }
+      }
+    }
+    for (let i = 0; i < user.following.length; i++) {
+      let followUser = await this.userModel.findById(user.following[i]);
+      for (let j = 0; j < followUser.following.length; j++) {
+        if (userExist[String(followUser.following[j])] != true) {
+          let pushUser = await this.userModel.findById(followUser.following[j]);
+          followers.push({
+            user: pushUser,
+            recommendType: 'based on people you follow',
+          });
+          userExist[String(followUser.following[j])] = true;
+        }
+      }
+    }
+    let topics = [];
+    for (let i = 0; i < user.history.length; i++) {
+      if (!topics.includes(user.history[i].topic)) {
+        let topic = await this.topicModel.findOne({
+          name: user.history[i].topic,
+        });
+        topics.push(topic._id);
+      }
+    }
+    for (let i = 0; i < topics.length; i++) {
+      for (let j = 0; j < users.length; j++) {
+        if (users[j].followingTopics.includes(topics[i])) {
+          if (userExist[String(users[j]._id)] != true) {
+            followers.push({
+              user: users[j],
+              recommendType: 'based on your recent activity',
+            });
+            userExist[String(users[j]._id)] = true;
+          }
+        }
+      }
+    }
+    let topUsers = await users.sort(function(a, b) {
+      if (a.followers.length > b.followers.length) {
+        return -1;
+      }
+      if (a.followers.length < b.followers.length) {
+        return 1;
+      }
+      return 0;
+    });
+    for (let i = 0; i < topUsers.length; i++) {
+      if (userExist[String(topUsers[i]._id)] != true) {
+        followers.push({
+          user: topUsers[i],
+          recommendType: 'popular on phantom',
+        });
+        userExist[String(topUsers[i]._id)] = true;
+      }
+    }
+    followers = await this.shuffle(followers);
+    return followers;
   }
   async pinMoreLike(userId, pinId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0)
