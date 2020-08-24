@@ -10,6 +10,9 @@ export interface user extends Document {
   country: String;
   birthDate: Date;
   about: String;
+  facebook: Boolean;
+  google: Boolean;
+  notificationOfPinsActivity: Boolean;
   gender: String;
   sortType: String;
   socketId: string;

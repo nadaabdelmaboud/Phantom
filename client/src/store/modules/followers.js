@@ -19,6 +19,7 @@ const actions = {
       axios
       .put("me/follow-user/"+userId)
       .then(() => {
+       dispatch("getFollowing")
        dispatch("getFollowers")
        dispatch("phantomUser/isFollowed",userId,{root:true});
       })
@@ -30,6 +31,7 @@ const actions = {
       axios
       .delete("me/follow-user/"+userId)
       .then(() => {
+       dispatch("getFollowing")
        dispatch("getFollowers");
        dispatch("phantomUser/isFollowed",userId,{root:true});
       })
