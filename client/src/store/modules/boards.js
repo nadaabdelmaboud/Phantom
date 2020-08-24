@@ -5,7 +5,8 @@ const state = {
   chosenBoardName: "Select",
   chosenBoardId: "",
   currentBoard: "",
-  collaborators: []
+  collaborators: [],
+  moreLike:[]
 };
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   },
   setCollaborators(state, collaborators) {
     state.collaborators = collaborators;
+  },
+  setMoreLike(state, more){
+    state.moreLike = more
   }
 };
 
@@ -166,6 +170,16 @@ const actions = {
         dispatch("getCollaborators");
         console.log(error);
       });
+  },
+  moreLike({commit},boardId){
+    axios
+    .get("more/boards/"+boardId)
+    .then(response => {
+      commit("setMoreLike", response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 };
 
@@ -174,7 +188,8 @@ const getters = {
   chosenBoardName: state => state.chosenBoardName,
   chosenBoardId: state => state.chosenBoardId,
   currentBoard: state => state.currentBoard,
-  collaborators: state => state.collaborators
+  collaborators: state => state.collaborators,
+  moreLike: state => state.moreLike
 };
 
 export default {
