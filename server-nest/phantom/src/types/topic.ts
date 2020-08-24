@@ -8,4 +8,6 @@ export interface topic extends Document {
   image: mongoose.Types.ObjectId;
   imageWidth: Number;
   imageHeight: Number;
+  imageId: mongoose.Types.ObjectId;
+
 }

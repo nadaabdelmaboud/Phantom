@@ -66,7 +66,20 @@ export class TopicService {
       if (err) throw new Error('topic not found');
       return topic;
     });
-    return topics;
+    let topicInfo=[]
+    let topic={}
+    for(let i=0;i<topics.length;i++){
+      let isFollow = await this.UserService.isFollowingTopic(userId, topics[i]._id);
+      topic["follow"] = isFollow
+      topic["_id"]=topics[i]._id
+      topic["name"]=topics[i].name
+      topic["description"]=topics[i].description
+      topic["imageId"]=topics[i].imageId
+      topicInfo.push(topic)
+      topic={}
+
+    }
+    return topicInfo;
   }
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))

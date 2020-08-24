@@ -8,4 +8,5 @@ export const Topic = new Schema({
   image: mongoose.Types.ObjectId,
   imageWidth: Number,
   imageHeight: Number,
+  imageId: mongoose.Types.ObjectId
 });
