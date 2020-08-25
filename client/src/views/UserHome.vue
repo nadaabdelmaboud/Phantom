@@ -4,9 +4,9 @@
       <p>Home Page ,Signup or Login</p>
     </div>
     <div v-if="isLoggedIn() == true">
-      <div class="container">
+      <div class="masonry">
         <HomeCard
-          class="box"
+          class="masonryItem"
           v-for="homecard in cards"
           :key="homecard._id"
           :cardImage="homecard.imageId"
@@ -19,6 +19,7 @@
 
 <style lang="scss" scoped>
 @import "../scss/_Colors";
+@import "../scss/MasonryGrid";
 * {
   margin: 0;
   padding: 0;
@@ -29,41 +30,6 @@ body {
   justify-content: center;
   align-self: center;
   min-height: 100vh;
-}
-.container {
-  position: relative;
-  max-width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-template-rows: minmax(auto, auto);
-  margin: auto;
-  grid-auto-flow: dense;
-  grid-gap: 10px;
-}
-.container .box {
-  width: 100%;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  transition: 0.5s;
-}
-.container .box:hover {
-  background: $lightgrey;
-}
-img {
-  width: 100% !important;
-  height: auto !important;
-}
-
-@media (max-width: 990px) {
-  .container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-template-rows: minmax(auto, auto);
-  }
-  .container .box {
-    grid-column: unset !important ;
-    grid-row: unset !important;
-  }
 }
 </style>
 
