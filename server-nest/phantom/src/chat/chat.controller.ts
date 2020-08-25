@@ -2,18 +2,10 @@ import {
     Controller,
     Post,
     Body,
-    Put,
-    Delete,
-    UseFilters,
-    ForbiddenException,
-    NotAcceptableException,
-    BadRequestException,
     Param,
     Get,
     NotFoundException,
     UseGuards,
-    Request,
-    Query,
   } from '@nestjs/common';
   import { AuthGuard } from '@nestjs/passport';
   import { HttpExceptionFilter } from '../shared/http-exception.filter';
@@ -23,13 +15,19 @@ import { Board } from 'src/models/board.schema';
   @Controller()
   export class ChatController {
     constructor(private ChatService: ChatService) {}
+
+    @UseGuards(AuthGuard('jwt'))
     @Get('/getMessagesSent/:senderId/:recieverId')
-    async getMessagesSent(@Param('senderId') senderId: string,
-    @Param('recieverId') recieverId: string) {
+    async getMessagesSent(
+                          @Param('senderId') senderId: string,
+                          @Param('recieverId') recieverId: string
+                          ){
         let messages = await this.ChatService.getMessagesSent(senderId, recieverId);
         if (messages) return messages; 
         throw new NotFoundException();
     }
+
+    @UseGuards(AuthGuard('jwt'))
     @Post('/sentMessage')
     async sentMessage(
                       @Body('senderId') senderId: string, 

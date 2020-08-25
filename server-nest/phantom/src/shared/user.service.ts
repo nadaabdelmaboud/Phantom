@@ -31,6 +31,7 @@ export class UserService {
     const user = await this.userModel.findById(id);
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about = '';
     return user;
   }
 
@@ -45,10 +46,6 @@ export class UserService {
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
     if (await bcrypt.compare(loginDto.password, user.password)) {
-      await this.notification.sendOfflineNotification(
-        user.offlineNotifications,
-        user.fcmToken,
-      );
       return user;
     }
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
@@ -118,6 +115,12 @@ export class UserService {
   async updateFCMTocken(fcmToken, userId) {
     const user = await this.getUserById(userId);
     await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
+    if (fcmToken && fcmToken != ' ')
+      await this.notification.sendOfflineNotification(
+        user.offlineNotifications,
+        user.fcmToken,
+      );
+
     return 1;
   }
 
@@ -141,7 +144,9 @@ export class UserService {
       sortType: 'Date',
       fcmToken: ' ',
       history: [],
-      about: registerDto.bio,
+      facebook: false,
+      google: false,
+      about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
       country: registerDto.country,
       birthDate: registerDto.birthday,
@@ -279,6 +284,20 @@ export class UserService {
         { birthDate: updateDto.birthDate },
       );
     return 1;
+  }
+  async updateSettings(userId, settings: { facebook?: Boolean, google?: Boolean, deleteflag?: Boolean }) {
+    const user = await this.getUserById(userId);
+    if (settings.deleteflag) {
+      await this.deleteUser(userId);
+    }
+    await this.userModel.updateOne({ _id: userId }, settings);
+    /*if(settings.facebook)
+    login with facebook
+    else if(settings.google)
+    login with google
+     */
+    return 1;
+
   }
 
   /**
@@ -453,6 +472,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
+          profileImage: currentUser.profileImage
         });
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -485,6 +505,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
+          profileImage: currentUser.profileImage
         });
     }
     return {

@@ -9,9 +9,9 @@ const mutations = {
   setUser(state, user) {
     state.user = user;
   },
-  setIsFollowed(state, isFollowed) {
-    state.isFollowed = isFollowed;
-  },
+  setIsFollowed(state,isFollowed){
+    state.isFollowed = isFollowed == "true";
+  }
 };
 
 const actions = {

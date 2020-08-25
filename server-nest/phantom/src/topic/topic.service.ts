@@ -21,7 +21,7 @@ export class TopicService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async topicsSeeds(topics) {
     console.log(topics);
     for (var i = 0; i < topics.length; i++) {
@@ -120,7 +120,7 @@ export class TopicService {
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = this.UserService.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    const topic = await this.getTopicById(topicId, userId);
+    const topic = await this.getTopicById(topicId, undefined);
     if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
     if (!topic.followers) topic.followers = [];
     await this.topicModel.updateOne(
