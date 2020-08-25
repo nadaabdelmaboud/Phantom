@@ -2,11 +2,15 @@ import axios from "axios";
 
 const state = {
   comments: false,
+  followUser: false,
 };
 
 const mutations = {
   commentIsAdded(state, comment) {
     state.comments = comment;
+  },
+  followUser(state, followUser) {
+    state.followUser = followUser;
   },
 };
 
@@ -24,9 +28,35 @@ const actions = {
         console.log(error);
       });
   },
+  followPinCreator({ commit }, pinCreatorId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .put("me/follow-user/" + pinCreatorId)
+      .then(() => {
+        commit("followUser", true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  unFollowPinCreator({ commit }, pinCreatorId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .delete("me/follow-user/" + pinCreatorId)
+      .then(() => {
+        commit("followUser", false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };
 
-const getters = {};
+const getters = {
+  followUser: (state) => state.followUser,
+};
 
 export default {
   namespaced: true,

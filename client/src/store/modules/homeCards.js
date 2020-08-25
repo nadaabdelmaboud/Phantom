@@ -9,6 +9,7 @@ const state = {
   userFirstName: "",
   userLastName: "",
   numberofFollowers: 0,
+  pinCreatorId:"",
 };
 
 const mutations = {
@@ -36,6 +37,9 @@ const mutations = {
   setnumberofFollowers(state, numberofFollowers) {
     state.numberofFollowers = numberofFollowers;
   },
+  setpinCreatorId(state, pinCreatorId) {
+    state.pinCreatorId = pinCreatorId;
+  },
 };
 
 const actions = {
@@ -60,6 +64,7 @@ const actions = {
       .then((response) => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
+        commit("setpinCreatorId", res.pin.creator.id);
         commit("setpostTitle", res.pin.title);
         commit("setpostDescribtion", res.pin.note);
         commit("setuserFirstName", res.pin.creator.firstName);
@@ -70,7 +75,7 @@ const actions = {
       .catch((error) => {
         console.log(error);
       });
-  },
+  }
 };
 
 const getters = {
@@ -82,6 +87,7 @@ const getters = {
   userFirstName: (state) => state.userFirstName,
   userLastName: (state) => state.userLastName,
   numberofFollowers: (state) => state.numberofFollowers,
+  pinCreatorId: (state) => state.pinCreatorId,
 };
 
 export default {

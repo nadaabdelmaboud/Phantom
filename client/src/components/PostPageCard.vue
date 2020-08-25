@@ -48,14 +48,14 @@
               </div>
               <div class="followbutton">
                 <button
-                  v-if="followuser == false"
+                  v-if="this.isFollowed == 'false'"
                   class="followUserbutton"
                   @click="followUnfollowUser()"
                 >
                   Follow
                 </button>
                 <button
-                  v-if="followuser == true"
+                  v-if="this.isFollowed == 'true'"
                   class="followUserbutton"
                   @click="followUnfollowUser()"
                 >
@@ -482,7 +482,6 @@ export default {
   name: "postpagecard",
   data: function() {
     return {
-      followuser: false,
       show: false,
       typingComment: false,
     };
@@ -498,9 +497,18 @@ export default {
       }, 2000);
     },
     followUnfollowUser() {
-      this.followuser = !this.followuser;
-      if (this.followuser == true) {
-        this.showToast();
+      console.log("isFollowed", this.isFollowed)
+      if (this.isFollowed == "false") {
+          this.showToast();
+        this.$store.dispatch(
+          "postPage/followPinCreator",
+          this.pinCreatorId
+        );
+      } else {
+        this.$store.dispatch(
+          "postPage/unFollowPinCreator",
+          this.pinCreatorId
+        );
       }
     },
     showDropdownlist() {
@@ -530,7 +538,7 @@ export default {
         token: token,
         text: inputField.value,
       });
-      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL",token)
+      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL", token);
       socket.on("sendComment", function(data) {
         console.log("NIHAAAAAAAAAAAAAAAAAL");
         comments.innerHTML += "<p>" + data.commentText + "</p>";
@@ -540,6 +548,9 @@ export default {
         this.$route.params.postPageId
       );
     },
+  },
+  mounted(){
+ this.$store.dispatch("phantomUser/isFollowed",this.pinCreatorId);
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -556,6 +567,8 @@ export default {
       userFirstName: "homeCards/userFirstName",
       userLastName: "homeCards/userLastName",
       numberofFollowers: "homeCards/numberofFollowers",
+      pinCreatorId: "homeCards/pinCreatorId",
+      isFollowed: "phantomUser/isFollowed",
     }),
   },
 };
