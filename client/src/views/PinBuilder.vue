@@ -313,6 +313,7 @@ export default {
         var image = new Image();
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
+          console.log(this.result)
           img.setAttribute("src", this.result);
           img.style.display = "block";
           image.setAttribute("src", this.result);
@@ -334,6 +335,8 @@ export default {
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
           img.setAttribute("src", this.result);
+          
+console.log(this.result)
           img.style.display = "block";
           console.log("loaaaded");
           image.setAttribute("src", this.result);
