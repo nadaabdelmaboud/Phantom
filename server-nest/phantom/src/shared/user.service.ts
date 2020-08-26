@@ -46,10 +46,6 @@ export class UserService {
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
     if (await bcrypt.compare(loginDto.password, user.password)) {
-      await this.notification.sendOfflineNotification(
-        user.offlineNotifications,
-        user.fcmToken,
-      );
       return user;
     }
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
@@ -119,6 +115,12 @@ export class UserService {
   async updateFCMTocken(fcmToken, userId) {
     const user = await this.getUserById(userId);
     await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
+    if (fcmToken && fcmToken != ' ')
+      await this.notification.sendOfflineNotification(
+        user.offlineNotifications,
+        user.fcmToken,
+      );
+
     return 1;
   }
 
