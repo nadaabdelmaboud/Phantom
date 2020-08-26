@@ -71,6 +71,7 @@ const routes = [
       {
         path: "/User/:userId",
         name: "anotherUser",
+        redirect: "/User/:userId/Boards",
         component: UserProfile,
         children: [
           {

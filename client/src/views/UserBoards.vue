@@ -24,8 +24,14 @@ import draggable from "vuedraggable";
 
 export default {
   name: "UserBoards",
-  mounted() {
-    this.$store.dispatch("boards/userBoards");
+  created() {
+    let myprofile = this.$route.path.includes("/UserProfile");
+    if (!myprofile) {
+      let userId = this.$route.params.userId;
+      this.$store.dispatch("boards/getUserBoards", userId);
+    } else {
+      this.$store.dispatch("boards/userBoards");
+    }
   },
   components: {
     Board,

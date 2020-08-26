@@ -153,7 +153,6 @@ const actions = {
   },
   getUserProfile({ commit }) {
     let token = getUserToken.methods.getUserToken();
-    console.log(token);
     axios
       .get("/me", {
         headers: {
@@ -161,7 +160,6 @@ const actions = {
         }
       })
       .then(response => {
-        console.log(response.data.user);
         commit("setUserData", response.data.user);
       })
       .catch(error => {
