@@ -389,10 +389,7 @@ export class UserService {
     );
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
-    await this.userModel.updateOne(
-      { _id: followedUser._id },
-      { followers: followedUser.followers },
-    );
+    await followedUser.save();
     await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
