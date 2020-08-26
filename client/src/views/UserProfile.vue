@@ -1,29 +1,32 @@
 <template>
   <div class="profile" @click="clear">
     <div class="profileInfo">
-      <img
-        :src="getImage(imageId)"
-      />
-      <h1>{{userName}}</h1>
-      <h6>{{followers}} following</h6>
-      <div 
-      class="buttons inRoute follow"
-      v-if="!myprofile && !isFollowed"
-      @click="alterFollow"
+      <img :src="getImage(imageId)" />
+      <h1>{{ userName }}</h1>
+      <h6>{{ followers }} following</h6>
+      <div
+        class="buttons inRoute follow"
+        v-if="!myprofile && !isFollowed"
+        @click="alterFollow"
       >
-       follow
-       </div>
-       <div 
-      class="buttons inRoute follow unfollow"
-      v-if="!myprofile && isFollowed"
-      @click="alterFollow"
-       >
-       unfollow
-       </div>
+        follow
+      </div>
+      <div
+        class="buttons inRoute follow unfollow"
+        v-if="!myprofile && isFollowed"
+        @click="alterFollow"
+      >
+        unfollow
+      </div>
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
-        <router-link to="/settings" tag="i" class="fa fa-pencil" aria-hidden="true"></router-link>
+        <router-link
+          to="/settings"
+          tag="i"
+          class="fa fa-pencil"
+          aria-hidden="true"
+        ></router-link>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
@@ -86,8 +89,8 @@
 </template>
 
 <script>
-import {mapGetters , mapState} from "vuex";
-import getImage from "../mixins/getImage.js"
+import { mapGetters, mapState } from "vuex";
+import getImage from "../mixins/getImage.js";
 export default {
   name: "UserProfile",
   data: function() {
@@ -96,13 +99,13 @@ export default {
       inPins: false,
       showCreate: false,
       showViewOptions: false,
-      myprofile:false,
-      userName:'',
-      imageId:'',
-      followers:''
+      myprofile: false,
+      userName: "",
+      imageId: "",
+      followers: ""
     };
   },
-  mixins:[getImage],
+  mixins: [getImage],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
@@ -121,23 +124,22 @@ export default {
     sortDate() {
       this.$store.dispatch("boards/sortDate");
     },
-    alterFollow(){
-       let userId = this.$route.params.userId;
-      if(this.isFollowed){
-        this.$store.dispatch("followers/unfollowUser",userId);
-      }
-      else{
-        this.$store.dispatch("followers/followUser",userId);
+    alterFollow() {
+      let userId = this.$route.params.userId;
+      if (this.isFollowed) {
+        this.$store.dispatch("followers/unfollowUser", userId);
+      } else {
+        this.$store.dispatch("followers/followUser", userId);
       }
     }
   },
-  computed:{
-      ...mapGetters({
+  computed: {
+    ...mapGetters({
       user: "phantomUser/user",
-      isFollowed:"phantomUser/isFollowed"
+      isFollowed: "phantomUser/isFollowed"
     }),
     ...mapState({
-       meUser: state => state.user.userData,
+      meUser: state => state.user.userData
     })
   },
   watch: {
@@ -154,32 +156,30 @@ export default {
       }
     }
   },
-   created(){
-    this.myprofile = (this.$route.path.includes("/UserProfile"));
-    if(!this.myprofile){
+  created() {
+    this.myprofile = this.$route.path.includes("/UserProfile");
+    if (!this.myprofile) {
       let userId = this.$route.params.userId;
-      this.$store.dispatch("phantomUser/getUser",userId);
-      this.$store.dispatch("phantomUser/isFollowed",userId);
-    }
-    else{
+      this.$store.dispatch("phantomUser/getUser", userId);
+      this.$store.dispatch("phantomUser/isFollowed", userId);
+    } else {
       this.$store.dispatch("user/getUserProfile");
     }
   },
-  mounted(){
-    setTimeout(()=>{
-       if(!this.myprofile){
-       console.log("user",this.user)
-      this.userName= this.user.firstName +' '+ this.user.lastName;
-      this.imageId = this.user.profileImage;
-      this.followers= this.user.followers.length;
-     }
-     else{
-       console.log("meee",this.meUser)
-        this.userName= this.meUser.userName;
-      this.imageId = this.meUser.profileImage;
-      this.followers= this.meUser.followers.length;
-     }
-    },4000)
+  mounted() {
+    setTimeout(() => {
+      if (!this.myprofile) {
+        console.log("user", this.user);
+        this.userName = this.user.firstName + " " + this.user.lastName;
+        this.imageId = this.user.profileImage;
+        this.followers = this.user.followers.length;
+      } else {
+        console.log("meee", this.meUser);
+        this.userName = this.meUser.userName;
+        this.imageId = this.meUser.profileImage;
+        this.followers = this.meUser.followers.length;
+      }
+    }, 4000);
   }
 };
 </script>
@@ -248,17 +248,17 @@ i:hover {
   background-color: $darkBlue;
   color: $lightPink;
 }
-.follow{
-  display:block;
+.follow {
+  display: block;
   width: 100px;
   margin: 15px auto;
 }
-.unfollow{
-  background-color:  $lightPink;
+.unfollow {
+  background-color: $lightPink;
   color: $darkBlue;
 }
-.unfollow:hover{
-  background-color:  $lightPink;
+.unfollow:hover {
+  background-color: $lightPink;
   color: $darkBlue;
 }
 .create {

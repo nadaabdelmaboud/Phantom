@@ -26,7 +26,7 @@
       </div>
       <div class="msgBox" v-if="inchat">
         <ChatMessage
-          v-for="(msg,i) in chat"
+          v-for="(msg, i) in chat"
           :key="i"
           :imageId="msg.senderImage"
           :msgText="msg.note"
@@ -35,7 +35,7 @@
           class="ChatMsg"
         />
       </div>
-      <div id="msg"  v-if="inchat">
+      <div id="msg" v-if="inchat">
         <input type="text" v-model="currentMsg" @keydown.enter="sendMsg" />
         <button type="submit" @click="sendMsg">
           <i class="fa fa-angle-double-right"></i>
@@ -60,29 +60,29 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: "",
+        id: ""
       },
-      socket:"",
-      allowNotify:false
+      socket: "",
+      allowNotify: false
     };
   },
   mixins: [getImage],
   components: {
-    ChatMessage,
+    ChatMessage
   },
   methods: {
     sendMsg() {
       if (this.currentMsg != "") {
-         let msg ={
-            owner: true,
-            note: this.currentMsg,
-            time: Date.now()
-        }
-        this.$store.commit("chat/addMsg",msg)
+        let msg = {
+          owner: true,
+          note: this.currentMsg,
+          time: Date.now()
+        };
+        this.$store.commit("chat/addMsg", msg);
         let payload = {
           senderId: this.myData._id,
           recieverId: this.chatWith.id,
-          message: this.currentMsg,
+          message: this.currentMsg
         };
         this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
@@ -91,44 +91,44 @@ export default {
         this.$store.dispatch("chat/sendMsg", payload);
 
         this.socket.emit("message", {
-            recieverImage: this.getImage(this.myData.profileImage),
-            senderImage: this.getImage(this.myData.profileImage),
-            recieverName: this.chatWith.name,
-            recieverId: this.chatWith.id,
-            senderName: this.myData.firstName + ' ' + this.myData.lastName,
-            message: this.currentMsg,
-            senderId: this.myData._id,
-            date: Date.now(),
-        })
+          recieverImage: this.getImage(this.myData.profileImage),
+          senderImage: this.getImage(this.myData.profileImage),
+          recieverName: this.chatWith.name,
+          recieverId: this.chatWith.id,
+          senderName: this.myData.firstName + " " + this.myData.lastName,
+          message: this.currentMsg,
+          senderId: this.myData._id,
+          date: Date.now()
+        });
         this.currentMsg = "";
       }
     },
     toChat(chatWith) {
       let payload = {
         senderId: this.myData._id,
-        recieverId: chatWith.id,
+        recieverId: chatWith.id
       };
       this.$store.dispatch("chat/getChat", payload);
       this.chatWith = chatWith;
       this.inchat = !this.inchat;
       this.$nextTick(() => {
-          let msgBox = document.getElementsByClassName("msgBox")[0];
-          msgBox.scrollTop = msgBox.scrollHeight;
+        let msgBox = document.getElementsByClassName("msgBox")[0];
+        msgBox.scrollTop = msgBox.scrollHeight;
       });
-      setTimeout(()=>{
-          let msgBox = document.getElementsByClassName("msgBox")[0];
-          msgBox.scrollTop = msgBox.scrollHeight;
-      },3000)
-    },
+      setTimeout(() => {
+        let msgBox = document.getElementsByClassName("msgBox")[0];
+        msgBox.scrollTop = msgBox.scrollHeight;
+      }, 3000);
+    }
   },
   computed: {
     ...mapGetters({
       following: "followers/userFollowing",
-      chat: "chat/currentChat",
+      chat: "chat/currentChat"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
+      myData: state => state.user.userData
+    })
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
@@ -136,51 +136,49 @@ export default {
     let token = localStorage.getItem("userToken");
     token = token.substring(7);
     this.socket.emit("setUserId", {
-    token: token
-    })
-    this.socket.on("sendMessage", (data) =>{
-        let ping = new Audio();
-        ping.src = require("../../assets/Ping.mp3")
-        ping.play();
-        if(data.senderId == this.chatWith.id){
-        let msg ={
-            owner:false,
-            note: data.message,
-            time: data.date
-        }
-        this.$store.commit("chat/addMsg",msg)
-          this.$nextTick(() => {
+      token: token
+    });
+    this.socket.on("sendMessage", data => {
+      let ping = new Audio();
+      ping.src = require("../../assets/Ping.mp3");
+      ping.play();
+      if (data.senderId == this.chatWith.id) {
+        let msg = {
+          owner: false,
+          note: data.message,
+          time: data.date
+        };
+        this.$store.commit("chat/addMsg", msg);
+        this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
           msgBox.scrollTop = msgBox.scrollHeight;
-         });
-        }
-        let options={
-            body:data.senderName +" has sent you a new msg \n" + data.message,
-            silent:true
-        }
+        });
+      }
+      let options = {
+        body: data.senderName + " has sent you a new msg \n" + data.message,
+        silent: true
+      };
 
-        if(this.allowNotify){
-            let notify = new Notification("phantom new message", options);
-            setTimeout(()=>{
-                notify.close();
-            },5000)
-        }
-        else{
-            console.log("notification disabled")
-        }
-        console.log("got Message");
-        console.log(data);
-      });
+      if (this.allowNotify) {
+        let notify = new Notification("phantom new message", options);
+        setTimeout(() => {
+          notify.close();
+        }, 5000);
+      } else {
+        console.log("notification disabled");
+      }
+      console.log("got Message");
+      console.log(data);
+    });
 
-       Notification.requestPermission().then((permission) =>{ 
-            if(permission =="granted"){
-                this.allowNotify = true;
-            }
-            else{
-                console.log("notification disabled")
-            }
-         });
-  },
+    Notification.requestPermission().then(permission => {
+      if (permission == "granted") {
+        this.allowNotify = true;
+      } else {
+        console.log("notification disabled");
+      }
+    });
+  }
 };
 </script>
 

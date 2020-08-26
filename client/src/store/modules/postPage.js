@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   comments: false,
-  followUser: false,
+  followUser: false
 };
 
 const mutations = {
@@ -11,7 +11,7 @@ const mutations = {
   },
   followUser(state, followUser) {
     state.followUser = followUser;
-  },
+  }
 };
 
 const actions = {
@@ -20,11 +20,11 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .post("pins/" + postPageId + "/comments")
-      .then((response) => {
+      .then(response => {
         commit("commentIsAdded", response.data.success);
         console.log("Comments", response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -36,7 +36,7 @@ const actions = {
       .then(() => {
         commit("followUser", true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -48,14 +48,14 @@ const actions = {
       .then(() => {
         commit("followUser", false);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
 };
 
 const getters = {
-  followUser: (state) => state.followUser,
+  followUser: state => state.followUser
 };
 
 export default {
@@ -63,5 +63,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

@@ -48,14 +48,20 @@
               </div>
               <div class="followbutton">
                 <button
-                  v-if="this.isFollowed == 'false'"
+                  v-if="
+                    (this.isFollowed == false && firstTime == true) ||
+                      (followPinCreatorBtn == false && firstTime == false)
+                  "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
                 >
                   Follow
                 </button>
                 <button
-                  v-if="this.isFollowed == 'true'"
+                  v-if="
+                    (this.isFollowed == true && firstTime == true) ||
+                      (followPinCreatorBtn == true && firstTime == false)
+                  "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
                 >
@@ -482,8 +488,10 @@ export default {
   name: "postpagecard",
   data: function() {
     return {
+      firstTime: true,
+      followPinCreatorBtn: false,
       show: false,
-      typingComment: false,
+      typingComment: false
     };
   },
   mixins: [getImage],
@@ -497,19 +505,15 @@ export default {
       }, 2000);
     },
     followUnfollowUser() {
-      console.log("isFollowed", this.isFollowed)
-      if (this.isFollowed == "false") {
-          this.showToast();
-        this.$store.dispatch(
-          "postPage/followPinCreator",
-          this.pinCreatorId
-        );
+      if (this.firstTime == true) this.followPinCreatorBtn = this.isFollowed;
+      if (this.followPinCreatorBtn == false) {
+        this.showToast();
+        this.$store.dispatch("postPage/followPinCreator", this.pinCreatorId);
       } else {
-        this.$store.dispatch(
-          "postPage/unFollowPinCreator",
-          this.pinCreatorId
-        );
+        this.$store.dispatch("postPage/unFollowPinCreator", this.pinCreatorId);
       }
+      this.firstTime = false;
+      this.followPinCreatorBtn = !this.followPinCreatorBtn;
     },
     showDropdownlist() {
       this.show = !this.show;
@@ -536,7 +540,7 @@ export default {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
         token: token,
-        text: inputField.value,
+        text: inputField.value
       });
       console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL", token);
       socket.on("sendComment", function(data) {
@@ -547,10 +551,7 @@ export default {
         "postPage/postPageAddedComments",
         this.$route.params.postPageId
       );
-    },
-  },
-  mounted(){
- this.$store.dispatch("phantomUser/isFollowed",this.pinCreatorId);
+    }
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -568,8 +569,8 @@ export default {
       userLastName: "homeCards/userLastName",
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
-      isFollowed: "phantomUser/isFollowed",
-    }),
-  },
+      isFollowed: "phantomUser/isFollowed"
+    })
+  }
 };
 </script>
