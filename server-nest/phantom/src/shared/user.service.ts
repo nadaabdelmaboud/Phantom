@@ -555,13 +555,6 @@ export class UserService {
   async userSeeds() {
     var userObjects = [
       {
-        firstName: 'Nada',
-        password: '12345678',
-        birthday: '2000-02-22',
-        lastName: 'Abdelmaboud',
-        email: 'nada5aled52@gmail.com',
-      },
-      {
         firstName: 'Aya',
         password: '12345678',
         birthday: '2000-02-20',

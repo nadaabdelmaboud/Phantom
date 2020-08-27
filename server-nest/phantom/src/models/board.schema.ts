@@ -18,13 +18,19 @@ export const Board = new Schema({
     profileUrl: String,
   },
   coverImages: [mongoose.Types.ObjectId],
-  pins: [mongoose.Types.ObjectId],
+  pins: Array({
+    pinId: mongoose.Types.ObjectId,
+    topic: String,
+  }),
   createdAt: Date,
   sections: [
     {
       sectionId: mongoose.Types.ObjectId,
       sectionName: String,
-      pins: [mongoose.Types.ObjectId],
+      pins: Array({
+        pinId: mongoose.Types.ObjectId,
+        topic: String,
+      }),
       creatorId: mongoose.Types.ObjectId,
       coverImages: [mongoose.Types.ObjectId],
     },

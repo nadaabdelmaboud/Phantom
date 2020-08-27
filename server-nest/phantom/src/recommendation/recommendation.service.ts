@@ -28,22 +28,27 @@ export class RecommendationService {
     let topics = [];
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
+    /*     let counter = 0;
+    let board = await this.boardModel.findById(user.boards[0].boardId);
+    while (counter < user.pins.length) {
+      console.log(counter);
+      let pin = await this.pinModel.findById(user.pins[counter].pinId);
+      board.pins[counter] = {
+        pinId: pin._id,
+        topic: pin.topic,
+      };
+      await board.save();
+      counter++;
+    } */
+
     if (!user.history) user.history = [];
     if (!user.followingTopics) user.followingTopics = [];
-    let hrstart = process.hrtime();
     for (let i = 0; i < user.history.length; i++) {
       topics.push(user.history[i].topic);
       if (!pinExist[String(user.history[i].pinId)])
         pinExist[String(user.history[i].pinId)] = true;
     }
-    let hrend = process.hrtime(hrstart);
-    console.info(
-      'Execution time This history loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
-    console.log(user);
-    hrstart = process.hrtime();
+
     for (let i = 0; i < user.followingTopics.length; i++) {
       let followTopic = await this.topicModel.findById(user.followingTopics[i]);
       console.log(followTopic.name);
@@ -51,49 +56,31 @@ export class RecommendationService {
         topics.push(followTopic.name);
       }
     }
-    hrend = process.hrtime(hrstart);
-    console.info(
-      'Execution time This following topics loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
 
-    hrstart = process.hrtime();
     for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
+      console.log(board);
       if (board) {
         if (board.topic && board.topic != '') {
           topics.push(board.topic);
         } else {
           for (let j = 0; j < board.pins.length; j++) {
-            let pin = await this.pinModel.findById(board.pins[j]);
-            if (pin) {
-              topics.push(pin.topic);
-              if (!pinExist[String(pin._id)]) pinExist[String(pin._id)] = true;
-            }
+            console.log(j);
+            topics.push(board.pins[j].topic);
+            if (!pinExist[String(board.pins[j].pinId)])
+              pinExist[String(board.pins[j].pinId)] = true;
           }
           for (let k = 0; k < board.sections.length; k++) {
             for (let j = 0; j < board.sections[k].pins.length; j++) {
-              let pin = await this.pinModel.findById(board.sections[k].pins[j]);
-              if (pin) {
-                topics.push(pin.topic);
-                if (!pinExist[String(pin._id)])
-                  pinExist[String(pin._id)] = true;
-              }
+              topics.push(board.sections[k].pins[j].topic);
+              if (!pinExist[String(board.sections[k].pins[j].pinId)])
+                pinExist[String(board.sections[k].pins[j].pinId)] = true;
             }
           }
         }
       }
     }
-    hrend = process.hrtime(hrstart);
 
-    console.info(
-      'Execution time This board loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
-
-    hrstart = process.hrtime();
     var freq = {};
     for (let i = 0; i < topics.length; i++) {
       if (!freq[topics[i]]) {
@@ -101,16 +88,9 @@ export class RecommendationService {
       }
       freq[topics[i]]++;
     }
-    hrend = process.hrtime(hrstart);
-    console.info(
-      'Execution time This freq loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
 
     let allHome = 0;
     let sortedTopics = [];
-    hrstart = process.hrtime();
     for (let item in freq) {
       sortedTopics.push([item, freq[item]]);
       allHome += freq[item];
@@ -119,16 +99,9 @@ export class RecommendationService {
     sortedTopics.sort(function(a, b) {
       return b[1] - a[1];
     });
-    hrend = process.hrtime(hrstart);
-    console.info(
-      'Execution time This sorting loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
 
     const MAX_HOME = 50;
     let pinsHome = [];
-    hrstart = process.hrtime();
     for (let i = 0; i < sortedTopics.length; i++) {
       let noOfPins = sortedTopics[i][1];
       let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
@@ -144,14 +117,7 @@ export class RecommendationService {
         pinsHome.push(pin);
       }
     }
-    hrend = process.hrtime(hrstart);
 
-    console.info(
-      'Execution time This topics loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
-    hrstart = process.hrtime();
     if (pinsHome.length < MAX_HOME) {
       for (let i = 0; i < sortedTopics.length; i++) {
         let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
@@ -171,29 +137,9 @@ export class RecommendationService {
         }
       }
     }
-    if (pinsHome.length == 0) {
-      let allTopics = await this.topicModel.find({});
-      for (let i = 0; i < allTopics.length; i++) {
-        for (let k = 0; k < allTopics[i].pins.length; k++) {
-          let pin = await this.pinModel.findById(allTopics[i].pins[k]);
-          pinsHome.push(pin);
-          if (pinsHome.length > MAX_HOME) {
-            break;
-          }
-        }
-        if (pinsHome.length > MAX_HOME) {
-          break;
-        }
-      }
-    }
-    pinsHome = await this.shuffle(pinsHome);
-    hrend = process.hrtime(hrstart);
 
-    console.info(
-      'Execution time This last loop took (hr): %ds %dms',
-      hrend[0],
-      hrend[1] / 1000000,
-    );
+    pinsHome = await this.shuffle(pinsHome);
+
     return pinsHome;
   }
 
@@ -342,7 +288,7 @@ export class RecommendationService {
     let pins = [];
     let pinExist = {};
     for (let i = 0; i < board.pins.length; i++) {
-      let similarPins = await this.pinMoreLike(userId, board.pins[i]);
+      let similarPins = await this.pinMoreLike(userId, board.pins[i].pinId);
       for (let j = 0; j < similarPins.length; j++) {
         if (pinExist[String(similarPins[j]._id)] != true) {
           pins.push(similarPins[j]);
@@ -376,7 +322,7 @@ export class RecommendationService {
     }
     for (let i = 0; i < board.pins.length; i++) {
       for (let j = 0; j < pins.length; j++) {
-        if (String(pins[j]._id) == String(board.pins[i])) {
+        if (String(pins[j]._id) == String(board.pins[i].pinId)) {
           pins.splice(j, 1);
         }
       }
@@ -406,7 +352,7 @@ export class RecommendationService {
         for (let i = 0; i < board.sections[k].pins.length; i++) {
           let similarPins = await this.pinMoreLike(
             userId,
-            board.sections[k].pins[i],
+            board.sections[k].pins[i].pinId,
           );
           for (let j = 0; j < similarPins.length; j++) {
             if (pinExist[String(similarPins[j]._id)] != true) {
@@ -438,7 +384,8 @@ export class RecommendationService {
     for (let i = 0; i < board.sections[sectionIndex].pins.length; i++) {
       for (let j = 0; j < pins.length; j++) {
         if (
-          String(pins[j]._id) == String(board.sections[sectionIndex].pins[i])
+          String(pins[j]._id) ==
+          String(board.sections[sectionIndex].pins[i].pinId)
         ) {
           pins.splice(j, 1);
         }

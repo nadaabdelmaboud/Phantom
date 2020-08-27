@@ -21,7 +21,7 @@ export class TopicService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async topicsSeeds(topics) {
     console.log(topics);
     for (var i = 0; i < topics.length; i++) {
@@ -71,27 +71,20 @@ export class TopicService {
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error('not mongoose id');
-    let topic = await this.topicModel.find(
-      { name: topicName },
-      async (err, topic) => {
-        if (err)
-          return await this.createTopic(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            topicName,
-          );
-        return topic;
-      },
-    );
+    let topic = await this.topicModel.find({ name: topicName });
     const pin = await this.pinModel.findById(pinId);
     if (!pin) return false;
     pin.topic = topicName;
-    await pin.save();
+    await pin.save().catch(err => {
+      console.log(err);
+    });
+    console.log(pin);
+    console.log(topic[0]);
     if (topic && pin) {
       topic[0].pins.push(pinId);
-      await topic[0].save();
+      await topic[0].save().catch(err => {
+        console.log(err);
+      });
       return true;
     }
     return false;
