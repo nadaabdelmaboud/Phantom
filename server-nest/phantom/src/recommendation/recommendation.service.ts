@@ -21,13 +21,13 @@ export class RecommendationService {
   ) {}
   async homeFeed(userId): Promise<Object> {
     console.log('fff');
-    console.log(process.hrtime());
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let pinExist = {};
     let topics = [];
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
+    console.log(user.followingTopics);
     /*     let counter = 0;
     let board = await this.boardModel.findById(user.boards[0].boardId);
     while (counter < user.pins.length) {
@@ -59,13 +59,11 @@ export class RecommendationService {
 
     for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
-      console.log(board);
       if (board) {
         if (board.topic && board.topic != '') {
           topics.push(board.topic);
         } else {
           for (let j = 0; j < board.pins.length; j++) {
-            console.log(j);
             topics.push(board.pins[j].topic);
             if (!pinExist[String(board.pins[j].pinId)])
               pinExist[String(board.pins[j].pinId)] = true;
