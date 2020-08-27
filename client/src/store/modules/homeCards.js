@@ -9,6 +9,7 @@ const state = {
   userFirstName: "",
   userLastName: "",
   numberofFollowers: 0,
+  pinCreatorId: ""
 };
 
 const mutations = {
@@ -36,6 +37,9 @@ const mutations = {
   setnumberofFollowers(state, numberofFollowers) {
     state.numberofFollowers = numberofFollowers;
   },
+  setpinCreatorId(state, pinCreatorId) {
+    state.pinCreatorId = pinCreatorId;
+  }
 };
 
 const actions = {
@@ -44,22 +48,23 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("me/home")
-      .then((response) => {
+      .then(response => {
         commit("sethomeCards", response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
 
-  Postpage({ commit }, postPageID) {
+  async Postpage({ commit }, postPageID) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .get("/pins/" + postPageID)
-      .then((response) => {
+      .then(response => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
+        commit("setpinCreatorId", res.pin.creator.id);
         commit("setpostTitle", res.pin.title);
         commit("setpostDescribtion", res.pin.note);
         commit("setuserFirstName", res.pin.creator.firstName);
@@ -67,21 +72,22 @@ const actions = {
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 const getters = {
-  userHomePage: (state) => state.homeCards,
-  postImage: (state) => state.postImage,
-  userImageId: (state) => state.userImage,
-  postTitle: (state) => state.postTitle,
-  postDescribtion: (state) => state.postDescribtion,
-  userFirstName: (state) => state.userFirstName,
-  userLastName: (state) => state.userLastName,
-  numberofFollowers: (state) => state.numberofFollowers,
+  userHomePage: state => state.homeCards,
+  postImage: state => state.postImage,
+  userImageId: state => state.userImage,
+  postTitle: state => state.postTitle,
+  postDescribtion: state => state.postDescribtion,
+  userFirstName: state => state.userFirstName,
+  userLastName: state => state.userLastName,
+  numberofFollowers: state => state.numberofFollowers,
+  pinCreatorId: state => state.pinCreatorId
 };
 
 export default {
@@ -89,5 +95,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

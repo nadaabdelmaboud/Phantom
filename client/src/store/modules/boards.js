@@ -6,7 +6,7 @@ const state = {
   chosenBoardId: "",
   currentBoard: "",
   collaborators: [],
-  moreLike:[]
+  moreLike: []
 };
 
 const mutations = {
@@ -25,8 +25,8 @@ const mutations = {
   setCollaborators(state, collaborators) {
     state.collaborators = collaborators;
   },
-  setMoreLike(state, more){
-    state.moreLike = more
+  setMoreLike(state, more) {
+    state.moreLike = more;
   }
 };
 
@@ -67,6 +67,19 @@ const actions = {
       .get("boards/" + boardId)
       .then(response => {
         commit("setCurrentBoard", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  //not my boards another user boards
+  getUserBoards({commit},userId){
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .get("users/"+ userId+"/boards")
+      .then(response => {
+        commit("setBoards", response.data);
       })
       .catch(error => {
         console.log(error);
@@ -171,15 +184,15 @@ const actions = {
         console.log(error);
       });
   },
-  moreLike({commit},boardId){
+  moreLike({ commit }, boardId) {
     axios
-    .get("more/boards/"+boardId)
-    .then(response => {
-      commit("setMoreLike", response.data);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .get("more/boards/" + boardId)
+      .then(response => {
+        commit("setMoreLike", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 

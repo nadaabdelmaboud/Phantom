@@ -1,36 +1,34 @@
 <template>
   <div class="notificationBody" id="mydiv">
-      <NotificationCard/>
+    <NotificationCard />
   </div>
 </template>
 
 <script>
 //import { default as getImage } from "../mixins/getImage";
 //import { mapGetters } from "vuex";
-import NotificationCard from "./NotificationCard"
+import NotificationCard from "./NotificationCard";
 export default {
   name: "BoardPins",
   data: function() {
     return {
-        notify:null
+      notify: null
     };
   },
   components: {
-      NotificationCard
+    NotificationCard
   },
   computed: {},
-  created() {
-     
+  created() {},
+  mounted() {
+    this.notify = document.getElementsByClassName("notificationBody")[0];
+    console.log(this.notify);
   },
-  mounted(){
-        this.notify = document.getElementsByClassName("notificationBody")[0];
-        console.log(this.notify)
+  beforeDestroy() {
+    this.notify.classList.add("away");
   },
-  beforeDestroy(){
-      this.notify.classList.add("away");
-  },
-  destroyed(){
-      console.log("going away")
+  destroyed() {
+    console.log("going away");
   }
 };
 </script>
@@ -45,7 +43,7 @@ export default {
   box-shadow: rgba(0, 0, 0, 0.1) -3px 4px 14px 0px;
   overscroll-behavior: none;
   background-color: #fff;
-  position:fixed;
+  position: fixed;
   border-radius: 16px;
   right: 8px;
   bottom: 88px;
@@ -53,23 +51,23 @@ export default {
   z-index: 100;
   padding: 20px;
 }
-.away{
-    animation: away 10ms linear forwards;
+.away {
+  animation: away 10ms linear forwards;
 }
-@keyframes dropDown{
-    from{
-        bottom: 168px;
-    }
-    to{
-        bottom:88px;
-    }
+@keyframes dropDown {
+  from {
+    bottom: 168px;
+  }
+  to {
+    bottom: 88px;
+  }
 }
-@keyframes away{
-    from{
-        opacity: 1;
-    }
-    to{
-        opacity: 0;
-    }
+@keyframes away {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 </style>
