@@ -22,10 +22,31 @@ import { RecommendationService } from './recommendation.service';
 export class RecommendationController {
   constructor(private RecommendationService: RecommendationService) {}
   @UseGuards(AuthGuard('jwt'))
-  @Get('/me/home')
-  async getHomeFeed(@Request() req) {
+  @Put('/home/me')
+  async generateHomeFeed(@Request() req) {
+    req.setTimeout(0);
     let userId = req.user._id;
+    console.log(userId);
     let home = await this.RecommendationService.homeFeed(userId);
+    if (home) {
+      return { success: 'home is generated succissfully' };
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/home')
+  async getHomeFeed(
+    @Request() req,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    let userId = req.user._id;
+    let home = await this.RecommendationService.getHomeFeed(
+      userId,
+      limit,
+      offset,
+    );
     if (home) {
       return home;
     } else {

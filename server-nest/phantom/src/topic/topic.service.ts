@@ -140,6 +140,7 @@ export class TopicService {
     //console.log(12);
     if (await this.UserService.followTopic(userId, topicId)) {
       // console.log(34);
+      if (!topic.followers) topic.followers = [];
       topic.followers.push(userId);
       await this.topicModel.updateOne(
         { _id: topicId },

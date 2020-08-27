@@ -48,6 +48,7 @@ export interface user extends Document {
   }>;
   confirm: Boolean;
   fcmToken: String;
+  homeFeed: Array<Object>;
   followingTopics: Array<mongoose.Types.ObjectId>;
   notifications: [{}];
   offlineNotifications: [{}];

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { board } from 'src/types/board';
@@ -19,27 +19,27 @@ export class RecommendationService {
     private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
+  async getHomeFeed(userId, limit: number, offset: number) {
+    if ((await this.ValidationService.checkMongooseID([userId])) == 0)
+      throw new Error('not valid id');
+    let user = await this.UserService.getUserById(userId);
+    if (!user) throw new Error('no such user');
+    if (!user.homeFeed) user.homeFeed = [];
+    if (offset < 0 || offset + limit > user.homeFeed.length) {
+      throw new NotFoundException('invalid offset limit || not enough data');
+    }
+    return user.homeFeed.slice(offset, offset + limit);
+  }
   async homeFeed(userId): Promise<Object> {
-    console.log('fff');
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let pinExist = {};
     let topics = [];
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
+    user.homeFeed = [];
+    await user.save();
     console.log(user.followingTopics);
-    /*     let counter = 0;
-    let board = await this.boardModel.findById(user.boards[0].boardId);
-    while (counter < user.pins.length) {
-      console.log(counter);
-      let pin = await this.pinModel.findById(user.pins[counter].pinId);
-      board.pins[counter] = {
-        pinId: pin._id,
-        topic: pin.topic,
-      };
-      await board.save();
-      counter++;
-    } */
 
     if (!user.history) user.history = [];
     if (!user.followingTopics) user.followingTopics = [];
@@ -56,10 +56,10 @@ export class RecommendationService {
         topics.push(followTopic.name);
       }
     }
-
+    console.log('here1');
     for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel.findById(user.boards[i].boardId);
-      if (board) {
+      if (board && board.personalization) {
         if (board.topic && board.topic != '') {
           topics.push(board.topic);
         } else {
@@ -78,6 +78,7 @@ export class RecommendationService {
         }
       }
     }
+    console.log('here2');
 
     var freq = {};
     for (let i = 0; i < topics.length; i++) {
@@ -98,47 +99,23 @@ export class RecommendationService {
       return b[1] - a[1];
     });
 
-    const MAX_HOME = 50;
     let pinsHome = [];
+
     for (let i = 0; i < sortedTopics.length; i++) {
-      let noOfPins = sortedTopics[i][1];
       let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
       for (let k = 0; k < topic.pins.length; k++) {
-        if (k == noOfPins) {
-          break;
-        }
         if (pinExist[String(topic.pins[k])] == true) {
           continue;
         }
         pinExist[String(topic.pins[k])] = true;
         let pin = await this.pinModel.findById(topic.pins[k]);
+        user.homeFeed.push(pin);
+        await user.save();
         pinsHome.push(pin);
       }
     }
 
-    if (pinsHome.length < MAX_HOME) {
-      for (let i = 0; i < sortedTopics.length; i++) {
-        let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
-        for (let k = 0; k < topic.pins.length; k++) {
-          if (pinsHome.length > MAX_HOME) {
-            break;
-          }
-          if (pinExist[String(topic.pins[k])] == true) {
-            continue;
-          }
-          pinExist[String(topic.pins[k])] = true;
-          let pin = await this.pinModel.findById(topic.pins[k]);
-          pinsHome.push(pin);
-        }
-        if (pinsHome.length > MAX_HOME) {
-          break;
-        }
-      }
-    }
-
-    pinsHome = await this.shuffle(pinsHome);
-
-    return pinsHome;
+    return true;
   }
 
   async shuffle(a) {
