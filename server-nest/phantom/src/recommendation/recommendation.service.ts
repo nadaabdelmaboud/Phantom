@@ -100,21 +100,31 @@ export class RecommendationService {
     });
 
     let pinsHome = [];
-
-    for (let i = 0; i < sortedTopics.length; i++) {
-      let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
-      for (let k = 0; k < topic.pins.length; k++) {
-        if (pinExist[String(topic.pins[k])] == true) {
-          continue;
-        }
-        pinExist[String(topic.pins[k])] = true;
-        let pin = await this.pinModel.findById(topic.pins[k]);
-        user.homeFeed.push(pin);
-        await user.save();
-        pinsHome.push(pin);
-      }
+    let count = 0;
+    let out = 0;
+    if (sortedTopics.length == 0) {
+      throw new NotFoundException();
     }
-
+    while (out <= sortedTopics.length) {
+      for (let i = 0; i < sortedTopics.length; i++) {
+        let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
+        for (let k = count; k < count + 10; k++) {
+          if (k >= topic.pins.length) {
+            out++;
+            break;
+          }
+          if (pinExist[String(topic.pins[k])] == true) {
+            continue;
+          }
+          pinExist[String(topic.pins[k])] = true;
+          let pin = await this.pinModel.findById(topic.pins[k]);
+          user.homeFeed.push(pin);
+          await user.save();
+          pinsHome.push(pin);
+        }
+      }
+      count += 10;
+    }
     return true;
   }
 
