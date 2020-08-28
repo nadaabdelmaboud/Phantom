@@ -17,16 +17,17 @@
       </div>
     </div>
 
-<div class="flexWrap">
-    <div class="masonry">
-      <HomeCard
-       v-for="b in board.pins" 
-       :key="b.pin._id"
-       :cardImage="b.pin.imageId"
-       :postPageId="b.pin._id" 
-       class="masonryItem"/>
+    <div class="flexWrap">
+      <div class="masonry">
+        <HomeCard
+          v-for="b in board.pins"
+          :key="b.pin._id"
+          :cardImage="b.pin.imageId"
+          :postPageId="b.pin._id"
+          class="masonryItem"
+        />
+      </div>
     </div>
-</div>
   </div>
 </template>
 
@@ -59,7 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/MasonryGrid";
-.flexWrap{
+.flexWrap {
   margin: auto;
   width: 90%;
 }

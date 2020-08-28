@@ -18,6 +18,7 @@ export const User = new Schema({
   sortType: String,
   gender: String,
   socketId: String,
+  homeFeed: Array(Object),
   history: Array({
     topic: String,
     pinId: mongoose.Types.ObjectId,

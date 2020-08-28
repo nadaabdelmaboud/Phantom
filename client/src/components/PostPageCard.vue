@@ -48,14 +48,20 @@
               </div>
               <div class="followbutton">
                 <button
-                  v-if="followuser == false"
+                  v-if="
+                    (this.isFollowed == false && firstTime == true) ||
+                      (followPinCreatorBtn == false && firstTime == false)
+                  "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
                 >
                   Follow
                 </button>
                 <button
-                  v-if="followuser == true"
+                  v-if="
+                    (this.isFollowed == true && firstTime == true) ||
+                      (followPinCreatorBtn == true && firstTime == false)
+                  "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
                 >
@@ -482,9 +488,10 @@ export default {
   name: "postpagecard",
   data: function() {
     return {
-      followuser: false,
+      firstTime: true,
+      followPinCreatorBtn: false,
       show: false,
-      typingComment: false,
+      typingComment: false
     };
   },
   mixins: [getImage],
@@ -498,10 +505,15 @@ export default {
       }, 2000);
     },
     followUnfollowUser() {
-      this.followuser = !this.followuser;
-      if (this.followuser == true) {
+      if (this.firstTime == true) this.followPinCreatorBtn = this.isFollowed;
+      if (this.followPinCreatorBtn == false) {
         this.showToast();
+        this.$store.dispatch("postPage/followPinCreator", this.pinCreatorId);
+      } else {
+        this.$store.dispatch("postPage/unFollowPinCreator", this.pinCreatorId);
       }
+      this.firstTime = false;
+      this.followPinCreatorBtn = !this.followPinCreatorBtn;
     },
     showDropdownlist() {
       this.show = !this.show;
@@ -528,9 +540,9 @@ export default {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
         token: token,
-        text: inputField.value,
+        text: inputField.value
       });
-      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL",token)
+      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL", token);
       socket.on("sendComment", function(data) {
         console.log("NIHAAAAAAAAAAAAAAAAAL");
         comments.innerHTML += "<p>" + data.commentText + "</p>";
@@ -539,7 +551,7 @@ export default {
         "postPage/postPageAddedComments",
         this.$route.params.postPageId
       );
-    },
+    }
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -556,7 +568,9 @@ export default {
       userFirstName: "homeCards/userFirstName",
       userLastName: "homeCards/userLastName",
       numberofFollowers: "homeCards/numberofFollowers",
-    }),
-  },
+      pinCreatorId: "homeCards/pinCreatorId",
+      isFollowed: "phantomUser/isFollowed"
+    })
+  }
 };
 </script>

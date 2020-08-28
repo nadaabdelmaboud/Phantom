@@ -28,55 +28,54 @@ export default {
   data: function() {
     return {};
   },
-  props:{
-      imageIds:{
-          type:Array,
-          default: () => []
-      }
+  props: {
+    imageIds: {
+      type: Array,
+      default: () => []
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
-.imageGrid{
-    display: grid;
-    grid-template: 80px 80px/ 80px 80px 80px;
-    grid-template-areas: 
+.imageGrid {
+  display: grid;
+  grid-template: 80px 80px/ 80px 80px 80px;
+  grid-template-areas:
     "img1 img2 img3"
     "img1 img4 img5";
-    gap: 3px 3px;
-    align-content: center;
-    justify-content: start;
-    margin: 15px 0;
+  gap: 3px 3px;
+  align-content: center;
+  justify-content: start;
+  margin: 15px 0;
 }
-.img1{
-    grid-area: img1;
+.img1 {
+  grid-area: img1;
 }
-.img2{
-    grid-area: img2;
+.img2 {
+  grid-area: img2;
 }
-.img3{
-    grid-area: img3;
+.img3 {
+  grid-area: img3;
 }
-.img4{
-    grid-area: img4;
+.img4 {
+  grid-area: img4;
 }
-.img5{
-     
-    grid-area: img5;
+.img5 {
+  grid-area: img5;
 }
-.img{
-    border-radius: 16px;
- background-color: $offWhite;
+.img {
+  border-radius: 16px;
+  background-color: $offWhite;
 }
-.card{
-    border: none;
-      border-radius: 16px;
-      padding: 10px;
-      transition: 0.2s linear;
+.card {
+  border: none;
+  border-radius: 16px;
+  padding: 10px;
+  transition: 0.2s linear;
 }
-.card:hover{
-    background-color: $lightPink;
+.card:hover {
+  background-color: $lightPink;
 }
 </style>

@@ -2,10 +2,15 @@ import axios from "axios";
 
 const state = {
   pin: "",
-  demo: ""
+  demo: "",
+  pins:[]
 };
 
-const mutations = {};
+const mutations = {
+  setPins(state, pins){
+    state.pins = pins
+  }
+};
 
 const actions = {
   createPin({ state, commit, dispatch }, { pin, label }) {
@@ -46,12 +51,55 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  getmySavedPins(){
+    return axios.get("me/savedPins");
+  },
+  getmyCreatedPins(){
+    return axios.get("me/pins");
+  },
+  async getMyPins({dispatch,commit}){
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    let mysaved =[];
+    let mycreated =[];
+    try{
+      mysaved = await dispatch("getmySavedPins");
+      mysaved = mysaved.data;
+    }
+    catch(err){
+      console.log(err);
+    }
+    try{
+      mycreated = await dispatch("getmyCreatedPins");
+      mycreated = mycreated.data
+    }
+    catch(err){
+      console.log(err);
+    }
+    let pins = mysaved.concat(mycreated);
+
+    pins.sort(function(a, b) {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
+
+    commit("setPins",pins);
+    
+
+  },
+  getUserPins(){
+
   }
+};
+
+const getters = {
+  pins: state => state.pins
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
+  getters
 };

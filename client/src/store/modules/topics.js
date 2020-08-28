@@ -1,14 +1,14 @@
 import axios from "axios";
 
 const state = {
-  topics: [],
+  topics: []
 };
 
 const mutations = {
   setTopics(state, topics) {
     state.topics = topics;
   },
-  demo() {},
+  demo() {}
 };
 
 const actions = {
@@ -18,7 +18,7 @@ const actions = {
       .then(() => {
         commit("demo");
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -28,7 +28,7 @@ const actions = {
       .then(() => {
         commit("demo");
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -37,18 +37,18 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("topic")
-      .then((response) => {
+      .then(response => {
         let topics = response.data;
         commit("setTopics", topics);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 const getters = {
-  topics: (state) => state.topics,
+  topics: state => state.topics
 };
 
 export default {
@@ -56,5 +56,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

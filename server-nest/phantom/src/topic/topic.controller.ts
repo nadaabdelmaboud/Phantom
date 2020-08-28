@@ -114,7 +114,7 @@ export class TopicController {
 
   @Post('/createTopics')
   async createTopics(@Body('topics') topics: Array<object>, @Body('topics') images: Array<object>) {
-    let topic = await this.TopicService.topicsSeeds(topics, images);
+    let topic = await this.TopicService.topicsSeeds(topics);
     if (topic) {
       return topic;
     } else {
