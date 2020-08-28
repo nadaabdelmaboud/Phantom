@@ -22,8 +22,7 @@ export class TopicService {
     private UserService: UserService,
     private ValidationService: ValidationService,
   ) { }
-  async topicsSeeds(topics) {
-    console.log(topics);
+  async topicsSeeds(topics, images) {
     for (var i = 0; i < topics.length; i++) {
       let topic = await this.createTopic(
         topics[i].imageId,
