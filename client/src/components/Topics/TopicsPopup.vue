@@ -32,11 +32,11 @@ export default {
   name: "followTopics",
   data: function() {
     return {
-      picked: []
+      picked: [],
     };
   },
   components: {
-    TopicsCard
+    TopicsCard,
   },
   methods: {
     addTopic(name) {
@@ -47,7 +47,7 @@ export default {
       }
     },
     followTopics() {
-      this.picked.forEach(topic => {
+      this.picked.forEach((topic) => {
         console.log(topic);
         this.$store.dispatch("topics/followTopic", topic);
       });
@@ -56,16 +56,16 @@ export default {
     closePopup(event) {
       if (event.target.id == "createBoard")
         this.$store.commit("popUpsState/toggleTopicsPopup");
-    }
+    },
   },
   computed: {
     ...mapGetters({
-      topics: "topics/topics"
-    })
+      topics: "topics/topics",
+    }),
   },
   mounted() {
     this.$store.dispatch("topics/getTopics");
-  }
+  },
 };
 </script>
 
