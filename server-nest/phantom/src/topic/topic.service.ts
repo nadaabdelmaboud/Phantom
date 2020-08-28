@@ -161,7 +161,7 @@ export class TopicService {
     //console.log(4);
     await user.save();
     //console.log(5)
-    await this.topicModel.update({}, { followers: [] });
+  //  await this.topicModel.update({}, { followers: [] });
 
     return 1;
   }
