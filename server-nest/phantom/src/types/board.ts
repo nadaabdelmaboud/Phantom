@@ -2,6 +2,7 @@ import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
 export interface section extends Document {
   sectionName: String;
+  more: Array<Object>;
   pins: Array<{
     pinId: mongoose.Types.ObjectId;
     topic: String;
@@ -13,6 +14,7 @@ export interface board extends Document {
   url: String;
   name: String;
   startDate: String;
+  more: Array<Object>;
   endDate: String;
   status: String;
   topic: String;

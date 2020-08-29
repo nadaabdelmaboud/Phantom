@@ -17,6 +17,7 @@ export const Board = new Schema({
     id: mongoose.Types.ObjectId,
     profileUrl: String,
   },
+  more: Array(Object),
   coverImages: [mongoose.Types.ObjectId],
   pins: Array({
     pinId: mongoose.Types.ObjectId,
@@ -27,6 +28,7 @@ export const Board = new Schema({
     {
       sectionId: mongoose.Types.ObjectId,
       sectionName: String,
+      more: Array(Object),
       pins: Array({
         pinId: mongoose.Types.ObjectId,
         topic: String,

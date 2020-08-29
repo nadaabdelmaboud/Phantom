@@ -6,7 +6,6 @@ import { pin } from 'src/types/pin';
 import { topic } from 'src/types/topic';
 import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
-import { pipe } from 'rxjs';
 import { user } from 'src/types/user';
 
 @Injectable()
@@ -25,7 +24,9 @@ export class RecommendationService {
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
     if (!user.homeFeed) user.homeFeed = [];
-    if (offset < 0 || offset + limit > user.homeFeed.length) {
+    console.log(user.homeFeed.length);
+    console.log(offset + limit);
+    if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
     return user.homeFeed.slice(offset, offset + limit);
@@ -100,19 +101,27 @@ export class RecommendationService {
     });
 
     let pinsHome = [];
-
-    for (let i = 0; i < sortedTopics.length; i++) {
-      let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
-      for (let k = 0; k < topic.pins.length; k++) {
-        if (pinExist[String(topic.pins[k])] == true) {
-          continue;
+    let count = 0;
+    let out = 0;
+    while (out < sortedTopics.length) {
+      for (let i = 0; i < sortedTopics.length; i++) {
+        let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
+        for (let k = count; k < count + 10; k++) {
+          if (k >= topic.pins.length) {
+            out++;
+            break;
+          }
+          if (pinExist[String(topic.pins[k])] == true) {
+            continue;
+          }
+          pinExist[String(topic.pins[k])] = true;
+          let pin = await this.pinModel.findById(topic.pins[k]);
+          user.homeFeed.push(pin);
+          await user.save();
+          pinsHome.push(pin);
         }
-        pinExist[String(topic.pins[k])] = true;
-        let pin = await this.pinModel.findById(topic.pins[k]);
-        user.homeFeed.push(pin);
-        await user.save();
-        pinsHome.push(pin);
       }
+      count += 10;
     }
 
     return true;
@@ -211,22 +220,61 @@ export class RecommendationService {
     followers = await this.shuffle(followers);
     return followers;
   }
-  async pinMoreLike(userId, pinId) {
+  async pinMoreLike(
+    userId,
+    pinId,
+    isboard,
+    limit,
+    board,
+    boardExist,
+    sectionIndex,
+  ) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0)
       throw new Error('not valid id');
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
     let pin = await this.pinModel.findById(pinId);
     if (!pin) throw new Error('no such user');
+    pin.more = [];
+    await pin.save();
     let topic = await this.topicModel.findOne({ name: pin.topic });
     let pins = [];
     let pinExist = {};
-
+    if (isboard) {
+      for (let i = 0; i < topic.pins.length; i++) {
+        if (pins.length >= Number(limit)) {
+          break;
+        }
+        if (String(topic.pins[i]) != String(pinId)) {
+          let pinTopic = await this.pinModel.findById(topic.pins[i]);
+          if (pinTopic) {
+            if (
+              boardExist[String(pinTopic._id)] != true &&
+              pinExist[String(pinTopic._id)] != true
+            ) {
+              if (sectionIndex && sectionIndex != null) {
+                board.sections[sectionIndex].more.push(pinTopic);
+                await board.save();
+              } else {
+                board.more.push(pinTopic);
+                await board.save();
+              }
+              pins.push(pinTopic);
+            }
+            boardExist[String(pinTopic._id)] = true;
+            pinExist[String(pinTopic._id)] = true;
+          }
+        }
+      }
+      return pins;
+    }
     for (let i = 0; i < topic.pins.length; i++) {
       if (String(topic.pins[i]) != String(pinId)) {
         let pinTopic = await this.pinModel.findById(topic.pins[i]);
         if (pinTopic) {
           if (pinExist[String(pinTopic._id)] != true) {
+            pin.more.push(pinTopic);
+            await pin.save();
             pins.push(pinTopic);
           }
           pinExist[String(pinTopic._id)] = true;
@@ -244,13 +292,14 @@ export class RecommendationService {
         allpins[i].title.includes(String(pin.note))
       ) {
         if (pinExist[String(allpins[i]._id)] != true) {
+          pin.more.push(allpins[i]);
+          await pin.save();
           pins.push(allpins[i]);
         }
         pinExist[String(allpins[i]._id)] = true;
       }
     }
     console.log(pins);
-    pins = await this.shuffle(pins);
     return pins;
   }
   async boardMoreLike(userId, boardId) {
@@ -260,10 +309,21 @@ export class RecommendationService {
     if (!user) throw new Error('no such user');
     let board = await this.boardModel.findById(boardId);
     if (!board) throw new Error('no such user');
+    board.more = [];
+    await board.save();
     let pins = [];
     let pinExist = {};
+    let limit = board.pins.length > 30 ? 10 : 100;
     for (let i = 0; i < board.pins.length; i++) {
-      let similarPins = await this.pinMoreLike(userId, board.pins[i].pinId);
+      let similarPins = await this.pinMoreLike(
+        userId,
+        board.pins[i].pinId,
+        true,
+        limit,
+        board,
+        pinExist,
+        null,
+      );
       for (let j = 0; j < similarPins.length; j++) {
         if (pinExist[String(similarPins[j]._id)] != true) {
           pins.push(similarPins[j]);
@@ -277,6 +337,8 @@ export class RecommendationService {
         let pinTopic = await this.pinModel.findById(topic.pins[i]);
         if (pinTopic) {
           if (pinExist[String(pinTopic._id)] != true) {
+            board.more.push(pinTopic);
+            await board.save();
             pins.push(pinTopic);
           }
           pinExist[String(pinTopic._id)] = true;
@@ -290,20 +352,15 @@ export class RecommendationService {
         allpins[i].title.includes(String(board.name))
       ) {
         if (pinExist[String(allpins[i]._id)] != true) {
+          board.more.push(allpins[i]);
+          await board.save();
           pins.push(allpins[i]);
         }
         pinExist[String(allpins[i]._id)] = true;
       }
     }
-    for (let i = 0; i < board.pins.length; i++) {
-      for (let j = 0; j < pins.length; j++) {
-        if (String(pins[j]._id) == String(board.pins[i].pinId)) {
-          pins.splice(j, 1);
-        }
-      }
-    }
-    pins = await this.shuffle(pins);
-    return pins;
+
+    return true;
   }
   async sectionMoreLike(userId, boardId, sectionId) {
     if (
@@ -324,10 +381,18 @@ export class RecommendationService {
     for (let k = 0; k < board.sections.length; k++) {
       if (String(sectionId) == String(board.sections[k]._id)) {
         sectionIndex = k;
+        board.sections[k].more = [];
+        await board.save();
+        let limit = board.sections[k].pins.length > 30 ? 10 : 100;
         for (let i = 0; i < board.sections[k].pins.length; i++) {
           let similarPins = await this.pinMoreLike(
             userId,
             board.sections[k].pins[i].pinId,
+            true,
+            limit,
+            board,
+            pinExist,
+            sectionIndex,
           );
           for (let j = 0; j < similarPins.length; j++) {
             if (pinExist[String(similarPins[j]._id)] != true) {
@@ -351,22 +416,63 @@ export class RecommendationService {
         )
       ) {
         if (pinExist[String(allpins[i]._id)] != true) {
+          board.sections[sectionIndex].more.push(allpins[i]);
+          await board.save();
           pins.push(allpins[i]);
         }
         pinExist[String(allpins[i]._id)] = true;
       }
     }
-    for (let i = 0; i < board.sections[sectionIndex].pins.length; i++) {
-      for (let j = 0; j < pins.length; j++) {
+
+    return true;
+  }
+  async getPinMoreLike(pinId, limit, offset) {
+    if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
+      throw new Error('not valid id');
+    let pin = await this.pinModel.findById(pinId);
+    if (!pin) throw new Error('no such pin');
+    if (!pin.more) pin.more = [];
+    console.log(pin.more.length);
+    console.log(offset + limit);
+    if (Number(Number(offset) + Number(limit)) > pin.more.length) {
+      throw new NotFoundException('invalid offset limit || not enough data');
+    }
+    return pin.more.slice(offset, offset + limit);
+  }
+  async getBoardMoreLike(boardId, offset, limit) {
+    if ((await this.ValidationService.checkMongooseID([boardId])) == 0)
+      throw new Error('not valid id');
+    let board = await this.boardModel.findById(boardId);
+    if (!board) throw new Error('no such board');
+    if (!board.more) board.more = [];
+    console.log(board.more.length);
+    console.log(offset + limit);
+    if (Number(Number(offset) + Number(limit)) > board.more.length) {
+      throw new NotFoundException('invalid offset limit || not enough data');
+    }
+    return board.more.slice(offset, offset + limit);
+  }
+  async getSectionMoreLike(boardId, sectionId, offset, limit) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, sectionId])) == 0
+    )
+      throw new Error('not valid id');
+    let board = await this.boardModel.findById(boardId);
+    if (!board) throw new Error('no such board');
+    for (let i = 0; i < board.sections.length; i++) {
+      if (String(board.sections[i]._id) == String(sectionId)) {
+        if (!board.sections[i].more) board.sections[i].more = [];
+        console.log(board.sections[i].more.length);
+        console.log(offset + limit);
         if (
-          String(pins[j]._id) ==
-          String(board.sections[sectionIndex].pins[i].pinId)
+          Number(Number(offset) + Number(limit)) > board.sections[i].more.length
         ) {
-          pins.splice(j, 1);
+          throw new NotFoundException(
+            'invalid offset limit || not enough data',
+          );
         }
+        return board.sections[i].more.slice(offset, offset + limit);
       }
     }
-    pins = await this.shuffle(pins);
-    return pins;
   }
 }

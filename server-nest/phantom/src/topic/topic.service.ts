@@ -21,7 +21,7 @@ export class TopicService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async topicsSeeds(topics) {
     for (var i = 0; i < topics.length; i++) {
       let topic = await this.createTopic(
@@ -131,7 +131,10 @@ export class TopicService {
     const user = await this.UserService.getUserById(userId);
 
     if (!user)
-      throw new HttpException('user id is not correct', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
     const topic = await this.getTopicById(topicId, userId);
     //console.log(11);
     if (!topic)
@@ -156,30 +159,35 @@ export class TopicService {
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     //console.log(100000);
     if (await this.checkFollowTopic(userId, topicId))
-      throw new HttpException('you are already follow this topic', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'you are already follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
     //console.log(100);
 
     const user = await this.UserService.getUserById(userId);
     //console.log(0);
     if (!user)
-      throw new HttpException('user id is not correct', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
     const topic = await this.getTopicById(topicId, userId);
+
     //console.log(1);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
-    if (!topic.followers)
-      topic.followers = [];
+    if (!topic.followers) topic.followers = [];
     topic.followers.push(userId);
     //console.log(2);
     await topic.save();
     //console.log(3);
-    if (!user.followingTopics)
-      user.followingTopics = [];
+    if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
     //console.log(4);
     await user.save();
     //console.log(5)
-  //  await this.topicModel.update({}, { followers: [] });
+    //  await this.topicModel.update({}, { followers: [] });
 
     return 1;
   }
@@ -187,22 +195,34 @@ export class TopicService {
   async unfollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    if (!await this.checkFollowTopic(userId, topicId))
-      throw new HttpException('you dont follow this topic', HttpStatus.BAD_REQUEST);
+    if (!(await this.checkFollowTopic(userId, topicId)))
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
     const user = await this.UserService.getUserById(userId);
     if (!user)
-      throw new HttpException('user id is not correct', HttpStatus.UNAUTHORIZED);
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
     const topic = await this.getTopicById(topicId, userId);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers)
-      throw new HttpException('you dont follow this topic', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
     for (let i = 0; i < topic.followers.length; i++)
       if (String(userId) == String(topic.followers[i]))
         topic.followers.splice(i, 1);
     await topic.save();
     if (!user.followingTopics)
-      throw new HttpException('you dont follow this topic', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
     for (let i = 0; i < user.followingTopics.length; i++)
       if (String(topicId) == String(user.followingTopics[i]))
         user.followingTopics.splice(i, 1);
@@ -221,4 +241,3 @@ export class TopicService {
     return topics;
   }
 }
-
