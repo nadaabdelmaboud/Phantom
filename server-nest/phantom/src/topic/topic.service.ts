@@ -34,6 +34,12 @@ export class TopicService {
     }
     return true;
   }
+  async editTopic(topics){
+    for(let i=0;i<topics.length;i++){
+       await this.topicModel.findOneAndUpdate({name:topics[i].name},{imageId:topics[i].imageId});
+    }
+    return 1;
+  }
   async createTopic(imageId, description, imageWidth, imageHeight, name) {
     if (!this.ValidationService.checkMongooseID([imageId]))
       throw new Error('not mongoose id');

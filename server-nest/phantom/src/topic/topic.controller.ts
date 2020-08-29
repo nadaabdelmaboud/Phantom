@@ -121,6 +121,16 @@ export class TopicController {
       return new ForbiddenException();
     }
   }
+  @Put('/edit')
+  async addImageToTopic(@Body('topics') topics: Array<object>) {
+    let topic = await this.TopicService.editTopic(topics);
+    if (topic) {
+      return topic;
+    } else {
+      return new ForbiddenException();
+    }
+  }
+
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/follow-topic/:topic_id')
