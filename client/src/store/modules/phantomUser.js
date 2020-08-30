@@ -27,10 +27,10 @@ const actions = {
         console.log(error);
       });
   },
-  isFollowed({ commit }, userId) {
+  async isFollowed({ commit }, userId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .get("me/follow-user/" + userId)
       .then(response => {
         commit("setIsFollowed", response.data.follow);

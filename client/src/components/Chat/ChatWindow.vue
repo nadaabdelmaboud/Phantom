@@ -10,11 +10,11 @@
             toChat({
               name: f.firstName + ' ' + f.lastName,
               id: f._id,
-              imageId: ''
+              imageId: f.profileImage
             })
           "
         >
-          <img :src="getImage(f._id)" />
+          <img :src="getImage(f.profileImage)" />
           <span>{{ f.firstName }}</span>
           <span> {{ f.lastName }}</span>
         </div>

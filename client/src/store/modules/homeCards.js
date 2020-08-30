@@ -8,7 +8,8 @@ const state = {
   postDescribtion: "",
   userFirstName: "",
   userLastName: "",
-  numberofFollowers: 0
+  numberofFollowers: 0,
+  pinCreatorId: ""
 };
 
 const mutations = {
@@ -35,6 +36,9 @@ const mutations = {
   },
   setnumberofFollowers(state, numberofFollowers) {
     state.numberofFollowers = numberofFollowers;
+  },
+  setpinCreatorId(state, pinCreatorId) {
+    state.pinCreatorId = pinCreatorId;
   }
 };
 
@@ -52,14 +56,15 @@ const actions = {
       });
   },
 
-  Postpage({ commit }, postPageID) {
+  async Postpage({ commit }, postPageID) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .get("/pins/" + postPageID)
       .then(response => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
+        commit("setpinCreatorId", res.pin.creator.id);
         commit("setpostTitle", res.pin.title);
         commit("setpostDescribtion", res.pin.note);
         commit("setuserFirstName", res.pin.creator.firstName);
@@ -81,7 +86,8 @@ const getters = {
   postDescribtion: state => state.postDescribtion,
   userFirstName: state => state.userFirstName,
   userLastName: state => state.userLastName,
-  numberofFollowers: state => state.numberofFollowers
+  numberofFollowers: state => state.numberofFollowers,
+  pinCreatorId: state => state.pinCreatorId
 };
 
 export default {

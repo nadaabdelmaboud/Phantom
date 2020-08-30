@@ -24,14 +24,24 @@ span {
 </style>
 
 <script>
+import { mapGetters } from "vuex";
 import PostPageCard from "../components/PostPageCard";
 export default {
   name: "postpage",
   components: {
     PostPageCard
   },
-  mounted() {
-    this.$store.dispatch("homeCards/Postpage", this.$route.params.postPageId);
+  async mounted() {
+    await this.$store.dispatch(
+      "homeCards/Postpage",
+      this.$route.params.postPageId
+    );
+    await this.$store.dispatch("phantomUser/isFollowed", this.pinCreatorId);
+  },
+  computed: {
+    ...mapGetters({
+      pinCreatorId: "homeCards/pinCreatorId"
+    })
   }
 };
 </script>

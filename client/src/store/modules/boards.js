@@ -72,6 +72,19 @@ const actions = {
         console.log(error);
       });
   },
+  //not my boards another user boards
+  getUserBoards({ commit }, userId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .get("users/" + userId + "/boards")
+      .then(response => {
+        commit("setBoards", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   sortAz({ dispatch }) {
     axios
       .put("me/boards/sortAZ")

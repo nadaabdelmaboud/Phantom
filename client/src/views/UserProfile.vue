@@ -169,12 +169,10 @@ export default {
   mounted() {
     setTimeout(() => {
       if (!this.myprofile) {
-        console.log("user", this.user);
         this.userName = this.user.firstName + " " + this.user.lastName;
         this.imageId = this.user.profileImage;
         this.followers = this.user.followers.length;
       } else {
-        console.log("meee", this.meUser);
         this.userName = this.meUser.userName;
         this.imageId = this.meUser.profileImage;
         this.followers = this.meUser.followers.length;

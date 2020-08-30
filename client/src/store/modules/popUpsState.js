@@ -6,7 +6,7 @@ const state = {
   newPinPopup: false,
   editBoardPopup: false,
   CollaboratorsPopup: false,
-  TopicsPopup: true
+  TopicsPopup: false
 };
 
 const mutations = {

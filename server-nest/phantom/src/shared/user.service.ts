@@ -19,14 +19,18 @@ import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
+import { topic } from '../types/topic';
+import { use } from 'passport';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
+    @InjectModel('Topic') private readonly topicModel: Model<topic>,
+
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -46,10 +50,6 @@ export class UserService {
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
     if (await bcrypt.compare(loginDto.password, user.password)) {
-      await this.notification.sendOfflineNotification(
-        user.offlineNotifications,
-        user.fcmToken,
-      );
       return user;
     }
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
@@ -119,6 +119,12 @@ export class UserService {
   async updateFCMTocken(fcmToken, userId) {
     const user = await this.getUserById(userId);
     await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
+    if (fcmToken && fcmToken != ' ')
+      await this.notification.sendOfflineNotification(
+        user.offlineNotifications,
+        user.fcmToken,
+      );
+
     return 1;
   }
 
@@ -283,7 +289,10 @@ export class UserService {
       );
     return 1;
   }
-  async updateSettings(userId, settings: { facebook?: Boolean, google?: Boolean, deleteflag?: Boolean }) {
+  async updateSettings(
+    userId,
+    settings: { facebook?: Boolean; google?: Boolean; deleteflag?: Boolean },
+  ) {
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {
       await this.deleteUser(userId);
@@ -295,7 +304,6 @@ export class UserService {
     login with google
      */
     return 1;
-
   }
 
   /**
@@ -387,10 +395,7 @@ export class UserService {
     );
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
-    await this.userModel.updateOne(
-      { _id: followedUser._id },
-      { followers: followedUser.followers },
-    );
+    await followedUser.save();
     await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
@@ -470,7 +475,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
-          profileImage: currentUser.profileImage
+          profileImage: currentUser.profileImage,
         });
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -503,7 +508,7 @@ export class UserService {
           _id: currentUser._id,
           firstName: currentUser.firstName,
           lastName: currentUser.lastName,
-          profileImage: currentUser.profileImage
+          profileImage: currentUser.profileImage,
         });
     }
     return {
@@ -511,14 +516,14 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
-  async followTopic(userId, topicName) {
-    if ((await this.ValidationService.checkMongooseID([userId])) === 0)
+  async followTopic(userId, topicId) {
+    if ((await this.ValidationService.checkMongooseID([userId, topicId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     const user = await this.getUserById(userId);
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     console.log(user.followingTopics);
     if (!user.followingTopics) user.followingTopics = [];
-    user.followingTopics.push(topicName);
+    user.followingTopics.push(topicId);
     console.log(user.followingTopics);
     await this.userModel.updateOne(
       { _id: userId },
@@ -528,6 +533,21 @@ export class UserService {
     const UserTest = await this.getUserById(userId);
     console.log(UserTest.followingTopics);
     return 1;
+  }
+  async isFollowingTopic(userId, topicId) {
+    if ((await this.ValidationService.checkMongooseID([userId, topicId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.getUserById(userId);
+    const topic = await this.topicModel.findById(topicId);
+    if (!user||!topic) throw new HttpException('not user or not topic ', HttpStatus.FORBIDDEN);
+    if (!user.followingTopics) return false;
+
+    for(let i=0;i<user.followingTopics.length;i++){
+      if(String(user.followingTopics[i]) == String(topicId)){
+        return true;
+      }
+    }
+    return false;
   }
   async unfollowTopic(userId, topicName) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
@@ -552,13 +572,6 @@ export class UserService {
   }
   async userSeeds() {
     var userObjects = [
-      {
-        firstName: 'Nada',
-        password: '12345678',
-        birthday: '2000-02-22',
-        lastName: 'Abdelmaboud',
-        email: 'nada5aled52@gmail.com',
-      },
       {
         firstName: 'Aya',
         password: '12345678',

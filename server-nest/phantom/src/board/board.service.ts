@@ -55,7 +55,7 @@ export class BoardService {
     if (sectionId) {
       for (let i = 0; i < board.sections.length; i++) {
         if (String(board.sections[i]._id) == String(sectionId)) {
-          board.sections[i].pins.push(pinObjectId);
+          board.sections[i].pins.push({ pinId: pinObjectId, topic: pin.topic });
           if (!board.sections[i].coverImages)
             board.sections[i].coverImages = [];
           if (
@@ -68,7 +68,10 @@ export class BoardService {
         }
       }
     } else {
-      board.pins.push(pinObjectId);
+      board.pins.push({
+        pinId: pinObjectId,
+        topic: pin.topic,
+      });
       board.counts.pins = board.counts.pins.valueOf() + 1;
       if (!board.coverImages) board.coverImages = [];
       if (board.coverImages && board.coverImages.length < 3) {
@@ -626,7 +629,9 @@ export class BoardService {
           for (let j = 0; j < pinBoard.sections.length; j++) {
             if (String(pinBoard.sections[j]._id) == String(pinSection)) {
               for (let k = 0; k < pinBoard.sections[j].pins.length; k++) {
-                if (String(pinBoard.sections[j].pins[k]) == String(pinId)) {
+                if (
+                  String(pinBoard.sections[j].pins[k].pinId) == String(pinId)
+                ) {
                   pinBoard.sections[j].pins.splice(k, 1);
                   await pinBoard.save();
                   break;
@@ -636,7 +641,7 @@ export class BoardService {
           }
         } else {
           for (let j = 0; j < pinBoard.pins.length; j++) {
-            if (String(pinBoard.pins[j]) == String(pinId)) {
+            if (String(pinBoard.pins[j].pinId) == String(pinId)) {
               pinBoard.pins.splice(j, 1);
               await pinBoard.save();
               break;
@@ -664,7 +669,7 @@ export class BoardService {
             savers[k].savedPins[i].boardId,
           );
           for (let j = 0; j < pinBoard.pins.length; j++) {
-            if (String(pinBoard.pins[j]) == String(pinId)) {
+            if (String(pinBoard.pins[j].pinId) == String(pinId)) {
               pinBoard.pins.splice(j, 1);
               await pinBoard.save();
               break;
@@ -788,7 +793,7 @@ export class BoardService {
     }
     for (let i = 0; i < board.pins.length; i++) {
       let isDeleted = await this.deletePinFromBoardSection(
-        board.pins[i],
+        board.pins[i].pinId,
         userId,
         boardId,
         undefined,
@@ -800,7 +805,7 @@ export class BoardService {
     for (let i = 0; i < board.sections.length; i++) {
       for (let k = 0; k < board.sections[i].pins.length; k++) {
         let isDeleted = await this.deletePinFromBoardSection(
-          board.sections[i].pins[k],
+          board.sections[i].pins[k].pinId,
           userId,
           boardId,
           board.sections[i]._id,
@@ -948,7 +953,7 @@ export class BoardService {
     boardOriginal.sections.push(section);
     for (let i = 0; i < boardMerged.pins.length; i++) {
       await this.editPin(
-        boardMerged.pins[i],
+        boardMerged.pins[i].pinId,
         boardOriginalId,
         section._id,
         userId,
@@ -965,7 +970,7 @@ export class BoardService {
       boardOriginal.sections.push(section);
       for (let j = 0; j < boardMerged.sections[i].pins.length; j++) {
         await this.editPin(
-          boardMerged.sections[i].pins[j],
+          boardMerged.sections[i].pins[j].pinId,
           boardOriginalId,
           section._id,
           userId,
@@ -1010,7 +1015,7 @@ export class BoardService {
         }
         for (let k = 0; k < board.sections[i].pins.length; k++) {
           let isDeleted = await this.deletePinFromBoardSection(
-            String(board.sections[i].pins[k]),
+            String(board.sections[i].pins[k].pinId),
             userId,
             boardId,
             String(board.sections[i]._id),
@@ -1061,7 +1066,7 @@ export class BoardService {
         for (let k = 0; k < board.sections.length; k++) {
           if (String(board.sections[k]._id) == String(sectionId)) {
             for (let i = 0; i < board.sections[k].pins.length; i++) {
-              if (String(board.sections[k].pins[i]) == String(pinId)) {
+              if (String(board.sections[k].pins[i].pinId) == String(pinId)) {
                 board.sections[k].pins.splice(i, 1);
                 await board.save();
                 break;
@@ -1072,7 +1077,7 @@ export class BoardService {
         }
       } else {
         for (let i = 0; i < board.pins.length; i++) {
-          if (String(board.pins[i]) == String(pinId)) {
+          if (String(board.pins[i].pinId) == String(pinId)) {
             board.pins.splice(i, 1);
             await board.save();
             break;
@@ -1226,7 +1231,7 @@ export class BoardService {
     let pins = [];
     for (let i = 0; i < board.pins.length; i++) {
       let pinType = 'none';
-      let pin = await this.pinModel.findById(board.pins[i]);
+      let pin = await this.pinModel.findById(board.pins[i].pinId);
       if (String(pin.creator.id) == String(userId)) {
         pinType = 'creator';
       } else {
