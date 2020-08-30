@@ -100,7 +100,7 @@ export default {
       this.$store.dispatch("user/updateUserInfo", {
         firstName: this.fname,
         lastName: this.lname,
-        bio: this.about,
+        bio: this.about ? this.about : undefined,
         userName: this.username
       });
     }
