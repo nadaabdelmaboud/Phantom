@@ -22,39 +22,25 @@ export default {
       this.$store.commit("popUpsState/toggleForgetPasswordPopUp");
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
 @import "../../scss/Mixins";
 #forgetPassword {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  z-index: 12;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  @include popUpBackground;
 }
 
 .title {
-  text-align: center;
-  font-weight: bold;
-  font-size: 24px;
-  padding: 5px 0px;
+  @include popUpTitle;
 }
 
 /**PopUp
 *******************/
 .popup-content {
-  background-color: white;
-  margin: 0 auto;
+  @include popUpContent;
   width: 600px;
-  border-radius: 35px;
-  padding: 30px;
   margin-top: 35vh;
 }
 

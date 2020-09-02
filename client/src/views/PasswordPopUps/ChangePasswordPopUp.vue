@@ -72,31 +72,17 @@ export default {
 @import "../../scss/Colors";
 @import "../../scss/Mixins";
 #changePassword {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  z-index: 12;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  @include popUpBackground;
 }
 
 .title {
-  text-align: center;
-  font-weight: bold;
-  font-size: 24px;
-  padding: 5px 0px;
+  @include popUpTitle;
 }
 /**PopUp
 *******************/
 .popup-content {
-  background-color: white;
-  margin: 0 auto;
+  @include popUpContent;
   width: 500px;
-  border-radius: 35px;
-  padding: 30px;
   margin-top: 15vh;
 }
 
