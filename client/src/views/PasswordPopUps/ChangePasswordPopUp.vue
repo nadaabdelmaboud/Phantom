@@ -1,21 +1,30 @@
 <template>
-  <div id="changePassword" @click="changePasswordPopup">
+  <div id="changePassword">
     <div class="popup-content">
       <div>
         <p class="title">Change your password</p>
         <label class="col col1">Old Password</label>
-        <input class="col col2" type="text" v-model="oldPassword" />
+        <input class="col col2" type="password" v-model="oldPassword" />
         <br />
         <button @click="forgetPassword" class="col forget-button">
           Forget it?
         </button>
         <hr />
         <label class="col col1">New Password</label>
-        <input class="col col2" type="text" v-model="newPassword" />
+        <input
+          class="col col2"
+          type="password"
+          v-model="newPassword"
+          @input="validatePassword()"
+        />
         <br />
+        <CheckPasswordFormat
+          :password="this.newPassword"
+          style="margin-left:10vw;"
+        />
         <hr />
         <label class="col col1">Type it again</label>
-        <input class="col col2" type="text" v-model="confirmPassword" />
+        <input class="col col2" type="password" v-model="confirmPassword" />
         <br /><br />
         <div class="row action-buttons">
           <button @click="closePopup">
@@ -32,12 +41,13 @@
 </template>
 
 <script>
+import CheckPasswordFormat from "../../components/CheckPasswordFormat.vue";
 export default {
   data: function() {
     return {
-      oldPassword: null,
-      newPassword: null,
-      confirmPassword: null
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: ""
     };
   },
   methods: {
@@ -47,7 +57,13 @@ export default {
     forgetPassword() {
       this.closePopup();
       this.$store.commit("popUpsState/toggleForgetPasswordPopUp");
+    },
+    validatePassword() {
+      this.$store.commit("user/validatePassword", this.newPassword);
     }
+  },
+  components: {
+    CheckPasswordFormat
   }
 };
 </script>
@@ -81,7 +97,7 @@ export default {
   width: 500px;
   border-radius: 35px;
   padding: 30px;
-  margin-top: 20vh;
+  margin-top: 15vh;
 }
 
 /**Input Fields
