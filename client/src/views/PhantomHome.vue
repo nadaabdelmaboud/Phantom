@@ -20,6 +20,7 @@
     <ChangePasswordPopUp v-if="changePassword" />
     <ForgetPasswordPopUp v-if="forgetPassword" />
     <WelcomePopUp v-if="welcomePopUp" />
+    <GenderPopUp v-if="genderPopUp" />
   </div>
 </template>
 
@@ -84,6 +85,7 @@ import ChatWindow from "../components/Chat/ChatWindow";
 import ChangePasswordPopUp from "../views/PasswordPopUps/ChangePasswordPopUp";
 import ForgetPasswordPopUp from "../views/PasswordPopUps/ForgetPasswordPopUp";
 import WelcomePopUp from "../views/SignUpPopUps/WelcomePopUp";
+import GenderPopUp from "../views/SignUpPopUps/GenderPopUp";
 
 import { mapState } from "vuex";
 export default {
@@ -103,7 +105,8 @@ export default {
     ChatWindow,
     ChangePasswordPopUp,
     ForgetPasswordPopUp,
-    WelcomePopUp
+    WelcomePopUp,
+    GenderPopUp
   },
   methods: {
     toggleChat() {
@@ -127,7 +130,8 @@ export default {
       topics: state => state.popUpsState.TopicsPopup,
       changePassword: state => state.popUpsState.changePasswordPopUp,
       forgetPassword: state => state.popUpsState.forgetPasswordPopUp,
-      welcomePopUp: state => state.popUpsState.welcomePopUp
+      welcomePopUp: state => state.popUpsState.welcomePopUp,
+      genderPopUp: state => state.popUpsState.genderPopUp
     })
   }
 };

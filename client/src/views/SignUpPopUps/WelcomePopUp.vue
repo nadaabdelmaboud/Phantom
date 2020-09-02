@@ -70,6 +70,7 @@ export default {
   border-radius: 10px;
   width: 10px;
   height: 10px;
+  margin: 0 4px;
 }
 
 .small-dot {
@@ -77,7 +78,7 @@ export default {
   border-radius: 8px;
   width: 8px;
   height: 8px;
-  margin: 0 2px;
+  margin: 0 4px;
 }
 
 /**PopUp
