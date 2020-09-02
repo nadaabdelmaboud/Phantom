@@ -36,7 +36,7 @@
     </section>
     <br />
     <section class="change-password">
-      <button>Change Password</button>
+      <button @click="changePassword">Change Password</button>
     </section>
     <br />
     <section>
@@ -119,6 +119,9 @@ export default {
       this.$store.dispatch("user/updateUserInfo", {
         email: this.email
       });
+    },
+    changePassword: function() {
+      this.$store.commit("popUpsState/toggleChangePasswordPopUp");
     }
   },
   computed: {
