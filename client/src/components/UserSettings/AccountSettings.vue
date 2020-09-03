@@ -126,7 +126,6 @@ export default {
   },
   computed: {
     userData: function() {
-      console.log(this.$store.state.user.userData);
       return this.$store.state.user.userData;
     },
     isLoading: function() {
