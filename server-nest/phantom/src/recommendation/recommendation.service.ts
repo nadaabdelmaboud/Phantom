@@ -205,7 +205,22 @@ export class RecommendationService {
     });
     return followers;
   }
-  async trendingRecommendation() {}
+  async trendingRecommendation(userId) {
+    let followers = [];
+    let topUsers = await this.userModel
+      .find({})
+      .sort({ followers: -1 })
+      .limit(100);
+    for (let i = 0; i < topUsers.length; i++) {
+      if (String(topUsers[i]._id) != String(userId)) {
+        followers.push({
+          user: topUsers[i],
+          recommendType: 'popular phantom accounts',
+        });
+      }
+    }
+    return followers;
+  }
   async followAllRecommendation(userId) {
     let followers = [];
     let user = await this.UserService.getUserById(userId);

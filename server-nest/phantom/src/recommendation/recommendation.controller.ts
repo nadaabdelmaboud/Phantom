@@ -198,4 +198,18 @@ export class RecommendationController {
       throw new NotFoundException();
     }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/recommendation/trending')
+  async getTrendingRecommendation(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let follow = await this.RecommendationService.trendingRecommendation(
+      userId,
+    );
+    if (follow) {
+      return follow;
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }
