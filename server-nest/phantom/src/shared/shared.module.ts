@@ -12,12 +12,14 @@ import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from 'src/models/pin.schema';
 import { Email } from './send-email.service';
-import { NotificationService } from '../notification/notification.service'
+import { NotificationService } from '../notification/notification.service';
+import { Topic } from 'src/models/topic.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: 'User', schema: User },
       { name: 'Pin', schema: Pin },
+      { name: 'Topic', schema: Topic },
     ]),
   ],
   providers: [
@@ -39,4 +41,4 @@ import { NotificationService } from '../notification/notification.service'
   ],
   exports: [UserService, ValidationService, AuthService, Email],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -19,10 +19,12 @@ import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
+import { topic } from 'src/types/topic';
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
+    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
@@ -173,6 +175,20 @@ export class UserService {
       { profileImage: newUser._id },
     );
     newUser = await this.getUserById(newUser._id);
+    let topics = await this.topicModel.find({});
+    for (let i = 0; i < topics.length; i++) {
+      if (
+        newUser.firstName.includes(String(topics[i].name)) ||
+        newUser.lastName.includes(String(topics[i].name))
+      ) {
+        if (!topics[i].recommendedUsers) topics[i].recommendedUsers = [];
+        if (!topics[i].recommendedUsers.includes(newUser._id)) {
+          topics[i].recommendedUsers.push(newUser._id);
+          await topics[i].save();
+          break;
+        }
+      }
+    }
     return newUser;
   }
 

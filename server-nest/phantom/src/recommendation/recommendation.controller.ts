@@ -166,4 +166,36 @@ export class RecommendationController {
       throw new NotFoundException();
     }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/recommendation/follow')
+  async getFollowRecommendation(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let follow = await this.RecommendationService.followAllRecommendation(
+      userId,
+    );
+    if (follow) {
+      return follow;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/recommendation/topics/:topicName')
+  async getTopicRecommendation(
+    @Request() req,
+    @Param('topicName') topicName: string,
+  ) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let follow = await this.RecommendationService.topicRecommendation(
+      topicName,
+      userId,
+    );
+    if (follow) {
+      return follow;
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }

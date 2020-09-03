@@ -7,17 +7,68 @@ import { topic } from 'src/types/topic';
 import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from 'src/types/user';
+import { BoardService } from 'src/board/board.service';
+import { PinsService } from 'src/pins/pins.service';
+import { isDate } from 'util';
 
 @Injectable()
 export class RecommendationService {
+  followExist: Object;
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private UserService: UserService,
+    private BoardService: BoardService,
+    private PinsService: PinsService,
     private ValidationService: ValidationService,
-  ) {}
+  ) {
+    this.followExist = {};
+  }
+  async followseeds() {
+    let topics = await this.topicModel.find({});
+    /* for (let i = 11; i < topics.length; i++) {
+      console.log(i);
+      let count: number = 0;
+      for (let j = 0; j < 30; j++) {
+        console.log(j);
+        let user = {
+          firstName: `Nada${j}`,
+          password: '12345678',
+          birthday: '2000-01-2',
+          lastName: String(topics[i].name),
+          email: `nadatopic${i}s${j}@gmail.com`,
+        };
+        let newUser = await this.UserService.createUser(user);
+        let board = await this.BoardService.createBoard(
+          `Sobarashi ${String(topics[i].name)}`,
+          null,
+          null,
+          'public',
+          newUser._id,
+        );
+      }
+    } */
+    let users = await this.userModel.find({});
+    for (let i = 0; i < topics.length; i++) {
+      console.log(i);
+      topics[i].recommendedUsers = [];
+      for (let j = 0; j < users.length; j++) {
+        console.log(j);
+        if (users[j].lastName.includes(String(topics[i].name))) {
+          topics[i].recommendedUsers.push(users[j]._id);
+        }
+        if (i > 0 && topics[i].recommendedUsers.length >= 30) {
+          break;
+        } else if (i == 0 && topics[i].recommendedUsers.length > 30) {
+          break;
+        }
+      }
+      await topics[i].save();
+    }
+    return true;
+  }
   async getHomeFeed(userId, limit: number, offset: number) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
@@ -134,87 +185,148 @@ export class RecommendationService {
     }
     return a;
   }
-  async topicRecommendation(topicName) {
-    //nas 3ndha board bnfs 2l2sm
-    //nas 3ndha board 2l topic bta3ha nfs 2l topic
-    //nas 2l2sm bta3ha nfs 2sm 2ltopic
-    //nas 3ndha board 2l description leh 2sm 2ltopic
+  async topicRecommendation(topicName, userId) {
+    let followers = [];
+    let topic = await this.topicModel.findOne({ name: topicName });
+    for (let i = 0; i < topic.recommendedUsers.length; i++) {
+      if (String(topic.recommendedUsers[i]) != String(userId)) {
+        let user = await this.userModel.findById(topic.recommendedUsers[i]);
+        followers.push(user);
+      }
+    }
+    followers = followers.sort(function(a, b) {
+      if (a.followers > b.followers) {
+        return -1;
+      } else if (a.followers < b.followers) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return followers;
   }
-  async followRecommendation(userId) {
-    //let topics
-    //hgm3 topics based on interst de howa 3amlha follow
-    //based on people you follow - hgeb topics 2l boards bta3thom
-    //based on recent activity hgeb topics 2l pinsr
-    //bltali da kolo hytms7
+  async trendingRecommendation() {}
+  async followAllRecommendation(userId) {
     let followers = [];
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
-    let userExist = {};
-    let users = await this.userModel.find({});
-    for (let i = 0; i < user.followingTopics.length; i++) {
-      for (let j = 0; j < users.length; j++) {
-        if (users[j].followingTopics.includes(user.followingTopics[i])) {
-          if (userExist[String(users[j]._id)] != true) {
-            followers.push({
-              user: users[j],
-              recommendType: 'based on you interest',
-            });
-            userExist[String(users[j]._id)] = true;
-          }
-        }
-      }
-    }
-    for (let i = 0; i < user.following.length; i++) {
-      let followUser = await this.userModel.findById(user.following[i]);
-      for (let j = 0; j < followUser.following.length; j++) {
-        if (userExist[String(followUser.following[j])] != true) {
-          let pushUser = await this.userModel.findById(followUser.following[j]);
-          followers.push({
-            user: pushUser,
-            recommendType: 'based on people you follow',
-          });
-          userExist[String(followUser.following[j])] = true;
-        }
-      }
-    }
+    this.followExist = {};
     let topics = [];
+    let historyLimit: number = -1;
+    let followTopicsLimit: number;
+    let followUsersLimit: number;
+    console.log('here 1');
     for (let i = 0; i < user.history.length; i++) {
       if (!topics.includes(user.history[i].topic)) {
-        let topic = await this.topicModel.findOne({
-          name: user.history[i].topic,
-        });
-        topics.push(topic._id);
+        topics.push(user.history[i].topic);
+        historyLimit++;
       }
     }
-    for (let i = 0; i < topics.length; i++) {
-      for (let j = 0; j < users.length; j++) {
-        if (users[j].followingTopics.includes(topics[i])) {
-          if (userExist[String(users[j]._id)] != true) {
-            followers.push({
-              user: users[j],
-              recommendType: 'based on your recent activity',
-            });
-            userExist[String(users[j]._id)] = true;
+    console.log('here 2');
+    followTopicsLimit = historyLimit;
+    for (let i = 0; i < user.followingTopics.length; i++) {
+      let topic = await this.topicModel.findById(user.followingTopics[i]);
+      if (!topics.includes(topic.name)) {
+        topics.push(topic.name);
+        followTopicsLimit++;
+      }
+    }
+    console.log('here 3');
+    followUsersLimit = followTopicsLimit;
+    for (let i = 0; i < user.following.length; i++) {
+      let follower = await this.userModel.findById(user.following[i]);
+      for (let j = 0; j < follower.followingTopics.length; j++) {
+        let topic = await this.topicModel.findById(follower.followingTopics[j]);
+        if (!topics.includes(topic.name)) {
+          topics.push(topic.name);
+          followUsersLimit++;
+        }
+      }
+    }
+    console.log('here 4');
+    for (let i = 0; i <= historyLimit; i++) {
+      let topic = await this.topicModel.findOne({ name: String(topics[i]) });
+      let count: number = 0;
+      for (let j = 0; j < topic.recommendedUsers.length; j++) {
+        if (
+          String(topic.recommendedUsers[j] != userId) &&
+          this.followExist[String(topic.recommendedUsers[j])] != true
+        ) {
+          let recomUser = await this.userModel.findById(
+            topic.recommendedUsers[j],
+          );
+          followers.push({
+            user: recomUser,
+            recommendType: 'based on your recent activity',
+          });
+          count++;
+          this.followExist[String(topic.recommendedUsers[j])] = true;
+          if (count >= 20) {
+            break;
           }
         }
       }
     }
-    let topUsers = await users.sort(function(a, b) {
-      if (a.followers.length > b.followers.length) {
-        return -1;
+    console.log('here 5');
+    for (let i = historyLimit + 1; i <= followTopicsLimit; i++) {
+      let topic = await this.topicModel.findOne({ name: String(topics[i]) });
+      let count: number = 0;
+      for (let j = 0; j < topic.recommendedUsers.length; j++) {
+        if (
+          String(topic.recommendedUsers[j] != userId) &&
+          this.followExist[String(topic.recommendedUsers[j])] != true
+        ) {
+          let recomUser = await this.userModel.findById(
+            topic.recommendedUsers[j],
+          );
+          followers.push({
+            user: recomUser,
+            recommendType: 'based on your interest',
+          });
+          count++;
+          this.followExist[String(topic.recommendedUsers[j])] = true;
+          if (count >= 20) {
+            break;
+          }
+        }
       }
-      if (a.followers.length < b.followers.length) {
-        return 1;
+    }
+    console.log('here 6');
+    for (let i = followTopicsLimit + 1; i <= followUsersLimit; i++) {
+      let topic = await this.topicModel.findOne({ name: String(topics[i]) });
+      let count: number = 0;
+      for (let j = 0; j < topic.recommendedUsers.length; j++) {
+        if (
+          String(topic.recommendedUsers[j] != userId) &&
+          this.followExist[String(topic.recommendedUsers[j])] != true
+        ) {
+          let recomUser = await this.userModel.findById(
+            topic.recommendedUsers[j],
+          );
+          followers.push({
+            user: recomUser,
+            recommendType: 'based on people you follow',
+          });
+          count++;
+
+          this.followExist[String(topic.recommendedUsers[j])] = true;
+          if (count >= 20) {
+            break;
+          }
+        }
       }
-      return 0;
-    });
+    }
+    let topUsers = await this.userModel
+      .find({})
+      .sort({ followers: -1 })
+      .limit(20);
     for (let i = 0; i < topUsers.length; i++) {
-      if (userExist[String(topUsers[i]._id)] != true) {
+      if (this.followExist[String(topUsers[i]._id)] != true) {
         followers.push({
           user: topUsers[i],
           recommendType: 'popular on phantom',
         });
-        userExist[String(topUsers[i]._id)] = true;
+        this.followExist[String(topUsers[i]._id)] = true;
       }
     }
     followers = await this.shuffle(followers);

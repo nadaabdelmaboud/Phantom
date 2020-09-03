@@ -93,7 +93,7 @@ export class BoardService {
     userId: string,
   ) {
     let user = await this.UserService.getUserById(userId);
-    if (!user) return 0;
+    if (!user) throw new NotFoundException('no such user');
     let sd = startDate ? startDate : null;
     let ed = endDate ? endDate : null;
 
@@ -128,6 +128,20 @@ export class BoardService {
     console.log('saved');
     await this.addBoardtoUser(userId, board._id);
     console.log('saved 2');
+    let topics = await this.topicModel.find({});
+    for (let i = 0; i < topics.length; i++) {
+      if (
+        board.name.includes(String(topics[i].name)) ||
+        board.description.includes(String(topics[i].name))
+      ) {
+        if (!topics[i].recommendedUsers) topics[i].recommendedUsers = [];
+        if (!topics[i].recommendedUsers.includes(user._id)) {
+          topics[i].recommendedUsers.push(user._id);
+          await topics[i].save();
+          break;
+        }
+      }
+    }
     return board;
   }
   async sortBoardsAtoZ(userId): Promise<Array<object>> {
@@ -384,6 +398,12 @@ export class BoardService {
     }
     if (editBoardDto.topic) {
       board.topic = editBoardDto.topic;
+      let topic = await this.topicModel.findOne({ name: editBoardDto.topic });
+      if (!topic.recommendedUsers) topic.recommendedUsers = [];
+      if (!topic.recommendedUsers.includes(creator._id)) {
+        topic.recommendedUsers.push(user._id);
+        await topic.save();
+      }
     }
     if (
       (isCreator || (isCollaborator && isCollaborator.addCollaborators)) &&
