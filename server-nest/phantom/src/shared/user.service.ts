@@ -19,7 +19,8 @@ import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
-import { topic } from 'src/types/topic';
+import { topic } from '../types/topic';
+import { use } from 'passport';
 @Injectable()
 export class UserService {
   constructor(
@@ -545,6 +546,22 @@ export class UserService {
     const UserTest = await this.getUserById(userId);
     console.log(UserTest.followingTopics);
     return 1;
+  }
+  async isFollowingTopic(userId, topicId) {
+    if ((await this.ValidationService.checkMongooseID([userId, topicId])) === 0)
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.getUserById(userId);
+    const topic = await this.topicModel.findById(topicId);
+    if (!user || !topic)
+      throw new HttpException('not user or not topic ', HttpStatus.FORBIDDEN);
+    if (!user.followingTopics) return false;
+
+    for (let i = 0; i < user.followingTopics.length; i++) {
+      if (String(user.followingTopics[i]) == String(topicId)) {
+        return true;
+      }
+    }
+    return false;
   }
   async unfollowTopic(userId, topicName) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)

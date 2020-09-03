@@ -1,21 +1,21 @@
 <template>
   <div class="masonry">
-        <HomeCard
-          class="masonryItem"
-          v-for="p in pins"
-          :key="p._id"
-          :cardImage="p.imageId"
-          :postPageId="p._id"
-        />
+    <HomeCard
+      class="masonryItem"
+      v-for="p in pins"
+      :key="p._id"
+      :cardImage="p.imageId"
+      :postPageId="p._id"
+    />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex"
-import HomeCard from "../components/HomeCard"
+import { mapGetters } from "vuex";
+import HomeCard from "../components/HomeCard";
 export default {
   name: "UserPins",
-  components:{
+  components: {
     HomeCard
   },
   created() {
@@ -27,9 +27,9 @@ export default {
       this.$store.dispatch("pins/getMyPins");
     }
   },
-  computed:{
+  computed: {
     ...mapGetters({
-      pins:"pins/pins"
+      pins: "pins/pins"
     })
   }
 };
@@ -37,7 +37,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/MasonryGrid";
-.masonry{
+.masonry {
   width: 95%;
   margin: auto;
 }

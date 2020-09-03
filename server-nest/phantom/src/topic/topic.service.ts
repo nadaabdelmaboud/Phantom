@@ -23,7 +23,6 @@ export class TopicService {
     private ValidationService: ValidationService,
   ) {}
   async topicsSeeds(topics) {
-    console.log(topics);
     for (var i = 0; i < topics.length; i++) {
       let topic = await this.createTopic(
         topics[i].imageId,
@@ -34,6 +33,12 @@ export class TopicService {
       );
     }
     return true;
+  }
+  async editTopic(topics){
+    for(let i=0;i<topics.length;i++){
+       await this.topicModel.findOneAndUpdate({name:topics[i].name},{imageId:topics[i].imageId});
+    }
+    return 1;
   }
   async createTopic(imageId, description, imageWidth, imageHeight, name) {
     if (!this.ValidationService.checkMongooseID([imageId]))
@@ -66,7 +71,20 @@ export class TopicService {
       if (err) throw new Error('topic not found');
       return topic;
     });
-    return topics;
+    let topicInfo=[]
+    let topic={}
+    for(let i=0;i<topics.length;i++){
+      let isFollow = await this.UserService.isFollowingTopic(userId, topics[i]._id);
+      topic["follow"] = isFollow
+      topic["_id"]=topics[i]._id
+      topic["name"]=topics[i].name
+      topic["description"]=topics[i].description
+      topic["imageId"]=topics[i].imageId
+      topicInfo.push(topic)
+      topic={}
+
+    }
+    return topicInfo;
   }
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))

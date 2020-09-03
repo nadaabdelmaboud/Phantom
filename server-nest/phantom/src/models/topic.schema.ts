@@ -5,8 +5,8 @@ export const Topic = new Schema({
   followers: [mongoose.Types.ObjectId],
   description: String,
   pins: [mongoose.Types.ObjectId],
-  image: mongoose.Types.ObjectId,
   imageWidth: Number,
   imageHeight: Number,
   recommendedUsers: [mongoose.Types.ObjectId],
+  imageId: mongoose.Types.ObjectId,
 });

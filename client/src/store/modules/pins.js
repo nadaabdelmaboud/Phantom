@@ -3,12 +3,12 @@ import axios from "axios";
 const state = {
   pin: "",
   demo: "",
-  pins:[]
+  pins: []
 };
 
 const mutations = {
-  setPins(state, pins){
-    state.pins = pins
+  setPins(state, pins) {
+    state.pins = pins;
   }
 };
 
@@ -52,29 +52,27 @@ const actions = {
         console.log(error);
       });
   },
-  getmySavedPins(){
+  getmySavedPins() {
     return axios.get("me/savedPins");
   },
-  getmyCreatedPins(){
+  getmyCreatedPins() {
     return axios.get("me/pins");
   },
-  async getMyPins({dispatch,commit}){
+  async getMyPins({ dispatch, commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    let mysaved =[];
-    let mycreated =[];
-    try{
+    let mysaved = [];
+    let mycreated = [];
+    try {
       mysaved = await dispatch("getmySavedPins");
       mysaved = mysaved.data;
-    }
-    catch(err){
+    } catch (err) {
       console.log(err);
     }
-    try{
+    try {
       mycreated = await dispatch("getmyCreatedPins");
-      mycreated = mycreated.data
-    }
-    catch(err){
+      mycreated = mycreated.data;
+    } catch (err) {
       console.log(err);
     }
     let pins = mysaved.concat(mycreated);
@@ -83,13 +81,9 @@ const actions = {
       return new Date(a.createdAt) - new Date(b.createdAt);
     });
 
-    commit("setPins",pins);
-    
-
+    commit("setPins", pins);
   },
-  getUserPins(){
-
-  }
+  getUserPins() {}
 };
 
 const getters = {

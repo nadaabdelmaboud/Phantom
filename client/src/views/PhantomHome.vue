@@ -17,6 +17,8 @@
       <i class="fa fa-question-circle globalIcons"></i>
     </div>
     <ChatWindow v-if="chat" id="chat" />
+    <ChangePasswordPopUp v-if="changePassword" />
+    <ForgetPasswordPopUp v-if="forgetPassword" />
   </div>
 </template>
 
@@ -78,6 +80,8 @@ import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
 import TopicsPopup from "../components/Topics/TopicsPopup";
 import ChatWindow from "../components/Chat/ChatWindow";
+import ChangePasswordPopUp from "../views/PasswordPopUps/ChangePasswordPopUp";
+import ForgetPasswordPopUp from "../views/PasswordPopUps/ForgetPasswordPopUp";
 
 import { mapState } from "vuex";
 export default {
@@ -94,7 +98,9 @@ export default {
     EditBoardPopup,
     CollaboratorsPopup,
     TopicsPopup,
-    ChatWindow
+    ChatWindow,
+    ChangePasswordPopUp,
+    ForgetPasswordPopUp
   },
   methods: {
     toggleChat() {
@@ -115,7 +121,9 @@ export default {
       newPin: state => state.popUpsState.newPinPopup,
       editBoard: state => state.popUpsState.editBoardPopup,
       collaborators: state => state.popUpsState.CollaboratorsPopup,
-      topics: state => state.popUpsState.TopicsPopup
+      topics: state => state.popUpsState.TopicsPopup,
+      changePassword: state => state.popUpsState.changePasswordPopUp,
+      forgetPassword: state => state.popUpsState.forgetPasswordPopUp
     })
   }
 };

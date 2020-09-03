@@ -35,7 +35,7 @@ body {
   align-self: center;
   min-height: 100vh;
 }
-.addTopics{
+.addTopics {
   width: 97%;
   margin: 5px auto;
   background-color: white;
@@ -43,13 +43,13 @@ body {
   padding: 14px;
   display: flex;
   justify-content: space-between;
-  h2{
+  h2 {
     text-align: center;
     font-size: 22px;
     font-weight: 700;
     padding-top: 10px;
   }
-  i{
+  i {
     width: 48px;
     height: 48px;
     border-radius: 16px;
@@ -57,7 +57,7 @@ body {
     padding: 17px;
     transition: linear 0.2s;
   }
-  i:hover{
+  i:hover {
     background-color: $ligthPaige;
   }
 }
@@ -81,10 +81,10 @@ export default {
       cards: "homeCards/userHomePage"
     })
   },
-  methods:{
-    showTopics(){
-      console.log("PPPPPPP")
-       this.$store.commit("popUpsState/toggleTopicsPopup");
+  methods: {
+    showTopics() {
+      console.log("PPPPPPP");
+      this.$store.commit("popUpsState/toggleTopicsPopup");
     }
   }
 };

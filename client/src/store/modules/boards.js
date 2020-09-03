@@ -73,11 +73,11 @@ const actions = {
       });
   },
   //not my boards another user boards
-  getUserBoards({commit},userId){
+  getUserBoards({ commit }, userId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .get("users/"+ userId+"/boards")
+      .get("users/" + userId + "/boards")
       .then(response => {
         commit("setBoards", response.data);
       })
