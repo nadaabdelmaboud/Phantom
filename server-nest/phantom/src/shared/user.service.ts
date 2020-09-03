@@ -29,7 +29,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -208,11 +208,15 @@ export class UserService {
     return user;
   }
 
-  async resetPassword(userId, newPassword) {
-    //if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
+  async resetPassword(userId, newPassword, oldPassword) {
     const user = await this.getUserById(userId);
     if (!user || !newPassword)
       throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
+    if (oldPassword != 'dont know old password') {
+      if (! await bcrypt.compare(oldPassword, user.password)) {
+        throw new HttpException('old password is not correct', HttpStatus.FORBIDDEN);
+      }
+    }
     const salt = await bcrypt.genSalt(10);
     let hash = await bcrypt.hash(newPassword, salt);
     user.password = hash;

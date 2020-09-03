@@ -33,11 +33,14 @@ export class UserController {
   async resetPassword(
     @nestCommon.Request() req,
     @nestCommon.Query('newPassword') newPassword: string,
+    @nestCommon.Query('oldPassword') oldPassword: string,
+
   ) {
     //  if (!req.user.email) throw new nestCommon.HttpException('Invalid token', nestCommon.HttpStatus.FORBIDDEN);
     const ifRest = await this.userService.resetPassword(
       req.user._id,
       newPassword,
+      oldPassword
     );
   }
 
