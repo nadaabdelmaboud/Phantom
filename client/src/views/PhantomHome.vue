@@ -21,6 +21,7 @@
     <ForgetPasswordPopUp v-if="forgetPassword" />
     <WelcomePopUp v-if="welcomePopUp" />
     <GenderPopUp v-if="genderPopUp" />
+    <CountryPopUp v-if="countryPopUp" />
   </div>
 </template>
 
@@ -86,6 +87,7 @@ import ChangePasswordPopUp from "../views/PasswordPopUps/ChangePasswordPopUp";
 import ForgetPasswordPopUp from "../views/PasswordPopUps/ForgetPasswordPopUp";
 import WelcomePopUp from "../views/SignUpPopUps/WelcomePopUp";
 import GenderPopUp from "../views/SignUpPopUps/GenderPopUp";
+import CountryPopUp from "../views/SignUpPopUps/CountryPopUp";
 
 import { mapState } from "vuex";
 export default {
@@ -106,7 +108,8 @@ export default {
     ChangePasswordPopUp,
     ForgetPasswordPopUp,
     WelcomePopUp,
-    GenderPopUp
+    GenderPopUp,
+    CountryPopUp
   },
   methods: {
     toggleChat() {
@@ -131,7 +134,8 @@ export default {
       changePassword: state => state.popUpsState.changePasswordPopUp,
       forgetPassword: state => state.popUpsState.forgetPasswordPopUp,
       welcomePopUp: state => state.popUpsState.welcomePopUp,
-      genderPopUp: state => state.popUpsState.genderPopUp
+      genderPopUp: state => state.popUpsState.genderPopUp,
+      countryPopUp: state => state.popUpsState.countryPopUp
     })
   }
 };

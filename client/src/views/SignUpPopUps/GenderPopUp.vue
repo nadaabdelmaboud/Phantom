@@ -34,7 +34,7 @@ export default {
           gender: this.gender
         });
         this.$store.commit("popUpsState/toggleGenderPopUp");
-        this.$store.commit("popUpsState/toggleCountryState");
+        this.$store.commit("popUpsState/toggleCountryPopUp");
       }
     }
   }
