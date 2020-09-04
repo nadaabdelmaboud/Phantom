@@ -80,7 +80,9 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    return user.homeFeed.slice(offset, offset + limit);
+    const unique = [...new Set(user.homeFeed)];
+    const part = unique.slice(offset, offset + limit);
+    return part;
   }
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -89,8 +91,14 @@ export class RecommendationService {
     let topics = [];
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
-    user.homeFeed = [];
-    await user.save();
+    let homeFeedArr = [];
+    console.log('jojo');
+    await this.userModel
+      .update({ _id: userId }, { homeFeed: [] })
+      .catch(err => {
+        console.log(err);
+      });
+    console.log('jojo1');
     console.log(user.followingTopics);
 
     if (!user.history) user.history = [];
@@ -167,15 +175,38 @@ export class RecommendationService {
           }
           pinExist[String(topic.pins[k])] = true;
           let pin = await this.pinModel.findById(topic.pins[k]);
-          user.homeFeed.push(pin);
-          await user.save();
+          homeFeedArr.push(pin);
+          await this.userModel
+            .update({ _id: userId }, { homeFeed: homeFeedArr })
+            .catch(err => {
+              console.log(err);
+            });
           pinsHome.push(pin);
         }
       }
       count += 10;
     }
-
-    return true;
+    if (pinsHome.length < 20) {
+      let allTopics = await this.topicModel.find({});
+      for (let i = 0; i < allTopics.length; i++) {
+        for (let j = 0; j < 10; j++) {
+          if (pinExist[String(allTopics[i].pins[j])] == true) {
+            continue;
+          }
+          pinExist[String(allTopics[i].pins[j])] = true;
+          let pin = await this.pinModel.findById(allTopics[i].pins[j]);
+          homeFeedArr.push(pin);
+          await this.userModel
+            .update({ _id: userId }, { homeFeed: homeFeedArr })
+            .catch(err => {
+              console.log(err);
+            });
+          pinsHome.push(pin);
+        }
+      }
+    }
+    homeFeedArr = [...new Set(homeFeedArr)];
+    return { total: homeFeedArr.length };
   }
 
   async shuffle(a) {

@@ -154,6 +154,7 @@ export class UserService {
       country: registerDto.country,
       birthDate: registerDto.birthday,
       pins: [],
+      homeFeed: [],
       uploadedImages: [],
       savedImages: [],
       notifications: [],
