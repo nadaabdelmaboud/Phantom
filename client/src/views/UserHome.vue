@@ -78,6 +78,8 @@ export default {
     this.$store.dispatch("homeCards/userHome");
     this.$store.dispatch("homeCards/userGenerateCards");
     screenHeight = 200;
+    if(this.finishCalling === true)
+    window.removeEventListener("scroll", this.generateHomeCards);
   },
   created() {
     window.addEventListener("scroll", this.generateHomeCards);
@@ -87,7 +89,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      cards: "homeCards/userHomePage"
+      cards: "homeCards/userHomePage",
+      finishCalling:"homeCards/finishCalling"
     })
   },
   methods: {
