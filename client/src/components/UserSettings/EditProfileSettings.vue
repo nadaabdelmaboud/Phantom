@@ -71,6 +71,7 @@
 
 <script>
 import getUserImage from "../../mixins/getUserImage";
+
 export default {
   created: async function() {
     this.$store.dispatch("user/getUserProfile");
