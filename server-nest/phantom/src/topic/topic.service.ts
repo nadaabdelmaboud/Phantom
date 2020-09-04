@@ -3,8 +3,10 @@ import {
   HttpException,
   HttpStatus,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { topic } from '../types/topic';
 import { ValidationService } from 'src/shared/validation.service';
@@ -34,9 +36,12 @@ export class TopicService {
     }
     return true;
   }
-  async editTopic(topics){
-    for(let i=0;i<topics.length;i++){
-       await this.topicModel.findOneAndUpdate({name:topics[i].name},{imageId:topics[i].imageId});
+  async editTopic(topics) {
+    for (let i = 0; i < topics.length; i++) {
+      await this.topicModel.findOneAndUpdate(
+        { name: topics[i].name },
+        { imageId: topics[i].imageId },
+      );
     }
     return 1;
   }
@@ -71,18 +76,20 @@ export class TopicService {
       if (err) throw new Error('topic not found');
       return topic;
     });
-    let topicInfo=[]
-    let topic={}
-    for(let i=0;i<topics.length;i++){
-      let isFollow = await this.UserService.isFollowingTopic(userId, topics[i]._id);
-      topic["follow"] = isFollow
-      topic["_id"]=topics[i]._id
-      topic["name"]=topics[i].name
-      topic["description"]=topics[i].description
-      topic["imageId"]=topics[i].imageId
-      topicInfo.push(topic)
-      topic={}
-
+    let topicInfo = [];
+    let topic = {};
+    for (let i = 0; i < topics.length; i++) {
+      let isFollow = await this.UserService.isFollowingTopic(
+        userId,
+        topics[i]._id,
+      );
+      topic['follow'] = isFollow;
+      topic['_id'] = topics[i]._id;
+      topic['name'] = topics[i].name;
+      topic['description'] = topics[i].description;
+      topic['imageId'] = topics[i].imageId;
+      topicInfo.push(topic);
+      topic = {};
     }
     return topicInfo;
   }
@@ -90,12 +97,16 @@ export class TopicService {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error('not mongoose id');
     let topic = await this.topicModel.find({ name: topicName });
-    const pin = await this.pinModel.findById(pinId);
-    if (!pin) return false;
+    let id = mongoose.Types.ObjectId(pinId);
+    const pin = await this.pinModel.findById(id);
+    console.log(pin);
+    console.log(topic);
+    if (!pin) throw new NotFoundException();
     pin.topic = topicName;
     await pin.save().catch(err => {
       console.log(err);
     });
+    console.log('asas');
     console.log(pin);
     console.log(topic[0]);
     if (topic && pin) {
@@ -105,7 +116,7 @@ export class TopicService {
       });
       return true;
     }
-    return false;
+    throw new NotFoundException();
   }
   async getPinsOfTopic(topicId, limit, offset, userId): Promise<pin[]> {
     if (!this.ValidationService.checkMongooseID([topicId]))
