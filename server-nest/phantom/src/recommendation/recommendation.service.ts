@@ -80,7 +80,9 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    return user.homeFeed.slice(offset, offset + limit);
+    const part = user.homeFeed.slice(offset, offset + limit);
+    const unique = [...new Set(part)];
+    return unique;
   }
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -89,7 +91,7 @@ export class RecommendationService {
     let topics = [];
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
-    user.homeFeed = [];
+    let homeFeedArr = [];
     console.log('jojo');
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
@@ -173,8 +175,12 @@ export class RecommendationService {
           }
           pinExist[String(topic.pins[k])] = true;
           let pin = await this.pinModel.findById(topic.pins[k]);
-          user.homeFeed.push(pin);
-          await user.save();
+          homeFeedArr.push(pin);
+          await this.userModel
+            .update({ _id: userId }, { homeFeed: homeFeedArr })
+            .catch(err => {
+              console.log(err);
+            });
           pinsHome.push(pin);
         }
       }
@@ -189,13 +195,18 @@ export class RecommendationService {
           }
           pinExist[String(allTopics[i].pins[j])] = true;
           let pin = await this.pinModel.findById(allTopics[i].pins[j]);
-          user.homeFeed.push(pin);
-          await user.save();
+          homeFeedArr.push(pin);
+          await this.userModel
+            .update({ _id: userId }, { homeFeed: homeFeedArr })
+            .catch(err => {
+              console.log(err);
+            });
           pinsHome.push(pin);
         }
       }
     }
-    return true;
+    homeFeedArr = [...new Set(homeFeedArr)];
+    return { total: homeFeedArr.length };
   }
 
   async shuffle(a) {
