@@ -80,8 +80,7 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    const unique = [...new Set(user.homeFeed)];
-    const part = unique.slice(offset, offset + limit);
+    const part = user.homeFeed.slice(offset, offset + limit);
     return part;
   }
   async homeFeed(userId): Promise<Object> {
@@ -176,6 +175,7 @@ export class RecommendationService {
           pinExist[String(topic.pins[k])] = true;
           let pin = await this.pinModel.findById(topic.pins[k]);
           homeFeedArr.push(pin);
+          homeFeedArr = [...new Set(homeFeedArr)];
           await this.userModel
             .update({ _id: userId }, { homeFeed: homeFeedArr })
             .catch(err => {
@@ -196,6 +196,7 @@ export class RecommendationService {
           pinExist[String(allTopics[i].pins[j])] = true;
           let pin = await this.pinModel.findById(allTopics[i].pins[j]);
           homeFeedArr.push(pin);
+          homeFeedArr = [...new Set(homeFeedArr)];
           await this.userModel
             .update({ _id: userId }, { homeFeed: homeFeedArr })
             .catch(err => {
@@ -205,7 +206,6 @@ export class RecommendationService {
         }
       }
     }
-    homeFeedArr = [...new Set(homeFeedArr)];
     return { total: homeFeedArr.length };
   }
 
