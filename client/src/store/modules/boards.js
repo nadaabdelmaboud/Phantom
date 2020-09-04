@@ -1,9 +1,30 @@
 import axios from "axios";
 
 const state = {
-  userBoards: [],
+  userBoards: [{
+    board:{
+      name:"mm",
+      _id:12345678,
+      sections:[{
+        name:"dddd",
+        _id: 8234567890
+      }]
+    }
+  },
+  {
+    board:{
+      name:"mm",
+      _id:12345678,
+      sections:[{
+        name:"dddd",
+        _id: 8234567890
+      }]
+    }
+  }
+   ],
   chosenBoardName: "Select",
   chosenBoardId: "",
+  chosenSectionId: "",
   currentBoard: "",
   collaborators: [],
   moreLike: []
@@ -16,8 +37,10 @@ const mutations = {
   setBoards(state, boards) {
     state.userBoards = boards;
   },
-  chooseBoard(state, { name, id }) {
-    (state.chosenBoardName = name), (state.chosenBoardId = id);
+  chooseBoard(state, { boardName,boardId,sectionId }) {
+    (state.chosenBoardName = boardName);
+    (state.chosenBoardId = boardId);
+    (state.chosenSectionId=sectionId)
   },
   setCurrentBoard(state, board) {
     state.currentBoard = board;
@@ -200,6 +223,7 @@ const getters = {
   userBoards: state => state.userBoards,
   chosenBoardName: state => state.chosenBoardName,
   chosenBoardId: state => state.chosenBoardId,
+  chosenSectionId: state => state.chosenSectionId,
   currentBoard: state => state.currentBoard,
   collaborators: state => state.collaborators,
   moreLike: state => state.moreLike

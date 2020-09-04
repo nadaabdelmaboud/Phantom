@@ -14,7 +14,6 @@ const mutations = {
 
 const actions = {
   createPin({ state, commit, dispatch }, { pin, label }) {
-    console.log(pin);
     const file = new FormData();
     file.append("file", pin.imageId);
     axios({
