@@ -29,7 +29,7 @@ export class RecommendationController {
     console.log(userId);
     let home = await this.RecommendationService.homeFeed(userId);
     if (home) {
-      return { success: 'home is generated succissfully', home };
+      return home;
     } else {
       throw new NotFoundException();
     }
