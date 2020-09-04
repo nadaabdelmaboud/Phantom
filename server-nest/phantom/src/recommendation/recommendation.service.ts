@@ -90,7 +90,13 @@ export class RecommendationService {
     let user = await this.UserService.getUserById(userId);
     if (!user) throw new Error('no such user');
     user.homeFeed = [];
-    await user.save();
+    console.log('jojo');
+    await this.userModel
+      .update({ _id: userId }, { homeFeed: [] })
+      .catch(err => {
+        console.log(err);
+      });
+    console.log('jojo1');
     console.log(user.followingTopics);
 
     if (!user.history) user.history = [];
@@ -174,7 +180,21 @@ export class RecommendationService {
       }
       count += 10;
     }
-
+    if (pinsHome.length < 20) {
+      let allTopics = await this.topicModel.find({});
+      for (let i = 0; i < allTopics.length; i++) {
+        for (let j = 0; j < 10; j++) {
+          if (pinExist[String(allTopics[i].pins[j])] == true) {
+            continue;
+          }
+          pinExist[String(allTopics[i].pins[j])] = true;
+          let pin = await this.pinModel.findById(allTopics[i].pins[j]);
+          user.homeFeed.push(pin);
+          await user.save();
+          pinsHome.push(pin);
+        }
+      }
+    }
     return true;
   }
 
