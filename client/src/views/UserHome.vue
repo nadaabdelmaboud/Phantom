@@ -75,6 +75,13 @@ export default {
   mixins: [isLoggedIn],
   mounted() {
     this.$store.dispatch("homeCards/userHome");
+    this.$store.dispatch("homeCards/userGenerateCards");
+  },
+  created() {
+    window.addEventListener("scroll", this.generateHomeCards);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.generateHomeCards);
   },
   computed: {
     ...mapGetters({
@@ -85,6 +92,15 @@ export default {
     showTopics() {
       console.log("PPPPPPP");
       this.$store.commit("popUpsState/toggleTopicsPopup");
+    },
+    generateHomeCards() {
+      // if(document.body.scrollTop > 200 || document.documentElement.scrollTop > 200)
+      let screenHeight = 200;
+      console.log("scrollY", window.scrollY);
+      if (window.scrollY >= screenHeight) {
+        this.$store.dispatch("homeCards/userGenerateCards");
+        screenHeight += 200;
+      }
     }
   }
 };

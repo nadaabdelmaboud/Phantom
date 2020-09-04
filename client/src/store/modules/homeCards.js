@@ -1,5 +1,5 @@
 import axios from "axios";
-
+let num;
 const state = {
   homeCards: [],
   postImage: "",
@@ -9,12 +9,17 @@ const state = {
   userFirstName: "",
   userLastName: "",
   numberofFollowers: 0,
-  pinCreatorId: ""
+  pinCreatorId: "",
+  cardsGenerated: false,
+  offsetnum: 0
 };
 
 const mutations = {
   sethomeCards(state, cards) {
     state.homeCards = cards;
+  },
+  homeGenerated(state, check) {
+    state.cardsGenerated = check;
   },
   setpostImage(state, postImage) {
     state.postImage = postImage;
@@ -46,10 +51,26 @@ const actions = {
   userHome({ commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    num = state.offsetnum;
     axios
-      .get("me/home")
+      .put("home/me")
+      .then(() => {
+        commit("homeGenerated", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+
+  userGenerateCards({ commit }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    console.log("Nana", num);
+    axios
+      .get("me/home?limit=12&offset=" + num)
       .then(response => {
         commit("sethomeCards", response.data);
+        num += 12;
       })
       .catch(error => {
         console.log(error);
