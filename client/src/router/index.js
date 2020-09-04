@@ -15,7 +15,6 @@ import EditProfile from "../views/EditProfile";
 import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
 import AccountSettings from "../components/UserSettings/AccountSettings";
 import NotificationsSettings from "../components/UserSettings/NotificationsSettings";
-import PrivacySettings from "../components/UserSettings/PrivacySettings";
 import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
 import ForgetPassword from "../views/ForgetPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
@@ -123,11 +122,6 @@ const routes = [
             path: "/settings/notifications",
             name: "Notifications",
             component: NotificationsSettings
-          },
-          {
-            path: "/settings/privacy",
-            name: "Privacy",
-            component: PrivacySettings
           }
         ]
       }
