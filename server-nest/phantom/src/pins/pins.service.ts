@@ -26,7 +26,7 @@ export class PinsService {
     private ValidationService: ValidationService,
     private BoardService: BoardService,
     private NotificationService: NotificationService,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -616,5 +616,19 @@ export class PinsService {
       }
     }
     return true;
+  }
+
+  async getFollowingPins(userId) {
+    const user = await this.UserService.getUserById(userId);
+    var pins = [];
+    console.log(pins);
+    for (let i = 0; i < user.following.length; i++) {
+      var userPin = await this.getCurrentUserPins(user.following[i]);
+      console.log(pins);
+      pins = await pins.concat(userPin);
+      console.log(pins);
+    }
+    console.log(pins);
+    return pins;
   }
 }
