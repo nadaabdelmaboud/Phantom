@@ -80,9 +80,9 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    const part = user.homeFeed.slice(offset, offset + limit);
-    const unique = [...new Set(part)];
-    return unique;
+    const unique = [...new Set(user.homeFeed)];
+    const part = unique.slice(offset, offset + limit);
+    return part;
   }
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
