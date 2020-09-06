@@ -50,6 +50,7 @@ export default {
       console.log(this.$route.query.token);
       if (this.passwordMatching && this.validatePassword && this.password) {
         this.$store.dispatch("user/resetPassword", {
+          oldPassword: "dont know old password",
           newPassword: this.password,
           token: this.$route.query.token
         });

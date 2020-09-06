@@ -145,7 +145,10 @@ const actions = {
   resetPassword({ commit }, payload) {
     axios
       .put(
-        "/me/reset-password?newPassword=" + payload.newPassword,
+        "/me/reset-password?newPassword=" +
+          payload.newPassword +
+          "&oldPassword=" +
+          payload.oldPassword,
         {},
         {
           headers: {
