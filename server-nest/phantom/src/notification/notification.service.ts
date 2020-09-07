@@ -250,7 +250,7 @@ export class NotificationService {
   async boardsForYou(user, boards) {
     let message: {
       data: {
-        boards: Array<Object>;
+        boards: string;
         title: string;
         body: string;
       };
@@ -262,10 +262,43 @@ export class NotificationService {
         body: 'we think that you may get interested in some of these boards',
       },
     };
-    console.log(message);
     if (!user.notifications) user.notifications = [];
     user.notifications.push(message);
-    console.log(user.notifications);
+    if (!user.fcmToken || user.fcmToken == ' ') {
+      return 0;
+    } else {
+      await user.save();
+      message.tokens = [user.fcmToken];
+      let checkFailed = await this.sendNotification([user.fcmToken], message);
+      if (checkFailed) {
+        let last = user.notifications.pop(message);
+        if (String(last.data.title) != String(message.data.title)) {
+          user.notifications.push(message);
+        }
+        await user.save();
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  async popularPins(user, pins) {
+    let message: {
+      data: {
+        pins: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } = {
+      data: {
+        pins: pins,
+        title: 'Popular Phantom Pins!',
+        body: 'check out these popular pins on phantom',
+      },
+    };
+    if (!user.notifications) user.notifications = [];
+    user.notifications.push(message);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {

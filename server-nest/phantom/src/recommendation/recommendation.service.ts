@@ -684,11 +684,12 @@ export class RecommendationService {
                     }
                   }
                 }
+                let finalBoards = boards.toString();
                 let res = await this.NotificationService.boardsForYou(
                   user,
-                  boards,
+                  finalBoards,
                 );
-                return res;
+                return 1;
               }
             }
           }
@@ -719,11 +720,12 @@ export class RecommendationService {
                   }
                 }
               }
+              let finalBoards = boards.toString();
               let res = await this.NotificationService.boardsForYou(
                 user,
-                boards,
+                finalBoards,
               );
-              return res;
+              return 1;
             }
           }
         }
@@ -746,8 +748,12 @@ export class RecommendationService {
                 }
               }
             }
-            let res = await this.NotificationService.boardsForYou(user, boards);
-            return res;
+            let finalBoards = boards.toString();
+            let res = await this.NotificationService.boardsForYou(
+              user,
+              finalBoards,
+            );
+            return 1;
           }
         }
       }
@@ -762,7 +768,36 @@ export class RecommendationService {
     }
     boards = await this.shuffle(boards);
     console.log('4 ', boards.length);
-    let res = await this.NotificationService.boardsForYou(user, boards);
-    return res;
+    let finalBoards = boards.toString();
+    let res = await this.NotificationService.boardsForYou(user, finalBoards);
+    return 1;
+  }
+  async popularPins(userId) {
+    if ((await this.ValidationService.checkMongooseID([userId])) == 0)
+      throw new Error('not valid id');
+    let pins = [];
+    let user = await this.userModel.findById(userId);
+    let allPins = await this.pinModel
+      .find({})
+      .sort({ reacts: -1 })
+      .limit(100);
+
+    for (let i = 0; i < user.pins.length; i++) {
+      for (let j = 0; j < allPins.length; j++) {
+        if (String(allPins[j]._id) == String(user.pins[i].pinId)) {
+          allPins.splice(j, 1);
+        }
+      }
+    }
+    for (let i = 0; i < user.savedPins.length; i++) {
+      for (let j = 0; j < allPins.length; j++) {
+        if (String(allPins[j]._id) == String(user.savedPins[i].pinId)) {
+          allPins.splice(j, 1);
+        }
+      }
+    }
+    let finalPins = allPins.toString();
+    let res = await this.NotificationService.popularPins(user, finalPins);
+    return 1;
   }
 }
