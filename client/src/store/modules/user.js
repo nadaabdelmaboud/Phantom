@@ -2,10 +2,6 @@ import axios from "axios";
 import getUserToken from "../../mixins/getUserToken";
 const state = {
   signUpState: null,
-  userToken: "",
-  userFirstName: "",
-  userLastName: "",
-  userEmail: "",
   validPasswordLength: null,
   containCapitalChar: null,
   containSpecialChar: null,
@@ -18,7 +14,8 @@ const state = {
   sendEmailStatus: null,
   resetPasswordStatus: null,
   userData: null,
-  isLoading: false
+  isLoading: false,
+  imgID: null
 };
 
 const mutations = {
@@ -75,6 +72,9 @@ const mutations = {
   },
   setUpdateStatus(state, payload) {
     state.updateStatus = payload;
+  },
+  changeImgID(state, payload) {
+    state.imgID = payload;
   }
 };
 
@@ -163,10 +163,10 @@ const actions = {
         console.log(error);
       });
   },
-  getUserProfile({ commit }) {
+  async getUserProfile({ commit }) {
     commit("setLoading");
     let token = getUserToken.methods.getUserToken();
-    axios
+    await axios
       .get("/me", {
         headers: {
           Authorization: token
@@ -195,6 +195,31 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  async uploadImg({ commit }, img) {
+    console.log(img);
+    await axios({
+      method: "post",
+      url: "me/uploadImage",
+      data: img
+    })
+      .then(response => {
+        commit("changeImgID", response.data[0].id);
+        console.log(response.data[0].id);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async changeProfilePic({ state, commit, dispatch }, imgFile) {
+    await dispatch("uploadImg", imgFile).then(async () => {
+      await dispatch("updateUserInfo", { profileImage: state.imgID }).then(
+        () => {
+          localStorage.setItem("imgProfileID", state.imgID);
+          commit("popUpsState/toggleChangePhotoPopUp", null, { root: true });
+        }
+      );
+    });
   }
 };
 
