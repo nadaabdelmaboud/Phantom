@@ -7,24 +7,24 @@ import { topic } from 'src/types/topic';
 import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from 'src/types/user';
-import { BoardService } from 'src/board/board.service';
-import { PinsService } from 'src/pins/pins.service';
-import { isDate } from 'util';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Injectable()
 export class RecommendationService {
   followExist: Object;
+  offsetArr: Array<number>;
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private UserService: UserService,
-    private BoardService: BoardService,
-    private PinsService: PinsService,
+    private NotificationService: NotificationService,
+
     private ValidationService: ValidationService,
   ) {
     this.followExist = {};
+    this.offsetArr = [];
   }
   async followseeds() {
     let topics = await this.topicModel.find({});
@@ -80,8 +80,24 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    const part = user.homeFeed.slice(offset, offset + limit);
+
+    const part = await user.homeFeed.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
     return part;
+  }
+  async checkDublicates(values) {
+    for (let i = 0; i < values.length; i++) {
+      for (let j = i + 1; j < values.length; j++) {
+        console.log('i = ', values[i]._id);
+        console.log('j = ', values[j]._id);
+        if (String(values[i]._id) == String(values[j]._id)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -632,5 +648,121 @@ export class RecommendationService {
         return board.sections[i].more.slice(offset, offset + limit);
       }
     }
+  }
+  async boardsForYou(userId) {
+    if ((await this.ValidationService.checkMongooseID([userId])) == 0)
+      throw new Error('not valid id');
+    let boards = [];
+    let user = await this.userModel.findById(userId);
+    let allBoards = await this.boardModel.find({});
+    console.log(user.boards.length);
+    console.log(user.firstName);
+    for (let i = 0; i < user.boards.length; i++) {
+      let count = 0;
+      for (let j = 0; j < allBoards.length; j++) {
+        if (count == 10) break;
+        if (String(allBoards[j]._id) != String(user.boards[i].boardId)) {
+          let board = await this.boardModel.findById(user.boards[i].boardId);
+          if (
+            allBoards[j].topic == board.topic ||
+            allBoards[j].name.includes(String(board.name)) ||
+            board.name.includes(String(allBoards[j].name)) ||
+            allBoards[j].description.includes(String(board.description)) ||
+            board.description.includes(String(allBoards[j].description))
+          ) {
+            if (!boards.includes(allBoards[j])) {
+              boards.push(allBoards[j]);
+              count++;
+              if (boards.length >= 50) {
+                boards = await this.shuffle(boards);
+                for (let k = 0; k < user.boards.length; k++) {
+                  for (let n = 0; n < boards.length; n++) {
+                    if (
+                      String(user.boards[k].boardId) == String(boards[n]._id)
+                    ) {
+                      boards.splice(n, 1);
+                    }
+                  }
+                }
+                let res = await this.NotificationService.boardsForYou(
+                  user,
+                  boards,
+                );
+                return res;
+              }
+            }
+          }
+        }
+      }
+    }
+    console.log('1 ', boards.length);
+    for (let i = 0; i < user.followingTopics.length; i++) {
+      let topic = await this.topicModel.findById(user.followingTopics[i]);
+      let count = 0;
+      for (let j = 0; j < allBoards.length; j++) {
+        if (count > 5) break;
+        if (
+          allBoards[j].topic == topic.name ||
+          allBoards[j].name.includes(String(topic.name)) ||
+          topic.name.includes(String(allBoards[j].name)) ||
+          allBoards[j].description.includes(String(topic.name))
+        ) {
+          if (!boards.includes(allBoards[j])) {
+            boards.push(allBoards[j]);
+            count++;
+            if (boards.length >= 50) {
+              boards = await this.shuffle(boards);
+              for (let k = 0; k < user.boards.length; k++) {
+                for (let n = 0; n < boards.length; n++) {
+                  if (String(user.boards[k].boardId) == String(boards[n]._id)) {
+                    boards.splice(n, 1);
+                  }
+                }
+              }
+              let res = await this.NotificationService.boardsForYou(
+                user,
+                boards,
+              );
+              return res;
+            }
+          }
+        }
+      }
+    }
+    console.log('2 ', boards.length);
+
+    for (let i = 0; i < user.following.length; i++) {
+      let following = await this.userModel.findById(user.following[i]);
+      for (let j = 0; j < following.boards.length; j++) {
+        let board = await this.boardModel.findById(following.boards[j].boardId);
+        if (!boards.includes(board)) {
+          boards.push(board);
+          if (boards.length >= 50) {
+            boards = await this.shuffle(boards);
+            for (let k = 0; k < user.boards.length; k++) {
+              for (let n = 0; n < boards.length; n++) {
+                if (String(user.boards[k].boardId) == String(boards[n]._id)) {
+                  boards.splice(n, 1);
+                }
+              }
+            }
+            let res = await this.NotificationService.boardsForYou(user, boards);
+            return res;
+          }
+        }
+      }
+    }
+    console.log('3 ', boards.length);
+    for (let k = 0; k < user.boards.length; k++) {
+      for (let n = 0; n < boards.length; n++) {
+        if (String(user.boards[k].boardId) == String(boards[n]._id)) {
+          boards.splice(n, 1);
+        }
+      }
+    }
+    boards = await this.shuffle(boards);
+    console.log('4 ', boards.length);
+    let res = await this.NotificationService.boardsForYou(user, boards);
+    return res;
   }
 }

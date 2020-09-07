@@ -212,4 +212,16 @@ export class RecommendationController {
       throw new NotFoundException();
     }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/boardsForYou')
+  async getBoardsForYou(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let boards = await this.RecommendationService.boardsForYou(userId);
+    if (boards) {
+      return boards;
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }

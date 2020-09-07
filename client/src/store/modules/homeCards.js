@@ -12,14 +12,14 @@ const state = {
   pinCreatorId: "",
   cardsGenerated: false,
   offsetnum: 0,
-  totalCards:0,
-  finishCalling:false
+  totalCards: 0,
+  finishCalling: false,
 };
 
 const mutations = {
   sethomeCards(state, cards) {
-    for (let index = 0 ;index<cards.length ; index++)
-    state.homeCards.push(cards[index]);
+    for (let index = 0; index < cards.length; index++)
+      state.homeCards.push(cards[index]);
   },
   homeGenerated(state, check) {
     state.cardsGenerated = check;
@@ -48,12 +48,12 @@ const mutations = {
   setpinCreatorId(state, pinCreatorId) {
     state.pinCreatorId = pinCreatorId;
   },
-  totalNumCards(state , totalNum){
+  totalNumCards(state, totalNum) {
     state.totalCards = totalNum;
   },
-  finishCalling(state , value){
-  state.finishCalling = value;
-  }
+  finishCalling(state, value) {
+    state.finishCalling = value;
+  },
 };
 
 const actions = {
@@ -66,9 +66,9 @@ const actions = {
       .put("home/me")
       .then((response) => {
         commit("homeGenerated", true);
-        commit("totalNumCards" , response.data.total);
+        commit("totalNumCards", response.data.total);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -79,13 +79,20 @@ const actions = {
     console.log("Nana", num);
     axios
       .get("me/home?limit=12&offset=" + num)
-      .then(response => {
-        commit("sethomeCards", response.data);
+      .then((response) => {
+        console.log(num);
+        console.log("data length", response.data.length);
         num += 12;
+        commit("sethomeCards", response.data);
       })
-      .catch(error => {
-        if (num == state.totalCards)
-        state.finishCalling = true;
+      .catch((error) => {
+        console.log("assa1");
+        if (num == state.totalCards) state.finishCalling = true;
+        console.log("assa2");
+        setTimeout(() => {
+          console.log("assa3");
+          this.userGenerateCards;
+        }, 1000);
         console.log(error);
       });
   },
@@ -95,7 +102,7 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     await axios
       .get("/pins/" + postPageID)
-      .then(response => {
+      .then((response) => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
         commit("setpinCreatorId", res.pin.creator.id);
@@ -106,23 +113,23 @@ const actions = {
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 
 const getters = {
-  userHomePage: state => state.homeCards,
-  postImage: state => state.postImage,
-  userImageId: state => state.userImage,
-  postTitle: state => state.postTitle,
-  postDescribtion: state => state.postDescribtion,
-  userFirstName: state => state.userFirstName,
-  userLastName: state => state.userLastName,
-  numberofFollowers: state => state.numberofFollowers,
-  pinCreatorId: state => state.pinCreatorId,
-  finishCalling:state => state.finishCalling
+  userHomePage: (state) => state.homeCards,
+  postImage: (state) => state.postImage,
+  userImageId: (state) => state.userImage,
+  postTitle: (state) => state.postTitle,
+  postDescribtion: (state) => state.postDescribtion,
+  userFirstName: (state) => state.userFirstName,
+  userLastName: (state) => state.userLastName,
+  numberofFollowers: (state) => state.numberofFollowers,
+  pinCreatorId: (state) => state.pinCreatorId,
+  finishCalling: (state) => state.finishCalling,
 };
 
 export default {
@@ -130,5 +137,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

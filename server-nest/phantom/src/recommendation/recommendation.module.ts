@@ -9,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User } from 'src/models/user.schema';
 import { BoardModule } from 'src/board/board.module';
 import { PinsModule } from 'src/pins/pins.module';
+import { NotificationService } from 'src/notification/notification.service';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { PinsModule } from 'src/pins/pins.module';
     ]),
   ],
   controllers: [RecommendationController],
-  providers: [RecommendationService],
+  providers: [RecommendationService, NotificationService],
   exports: [RecommendationService],
 })
 export class RecommendationModule {}
