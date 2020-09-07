@@ -29,7 +29,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -146,6 +146,10 @@ export class UserService {
       password: hash,
       sortType: 'Date',
       fcmToken: ' ',
+      boardsForYou: true,
+      popularPins: true,
+      pinsForYou: true,
+      pinsInspired: true,
       history: [],
       facebook: false,
       google: false,
@@ -214,8 +218,11 @@ export class UserService {
     if (!user || !newPassword)
       throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
     if (oldPassword != 'dont know old password') {
-      if (! await bcrypt.compare(oldPassword, user.password)) {
-        throw new HttpException('old password is not correct', HttpStatus.FORBIDDEN);
+      if (!(await bcrypt.compare(oldPassword, user.password))) {
+        throw new HttpException(
+          'old password is not correct',
+          HttpStatus.FORBIDDEN,
+        );
       }
     }
     const salt = await bcrypt.genSalt(10);
@@ -309,7 +316,15 @@ export class UserService {
   }
   async updateSettings(
     userId,
-    settings: { facebook?: Boolean; google?: Boolean; deleteflag?: Boolean },
+    settings: {
+      facebook?: Boolean;
+      google?: Boolean;
+      deleteflag?: Boolean;
+      boardsForYou: Boolean;
+      popularPins: Boolean;
+      pinsForYou: Boolean;
+      pinsInspired: Boolean;
+    },
   ) {
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {

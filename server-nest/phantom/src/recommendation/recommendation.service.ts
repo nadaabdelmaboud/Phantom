@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  NotAcceptableException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { board } from 'src/types/board';
@@ -654,6 +659,9 @@ export class RecommendationService {
       throw new Error('not valid id');
     let boards = [];
     let user = await this.userModel.findById(userId);
+    if (!user.boardsForYou) {
+      throw new BadRequestException('user should allow boards for you first');
+    }
     let allBoards = await this.boardModel.find({});
     console.log(user.boards.length);
     console.log(user.firstName);
@@ -770,13 +778,15 @@ export class RecommendationService {
     console.log('4 ', boards.length);
     let finalBoards = boards.toString();
     let res = await this.NotificationService.boardsForYou(user, finalBoards);
-    return 1;
+    return finalBoards;
   }
   async popularPins(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
-    let pins = [];
     let user = await this.userModel.findById(userId);
+    if (!user.popularPins) {
+      throw new BadRequestException('user should allow popular pins first');
+    }
     let allPins = await this.pinModel
       .find({})
       .sort({ reacts: -1 })
