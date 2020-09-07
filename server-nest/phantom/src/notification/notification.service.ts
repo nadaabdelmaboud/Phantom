@@ -316,4 +316,72 @@ export class NotificationService {
     }
     return 1;
   }
+  async pinsForYou(user, pins) {
+    let message: {
+      data: {
+        pins: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } = {
+      data: {
+        pins: pins,
+        title: 'Pins For You!',
+        body: 'We think that you may get instersted in some of these pins',
+      },
+    };
+    if (!user.notifications) user.notifications = [];
+    user.notifications.push(message);
+    if (!user.fcmToken || user.fcmToken == ' ') {
+      return 0;
+    } else {
+      await user.save();
+      message.tokens = [user.fcmToken];
+      let checkFailed = await this.sendNotification([user.fcmToken], message);
+      if (checkFailed) {
+        let last = user.notifications.pop(message);
+        if (String(last.data.title) != String(message.data.title)) {
+          user.notifications.push(message);
+        }
+        await user.save();
+        return 0;
+      }
+    }
+    return 1;
+  }
+  async pinsInspired(user, pins) {
+    let message: {
+      data: {
+        pins: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } = {
+      data: {
+        pins: pins,
+        title: 'Pins Inspired By Your Recent Activity!',
+        body: 'check out these pins',
+      },
+    };
+    if (!user.notifications) user.notifications = [];
+    user.notifications.push(message);
+    if (!user.fcmToken || user.fcmToken == ' ') {
+      return 0;
+    } else {
+      await user.save();
+      message.tokens = [user.fcmToken];
+      let checkFailed = await this.sendNotification([user.fcmToken], message);
+      if (checkFailed) {
+        let last = user.notifications.pop(message);
+        if (String(last.data.title) != String(message.data.title)) {
+          user.notifications.push(message);
+        }
+        await user.save();
+        return 0;
+      }
+    }
+    return 1;
+  }
 }

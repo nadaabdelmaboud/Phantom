@@ -26,7 +26,7 @@ export class PinsService {
     private ValidationService: ValidationService,
     private BoardService: BoardService,
     private NotificationService: NotificationService,
-  ) { }
+  ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -71,11 +71,12 @@ export class PinsService {
           followers: creator.followers.length,
         };
       }
-      if (user.history) user.history = [];
+      if (!user.history) user.history = [];
       user.history.push({
         topic: pin.topic,
         pinId: pin._id,
       });
+      await user.save();
       return {
         pin: pin,
         type: pinType,
