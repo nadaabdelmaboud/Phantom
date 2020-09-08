@@ -29,10 +29,20 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
+      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about = '';
+    return user;
+  }
+
+  async getActivateUserById(id) {
+    const user = await this.userModel.findById(id);
+    if (!user)
+      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (user.activateaccount == false)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
@@ -217,7 +227,7 @@ export class UserService {
     const user = await this.getUserById(userId);
     if (!user || !newPassword)
       throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
-    if (oldPassword != 'dont know old password') {
+    if (oldPassword) {
       if (!(await bcrypt.compare(oldPassword, user.password))) {
         throw new HttpException(
           'old password is not correct',
@@ -320,17 +330,18 @@ export class UserService {
       facebook?: Boolean;
       google?: Boolean;
       deleteflag?: Boolean;
-      boardsForYou: Boolean;
-      popularPins: Boolean;
-      pinsForYou: Boolean;
-      pinsInspired: Boolean;
+      boardsForYou?: Boolean;
+      popularPins?: Boolean;
+      pinsForYou?: Boolean;
+      pinsInspired?: Boolean;
+      activateaccount?: Boolean;
     },
   ) {
     const user = await this.getUserById(userId);
-    if (settings.deleteflag) {
+/*    if (settings.deleteflag) {
       await this.deleteUser(userId);
     }
-    await this.userModel.updateOne({ _id: userId }, settings);
+  */  await this.userModel.updateOne({ _id: userId }, settings);
     /*if(settings.facebook)
     login with facebook
     else if(settings.google)
@@ -355,6 +366,9 @@ export class UserService {
 
   async deleteUser(id) {
     const user = await this.getUserById(id);
+    // delete following
+    //delete followers 
+    // delete pins saved created
     return await this.userModel.findByIdAndDelete(id);
   }
   async setViewState(userId, viewState) {
@@ -416,7 +430,7 @@ export class UserService {
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.getUserById(followerId);
-    let followedUser = await this.getUserById(followingId);
+    let followedUser = await this.getActivateUserById(followingId);
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
     if (await this.checkFollowUser(userFollow, followingId))
@@ -449,7 +463,7 @@ export class UserService {
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.getUserById(followerId);
-    let followedUser = await this.getUserById(followingId);
+    let followedUser = await this.getActivateUserById(followingId);
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
     if (!(await this.checkFollowUser(userFollow, followingId)))
@@ -503,7 +517,7 @@ export class UserService {
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
       var currentUser = await this.getUserById(followers[i]);
-      if (currentUser)
+      if (currentUser && currentUser.activateaccount != false)
         followersInfo.push({
           _id: currentUser._id,
           firstName: currentUser.firstName,
@@ -536,7 +550,7 @@ export class UserService {
     var followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
       var currentUser = await this.getUserById(followings[i]);
-      if (currentUser)
+      if (currentUser && currentUser.activateaccount != false)
         followingsInfo.push({
           _id: currentUser._id,
           firstName: currentUser.firstName,

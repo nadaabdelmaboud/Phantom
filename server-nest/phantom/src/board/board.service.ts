@@ -24,7 +24,7 @@ export class BoardService {
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getBoardById(boardId): Promise<board> {
     try {
       if (!this.ValidationService.checkMongooseID([boardId]))
@@ -156,7 +156,7 @@ export class BoardService {
   async sortBoardsDate(userId): Promise<Array<object>> {
     let user = await this.UserService.getUserById(userId);
 
-    await user.boards.sort(function(a, b) {
+    await user.boards.sort(function (a, b) {
       if (a.createdAt < b.createdAt) {
         return -1;
       }
@@ -217,11 +217,16 @@ export class BoardService {
     });
     return true;
   }
-  async getCurrentUserBoards(userId) {
+  async getCurrentUserBoards(userId, ifMe: Boolean) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user = await this.UserService.getUserById(userId);
+    let user
+    if (ifMe == true)
+      user = await this.UserService.getUserById(userId);
+    else
+      user = await this.UserService.getActivateUserById(userId);
+
     if (!user) return false;
     let retBoards = [];
     let permissions = {};
@@ -263,7 +268,7 @@ export class BoardService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let boardUser = await this.UserService.getUserById(boardUserId);
+    let boardUser = await this.UserService.getActivateUserById(boardUserId);
     if (!boardUser) return false;
     let retBoards = [];
     for (var i = 0; i < boardUser.boards.length; i++) {
@@ -347,7 +352,7 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    let creator = await this.UserService.getUserById(board.creator.id);
+    let creator = await this.UserService.getActivateUserById(board.creator.id);
     if (!creator) {
       throw new BadRequestException('no board creator found');
     }
@@ -472,7 +477,7 @@ export class BoardService {
     }
     let retCollaborators = [];
     for (var i = 0; i < board.collaborators.length; i++) {
-      let collaborator = await this.UserService.getUserById(
+      let collaborator = await this.UserService.getActivateUserById(
         board.collaborators[i].collaboratorId,
       );
       retCollaborators.push({

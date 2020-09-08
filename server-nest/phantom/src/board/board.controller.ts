@@ -23,7 +23,7 @@ import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-perm
 @UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
-  constructor(private BoardService: BoardService) {}
+  constructor(private BoardService: BoardService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/boards')
@@ -54,7 +54,7 @@ export class BoardController {
   @Get('/me/boards')
   async getCurrentUserBoards(@Request() req) {
     let userId = req.user._id;
-    let boards = await this.BoardService.getCurrentUserBoards(userId);
+    let boards = await this.BoardService.getCurrentUserBoards(userId, true);
     if (boards && boards.length != 0) {
       return boards;
     } else {

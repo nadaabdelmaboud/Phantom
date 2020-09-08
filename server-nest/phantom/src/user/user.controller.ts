@@ -1,5 +1,8 @@
 import * as nestCommon from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { PinsService } from '../pins/pins.service';
+import { BoardService } from '../board/board.service';
+import { TopicService } from '../topic/topic.service';
 import { UserService } from '../shared/user.service';
 import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service';
@@ -10,7 +13,10 @@ export class UserController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private email: Email,
+  /*  private TopicService: TopicService,
+    private BoardService: BoardService,
+    private PinsService: PinsService,
+    */private email: Email,
   ) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
@@ -23,7 +29,7 @@ export class UserController {
 
   @nestCommon.Get('/user/:user_id')
   async getUser(@nestCommon.Param() params) {
-    const user = await this.userService.getUserById(params.user_id);
+    const user = await this.userService.getActivateUserById(params.user_id);
     user.password = undefined;
     return { user };
   }
@@ -32,11 +38,17 @@ export class UserController {
   @nestCommon.Put('/me/reset-password')
   async resetPassword(
     @nestCommon.Request() req,
-    @nestCommon.Query('newPassword') newPassword: string,
-    @nestCommon.Query('oldPassword') oldPassword: string,
-
+    @nestCommon.Body('newPassword') newPassword: string,
+    @nestCommon.Body('oldPassword') oldPassword: string,
+    @nestCommon.Body('forgetPassword') forgetPassword: Boolean,
   ) {
-    //  if (!req.user.email) throw new nestCommon.HttpException('Invalid token', nestCommon.HttpStatus.FORBIDDEN);
+    if (forgetPassword == true)
+      oldPassword = undefined;
+    else if (!oldPassword)
+      throw new nestCommon.HttpException(
+        'oldPassword is reqired',
+        nestCommon.HttpStatus.FORBIDDEN,
+      );
     const ifRest = await this.userService.resetPassword(
       req.user._id,
       newPassword,
@@ -52,8 +64,36 @@ export class UserController {
   ) {
     await this.userService.checkUpdateData(updateData);
     await this.userService.updateUserInfo(req.user._id, updateData);
+    const user = await this.userService.getUserById(req.user._id);
+    user.password = undefined;
+    return user;
   }
 
+
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Put('/me/update-settings')
+  async updateUserSettings(
+    @nestCommon.Request() req,
+    @nestCommon.Body() updateData,
+  ) {/*
+    if (updateData.deleteflag) {
+      const user = await this.userService.getUserById(req.user._id);
+      // delete boards created saved
+      for (let i = 0; i < user.boards.length; i++) {
+        await this.BoardService.deleteBoard(req.user._id, user.boards[i].boardId);
+      }
+      for (let i = 0; i < user.pins.length; i++) {
+        await this.PinsService.deletePin(req.user._id, user.pins[i].pinId);
+      }
+      // delete following
+      //delete followers 
+      // delete pins saved created
+    }*/
+    await this.userService.updateSettings(req.user._id, updateData);
+    const user = await this.userService.getUserById(req.user._id);
+    user.password = undefined;
+    return user;
+  }
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/me/confirm-update-email')
   async confirmUpdateEmail(

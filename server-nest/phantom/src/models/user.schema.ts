@@ -10,6 +10,7 @@ export const User = new Schema({
   birthDate: Date,
   followingTopics: Array(mongoose.Types.ObjectId),
   location: String,
+  activateaccount: Boolean,
   facebook: Boolean,
   google: Boolean,
   notificationOfPinsActivity: Boolean,

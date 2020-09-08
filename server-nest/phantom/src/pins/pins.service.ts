@@ -26,7 +26,7 @@ export class PinsService {
     private ValidationService: ValidationService,
     private BoardService: BoardService,
     private NotificationService: NotificationService,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -44,7 +44,7 @@ export class PinsService {
     let pinType = 'none';
     let pin = await this.pinModel.findById(pinId);
     let user = await this.UserService.getUserById(userId);
-    let creator = await this.UserService.getUserById(pin.creator.id);
+    let creator = await this.UserService.getActivateUserById(pin.creator.id);
     if (!user) throw new NotFoundException({ message: 'user not found' });
     if (String(pin.creator.id) == String(userId)) {
       pinType = 'creator';
@@ -182,11 +182,15 @@ export class PinsService {
     await user.save();
     return true;
   }
-  async getCurrentUserPins(userId) {
+  async getCurrentUserPins(userId, ifMe: Boolean) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user = await this.UserService.getUserById(userId);
+    let user
+    if (ifMe == true)
+      user = await this.UserService.getUserById(userId);
+    else
+      user = await this.UserService.getActivateUserById(userId);
     if (!user) return false;
     let retPins = [];
     for (var i = 0; i < user.pins.length; i++) {
@@ -284,7 +288,7 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
-    let ownerUser = await this.UserService.getUserById(pin.creator.id);
+    let ownerUser = await this.UserService.getActivateUserById(pin.creator.id);
 
     var cs = <comment>(<unknown>{
       commenter: userId,
@@ -355,6 +359,8 @@ export class PinsService {
         pin.comments[i].commenter,
       );
       if (commenter) {
+        if (commenter.activateaccount == false)
+          continue;
         let comment = {
           commenter: pin.comments[i].commenter,
           commenterName: commenter.firstName + ' ' + commenter.lastName,
@@ -369,7 +375,10 @@ export class PinsService {
             pin.comments[i].replies[j].replier,
           );
           if (replier) {
+            if (replier.activateaccount == false)
+              continue;
             let reply = {
+
               replier: pin.comments[i].replies[j].replier,
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
@@ -400,7 +409,7 @@ export class PinsService {
     }
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
-    let pinOwner = await this.getPinById(pin.creator.id);
+    let pinOwner = await this.UserService.getActivateUserById(pin.creator.id);
     if (!user || !pin) return false;
     pin.reacts.push({
       reactType: reactType,
@@ -622,9 +631,11 @@ export class PinsService {
   async getFollowingPins(userId) {
     const user = await this.UserService.getUserById(userId);
     var pins = [];
-    console.log(pins);
     for (let i = 0; i < user.following.length; i++) {
-      var userPin = await this.getCurrentUserPins(user.following[i]);
+      var followUser = await this.UserService.getUserById(user.following[i]);
+      if (followUser.activateaccount == false)
+        continue;
+      var userPin = await this.getCurrentUserPins(user.following[i], false);
       console.log(pins);
       pins = await pins.concat(userPin);
       console.log(pins);
