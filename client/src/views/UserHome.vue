@@ -78,8 +78,8 @@ export default {
     this.$store.dispatch("homeCards/userHome");
     this.$store.dispatch("homeCards/userGenerateCards");
     screenHeight = 200;
-    if(this.finishCalling === true)
-    window.removeEventListener("scroll", this.generateHomeCards);
+    if (this.finishCalling === true)
+      window.removeEventListener("scroll", this.generateHomeCards);
   },
   created() {
     window.addEventListener("scroll", this.generateHomeCards);
@@ -90,7 +90,7 @@ export default {
   computed: {
     ...mapGetters({
       cards: "homeCards/userHomePage",
-      finishCalling:"homeCards/finishCalling"
+      finishCalling: "homeCards/finishCalling"
     })
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
       console.log("screenHeight", screenHeight);
       if (window.scrollY >= screenHeight) {
         screenHeight = screenHeight + 200;
-        console.log("here")
+        console.log("here");
         this.$store.dispatch("homeCards/userGenerateCards");
       }
     }
