@@ -67,6 +67,7 @@ body {
 import HomeCard from "../components/HomeCard";
 import { mapGetters } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
+let screenHeight;
 export default {
   name: "UserHome",
   components: {
@@ -75,16 +76,37 @@ export default {
   mixins: [isLoggedIn],
   mounted() {
     this.$store.dispatch("homeCards/userHome");
+    this.$store.dispatch("homeCards/userGenerateCards");
+    screenHeight = 200;
+    if (this.finishCalling === true)
+      window.removeEventListener("scroll", this.generateHomeCards);
+  },
+  created() {
+    window.addEventListener("scroll", this.generateHomeCards);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.generateHomeCards);
   },
   computed: {
     ...mapGetters({
-      cards: "homeCards/userHomePage"
+      cards: "homeCards/userHomePage",
+      finishCalling: "homeCards/finishCalling"
     })
   },
   methods: {
     showTopics() {
       console.log("PPPPPPP");
       this.$store.commit("popUpsState/toggleTopicsPopup");
+    },
+    generateHomeCards() {
+      // if(document.body.scrollTop > 200 || document.documentElement.scrollTop > 200)
+      console.log("scrollY", window.scrollY);
+      console.log("screenHeight", screenHeight);
+      if (window.scrollY >= screenHeight) {
+        screenHeight = screenHeight + 200;
+        console.log("here");
+        this.$store.dispatch("homeCards/userGenerateCards");
+      }
     }
   }
 };

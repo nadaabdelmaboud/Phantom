@@ -56,7 +56,7 @@ export class PinsController {
   @Get('/me/pins')
   async getCurrentUserPins(@Request() req) {
     let userId = req.user._id;
-    let pins = await this.PinsService.getCurrentUserPins(userId);
+    let pins = await this.PinsService.getCurrentUserPins(userId, true);
     if (pins && pins.length != 0) {
       return pins;
     } else {

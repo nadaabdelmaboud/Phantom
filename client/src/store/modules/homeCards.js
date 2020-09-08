@@ -1,5 +1,5 @@
 import axios from "axios";
-
+let num;
 const state = {
   homeCards: [],
   postImage: "",
@@ -9,12 +9,20 @@ const state = {
   userFirstName: "",
   userLastName: "",
   numberofFollowers: 0,
-  pinCreatorId: ""
+  pinCreatorId: "",
+  cardsGenerated: false,
+  offsetnum: 0,
+  totalCards: 0,
+  finishCalling: false
 };
 
 const mutations = {
   sethomeCards(state, cards) {
-    state.homeCards = cards;
+    for (let index = 0; index < cards.length; index++)
+      state.homeCards.push(cards[index]);
+  },
+  homeGenerated(state, check) {
+    state.cardsGenerated = check;
   },
   setpostImage(state, postImage) {
     state.postImage = postImage;
@@ -39,6 +47,12 @@ const mutations = {
   },
   setpinCreatorId(state, pinCreatorId) {
     state.pinCreatorId = pinCreatorId;
+  },
+  totalNumCards(state, totalNum) {
+    state.totalCards = totalNum;
+  },
+  finishCalling(state, value) {
+    state.finishCalling = value;
   }
 };
 
@@ -46,12 +60,39 @@ const actions = {
   userHome({ commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    num = state.offsetnum;
+    state.totalCards = 0;
     axios
-      .get("me/home")
+      .put("home/me")
       .then(response => {
+        commit("homeGenerated", true);
+        commit("totalNumCards", response.data.total);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+
+  userGenerateCards({ commit }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    console.log("Nana", num);
+    axios
+      .get("me/home?limit=12&offset=" + num)
+      .then(response => {
+        console.log(num);
+        console.log("data length", response.data.length);
+        num += 12;
         commit("sethomeCards", response.data);
       })
       .catch(error => {
+        console.log("assa1");
+        if (num == state.totalCards) state.finishCalling = true;
+        console.log("assa2");
+        setTimeout(() => {
+          console.log("assa3");
+          this.userGenerateCards;
+        }, 1000);
         console.log(error);
       });
   },
@@ -87,7 +128,8 @@ const getters = {
   userFirstName: state => state.userFirstName,
   userLastName: state => state.userLastName,
   numberofFollowers: state => state.numberofFollowers,
-  pinCreatorId: state => state.pinCreatorId
+  pinCreatorId: state => state.pinCreatorId,
+  finishCalling: state => state.finishCalling
 };
 
 export default {

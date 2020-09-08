@@ -8,6 +8,11 @@ export interface user extends Document {
   email: String;
   password: String;
   country: String;
+  boardsForYou: Boolean;
+  popularPins: Boolean;
+  pinsForYou: Boolean;
+  activateaccount: Boolean;
+  pinsInspired: Boolean;
   birthDate: Date;
   about: String;
   facebook: Boolean;
