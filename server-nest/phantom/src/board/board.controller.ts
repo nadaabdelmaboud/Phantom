@@ -23,7 +23,7 @@ import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-perm
 @UseFilters(HttpExceptionFilter)
 @Controller()
 export class BoardController {
-  constructor(private BoardService: BoardService) { }
+  constructor(private BoardService: BoardService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/boards')
@@ -40,7 +40,6 @@ export class BoardController {
       name,
       startDate,
       endDate,
-      status,
       userId,
     );
     if (createdBoard) {

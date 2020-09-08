@@ -24,7 +24,7 @@ export class BoardService {
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getBoardById(boardId): Promise<board> {
     try {
       if (!this.ValidationService.checkMongooseID([boardId]))
@@ -89,7 +89,6 @@ export class BoardService {
     name: string,
     startDate: string,
     endDate: string,
-    status: string,
     userId: string,
   ) {
     let user = await this.UserService.getUserById(userId);
@@ -100,7 +99,7 @@ export class BoardService {
     let board = new this.boardModel({
       name: name,
       pins: [],
-      status: status,
+      status: 'public',
       startDate: sd,
       endDate: ed,
       createdAt: Date.now(),
@@ -156,7 +155,7 @@ export class BoardService {
   async sortBoardsDate(userId): Promise<Array<object>> {
     let user = await this.UserService.getUserById(userId);
 
-    await user.boards.sort(function (a, b) {
+    await user.boards.sort(function(a, b) {
       if (a.createdAt < b.createdAt) {
         return -1;
       }
@@ -221,11 +220,9 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user
-    if (ifMe == true)
-      user = await this.UserService.getUserById(userId);
-    else
-      user = await this.UserService.getActivateUserById(userId);
+    let user;
+    if (ifMe == true) user = await this.UserService.getUserById(userId);
+    else user = await this.UserService.getActivateUserById(userId);
 
     if (!user) return false;
     let retBoards = [];
@@ -275,27 +272,25 @@ export class BoardService {
       let board = await this.boardModel.findById(boardUser.boards[i].boardId);
       if (!board) continue;
       let collaborator = await this.isCollaborator(board, userId);
-      if ((board.status && board.status == 'public') || collaborator) {
-        let isJoined = false;
-        let permissions = {};
-        if (collaborator) {
-          isJoined = true;
-          permissions = {
-            savePin: collaborator.savePin,
-            createPin: collaborator.createPin,
-            addCollaborators: collaborator.addCollaborators,
-            editDescription: collaborator.editDescription,
-            editTitle: collaborator.editTitle,
-            personalization: collaborator.personalization,
-          };
-        }
-        retBoards.push({
-          board: board,
-          isJoined: isJoined,
-          permissions: permissions,
-        });
-        continue;
+      let isJoined = false;
+      let permissions = {};
+      if (collaborator) {
+        isJoined = true;
+        permissions = {
+          savePin: collaborator.savePin,
+          createPin: collaborator.createPin,
+          addCollaborators: collaborator.addCollaborators,
+          editDescription: collaborator.editDescription,
+          editTitle: collaborator.editTitle,
+          personalization: collaborator.personalization,
+        };
       }
+
+      retBoards.push({
+        board: board,
+        isJoined: isJoined,
+        permissions: permissions,
+      });
     }
     return retBoards;
   }
@@ -316,7 +311,8 @@ export class BoardService {
   async isPublicBoard(boardId) {
     let board = await this.boardModel.findById(boardId);
     if (!board) return false;
-    if (board.status == 'public') return true;
+    if (!board.status || board.status == '' || board.status == 'public')
+      return true;
     return false;
   }
 
@@ -395,12 +391,7 @@ export class BoardService {
     ) {
       board.personalization = editBoardDto.personalization;
     }
-    if (
-      editBoardDto.status &&
-      (editBoardDto.status == 'public' || editBoardDto.status == 'private')
-    ) {
-      board.status = editBoardDto.status;
-    }
+
     if (editBoardDto.topic) {
       board.topic = editBoardDto.topic;
       let topic = await this.topicModel.findOne({ name: editBoardDto.topic });
