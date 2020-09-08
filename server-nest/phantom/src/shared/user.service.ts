@@ -455,7 +455,8 @@ export class UserService {
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
     await followedUser.save();
-    await this.notification.followUser(followedUser, userFollow);
+    if (!followedUser.followNotification || followedUser.followNotification == true)
+      await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
 
