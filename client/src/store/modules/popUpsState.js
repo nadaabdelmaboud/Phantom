@@ -10,7 +10,8 @@ const state = {
   changePasswordPopUp: false,
   forgetPasswordPopUp: false,
   changePhotoPopUp: false,
-  leavingPopUp: false
+  leavingPopUp: false,
+  accountClosingPopup: false
 };
 
 const mutations = {

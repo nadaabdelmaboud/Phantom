@@ -24,6 +24,7 @@
     <CountryPopUp v-if="countryPopUp" />
     <ChangePhotoPopUp v-if="changePhotoPopUp" />
     <LeavingResaonPopUp v-if="leavingPopUp" />
+    <CloseAccountPopUp v-if="accountClosingPopup" />
   </div>
 </template>
 
@@ -92,6 +93,8 @@ import GenderPopUp from "../views/SignUpPopUps/GenderPopUp";
 import CountryPopUp from "../views/SignUpPopUps/CountryPopUp";
 import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
+import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
+
 
 import { mapState } from "vuex";
 export default {
@@ -115,7 +118,8 @@ export default {
     GenderPopUp,
     CountryPopUp,
     ChangePhotoPopUp,
-    LeavingResaonPopUp
+    LeavingResaonPopUp,
+    CloseAccountPopUp
   },
   methods: {
     toggleChat() {
