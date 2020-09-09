@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <div class="row m-0">
-      <draggable class="dragStyle" @end="ReorderBoards">
+      <draggable 
+      class="dragStyle" 
+      @end="ReorderBoards"
+       :sort="myData.sortType == 'Reorder'">
         <Board
           v-for="board in boards"
           class="col-sm-3"
@@ -19,7 +22,7 @@
 
 <script>
 import Board from "../components/Board";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import draggable from "vuedraggable";
 
 export default {
@@ -39,15 +42,20 @@ export default {
   },
   methods: {
     ReorderBoards(event) {
+      if(this.myData.sortType == 'Reorder'){
       this.$store.dispatch("boards/reorderBoards", {
         from: event.oldIndex,
         to: event.newIndex + 1
       });
+      }
     }
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards"
+    }),
+    ...mapState({
+      myData:state=>state.user.userData
     })
   }
 };

@@ -2,7 +2,7 @@
   <div id="add" @click="editPopup">
     <div class="addCollab">
       <h3>Invite Collaborators</h3>
-      <div class="collabCard">
+      <div class="collabCard" v-if="board.type == 'creator'">
         <label v-if="collaborators.length">
           Collaborators can...
         </label>
@@ -23,7 +23,7 @@
           :addCollaborators="c.addCollaborators"
         />
       </div>
-      <div>
+      <div style="margin-top:10px">
         <input
           :value="'http://localhost:8080' + $route.path"
           id="boardLink"
@@ -38,11 +38,30 @@
         v-for="follower in followers"
         :key="follower._id"
       >
-        <img :src="getImage(follower.imageId)" />
-        <span>{{ follower.name }}</span>
-        <button class="editButton" @click="addCollaborator(follower._id)">
-          Invite
-        </button>
+        <div v-if="!collaborators.some((c) => c.id === follower._id)">
+          <img :src="getImage(follower.profileImage)" />
+          <span>{{ follower.firstName }} </span>
+          <span>{{ follower.lastName }}</span>
+          <button class="editButton" @click="addCollaborator(follower._id)">
+            Invite
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="followerInfo"
+        v-for="f in following"
+        :key="f._id"
+      >
+        <div v-if="!collaborators.some((c) => c.id === f._id)
+           && !followers.some((follower) => follower._id === f._id)">
+          <img :src="getImage(f.profileImage)" />
+          <span>{{ f.firstName }} </span>
+          <span>{{ f.lastName }}</span>
+          <button class="editButton" @click="addCollaborator(f._id)">
+            Invite
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -58,11 +77,11 @@ export default {
   mixins: [getImage],
   data: function() {
     return {
-      copied: false
+      copied: false,
     };
   },
   components: {
-    CallaboratorsCard
+    CallaboratorsCard,
   },
   methods: {
     editPopup(event) {
@@ -82,19 +101,22 @@ export default {
     },
     addCollaborator(id) {
       this.$store.dispatch("boards/editBoard", { collaboratores: id });
-    }
+    },
   },
   computed: {
     ...mapGetters({
       collaborators: "boards/collaborators",
-      followers: "followers/userFollowers"
-    })
+      followers: "followers/userFollowers",
+      following: "followers/userFollowing",
+      board: "boards/currentBoard"
+    }),
   },
   mounted() {
     this.$store.dispatch("boards/getCollaborators");
     this.$store.dispatch("followers/getFollowers");
+    this.$store.dispatch("followers/getFollowing");
   },
-  created() {}
+  created() {},
 };
 </script>
 
@@ -181,6 +203,7 @@ h3 {
   }
 }
 .followerInfo {
+  margin: 7px 0;
   img {
     width: 50px;
     height: 50px;

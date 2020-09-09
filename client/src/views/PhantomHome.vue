@@ -4,6 +4,7 @@
     <NewPinPopup v-if="newPin" />
     <EditBoardPopup v-if="editBoard" />
     <CollaboratorsPopup v-if="collaborators" />
+    <AddSectionPopup v-if="addSection" />
     <TopicsPopup v-if="topics" />
     <div>
       <HomeNavigationBar />
@@ -17,6 +18,11 @@
       <i class="fa fa-question-circle globalIcons"></i>
     </div>
     <ChatWindow v-if="chat" id="chat" />
+    <ChangePasswordPopUp v-if="changePassword" />
+    <ForgetPasswordPopUp v-if="forgetPassword" />
+    <WelcomePopUp v-if="welcomePopUp" />
+    <GenderPopUp v-if="genderPopUp" />
+    <CountryPopUp v-if="countryPopUp" />
   </div>
 </template>
 
@@ -76,8 +82,15 @@ import CreateBoardPopup from "../views/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
+import AddSectionPopup from "../views/BoardsPopUps/AddSection";
 import TopicsPopup from "../components/Topics/TopicsPopup";
 import ChatWindow from "../components/Chat/ChatWindow";
+import ChangePasswordPopUp from "../views/PasswordPopUps/ChangePasswordPopUp";
+import ForgetPasswordPopUp from "../views/PasswordPopUps/ForgetPasswordPopUp";
+import WelcomePopUp from "../views/SignUpPopUps/WelcomePopUp";
+import GenderPopUp from "../views/SignUpPopUps/GenderPopUp";
+import CountryPopUp from "../views/SignUpPopUps/CountryPopUp";
+
 
 import { mapState } from "vuex";
 export default {
@@ -94,7 +107,13 @@ export default {
     EditBoardPopup,
     CollaboratorsPopup,
     TopicsPopup,
-    ChatWindow
+    AddSectionPopup,
+    ChatWindow,
+    ChangePasswordPopUp,
+    ForgetPasswordPopUp,
+    WelcomePopUp,
+    GenderPopUp,
+    CountryPopUp
   },
   methods: {
     toggleChat() {
@@ -115,7 +134,13 @@ export default {
       newPin: state => state.popUpsState.newPinPopup,
       editBoard: state => state.popUpsState.editBoardPopup,
       collaborators: state => state.popUpsState.CollaboratorsPopup,
-      topics: state => state.popUpsState.TopicsPopup
+      topics: state => state.popUpsState.TopicsPopup,
+      addSection:state=>state.popUpsState.addSection,
+      changePassword: state => state.popUpsState.changePasswordPopUp,
+      forgetPassword: state => state.popUpsState.forgetPasswordPopUp,
+      welcomePopUp: state => state.popUpsState.welcomePopUp,
+      genderPopUp: state => state.popUpsState.genderPopUp,
+      countryPopUp: state => state.popUpsState.countryPopUp
     })
   }
 };

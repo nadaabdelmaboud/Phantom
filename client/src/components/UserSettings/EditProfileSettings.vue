@@ -6,8 +6,23 @@
         <p>People on Pinterest will get to know you with the info below</p>
       </div>
       <div class="col">
-        <button>Cancel</button>
-        <button>Done</button>
+        <button
+          v-bind:class="{
+            'changed-cancel': this.isChanged
+          }"
+          @click="cancelChanges"
+        >
+          Cancel
+        </button>
+        <button
+          id="done"
+          v-bind:class="{
+            'changed-done': this.isChanged
+          }"
+          @click="changeDone"
+        >
+          Done
+        </button>
       </div>
     </div>
     <section>
@@ -29,11 +44,16 @@
     </section>
     <section>
       <label for="user-name">Username</label><br />
-      <input type="text" id="user-name" />
+      <input type="text" id="user-name" v-model="username" />
     </section>
     <section>
       <label for="location">Location</label><br />
-      <input type="text" placeholder="Ex. Cairo, Egypt" id="location" />
+      <input
+        type="text"
+        placeholder="Ex. Cairo, Egypt"
+        id="location"
+        v-model="location"
+      />
     </section>
     <section>
       <label for="bio">About your profile</label><br />
@@ -51,6 +71,7 @@
 
 <script>
 import getUserImage from "../../mixins/getUserImage";
+
 export default {
   created: async function() {
     this.$store.dispatch("user/getUserProfile");
@@ -70,11 +91,38 @@ export default {
       this.fname = this.userData.firstName;
       this.lname = this.userData.lastName;
       this.about = this.userData.about;
+      this.location = this.userData.location;
+      this.username = this.userData.userName;
+    },
+    cancelChanges: function() {
+      this.updateModels();
+    },
+    changeDone: function() {
+      this.$store.dispatch("user/updateUserInfo", {
+        firstName: this.fname,
+        lastName: this.lname,
+        bio: this.about ? this.about : undefined,
+        userName: this.username
+      });
     }
   },
   computed: {
     userData: function() {
       return this.$store.state.user.userData;
+    },
+    isLoading: function() {
+      return this.$store.state.user.isLoading;
+    },
+    isChanged: function() {
+      if (this.isLoading) return false;
+      if (this.userData.firstName !== this.fname) return true;
+      if (this.userData.lastName !== this.lname) return true;
+      if (this.userData.userName !== this.username) return true;
+      if (this.userData.location !== this.location) return true;
+      return false;
+    },
+    updateState: function() {
+      return this.$store.state.user.updateState;
     }
   },
   watch: {
@@ -135,5 +183,15 @@ textarea:focus,
 button:focus {
   border: 2px solid $lightBlue;
   outline: none;
+}
+
+.changed-done {
+  background-color: $queenBlue;
+  color: $qainsboro;
+}
+
+.changed-cancel {
+  background-color: $qainsboro;
+  color: black;
 }
 </style>

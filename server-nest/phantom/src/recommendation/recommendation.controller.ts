@@ -22,10 +22,31 @@ import { RecommendationService } from './recommendation.service';
 export class RecommendationController {
   constructor(private RecommendationService: RecommendationService) {}
   @UseGuards(AuthGuard('jwt'))
-  @Get('/me/home')
-  async getHomeFeed(@Request() req) {
+  @Put('/home/me')
+  async generateHomeFeed(@Request() req) {
+    req.setTimeout(0);
     let userId = req.user._id;
+    console.log(userId);
     let home = await this.RecommendationService.homeFeed(userId);
+    if (home) {
+      return { success: 'home is generated succissfully' };
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/home')
+  async getHomeFeed(
+    @Request() req,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    let userId = req.user._id;
+    let home = await this.RecommendationService.getHomeFeed(
+      userId,
+      limit,
+      offset,
+    );
     if (home) {
       return home;
     } else {
@@ -33,10 +54,19 @@ export class RecommendationController {
     }
   }
   @UseGuards(AuthGuard('jwt'))
-  @Get('/more/pins/:pinId')
-  async pinMoreLike(@Request() req, @Param('pinId') pinId: string) {
+  @Put('/more/pins/:pinId')
+  async generatePinMore(@Request() req, @Param('pinId') pinId: string) {
     let userId = req.user._id;
-    let pins = await this.RecommendationService.pinMoreLike(userId, pinId);
+    req.setTimeout(0);
+    let pins = await this.RecommendationService.pinMoreLike(
+      userId,
+      pinId,
+      false,
+      null,
+      null,
+      null,
+      null,
+    );
     if (pins) {
       return pins;
     } else {
@@ -44,8 +74,30 @@ export class RecommendationController {
     }
   }
   @UseGuards(AuthGuard('jwt'))
-  @Get('/more/boards/:boardId')
-  async boardMoreLike(@Request() req, @Param('boardId') boardId: string) {
+  @Get('/more/pins/:pinId')
+  async getPinMore(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    let pins = await this.RecommendationService.getPinMoreLike(
+      pinId,
+      limit,
+      offset,
+    );
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/more/boards/:boardId')
+  async generateBoardMoreLike(
+    @Request() req,
+    @Param('boardId') boardId: string,
+  ) {
     let userId = req.user._id;
     let pins = await this.RecommendationService.boardMoreLike(userId, boardId);
     if (pins) {
@@ -55,8 +107,8 @@ export class RecommendationController {
     }
   }
   @UseGuards(AuthGuard('jwt'))
-  @Get('/more/sections/:boardId/:sectionId')
-  async sectionMoreLike(
+  @Put('/more/sections/:boardId/:sectionId')
+  async generateSectionMoreLike(
     @Request() req,
     @Param('boardId') boardId: string,
     @Param('sectionId') sectionId: string,
@@ -69,6 +121,93 @@ export class RecommendationController {
     );
     if (pins) {
       return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/more/boards/:boardId')
+  async getBoardMore(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    let pins = await this.RecommendationService.getBoardMoreLike(
+      boardId,
+      offset,
+      limit,
+    );
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/more/sections/:boardId/:sectionId')
+  async getSectionMore(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Param('sectionId') sectionId: string,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
+  ) {
+    let pins = await this.RecommendationService.getSectionMoreLike(
+      boardId,
+      sectionId,
+      offset,
+      limit,
+    );
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/recommendation/follow')
+  async getFollowRecommendation(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let follow = await this.RecommendationService.followAllRecommendation(
+      userId,
+    );
+    if (follow) {
+      return follow;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/recommendation/topics/:topicName')
+  async getTopicRecommendation(
+    @Request() req,
+    @Param('topicName') topicName: string,
+  ) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let follow = await this.RecommendationService.topicRecommendation(
+      topicName,
+      userId,
+    );
+    if (follow) {
+      return follow;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/recommendation/trending')
+  async getTrendingRecommendation(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let follow = await this.RecommendationService.trendingRecommendation(
+      userId,
+    );
+    if (follow) {
+      return follow;
     } else {
       throw new NotFoundException();
     }

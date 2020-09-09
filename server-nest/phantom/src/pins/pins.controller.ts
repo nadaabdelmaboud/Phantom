@@ -28,7 +28,7 @@ export class PinsController {
     private PinsService: PinsService,
     private ImagesService: ImagesService,
     private BoardService: BoardService,
-  ) {}
+  ) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/pins')
@@ -42,6 +42,14 @@ export class PinsController {
       await this.ImagesService.deleteFile(createPinDto.imageId.toString());
       throw new NotAcceptableException({ message: 'pin is not created' });
     }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/followings/pins')
+  async getFollowingPins(@Request() req) {
+    let userId = req.user._id;
+    let pins = await this.PinsService.getFollowingPins(userId);
+    return pins;
   }
 
   @UseGuards(AuthGuard('jwt'))

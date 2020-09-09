@@ -32,13 +32,12 @@
         @toggle="checkOpen = !checkOpen"
         :always-show-calendars="false"
         :linkedCalendars="true"
-        @update="updateValues"
       >
       </date-range-picker>
       <br />
       <label>
-        Keep this board secret <br />
-        So only you and collaborators can see it. Learn more
+        Personalisation <br />
+        Show Pins inspired by this board in your home feed.
       </label>
       <input
         type="range"
@@ -48,7 +47,6 @@
         class="slider"
         id="myRange"
         v-model="isPrivate"
-        @change="updateValues"
         :class="{ isPrivate: isPrivate == 2 }"
       />
       <div class="buttonDiv">
@@ -103,9 +101,6 @@ export default {
         this.$store.dispatch("boards/createBoard", boardData);
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
       }
-    },
-    updateValues() {
-      console.log("iff pr", this.isPrivate);
     }
   },
   mounted() {}

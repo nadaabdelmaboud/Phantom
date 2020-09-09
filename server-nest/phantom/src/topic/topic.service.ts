@@ -3,8 +3,10 @@ import {
   HttpException,
   HttpStatus,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { topic } from '../types/topic';
 import { ValidationService } from 'src/shared/validation.service';
@@ -21,9 +23,8 @@ export class TopicService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async topicsSeeds(topics) {
-    console.log(topics);
     for (var i = 0; i < topics.length; i++) {
       let topic = await this.createTopic(
         topics[i].imageId,
@@ -34,6 +35,15 @@ export class TopicService {
       );
     }
     return true;
+  }
+  async editTopic(topics) {
+    for (let i = 0; i < topics.length; i++) {
+      await this.topicModel.findOneAndUpdate(
+        { name: topics[i].name },
+        { imageId: topics[i].imageId },
+      );
+    }
+    return 1;
   }
   async createTopic(imageId, description, imageWidth, imageHeight, name) {
     if (!this.ValidationService.checkMongooseID([imageId]))
@@ -66,35 +76,47 @@ export class TopicService {
       if (err) throw new Error('topic not found');
       return topic;
     });
-    return topics;
+    let topicInfo = [];
+    let topic = {};
+    for (let i = 0; i < topics.length; i++) {
+      let isFollow = await this.UserService.isFollowingTopic(
+        userId,
+        topics[i]._id,
+      );
+      topic['follow'] = isFollow;
+      topic['_id'] = topics[i]._id;
+      topic['name'] = topics[i].name;
+      topic['description'] = topics[i].description;
+      topic['imageId'] = topics[i].imageId;
+      topicInfo.push(topic);
+      topic = {};
+    }
+    return topicInfo;
   }
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error('not mongoose id');
-    let topic = await this.topicModel.find(
-      { name: topicName },
-      async (err, topic) => {
-        if (err)
-          return await this.createTopic(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            topicName,
-          );
-        return topic;
-      },
-    );
-    const pin = await this.pinModel.findById(pinId);
-    if (!pin) return false;
+    let topic = await this.topicModel.find({ name: topicName });
+    let id = mongoose.Types.ObjectId(pinId);
+    const pin = await this.pinModel.findById(id);
+    console.log(pin);
+    console.log(topic);
+    if (!pin) throw new NotFoundException();
     pin.topic = topicName;
-    await pin.save();
+    await pin.save().catch(err => {
+      console.log(err);
+    });
+    console.log('asas');
+    console.log(pin);
+    console.log(topic[0]);
     if (topic && pin) {
       topic[0].pins.push(pinId);
-      await topic[0].save();
+      await topic[0].save().catch(err => {
+        console.log(err);
+      });
       return true;
     }
-    return false;
+    throw new NotFoundException();
   }
   async getPinsOfTopic(topicId, limit, offset, userId): Promise<pin[]> {
     if (!this.ValidationService.checkMongooseID([topicId]))
@@ -114,77 +136,109 @@ export class TopicService {
     }
     return pins;
   }
-
   async checkFollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = this.UserService.getUserById(userId);
-    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    const topic = await this.getTopicById(topicId, undefined);
-    if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
-    if (!topic.followers) topic.followers = [];
-    await this.topicModel.updateOne(
-      { _id: topicId },
-      { followers: topic.followers },
-    );
+    const user = await this.UserService.getUserById(userId);
+
+    if (!user)
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic = await this.getTopicById(topicId, userId);
+    //console.log(11);
+    if (!topic)
+      throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
+    //console.log(12);
+    if (!topic.followers || topic.followers.length == 0) return false;
+    //console.log(13);
     for (let i = 0; i < topic.followers.length; i++) {
-      //console.log(String(topic.followers[i]))
-      //console.log(String(userId))
-      //console.log(String(topic.followers[i] == userId));
-      if (String(topic.followers[i]) == String(userId)) return true;
+      //console.log(14);
+      if (String(userId) == String(topic.followers[i])) {
+        //console.log(15)
+        return true;
+      }
     }
+    //console.log(16)
     return false;
   }
   async followTopic(userId, topicId) {
+    //console.log(40000)
+
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = this.UserService.getUserById(userId);
-    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    const topic = await this.getTopicById(topicId, userId);
-    if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
+    //console.log(100000);
     if (await this.checkFollowTopic(userId, topicId))
-      throw new BadRequestException('you followed this topic before');
-    //console.log(12);
-    if (await this.UserService.followTopic(userId, topicId)) {
-      // console.log(34);
-      topic.followers.push(userId);
-      await this.topicModel.updateOne(
-        { _id: topicId },
-        { followers: topic.followers },
+      throw new HttpException(
+        'you are already follow this topic',
+        HttpStatus.BAD_REQUEST,
       );
-      return 1;
-    }
-    return 0;
+    //console.log(100);
+
+    const user = await this.UserService.getUserById(userId);
+    //console.log(0);
+    if (!user)
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic = await this.getTopicById(topicId, userId);
+
+    //console.log(1);
+    if (!topic)
+      throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
+    if (!topic.followers) topic.followers = [];
+    topic.followers.push(userId);
+    //console.log(2);
+    await topic.save();
+    //console.log(3);
+    if (!user.followingTopics) user.followingTopics = [];
+    user.followingTopics.push(topicId);
+    //console.log(4);
+    await user.save();
+    //console.log(5)
+    //  await this.topicModel.update({}, { followers: [] });
+
+    return 1;
   }
 
   async unfollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = this.UserService.getUserById(userId);
-    if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
-    const topic = await this.getTopicById(topicId, userId);
-    if (!topic) throw new HttpException('not topic ', HttpStatus.FORBIDDEN);
-    // console.log(await this.checkFollowTopic(userId, topicId))
     if (!(await this.checkFollowTopic(userId, topicId)))
-      throw new BadRequestException('you did not follow this topic before');
-    //console.log(500);
-    if (await this.UserService.unfollowTopic(userId, topicId)) {
-      //console.log(501)
-      if (topic.followers) {
-        for (let i = 0; i < topic.followers.length; i++) {
-          if (String(topic.followers[i]) === String(userId)) {
-            topic.followers.splice(i, 1);
-            await this.topicModel.updateOne(
-              { _id: topicId },
-              { followers: topic.followers },
-            );
-            return 1;
-          }
-        }
-      }
-      throw new BadRequestException('you did not follow this topic before');
-    }
-    return 0;
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    const user = await this.UserService.getUserById(userId);
+    if (!user)
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic = await this.getTopicById(topicId, userId);
+    if (!topic)
+      throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
+    if (!topic.followers)
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    for (let i = 0; i < topic.followers.length; i++)
+      if (String(userId) == String(topic.followers[i]))
+        topic.followers.splice(i, 1);
+    await topic.save();
+    if (!user.followingTopics)
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    for (let i = 0; i < user.followingTopics.length; i++)
+      if (String(topicId) == String(user.followingTopics[i]))
+        user.followingTopics.splice(i, 1);
+    await user.save();
+    return 1;
   }
 
   async followingTopics(userId) {

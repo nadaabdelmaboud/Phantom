@@ -8,20 +8,35 @@
           make big account changes here
         </p>
       </div>
-      <div class="col edit-buttons">
-        <button>Cancel</button>
-        <button>Done</button>
+      <div class="col">
+        <button
+          v-bind:class="{
+            'changed-cancel': this.isChanged
+          }"
+          @click="cancelChanges"
+        >
+          Cancel
+        </button>
+        <button
+          id="done"
+          v-bind:class="{
+            'changed-done': this.isChanged
+          }"
+          @click="changeDone"
+        >
+          Done
+        </button>
       </div>
     </section>
     <br />
     <section>
       <h5>Basic Information</h5>
       <label for="email">Email address</label><br />
-      <input type="text" id="email" />
+      <input type="text" id="email" v-model="email" />
     </section>
     <br />
     <section class="change-password">
-      <button>Change Password</button>
+      <button @click="changePassword">Change Password</button>
     </section>
     <br />
     <section>
@@ -47,11 +62,11 @@
       </p>
       <br /><br />
       <label for="facebook">Facebook</label><br />
-      <input type="checkbox" id="facebook" />
+      <input type="checkbox" id="facebook" v-model="facebook" />
       <p>Use your Facebook account to log in</p>
       <br /><br />
       <label for="google">Google</label><br />
-      <input type="checkbox" id="google" />
+      <input type="checkbox" id="google" v-model="google" />
       <p>Use your Google account to log in</p>
     </section>
     <hr />
@@ -77,7 +92,63 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created: async function() {
+    this.$store.dispatch("user/getUserProfile");
+    this.updateModels();
+  },
+  data: function() {
+    return {
+      email: null,
+      gender: null,
+      facebook: null,
+      google: null
+    };
+  },
+  methods: {
+    updateModels: function() {
+      this.email = this.userData.email;
+      this.gender = this.userData.gender;
+      this.facebook = this.userData.facebook;
+      this.google = this.userData.google;
+    },
+    cancelChanges: function() {
+      this.updateModels();
+    },
+    changeDone: function() {
+      this.$store.dispatch("user/updateUserInfo", {
+        email: this.email
+      });
+    },
+    changePassword: function() {
+      this.$store.commit("popUpsState/toggleChangePasswordPopUp");
+    }
+  },
+  computed: {
+    userData: function() {
+      return this.$store.state.user.userData;
+    },
+    isLoading: function() {
+      return this.$store.state.user.isLoading;
+    },
+    isChanged: function() {
+      if (this.isLoading) return false;
+      if (this.userData.email !== this.email) return true;
+      if (this.userData.gender !== this.gender) return true;
+      if (this.userData.facebook !== this.facebook) return true;
+      if (this.userData.google !== this.google) return true;
+      return false;
+    },
+    updateState: function() {
+      return this.$store.state.user.updateState;
+    }
+  },
+  watch: {
+    userData: function() {
+      this.updateModels();
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -117,8 +188,13 @@ p {
   max-width: 700px;
   display: block;
 }
+
 /**Change Password
 -----------------------------------*/
+button {
+  @include profileButton;
+}
+
 .change-password button {
   @include profileButton;
   background-color: $qainsboro;
@@ -169,5 +245,17 @@ select {
 
 .account-changes p {
   max-width: 400px;
+}
+
+/**Settings Buttons
+-----------------------------------*/
+.changed-done {
+  background-color: $queenBlue;
+  color: $qainsboro;
+}
+
+.changed-cancel {
+  background-color: $qainsboro;
+  color: black;
 }
 </style>

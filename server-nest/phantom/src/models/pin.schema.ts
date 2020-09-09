@@ -40,6 +40,7 @@ export const Pin = new Schema({
       likers: [mongoose.Types.ObjectId],
     },
   }),
+  more: Array(Object),
   counts: {
     comments: Number,
     thanksReacts: Number,

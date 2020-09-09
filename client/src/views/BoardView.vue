@@ -2,16 +2,17 @@
   <div class="profile" @click="clear">
     <div class="boardInfo">
       <h1>{{ board.board.name }}</h1>
-      <!-- <div> -->
       <img
         src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
       />
-      <i class="fa fa-plus globalIcons" @click="addCollaborator"></i>
-      <!-- </div> -->
+      <i 
+      class="fa fa-plus globalIcons"
+      v-if="board.type == 'creator' || (board.type == 'collaborator' && board.permissions.addCollaborators)"
+      @click="addCollaborator"></i>
     </div>
     <div class="stickyBar row  m-0">
       <div class="col-sm-4 col-4 col1">
-        <i class="fa fa-pencil" aria-hidden="true" @click="editBoard"></i>
+        <i class="fa fa-pencil" v-if="board.type == 'creator' || board.type == 'collaborator'" aria-hidden="true" @click="editBoard"></i>
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
@@ -40,25 +41,7 @@
           style="float:right;"
           @click="showCreate = !showCreate"
         ></i>
-        <i
-          class="fa fa-list"
-          aria-hidden="true"
-          id="view"
-          style="float:right;"
-          @click="showViewOptions = !showViewOptions"
-        ></i>
       </div>
-    </div>
-    <div class="create view" v-if="showViewOptions">
-      <p>Organise</p>
-      <ul>
-        <li>Select pins to move or delete</li>
-      </ul>
-      <p>View options</p>
-      <ul>
-        <li>Default</li>
-        <li>Compact</li>
-      </ul>
     </div>
     <div class="create" v-if="showCreate">
       <p>Create</p>
@@ -66,10 +49,9 @@
         <li @click="createBoardPopup">Board</li>
         <router-link tag="li" to="/PinBuilder">Pin</router-link>
       </ul>
-      <p>Add</p>
-      <ul>
-        <li>Section</li>
-        <li>Date</li>
+      <p v-if="board.type == 'creator'">Add</p>
+      <ul v-if="board.type == 'creator' ">
+        <li @click="addSection">Section</li>
       </ul>
     </div>
     <router-view> </router-view>
@@ -106,6 +88,9 @@ export default {
     },
     editBoard() {
       this.$store.commit("popUpsState/toggleEditBoardPopup");
+    },
+    addSection(){
+      this.$store.commit("popUpsState/toggleAddSection");
     }
   },
   watch: {

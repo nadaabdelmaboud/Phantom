@@ -11,29 +11,7 @@
         v-model="password"
         @input="validatePassword()"
       /><br />
-      <div v-if="this.password.length" class="passwordValidation">
-        <p>Password sould be:</p>
-        <div class="row">
-          <i class="fa fa-check-circle" v-if="this.validLength" id="valid"></i>
-          <i class="fa fa-times-circle" v-else id="unvalid"></i>
-          <p>At least 8 characters</p>
-        </div>
-        <div class="row">
-          <i class="fa fa-check-circle" v-if="this.capChar" id="valid"></i>
-          <i class="fa fa-times-circle" v-else id="unvalid"></i>
-          <p>Minimum one uppercase</p>
-        </div>
-        <div class="row">
-          <i class="fa fa-check-circle" v-if="this.specialChar" id="valid"></i>
-          <i class="fa fa-times-circle" v-else id="unvalid"></i>
-          <p>Minimum one Special character</p>
-        </div>
-        <div class="row">
-          <i class="fa fa-check-circle" v-if="containNum" id="valid"></i>
-          <i class="fa fa-times-circle" v-else id="unvalid"></i>
-          <p>Minimum one number</p>
-        </div>
-      </div>
+      <CheckPasswordFormat :password="this.password" />
       <label for="confirm-password">Type it again</label><br />
       <input
         type="password"
@@ -51,6 +29,7 @@
 </template>
 
 <script>
+import CheckPasswordFormat from "../components/CheckPasswordFormat.vue";
 export default {
   data: function() {
     return {
@@ -81,18 +60,6 @@ export default {
     validPassword: function() {
       return this.$store.state.user.validPassword;
     },
-    validLength: function() {
-      return this.$store.state.user.validPasswordLength;
-    },
-    capChar: function() {
-      return this.$store.state.user.containCapitalChar;
-    },
-    specialChar: function() {
-      return this.$store.state.user.containSpecialChar;
-    },
-    containNum: function() {
-      return this.$store.state.user.containNumber;
-    },
     signUpState: function() {
       return this.$store.state.user.signUpState;
     },
@@ -107,6 +74,9 @@ export default {
     resetStatus: function() {
       if (this.resetStatus) this.$router.push("login");
     }
+  },
+  components: {
+    CheckPasswordFormat
   }
 };
 </script>

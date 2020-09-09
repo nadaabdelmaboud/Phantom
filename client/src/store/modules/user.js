@@ -14,9 +14,11 @@ const state = {
   errorMessage: null,
   emailConfirm: false,
   loginState: null,
+  updateStatus: null,
   sendEmailStatus: null,
   resetPasswordStatus: null,
-  userData: null
+  userData: null,
+  isLoading: false
 };
 
 const mutations = {
@@ -66,6 +68,13 @@ const mutations = {
   },
   setUserData(state, payload) {
     state.userData = payload;
+    state.isLoading = false;
+  },
+  setLoading() {
+    state.isLoading = true;
+  },
+  setUpdateStatus(state, payload) {
+    state.updateStatus = payload;
   }
 };
 
@@ -152,6 +161,7 @@ const actions = {
       });
   },
   getUserProfile({ commit }) {
+    commit("setLoading");
     let token = getUserToken.methods.getUserToken();
     axios
       .get("/me", {
@@ -164,6 +174,22 @@ const actions = {
       })
       .catch(error => {
         console.log("axios caught an error");
+        console.log(error);
+      });
+  },
+  updateUserInfo({ commit }, payload) {
+    let token = getUserToken.methods.getUserToken();
+    axios
+      .put("/me/update", payload, {
+        headers: {
+          Authorization: token
+        }
+      })
+      .then(() => {
+        commit("setUpdateStatus", true);
+        commit("setUserData", payload);
+      })
+      .catch(error => {
         console.log(error);
       });
   }

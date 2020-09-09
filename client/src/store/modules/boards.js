@@ -1,27 +1,7 @@
 import axios from "axios";
 
 const state = {
-  userBoards: [{
-    board:{
-      name:"mm",
-      _id:12345678,
-      sections:[{
-        name:"dddd",
-        _id: 8234567890
-      }]
-    }
-  },
-  {
-    board:{
-      name:"mm",
-      _id:12345678,
-      sections:[{
-        name:"dddd",
-        _id: 8234567890
-      }]
-    }
-  }
-   ],
+  userBoards: [],
   chosenBoardName: "Select",
   chosenBoardId: "",
   chosenSectionId: "",
@@ -83,24 +63,31 @@ const actions = {
         console.log(error);
       });
   },
-  getBoard({ commit }, boardId) {
+  getBoard({ commit ,dispatch }, boardId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("boards/" + boardId)
       .then(response => {
-        commit("setCurrentBoard", response.data);
+        let board = response.data;
+        commit("setCurrentBoard", board);
+        commit("chooseBoard", {
+           boardName:board.board.name,
+           boardId:board.board._id,
+           sectionId:""
+           })
+        dispatch("")
       })
       .catch(error => {
         console.log(error);
       });
   },
   //not my boards another user boards
-  getUserBoards({commit},userId){
+  getUserBoards({ commit }, userId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .get("users/"+ userId+"/boards")
+      .get("users/" + userId + "/boards")
       .then(response => {
         commit("setBoards", response.data);
       })
@@ -113,6 +100,7 @@ const actions = {
       .put("me/boards/sortAZ")
       .then(() => {
         dispatch("userBoards");
+        dispatch("user/getUserProfile",null,{root:true})
       })
       .catch(error => {
         console.log(error);
@@ -123,6 +111,7 @@ const actions = {
       .put("me/boards/sortDate")
       .then(() => {
         dispatch("userBoards");
+        dispatch("user/getUserProfile",null,{root:true})
       })
       .catch(error => {
         console.log(error);
@@ -135,6 +124,7 @@ const actions = {
       )
       .then(() => {
         dispatch("userBoards");
+        dispatch("user/getUserProfile",null,{root:true})
       })
       .catch(error => {
         console.log(error);
@@ -145,6 +135,9 @@ const actions = {
       .put("me/boards/edit/" + state.chosenBoardId, newBoard)
       .then(() => {
         dispatch("userBoards");
+        dispatch("followers/getFollowers", null, { root: true });
+        dispatch("followers/getFollowing", null, { root: true });
+        dispatch("getCollaborators");
       })
       .catch(error => {
         console.log(error);
@@ -171,6 +164,8 @@ const actions = {
       });
   },
   getCollaborators({ state, commit }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("me/boards/" + state.currentBoard.board._id + "/collaboratores")
       .then(response => {
@@ -216,6 +211,28 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  createSection({dispatch},{id,name}){
+    axios
+    .post("me/boards/"+ id +"/section",{
+      sectionName:name
+    })
+    .then(()=>{
+      dispatch("getBoard",id)
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  },
+  deleteSection({dispatch},{boardId,sectionId}){
+    axios
+    .delete("me/boards/"+ boardId+"/section/"+sectionId)
+    .then(()=>{
+      dispatch("getBoard",boardId)
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 };
 

@@ -6,7 +6,10 @@ const state = {
   newPinPopup: false,
   editBoardPopup: false,
   CollaboratorsPopup: false,
-  TopicsPopup:false
+  TopicsPopup: false,
+  changePasswordPopUp: false,
+  forgetPasswordPopUp: false,
+  addSection:false
 };
 
 const mutations = {
@@ -33,6 +36,15 @@ const mutations = {
   },
   toggleTopicsPopup(state) {
     state.TopicsPopup = !state.TopicsPopup;
+  },
+  toggleChangePasswordPopUp(state) {
+    state.changePasswordPopUp = !state.changePasswordPopUp;
+  },
+  toggleForgetPasswordPopUp(state) {
+    state.forgetPasswordPopUp = !state.forgetPasswordPopUp;
+  },
+  toggleAddSection(state) {
+    state.addSection = !state.addSection;
   }
 };
 export default {
