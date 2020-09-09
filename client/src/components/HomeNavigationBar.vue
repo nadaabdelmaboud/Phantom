@@ -64,7 +64,7 @@
       <p>More options</p>
       <ul>
         <li @click="toSetting">Settings</li>
-        <li>tune your home feed</li>
+        <li @click="toTopicsPage">tune your home feed</li>
         <li @click="logout">Logout</li>
       </ul>
     </div>
@@ -176,6 +176,10 @@ export default {
     toSetting() {
       this.showList = false;
       this.$router.push("/settings");
+    },
+    toTopicsPage() {
+      this.showList = false;
+      this.$router.push("/TopicsPage");
     }
   },
   watch: {

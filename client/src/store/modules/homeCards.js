@@ -12,14 +12,14 @@ const state = {
   pinCreatorId: "",
   cardsGenerated: false,
   offsetnum: 0,
-  totalCards:0,
-  finishCalling:false
+  totalCards: 0,
+  finishCalling: false
 };
 
 const mutations = {
   sethomeCards(state, cards) {
-    for (let index = 0 ;index<cards.length ; index++)
-    state.homeCards.push(cards[index]);
+    for (let index = 0; index < cards.length; index++)
+      state.homeCards.push(cards[index]);
   },
   homeGenerated(state, check) {
     state.cardsGenerated = check;
@@ -48,11 +48,11 @@ const mutations = {
   setpinCreatorId(state, pinCreatorId) {
     state.pinCreatorId = pinCreatorId;
   },
-  totalNumCards(state , totalNum){
+  totalNumCards(state, totalNum) {
     state.totalCards = totalNum;
   },
-  finishCalling(state , value){
-  state.finishCalling = value;
+  finishCalling(state, value) {
+    state.finishCalling = value;
   }
 };
 
@@ -64,9 +64,9 @@ const actions = {
     state.totalCards = 0;
     axios
       .put("home/me")
-      .then((response) => {
+      .then(response => {
         commit("homeGenerated", true);
-        commit("totalNumCards" , response.data.total);
+        commit("totalNumCards", response.data.total);
       })
       .catch(error => {
         console.log(error);
@@ -84,8 +84,7 @@ const actions = {
         num += 12;
       })
       .catch(error => {
-        if (num == state.totalCards)
-        state.finishCalling = true;
+        if (num == state.totalCards) state.finishCalling = true;
         console.log(error);
       });
   },
@@ -122,7 +121,7 @@ const getters = {
   userLastName: state => state.userLastName,
   numberofFollowers: state => state.numberofFollowers,
   pinCreatorId: state => state.pinCreatorId,
-  finishCalling:state => state.finishCalling
+  finishCalling: state => state.finishCalling
 };
 
 export default {
