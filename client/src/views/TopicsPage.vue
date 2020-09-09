@@ -87,6 +87,7 @@ h3 {
     flex-flow: wrap;
   }
   .title {
+    margin-left: 5px;
     width: 100%;
   }
   .conatiner {
