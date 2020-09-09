@@ -30,7 +30,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -170,6 +170,9 @@ export class UserService {
       popularPins: true,
       pinsForYou: true,
       pinsInspired: true,
+      activity: true,
+      invitation: true,
+      boardUpdate: true,
       history: [],
       facebook: false,
       google: registerDto.isGoogle ? registerDto.isGoogle : false,
@@ -341,6 +344,9 @@ export class UserService {
     userId,
     settings: {
       facebook?: Boolean;
+      activity?: Boolean;
+      invitation?: Boolean;
+      boardUpdate?: Boolean;
       google?: Boolean;
       deleteflag?: Boolean;
       boardsForYou?: Boolean;
@@ -351,7 +357,38 @@ export class UserService {
       followNotification?: Boolean;
       pinsNotification?: Boolean;
     },
-  ) {
+  ) {/*
+    settings = {
+      facebook: false,
+      activity: false,
+      invitation: true,
+      boardUpdate: true,
+      google: false,
+      boardsForYou: true,
+      popularPins: true,
+      pinsForYou: true,
+      pinsInspired: true,
+      activateaccount: false,
+      followNotification: true,
+      pinsNotification: true
+    }
+    const users = await this.userModel.find({});
+    for (let i = 0; i < users.length; i++) {
+      await this.userModel.update({ _id: users[i]._id }, {
+        facebook: false,
+        activity: false,
+        invitation: true,
+        boardUpdate: true,
+        google: false,
+        boardsForYou: true,
+        popularPins: true,
+        pinsForYou: true,
+        pinsInspired: true,
+        activateaccount: false,
+        followNotification: true,
+        pinsNotification: true
+      });
+    }*/
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {
       for (let i = 0; i < user.followers.length; i++) {
@@ -360,7 +397,7 @@ export class UserService {
       for (let i = 0; i < user.following.length; i++) {
         await this.unfollowUser(user._id, user.followers[i]);
       }
-      await this.deleteUser(userId);
+      return await this.deleteUser(userId);
     }
     await this.userModel.updateOne({ _id: userId }, settings);
     /*if(settings.facebook)
@@ -390,7 +427,13 @@ export class UserService {
     // delete following
     //delete followers
     // delete pins saved created
-    return await this.userModel.findByIdAndDelete(id);
+    await this.userModel.findByIdAndDelete(id);
+    await this.email.sendEmail(
+      user.email,
+      undefined,
+      'Delete account',
+      user.firstName,
+    );
   }
   async setViewState(userId, viewState) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {

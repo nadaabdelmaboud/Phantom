@@ -16,7 +16,7 @@ export class UserController {
     private TopicService: TopicService,
     private BoardService: BoardService,
     */ private email: Email,
-  ) {}
+  ) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/me')
@@ -144,7 +144,7 @@ export class UserController {
         );
     } else if (!type)
       throw new nestCommon.HttpException(
-        'type mot correct',
+        'type not correct',
         nestCommon.HttpStatus.FORBIDDEN,
       );
   }

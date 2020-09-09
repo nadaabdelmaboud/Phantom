@@ -11,6 +11,9 @@ export interface user extends Document {
   boardsForYou: Boolean;
   popularPins: Boolean;
   pinsForYou: Boolean;
+  activity: Boolean;
+  invitation: Boolean;
+  boardUpdate: Boolean;
   activateaccount: Boolean;
   followNotification: Boolean;
   pinsNotification: Boolean;
