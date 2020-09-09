@@ -173,6 +173,9 @@ export class UserService {
       gender: registerDto.gender,
       country: registerDto.country,
       birthDate: registerDto.birthday,
+      activateaccount: true,
+      followNotification: true,
+      pinsNotification: true,
       pins: [],
       homeFeed: [],
       uploadedImages: [],
@@ -341,16 +344,21 @@ export class UserService {
       pinsForYou?: Boolean;
       pinsInspired?: Boolean;
       activateaccount?: Boolean;
+      followNotification?: Boolean;
+      pinsNotification?: Boolean;
     },
   ) {
     const user = await this.getUserById(userId);
-    /*    if (settings.deleteflag) {
+    if (settings.deleteflag) {
+      for (let i = 0; i < user.followers.length; i++) {
+        await this.unfollowUser(user.followers[i], user._id);
+      }
+      for (let i = 0; i < user.following.length; i++) {
+        await this.unfollowUser(user._id, user.followers[i]);
+      }
       await this.deleteUser(userId);
     }
-  */ await this.userModel.updateOne(
-      { _id: userId },
-      settings,
-    );
+    await this.userModel.updateOne({ _id: userId }, settings);
     /*if(settings.facebook)
     login with facebook
     else if(settings.google)
@@ -452,7 +460,11 @@ export class UserService {
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
     await followedUser.save();
-    await this.notification.followUser(followedUser, userFollow);
+    if (
+      !followedUser.followNotification ||
+      followedUser.followNotification == true
+    )
+      await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
 

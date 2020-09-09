@@ -289,7 +289,6 @@ export class PinsService {
     let user = await this.UserService.getUserById(userId);
     let pin = await this.getPinById(pinId);
     let ownerUser = await this.UserService.getActivateUserById(pin.creator.id);
-
     var cs = <comment>(<unknown>{
       commenter: userId,
       comment: commentText,
@@ -304,14 +303,15 @@ export class PinsService {
     pin.comments.push(cs);
     pin.counts.comments = pin.counts.comments.valueOf() + 1;
     await pin.save();
-    await this.NotificationService.commentPin(
-      ownerUser,
-      user,
-      commentText,
-      pin.title,
-      pinId,
-      pin.imageId,
-    );
+    if (!ownerUser.pinsNotification || ownerUser.pinsNotification == true)
+      await this.NotificationService.commentPin(
+        ownerUser,
+        user,
+        commentText,
+        pin.title,
+        pinId,
+        pin.imageId,
+      );
     return true;
   }
   async createReply(pinId, replyText, userId, commentId) {
@@ -431,15 +431,17 @@ export class PinsService {
       case 'Good idea':
         pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() + 1;
         break;
-        await this.NotificationService.reactPin(
-          pinOwner,
-          user,
-          pin.title,
-          pinId,
-          String(reactType),
-          pin.imageId,
-        );
+
     }
+    if (!pinOwner.pinsNotification || pinOwner.pinsNotification == true)
+      await this.NotificationService.reactPin(
+        pinOwner,
+        user,
+        pin.title,
+        pinId,
+        String(reactType),
+        pin.imageId,
+      );
     await pin.save();
     return true;
   }
