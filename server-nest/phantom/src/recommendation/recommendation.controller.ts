@@ -212,4 +212,52 @@ export class RecommendationController {
       throw new NotFoundException();
     }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/boardsForYou')
+  async getBoardsForYou(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let boards = await this.RecommendationService.boardsForYou(userId);
+    if (boards) {
+      return boards;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/popularPins')
+  async getPopularPins(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let pins = await this.RecommendationService.popularPins(userId);
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/pinsForYou')
+  async getPinsForYou(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let pins = await this.RecommendationService.pinsForYou(userId);
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/pinsRecentActivity')
+  async getPinsRecentActivity(@Request() req) {
+    let userId = req.user._id;
+    req.setTimeout(0);
+    let pins = await this.RecommendationService.pinsInspired(userId);
+    if (pins) {
+      return pins;
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }

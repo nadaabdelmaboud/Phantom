@@ -21,6 +21,7 @@ import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 import { topic } from '../types/topic';
 import { use } from 'passport';
+import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 @Injectable()
 export class UserService {
   constructor(
@@ -33,6 +34,16 @@ export class UserService {
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
+      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about = '';
+    return user;
+  }
+
+  async getActivateUserById(id) {
+    const user = await this.userModel.findById(id);
+    if (!user)
+      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (user.activateaccount == false)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
@@ -135,24 +146,43 @@ export class UserService {
 
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
-    const salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(registerDto.password, salt);
+
+    let hash,
+      picture = '';
+    if (registerDto.isGoogle) {
+      hash = '';
+      picture = registerDto.profileImage;
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      hash = await bcrypt.hash(registerDto.password, salt);
+    }
     var newUser = new this.userModel({
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
       location: '',
+      profileImage: picture,
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
       sortType: 'Date',
       fcmToken: ' ',
+      boardsForYou: true,
+      popularPins: true,
+      pinsForYou: true,
+      pinsInspired: true,
+      activity: true,
+      invitation: true,
+      boardUpdate: true,
       history: [],
       facebook: false,
-      google: false,
+      google: registerDto.isGoogle ? registerDto.isGoogle : false,
       about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
       country: registerDto.country,
       birthDate: registerDto.birthday,
+      activateaccount: true,
+      followNotification: true,
+      pinsNotification: true,
       pins: [],
       homeFeed: [],
       uploadedImages: [],
@@ -213,9 +243,12 @@ export class UserService {
     const user = await this.getUserById(userId);
     if (!user || !newPassword)
       throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
-    if (oldPassword != 'dont know old password') {
-      if (! await bcrypt.compare(oldPassword, user.password)) {
-        throw new HttpException('old password is not correct', HttpStatus.FORBIDDEN);
+    if (oldPassword) {
+      if (!(await bcrypt.compare(oldPassword, user.password))) {
+        throw new HttpException(
+          'old password is not correct',
+          HttpStatus.FORBIDDEN,
+        );
       }
     }
     const salt = await bcrypt.genSalt(10);
@@ -309,11 +342,62 @@ export class UserService {
   }
   async updateSettings(
     userId,
-    settings: { facebook?: Boolean; google?: Boolean; deleteflag?: Boolean },
-  ) {
+    settings: {
+      facebook?: Boolean;
+      activity?: Boolean;
+      invitation?: Boolean;
+      boardUpdate?: Boolean;
+      google?: Boolean;
+      deleteflag?: Boolean;
+      boardsForYou?: Boolean;
+      popularPins?: Boolean;
+      pinsForYou?: Boolean;
+      pinsInspired?: Boolean;
+      activateaccount?: Boolean;
+      followNotification?: Boolean;
+      pinsNotification?: Boolean;
+    },
+  ) {/*
+    settings = {
+      facebook: false,
+      activity: false,
+      invitation: true,
+      boardUpdate: true,
+      google: false,
+      boardsForYou: true,
+      popularPins: true,
+      pinsForYou: true,
+      pinsInspired: true,
+      activateaccount: false,
+      followNotification: true,
+      pinsNotification: true
+    }
+    const users = await this.userModel.find({});
+    for (let i = 0; i < users.length; i++) {
+      await this.userModel.update({ _id: users[i]._id }, {
+        facebook: false,
+        activity: false,
+        invitation: true,
+        boardUpdate: true,
+        google: false,
+        boardsForYou: true,
+        popularPins: true,
+        pinsForYou: true,
+        pinsInspired: true,
+        activateaccount: false,
+        followNotification: true,
+        pinsNotification: true
+      });
+    }*/
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {
-      await this.deleteUser(userId);
+      for (let i = 0; i < user.followers.length; i++) {
+        await this.unfollowUser(user.followers[i], user._id);
+      }
+      for (let i = 0; i < user.following.length; i++) {
+        await this.unfollowUser(user._id, user.followers[i]);
+      }
+      return await this.deleteUser(userId);
     }
     await this.userModel.updateOne({ _id: userId }, settings);
     /*if(settings.facebook)
@@ -340,7 +424,16 @@ export class UserService {
 
   async deleteUser(id) {
     const user = await this.getUserById(id);
-    return await this.userModel.findByIdAndDelete(id);
+    // delete following
+    //delete followers
+    // delete pins saved created
+    await this.userModel.findByIdAndDelete(id);
+    await this.email.sendEmail(
+      user.email,
+      undefined,
+      'Delete account',
+      user.firstName,
+    );
   }
   async setViewState(userId, viewState) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
@@ -401,7 +494,7 @@ export class UserService {
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.getUserById(followerId);
-    let followedUser = await this.getUserById(followingId);
+    let followedUser = await this.getActivateUserById(followingId);
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
     if (await this.checkFollowUser(userFollow, followingId))
@@ -414,7 +507,11 @@ export class UserService {
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
     await followedUser.save();
-    await this.notification.followUser(followedUser, userFollow);
+    if (
+      !followedUser.followNotification ||
+      followedUser.followNotification == true
+    )
+      await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
 
@@ -434,7 +531,7 @@ export class UserService {
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.getUserById(followerId);
-    let followedUser = await this.getUserById(followingId);
+    let followedUser = await this.getActivateUserById(followingId);
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
     if (!(await this.checkFollowUser(userFollow, followingId)))
@@ -488,7 +585,7 @@ export class UserService {
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
       var currentUser = await this.getUserById(followers[i]);
-      if (currentUser)
+      if (currentUser && currentUser.activateaccount != false)
         followersInfo.push({
           _id: currentUser._id,
           firstName: currentUser.firstName,
@@ -521,7 +618,7 @@ export class UserService {
     var followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
       var currentUser = await this.getUserById(followings[i]);
-      if (currentUser)
+      if (currentUser && currentUser.activateaccount != false)
         followingsInfo.push({
           _id: currentUser._id,
           firstName: currentUser.firstName,

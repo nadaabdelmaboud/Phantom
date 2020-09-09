@@ -28,7 +28,7 @@
     <section>
       <label for="profile-image">Photo</label><br />
       <img id="profile-image" :src="getUserImage()" />
-      <button id="change-photo">Change</button>
+      <button id="change-photo" @click="openPopUp">Change</button>
     </section>
     <br />
     <section class="username">
@@ -102,8 +102,12 @@ export default {
         firstName: this.fname,
         lastName: this.lname,
         bio: this.about ? this.about : undefined,
-        userName: this.username
+        userName: this.username,
+        location: this.location
       });
+    },
+    openPopUp: function() {
+      this.$store.commit("popUpsState/toggleChangePhotoPopUp");
     }
   },
   computed: {
@@ -120,9 +124,6 @@ export default {
       if (this.userData.userName !== this.username) return true;
       if (this.userData.location !== this.location) return true;
       return false;
-    },
-    updateState: function() {
-      return this.$store.state.user.updateState;
     }
   },
   watch: {

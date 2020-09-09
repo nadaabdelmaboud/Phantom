@@ -5,6 +5,5 @@ export class EditBoardDto {
   readonly startDate: string;
   readonly endDate: string;
   readonly collaboratores: string;
-  readonly status: string;
   readonly personalization: Boolean;
 }

@@ -51,7 +51,7 @@
         @input="passwordMatch()"
       />
       <br />
-      <div v-if="!this.passwordMatching" class="passwordValidation">
+      <div v-if="!this.passwordMatching">
         <p style="color:red;">Password mismatching</p>
       </div>
       <label for="birthDate">Date of birth</label><br />

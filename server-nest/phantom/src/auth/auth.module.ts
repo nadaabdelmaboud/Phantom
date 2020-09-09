@@ -4,10 +4,11 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from '../shared/auth.service';
 import { JwtStrategy } from '../shared/jwt.strategy';
-import { Email } from '../shared/send-email.service'
+import { Email } from '../shared/send-email.service';
+import { GoogleStrategy } from './google.strategy';
 @Module({
   imports: [SharedModule],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, Email],
+  providers: [AuthService, JwtStrategy, Email, GoogleStrategy],
 })
 export class AuthModule {}

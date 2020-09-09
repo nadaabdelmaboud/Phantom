@@ -3,23 +3,23 @@
     <div v-if="this.password.length" class="passwordValidation">
       <p>Password sould be:</p>
       <div class="row">
-        <i class="fa fa-check-circle" v-if="this.validLength" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <i class="fa fa-check-circle valid" v-if="this.validLength"></i>
+        <i class="fa fa-times-circle unvalid" v-else></i>
         <p>At least 8 characters</p>
       </div>
       <div class="row">
-        <i class="fa fa-check-circle" v-if="this.capChar" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <i class="fa fa-check-circle valid" v-if="this.capChar"></i>
+        <i class="fa fa-times-circle unvalid" v-else></i>
         <p>Minimum one uppercase</p>
       </div>
       <div class="row">
-        <i class="fa fa-check-circle" v-if="this.specialChar" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <i class="fa fa-check-circle valid" v-if="this.specialChar"></i>
+        <i class="fa fa-times-circle unvalid" v-else></i>
         <p>Minimum one Special character</p>
       </div>
       <div class="row">
-        <i class="fa fa-check-circle" v-if="containNum" id="valid"></i>
-        <i class="fa fa-times-circle" v-else id="unvalid"></i>
+        <i class="fa fa-check-circle valid" v-if="containNum"></i>
+        <i class="fa fa-times-circle unvalid" v-else></i>
         <p>Minimum one number</p>
       </div>
     </div>
@@ -55,11 +55,11 @@ export default {
 @import "../scss/Colors";
 @import "../scss/Mixins";
 
-#valid {
+.valid {
   color: green;
 }
 
-#unvalid {
+.unvalid {
   color: red;
 }
 
