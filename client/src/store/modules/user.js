@@ -188,9 +188,9 @@ const actions = {
           Authorization: token
         }
       })
-      .then(() => {
+      .then(response => {
         commit("setUpdateStatus", true);
-        commit("setUserData", payload);
+        commit("setUserData", response.data);
       })
       .catch(error => {
         console.log(error);

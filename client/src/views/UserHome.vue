@@ -81,7 +81,7 @@ let screenHeight;
 export default {
   name: "UserHome",
   components: {
-    HomeCard,
+    HomeCard
   },
   mixins: [isLoggedIn],
   mounted() {
@@ -102,11 +102,11 @@ export default {
   computed: {
     ...mapGetters({
       cards: "homeCards/userHomePage",
-      finishCalling: "homeCards/finishCalling",
+      finishCalling: "homeCards/finishCalling"
     }),
     ...mapState({
-      requestFinished: (state) => state.homeCards.requestFinished,
-    }),
+      requestFinished: state => state.homeCards.requestFinished
+    })
   },
   methods: {
     showTopics() {
@@ -122,7 +122,7 @@ export default {
         screenHeight += 200;
         await this.$store.dispatch("homeCards/userGenerateCards");
       }
-    },
+    }
   },
   watch: {
     requestFinished: {
@@ -137,8 +137,8 @@ export default {
         }
       },
       deep: true,
-      immediate: true,
-    },
-  },
+      immediate: true
+    }
+  }
 };
 </script>

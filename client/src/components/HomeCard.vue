@@ -44,7 +44,7 @@
 .card {
   width: 252px;
   min-height: 200px;
-  background-color:$blue;
+  background-color: $blue;
   border: transparent;
   border-radius: 25px;
   &:hover {
