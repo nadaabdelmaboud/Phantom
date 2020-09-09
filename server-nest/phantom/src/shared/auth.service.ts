@@ -26,6 +26,7 @@ export class AuthService {
         lastName: user.lastName,
         password: '',
         isGoogle: true,
+        profileImage: user.picture,
       });
       if (!newUser) {
         throw new BadRequestException();

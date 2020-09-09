@@ -21,6 +21,7 @@ import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 import { topic } from '../types/topic';
 import { use } from 'passport';
+import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 @Injectable()
 export class UserService {
   constructor(
@@ -146,9 +147,11 @@ export class UserService {
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
 
-    let hash;
+    let hash,
+      picture = '';
     if (registerDto.isGoogle) {
       hash = '';
+      picture = registerDto.profileImage;
     } else {
       const salt = await bcrypt.genSalt(10);
       hash = await bcrypt.hash(registerDto.password, salt);
@@ -157,6 +160,7 @@ export class UserService {
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
       location: '',
+      profileImage: picture,
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
