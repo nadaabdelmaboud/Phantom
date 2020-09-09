@@ -11,7 +11,7 @@ export class UserController {
     private userService: UserService,
     private authService: AuthService,
     private email: Email,
-  ) { }
+  ) {}
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/me')
@@ -34,13 +34,12 @@ export class UserController {
     @nestCommon.Request() req,
     @nestCommon.Query('newPassword') newPassword: string,
     @nestCommon.Query('oldPassword') oldPassword: string,
-
   ) {
     //  if (!req.user.email) throw new nestCommon.HttpException('Invalid token', nestCommon.HttpStatus.FORBIDDEN);
     const ifRest = await this.userService.resetPassword(
       req.user._id,
       newPassword,
-      oldPassword
+      oldPassword,
     );
   }
 
@@ -141,18 +140,16 @@ export class UserController {
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/me/:fcmToken')
-  async setFCMToken(
-    @nestCommon.Param() params,
-    @nestCommon.Request() req,
-  ) {
-    const user = await this.userService.updateFCMTocken(params.fcmToken, req.user._id);
+  async setFCMToken(@nestCommon.Param() params, @nestCommon.Request() req) {
+    const user = await this.userService.updateFCMTocken(
+      params.fcmToken,
+      req.user._id,
+    );
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/log-out')
-  async logOut(
-    @nestCommon.Request() req,
-  ) {
+  async logOut(@nestCommon.Request() req) {
     const user = await this.userService.updateFCMTocken(' ', req.user._id);
   }
 

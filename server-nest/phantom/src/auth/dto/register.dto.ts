@@ -6,6 +6,7 @@ export interface RegisterDto {
   lastName: string;
   country?: string;
   gender?: string;
+  isGoogle?: Boolean;
   bio?: string;
   iat?: string;
   exp?: string;

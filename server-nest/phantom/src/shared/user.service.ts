@@ -29,7 +29,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -135,8 +135,14 @@ export class UserService {
 
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
-    const salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(registerDto.password, salt);
+
+    let hash;
+    if (registerDto.isGoogle) {
+      hash = '';
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      hash = await bcrypt.hash(registerDto.password, salt);
+    }
     var newUser = new this.userModel({
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
@@ -148,7 +154,7 @@ export class UserService {
       fcmToken: ' ',
       history: [],
       facebook: false,
-      google: false,
+      google: registerDto.isGoogle ? registerDto.isGoogle : false,
       about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
       country: registerDto.country,
@@ -214,8 +220,11 @@ export class UserService {
     if (!user || !newPassword)
       throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
     if (oldPassword != 'dont know old password') {
-      if (! await bcrypt.compare(oldPassword, user.password)) {
-        throw new HttpException('old password is not correct', HttpStatus.FORBIDDEN);
+      if (!(await bcrypt.compare(oldPassword, user.password))) {
+        throw new HttpException(
+          'old password is not correct',
+          HttpStatus.FORBIDDEN,
+        );
       }
     }
     const salt = await bcrypt.genSalt(10);
