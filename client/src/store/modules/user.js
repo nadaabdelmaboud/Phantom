@@ -205,7 +205,6 @@ const actions = {
     })
       .then(response => {
         commit("changeImgID", response.data[0].id);
-        console.log(response.data[0].id);
       })
       .catch(error => {
         console.log(error);
@@ -220,6 +219,20 @@ const actions = {
         }
       );
     });
+  },
+  updateUserSettings({ commit }, payload) {
+    axios
+      .put("/me/update-settings", payload, {
+        headers: {
+          Authorization: localStorage.getItem("userToken")
+        }
+      })
+      .then(response => {
+        commit("setUserData", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 

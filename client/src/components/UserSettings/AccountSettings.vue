@@ -194,6 +194,10 @@ button {
   @include profileButton;
 }
 
+button:focus {
+  outline: none;
+}
+
 .change-password button {
   @include profileButton;
   background-color: $qainsboro;

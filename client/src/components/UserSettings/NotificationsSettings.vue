@@ -13,6 +13,7 @@
           v-bind:class="{
             'changed-cancel': this.isChanged
           }"
+          @click="cancelChanges"
         >
           Cancel
         </button>
@@ -21,6 +22,7 @@
           v-bind:class="{
             'changed-done': this.isChanged
           }"
+          @click="changeDone"
         >
           Done
         </button>
@@ -77,7 +79,12 @@
         </div>
       </div>
       <div v-if="!showPushEdit">
-        <button class="trun-off">Trun off all</button><br />
+        <button class="trun-off" @click="switchAll" v-if="!off">
+          Trun off all
+        </button>
+        <button class="trun-off" @click="switchAll" v-if="off">
+          Enable all</button
+        ><br />
         <p class="small-title">Recommendation</p>
         <br />
         <input type="checkbox" v-model="pinsForYou" />
@@ -96,7 +103,7 @@
 
         <p class="small-title">Social</p>
         <br />
-        <input type="checkbox" v-model="boardUpdates" />
+        <input type="checkbox" v-model="boardUpdate" />
         <p>Group board updates</p>
         <br />
         <input type="checkbox" v-model="invitation" />
@@ -105,10 +112,10 @@
 
         <p class="small-title">Actions</p>
         <br />
-        <input type="checkbox" v-model="followNotifications" />
+        <input type="checkbox" v-model="followNotification" />
         <p>People who folllow you</p>
         <br />
-        <input type="checkbox" v-model="pinsNotifications" />
+        <input type="checkbox" v-model="pinsNotification" />
         <p>Reacts and comments on your pins</p>
         <br />
       </div>
@@ -118,6 +125,10 @@
 
 <script>
 export default {
+  created: async function() {
+    this.$store.dispatch("user/getUserProfile");
+    this.updateModels();
+  },
   data: function() {
     return {
       showPhantomEdit: true,
@@ -127,10 +138,11 @@ export default {
       pinsInspired: false,
       popularPins: false,
       boardsForYou: false,
-      boardUpdates: false,
+      boardUpdate: false,
       invitation: false,
-      pinsNotifications: false,
-      followNotifications: false
+      pinsNotification: false,
+      followNotification: false,
+      off: false
     };
   },
   methods: {
@@ -140,15 +152,38 @@ export default {
       this.pinsInspired = this.userData.pinsInspired;
       this.popularPins = this.userData.popularPins;
       this.boardsForYou = this.userData.boardsForYou;
-      this.boardUpdates = this.userData.boardUpdates;
+      this.boardUpdate = this.userData.boardUpdate;
       this.invitation = this.userData.invitation;
-      this.pinsNotifications = this.userData.pinsNotifications;
-      this.followNotifications = this.userData.followNotifications;
+      this.pinsNotification = this.userData.pinsNotification;
+      this.followNotification = this.userData.followNotification;
     },
     cancelChanges: function() {
       this.updateModels();
     },
-    changeDone: function() {}
+    changeDone: function() {
+      this.$store.dispatch("user/updateUserSettings", {
+        activity: this.activity,
+        pinsForYou: this.pinsForYou,
+        pinsInspired: this.pinsInspired,
+        popularPins: this.popularPins,
+        boardsForYou: this.boardsForYou,
+        boardUpdate: this.boardUpdate,
+        invitation: this.invitation,
+        pinsNotifica: this.pinsNotification,
+        followNotification: this.followNotification
+      });
+    },
+    switchAll: function() {
+      this.pinsForYou = this.off;
+      this.pinsInspired = this.off;
+      this.popularPins = this.off;
+      this.boardsForYou = this.off;
+      this.boardUpdate = this.off;
+      this.invitation = this.off;
+      this.pinsNotification = this.off;
+      this.followNotification = this.off;
+      this.off = !this.off;
+    }
   },
   computed: {
     userData: function() {
@@ -164,11 +199,10 @@ export default {
       if (this.userData.pinsInspired !== this.pinsInspired) return true;
       if (this.userData.popularPins !== this.popularPins) return true;
       if (this.userData.boardsForYou !== this.boardsForYou) return true;
-      if (this.userData.boardUpdates !== this.boardUpdates) return true;
+      if (this.userData.boardUpdate !== this.boardUpdate) return true;
       if (this.userData.invitation !== this.invitation) return true;
-      if (this.userData.pinsNotifications !== this.pinsNotifications)
-        return true;
-      if (this.userData.followNotifications !== this.followNotifications)
+      if (this.userData.pinsNotification !== this.pinsNotification) return true;
+      if (this.userData.followNotification !== this.followNotification)
         return true;
       return false;
     }
@@ -240,6 +274,21 @@ hr {
 .settings p {
   display: inline;
   margin-left: 4px;
+}
+
+/**Settings Buttons
+-----------------------------------*/
+button:focus {
+  outline: none;
+}
+.changed-done {
+  background-color: $queenBlue;
+  color: $qainsboro;
+}
+
+.changed-cancel {
+  background-color: $qainsboro;
+  color: black;
 }
 
 /*Swithch
