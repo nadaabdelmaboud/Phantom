@@ -41,17 +41,21 @@
     <br />
     <section>
       <label for="country">Country/Region</label><br />
-      <select name="country" id="country">
-        <option value="Egypt">Egypt</option>
-        <option value="London">London</option>
+      <select name="country" v-model="country">
+        <option
+          v-for="country in getCountriesName()"
+          :key="country.name"
+          :value="country.name"
+          >{{ country.name }}</option
+        >
       </select>
     </section>
     <br />
     <section class="gender">
       <p>Gender</p>
-      <input type="radio" id="male" name="gender" value="male" />
+      <input type="radio" id="male" v-model="gender" value="male" />
       <label for="male">Male</label>
-      <input type="radio" id="female" name="gender" value="female" />
+      <input type="radio" id="female" v-model="gender" value="female" />
       <label for="female">Female</label>
     </section>
     <br />
@@ -73,17 +77,6 @@
     <section class="account-changes">
       <h5>Account changes</h5>
       <div>
-        <p>
-          Convert to a business account. You'll keep your boards and Pins, and
-          switch to a business-only account.
-        </p>
-        <button>Convert account</button>
-      </div>
-      <div>
-        <p>Hide your Pins and profile</p>
-        <button>Deactivate account</button>
-      </div>
-      <div>
         <p>Delete your account and account data</p>
         <button>Close account</button>
       </div>
@@ -92,6 +85,7 @@
 </template>
 
 <script>
+import getCountriesName from "../../mixins/getCountriesName";
 export default {
   created: async function() {
     this.$store.dispatch("user/getUserProfile");
@@ -101,14 +95,16 @@ export default {
     return {
       email: null,
       gender: null,
-      facebook: null,
-      google: null
+      facebook: false,
+      google: false,
+      country: "Egypt"
     };
   },
   methods: {
     updateModels: function() {
       this.email = this.userData.email;
       this.gender = this.userData.gender;
+      this.country = this.userData.country;
       this.facebook = this.userData.facebook;
       this.google = this.userData.google;
     },
@@ -117,7 +113,8 @@ export default {
     },
     changeDone: function() {
       this.$store.dispatch("user/updateUserInfo", {
-        email: this.email
+        country: this.country,
+        gender: this.gender
       });
     },
     changePassword: function() {
@@ -135,19 +132,18 @@ export default {
       if (this.isLoading) return false;
       if (this.userData.email !== this.email) return true;
       if (this.userData.gender !== this.gender) return true;
+      if (this.userData.country !== this.country) return true;
       if (this.userData.facebook !== this.facebook) return true;
       if (this.userData.google !== this.google) return true;
       return false;
-    },
-    updateState: function() {
-      return this.$store.state.user.updateState;
     }
   },
   watch: {
     userData: function() {
       this.updateModels();
     }
-  }
+  },
+  mixins: [getCountriesName]
 };
 </script>
 

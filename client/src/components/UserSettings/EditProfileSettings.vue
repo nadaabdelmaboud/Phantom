@@ -124,9 +124,6 @@ export default {
       if (this.userData.userName !== this.username) return true;
       if (this.userData.location !== this.location) return true;
       return false;
-    },
-    updateState: function() {
-      return this.$store.state.user.updateState;
     }
   },
   watch: {
