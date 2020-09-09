@@ -247,23 +247,34 @@ export class NotificationService {
     return 1;
   }
 
-  async boardsForYou(user, boards) {
+  async boardsForYou(user, boards, images) {
+    let arrayMessage = {
+      boards: boards,
+      images: images,
+      time: Date.now(),
+      title: 'Boards For You!',
+      body: 'we think that you may get interested in some of these boards',
+    };
     let message: {
       data: {
         boards: string;
+        images: string;
+        time: string;
         title: string;
         body: string;
       };
       tokens?: [string];
     } = {
       data: {
-        boards: boards,
+        boards: boards.toString(),
+        images: images.toString(),
+        time: Date.now().toString(),
         title: 'Boards For You!',
         body: 'we think that you may get interested in some of these boards',
       },
     };
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(message);
+    user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -271,9 +282,9 @@ export class NotificationService {
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed) {
-        let last = user.notifications.pop(message);
-        if (String(last.data.title) != String(message.data.title)) {
-          user.notifications.push(message);
+        let last = user.notifications.pop();
+        if (String(last.data.title) != String(arrayMessage.title)) {
+          user.notifications.push(arrayMessage);
         }
         await user.save();
         return 0;
@@ -282,23 +293,34 @@ export class NotificationService {
     return 1;
   }
 
-  async popularPins(user, pins) {
+  async popularPins(user, pins, images) {
+    let arrayMessage = {
+      pins: pins,
+      images: images,
+      title: 'Popular Phantom Pins!',
+      time: Date.now(),
+      body: 'check out these popular pins on phantom',
+    };
     let message: {
       data: {
         pins: string;
+        images: string;
+        time: string;
         title: string;
         body: string;
       };
       tokens?: [string];
     } = {
       data: {
-        pins: pins,
+        pins: pins.toString(),
+        images: images.toString(),
         title: 'Popular Phantom Pins!',
+        time: Date.now().toString(),
         body: 'check out these popular pins on phantom',
       },
     };
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(message);
+    user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -306,9 +328,9 @@ export class NotificationService {
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed) {
-        let last = user.notifications.pop(message);
-        if (String(last.data.title) != String(message.data.title)) {
-          user.notifications.push(message);
+        let last = user.notifications.pop();
+        if (String(last.data.title) != String(arrayMessage.title)) {
+          user.notifications.push(arrayMessage);
         }
         await user.save();
         return 0;
@@ -316,23 +338,34 @@ export class NotificationService {
     }
     return 1;
   }
-  async pinsForYou(user, pins) {
+  async pinsForYou(user, pins, images) {
+    let arrayMessage = {
+      pins: pins,
+      images: images,
+      time: Date.now(),
+      title: 'Pins For You!',
+      body: 'We think that you may get instersted in some of these pins',
+    };
     let message: {
       data: {
         pins: string;
+        time: string;
+        images: string;
         title: string;
         body: string;
       };
       tokens?: [string];
     } = {
       data: {
-        pins: pins,
+        pins: pins.toString(),
+        images: images.toString(),
+        time: Date.now().toString(),
         title: 'Pins For You!',
         body: 'We think that you may get instersted in some of these pins',
       },
     };
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(message);
+    user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -340,9 +373,9 @@ export class NotificationService {
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed) {
-        let last = user.notifications.pop(message);
-        if (String(last.data.title) != String(message.data.title)) {
-          user.notifications.push(message);
+        let last = user.notifications.pop();
+        if (String(last.data.title) != String(arrayMessage.title)) {
+          user.notifications.push(arrayMessage);
         }
         await user.save();
         return 0;
@@ -350,23 +383,34 @@ export class NotificationService {
     }
     return 1;
   }
-  async pinsInspired(user, pins) {
+  async pinsInspired(user, pins, images) {
+    let arrayMessage = {
+      pins: pins,
+      images: images,
+      time: Date.now(),
+      title: 'Pins Inspired By Your Recent Activity!',
+      body: 'check out these pins',
+    };
     let message: {
       data: {
         pins: string;
+        images: string;
+        time: string;
         title: string;
         body: string;
       };
       tokens?: [string];
     } = {
       data: {
-        pins: pins,
+        pins: pins.toString(),
+        images: images.toString(),
+        time: Date.now().toString(),
         title: 'Pins Inspired By Your Recent Activity!',
         body: 'check out these pins',
       },
     };
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(message);
+    user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -375,8 +419,8 @@ export class NotificationService {
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed) {
         let last = user.notifications.pop(message);
-        if (String(last.data.title) != String(message.data.title)) {
-          user.notifications.push(message);
+        if (String(last.data.title) != String(arrayMessage.title)) {
+          user.notifications.push(arrayMessage);
         }
         await user.save();
         return 0;

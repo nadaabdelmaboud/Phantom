@@ -692,10 +692,20 @@ export class RecommendationService {
                     }
                   }
                 }
-                let finalBoards = boards.toString();
+
+                let images = [];
+                let count: number = 0;
+                for (let i = 0; i < boards.length; i++) {
+                  if (count >= 5) break;
+                  if (boards[i].coverImages.length > 0) {
+                    count++;
+                    images.push(boards[i].coverImages[0]);
+                  }
+                }
                 let res = await this.NotificationService.boardsForYou(
                   user,
-                  finalBoards,
+                  boards,
+                  images,
                 );
                 return 1;
               }
@@ -728,10 +738,20 @@ export class RecommendationService {
                   }
                 }
               }
-              let finalBoards = boards.toString();
+
+              let images = [];
+              let count: number = 0;
+              for (let i = 0; i < boards.length; i++) {
+                if (count >= 5) break;
+                if (boards[i].coverImages.length > 0) {
+                  count++;
+                  images.push(boards[i].coverImages[0]);
+                }
+              }
               let res = await this.NotificationService.boardsForYou(
                 user,
-                finalBoards,
+                boards,
+                images,
               );
               return 1;
             }
@@ -756,10 +776,20 @@ export class RecommendationService {
                 }
               }
             }
-            let finalBoards = boards.toString();
+
+            let images = [];
+            let count: number = 0;
+            for (let i = 0; i < boards.length; i++) {
+              if (count >= 5) break;
+              if (boards[i].coverImages.length > 0) {
+                count++;
+                images.push(boards[i].coverImages[0]);
+              }
+            }
             let res = await this.NotificationService.boardsForYou(
               user,
-              finalBoards,
+              boards,
+              images,
             );
             return 1;
           }
@@ -776,8 +806,17 @@ export class RecommendationService {
     }
     boards = await this.shuffle(boards);
     console.log('4 ', boards.length);
-    let finalBoards = boards.toString();
-    let res = await this.NotificationService.boardsForYou(user, finalBoards);
+
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < boards.length; i++) {
+      if (count >= 5) break;
+      if (boards[i].coverImages.length > 0) {
+        count++;
+        images.push(boards[i].coverImages[0]);
+      }
+    }
+    let res = await this.NotificationService.boardsForYou(user, boards, images);
     return 1;
   }
   async popularPins(userId) {
@@ -806,8 +845,17 @@ export class RecommendationService {
         }
       }
     }
-    let finalPins = allPins.toString();
-    let res = await this.NotificationService.popularPins(user, finalPins);
+
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < allPins.length; i++) {
+      if (count >= 5) break;
+      if (allPins[i].imageId) {
+        count++;
+        images.push(allPins[i].imageId);
+      }
+    }
+    let res = await this.NotificationService.popularPins(user, allPins, images);
     return 1;
   }
   async pinsForYou(userId) {
@@ -873,8 +921,16 @@ export class RecommendationService {
       }
     }
     pins = await this.shuffle(pins);
-    let finalPins = pins.toString();
-    await this.NotificationService.pinsForYou(user, finalPins);
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < pins.length; i++) {
+      if (count >= 5) break;
+      if (pins[i].imageId) {
+        count++;
+        images.push(pins[i].imageId);
+      }
+    }
+    await this.NotificationService.pinsForYou(user, pins, images);
     return 1;
   }
   async pinsInspired(userId) {
@@ -928,8 +984,17 @@ export class RecommendationService {
         }
       }
     }
-    let finalPins = pins.toString();
-    await this.NotificationService.pinsInspired(user, finalPins);
+
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < pins.length; i++) {
+      if (count >= 5) break;
+      if (pins[i].imageId) {
+        count++;
+        images.push(pins[i].imageId);
+      }
+    }
+    await this.NotificationService.pinsInspired(user, pins, images);
     return 1;
   }
 }
