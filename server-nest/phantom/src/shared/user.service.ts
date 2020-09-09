@@ -29,7 +29,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -145,8 +145,14 @@ export class UserService {
 
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
-    const salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(registerDto.password, salt);
+
+    let hash;
+    if (registerDto.isGoogle) {
+      hash = '';
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      hash = await bcrypt.hash(registerDto.password, salt);
+    }
     var newUser = new this.userModel({
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
@@ -162,7 +168,7 @@ export class UserService {
       pinsInspired: true,
       history: [],
       facebook: false,
-      google: false,
+      google: registerDto.isGoogle ? registerDto.isGoogle : false,
       about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
       country: registerDto.country,
@@ -338,10 +344,13 @@ export class UserService {
     },
   ) {
     const user = await this.getUserById(userId);
-/*    if (settings.deleteflag) {
+    /*    if (settings.deleteflag) {
       await this.deleteUser(userId);
     }
-  */  await this.userModel.updateOne({ _id: userId }, settings);
+  */ await this.userModel.updateOne(
+      { _id: userId },
+      settings,
+    );
     /*if(settings.facebook)
     login with facebook
     else if(settings.google)
@@ -367,7 +376,7 @@ export class UserService {
   async deleteUser(id) {
     const user = await this.getUserById(id);
     // delete following
-    //delete followers 
+    //delete followers
     // delete pins saved created
     return await this.userModel.findByIdAndDelete(id);
   }

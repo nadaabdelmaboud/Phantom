@@ -13,11 +13,11 @@ export class UserController {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-  /*  private TopicService: TopicService,
+    /*  private TopicService: TopicService,
     private BoardService: BoardService,
     private PinsService: PinsService,
-    */private email: Email,
-  ) { }
+    */ private email: Email,
+  ) {}
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/me')
@@ -42,8 +42,7 @@ export class UserController {
     @nestCommon.Body('oldPassword') oldPassword: string,
     @nestCommon.Body('forgetPassword') forgetPassword: Boolean,
   ) {
-    if (forgetPassword == true)
-      oldPassword = undefined;
+    if (forgetPassword == true) oldPassword = undefined;
     else if (!oldPassword)
       throw new nestCommon.HttpException(
         'oldPassword is reqired',
@@ -52,7 +51,7 @@ export class UserController {
     const ifRest = await this.userService.resetPassword(
       req.user._id,
       newPassword,
-      oldPassword
+      oldPassword,
     );
   }
 
@@ -69,13 +68,13 @@ export class UserController {
     return user;
   }
 
-
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/me/update-settings')
   async updateUserSettings(
     @nestCommon.Request() req,
     @nestCommon.Body() updateData,
-  ) {/*
+  ) {
+    /*
     if (updateData.deleteflag) {
       const user = await this.userService.getUserById(req.user._id);
       // delete boards created saved
@@ -181,18 +180,16 @@ export class UserController {
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/me/:fcmToken')
-  async setFCMToken(
-    @nestCommon.Param() params,
-    @nestCommon.Request() req,
-  ) {
-    const user = await this.userService.updateFCMTocken(params.fcmToken, req.user._id);
+  async setFCMToken(@nestCommon.Param() params, @nestCommon.Request() req) {
+    const user = await this.userService.updateFCMTocken(
+      params.fcmToken,
+      req.user._id,
+    );
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/log-out')
-  async logOut(
-    @nestCommon.Request() req,
-  ) {
+  async logOut(@nestCommon.Request() req) {
     const user = await this.userService.updateFCMTocken(' ', req.user._id);
   }
 

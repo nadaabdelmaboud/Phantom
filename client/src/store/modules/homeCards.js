@@ -14,6 +14,7 @@ const state = {
   offsetnum: 0,
   totalCards: 0,
   finishCalling: false,
+  requestFinished: false,
 };
 
 const mutations = {
@@ -54,17 +55,21 @@ const mutations = {
   finishCalling(state, value) {
     state.finishCalling = value;
   },
+  setRequestFinished(state, check) {
+    state.requestFinished = check;
+  },
 };
 
 const actions = {
   userHome({ commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    num = state.offsetnum;
+    num = state.offsetnum - 12;
     state.totalCards = 0;
     axios
       .put("home/me")
       .then((response) => {
+        console.log("totalllllllllllllllllllllllllllll", response.data.total);
         commit("homeGenerated", true);
         commit("totalNumCards", response.data.total);
       })
@@ -73,26 +78,25 @@ const actions = {
       });
   },
 
-  userGenerateCards({ commit }) {
+  async userGenerateCards({ commit }) {
+    commit("setRequestFinished", false);
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    console.log("Nana", num);
-    axios
+    num += 12;
+    console.log("state.requestFinished", state.requestFinished);
+    await axios
       .get("me/home?limit=12&offset=" + num)
       .then((response) => {
-        console.log(num);
-        console.log("data length", response.data.length);
-        num += 12;
         commit("sethomeCards", response.data);
+        commit("setRequestFinished", true);
+        console.log("state.requestFinished", state.requestFinished);
       })
       .catch((error) => {
-        console.log("assa1");
+        // state.requestFinished = false;
         if (num == state.totalCards) state.finishCalling = true;
-        console.log("assa2");
         setTimeout(() => {
-          console.log("assa3");
           this.userGenerateCards;
-        }, 1000);
+        }, 3000);
         console.log(error);
       });
   },
