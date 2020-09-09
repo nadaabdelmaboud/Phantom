@@ -11,6 +11,8 @@ export const User = new Schema({
   followingTopics: Array(mongoose.Types.ObjectId),
   location: String,
   activateaccount: Boolean,
+  followNotification: Boolean,
+  pinsNotification: Boolean,
   facebook: Boolean,
   google: Boolean,
   notificationOfPinsActivity: Boolean,

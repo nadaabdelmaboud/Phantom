@@ -49,20 +49,13 @@ export class SearchService {
   }
 
   async getPeople(name, limit, offset) {
-    // should delete
-    let user = await this.userModel.find({}, (err, user) => {
+
+    let user = await this.userModel.find({ activateaccount: true }, (err, user) => {
       if (err) return 0;
       return user;
     });
-    for (let i = 0; i < user.length; i++) {
-      user[i].activateaccount = true;
-      await user[i].save();
-    }
-    ///
-    user = await this.userModel.find({ activateaccount: true }, (err, user) => {
-      if (err) return 0;
-      return user;
-    });
+    console.log(user);
+
     let users = await this.Fuzzy(
       user,
       ['firstName', 'lastName'],

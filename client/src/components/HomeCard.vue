@@ -43,8 +43,12 @@
 @import "../scss/Mixins";
 .card {
   width: 252px;
+  min-height: 200px;
+  background-color:$blue;
+  border: transparent;
   border-radius: 25px;
   &:hover {
+    box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.05);
     .save-post,
     .share-icon,
     .added-list {
@@ -56,6 +60,7 @@
   background-size: cover;
   border-radius: 25px;
   object-fit: cover;
+  min-height: 200px;
 }
 .save-post {
   display: none;

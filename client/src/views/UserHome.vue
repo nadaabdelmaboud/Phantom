@@ -65,49 +65,80 @@ body {
 
 <script>
 import HomeCard from "../components/HomeCard";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
+// import Masonry from "masonry-layout";
+//       var grid = document.querySelector('.masonry');
+//       var msnry = new Masonry( grid, {
+//         // options...
+//           horizontalOrder: true,
+//           gutter:10,
+//           itemSelector: '.masonryItem',
+//            columnWidth: 200
+//       });
+//       msnry.on('layoutComplete' , ()=> console.log("layout completed"))
 let screenHeight;
 export default {
   name: "UserHome",
   components: {
-    HomeCard
+    HomeCard,
   },
   mixins: [isLoggedIn],
   mounted() {
     this.$store.dispatch("homeCards/userHome");
     this.$store.dispatch("homeCards/userGenerateCards");
-    screenHeight = 200;
-    if (this.finishCalling === true)
-      window.removeEventListener("scroll", this.generateHomeCards);
+    screenHeight = 100;
+    // if(this.finishCalling === true){
+    // console.log("Stop Event Listener");
+    // window.removeEventListener("scroll", this.generateHomeCards);
+    // }
   },
-  created() {
-    window.addEventListener("scroll", this.generateHomeCards);
-  },
-  destroyed() {
-    window.removeEventListener("scroll", this.generateHomeCards);
-  },
+  // created() {
+  //   // window.addEventListener("scroll", this.generateHomeCards);
+  // },
+  // destroyed() {
+  //   window.removeEventListener("scroll", this.generateHomeCards);
+  // },
   computed: {
     ...mapGetters({
       cards: "homeCards/userHomePage",
-      finishCalling: "homeCards/finishCalling"
-    })
+      finishCalling: "homeCards/finishCalling",
+    }),
+    ...mapState({
+      requestFinished: (state) => state.homeCards.requestFinished,
+    }),
   },
   methods: {
     showTopics() {
       console.log("PPPPPPP");
       this.$store.commit("popUpsState/toggleTopicsPopup");
     },
-    generateHomeCards() {
+    async generateHomeCards() {
       // if(document.body.scrollTop > 200 || document.documentElement.scrollTop > 200)
+      console.log("finish", this.finishCalling);
       console.log("scrollY", window.scrollY);
       console.log("screenHeight", screenHeight);
       if (window.scrollY >= screenHeight) {
-        screenHeight = screenHeight + 200;
-        console.log("here");
-        this.$store.dispatch("homeCards/userGenerateCards");
+        screenHeight += 200;
+        await this.$store.dispatch("homeCards/userGenerateCards");
       }
-    }
-  }
+    },
+  },
+  watch: {
+    requestFinished: {
+      handler: function(newValue) {
+        console.log("requestFinished", newValue);
+        if (newValue === true) {
+          console.log("start scroll event");
+          window.addEventListener("scroll", this.generateHomeCards);
+        } else {
+          console.log("end scroll event");
+          window.removeEventListener("scroll", this.generateHomeCards);
+        }
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
 };
 </script>

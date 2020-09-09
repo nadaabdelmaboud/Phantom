@@ -13,7 +13,8 @@ const state = {
   cardsGenerated: false,
   offsetnum: 0,
   totalCards: 0,
-  finishCalling: false
+  finishCalling: false,
+  requestFinished: false,
 };
 
 const mutations = {
@@ -53,46 +54,49 @@ const mutations = {
   },
   finishCalling(state, value) {
     state.finishCalling = value;
-  }
+  },
+  setRequestFinished(state, check) {
+    state.requestFinished = check;
+  },
 };
 
 const actions = {
   userHome({ commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    num = state.offsetnum;
+    num = state.offsetnum - 12;
     state.totalCards = 0;
     axios
       .put("home/me")
-      .then(response => {
+      .then((response) => {
+        console.log("totalllllllllllllllllllllllllllll", response.data.total);
         commit("homeGenerated", true);
         commit("totalNumCards", response.data.total);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
 
-  userGenerateCards({ commit }) {
+  async userGenerateCards({ commit }) {
+    commit("setRequestFinished", false);
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    console.log("Nana", num);
-    axios
+    num += 12;
+    console.log("state.requestFinished", state.requestFinished);
+    await axios
       .get("me/home?limit=12&offset=" + num)
-      .then(response => {
-        console.log(num);
-        console.log("data length", response.data.length);
-        num += 12;
+      .then((response) => {
         commit("sethomeCards", response.data);
+        commit("setRequestFinished", true);
+        console.log("state.requestFinished", state.requestFinished);
       })
-      .catch(error => {
-        console.log("assa1");
+      .catch((error) => {
+        // state.requestFinished = false;
         if (num == state.totalCards) state.finishCalling = true;
-        console.log("assa2");
         setTimeout(() => {
-          console.log("assa3");
           this.userGenerateCards;
-        }, 1000);
+        }, 3000);
         console.log(error);
       });
   },
@@ -102,7 +106,7 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     await axios
       .get("/pins/" + postPageID)
-      .then(response => {
+      .then((response) => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
         commit("setpinCreatorId", res.pin.creator.id);
@@ -113,23 +117,23 @@ const actions = {
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 
 const getters = {
-  userHomePage: state => state.homeCards,
-  postImage: state => state.postImage,
-  userImageId: state => state.userImage,
-  postTitle: state => state.postTitle,
-  postDescribtion: state => state.postDescribtion,
-  userFirstName: state => state.userFirstName,
-  userLastName: state => state.userLastName,
-  numberofFollowers: state => state.numberofFollowers,
-  pinCreatorId: state => state.pinCreatorId,
-  finishCalling: state => state.finishCalling
+  userHomePage: (state) => state.homeCards,
+  postImage: (state) => state.postImage,
+  userImageId: (state) => state.userImage,
+  postTitle: (state) => state.postTitle,
+  postDescribtion: (state) => state.postDescribtion,
+  userFirstName: (state) => state.userFirstName,
+  userLastName: (state) => state.userLastName,
+  numberofFollowers: (state) => state.numberofFollowers,
+  pinCreatorId: (state) => state.pinCreatorId,
+  finishCalling: (state) => state.finishCalling,
 };
 
 export default {
@@ -137,5 +141,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

@@ -1,17 +1,23 @@
 import { Module } from '@nestjs/common';
-
+import { MongooseModule } from '@nestjs/mongoose';
 import { SharedModule } from '../shared/shared.module';
 import { UserController } from './user.controller';
 import { AuthService } from '../shared/auth.service';
 import { JwtStrategy } from '../shared/jwt.strategy';
 import { Email } from '../shared/send-email.service';
-import { PinsService } from '../pins/pins.service';
 import { BoardService } from '../board/board.service';
 import { TopicService } from '../topic/topic.service';
+import { Pin } from '../models/pin.schema';
+import { Board } from '../models/board.schema';
+import { Topic } from '../models/topic.schema';
 @Module({
-    //   imports: [SharedModule, PinsService, BoardService, TopicService],
+    /* imports: [SharedModule, BoardService, TopicService, MongooseModule.forFeature([
+         { name: 'Topic', schema: Topic },
+         { name: 'Pin', schema: Pin },
+         { name: 'Board', schema: Board },
+     ]),],
+     */
     imports: [SharedModule],
-
     controllers: [UserController],
     providers: [AuthService, JwtStrategy, Email],
 })

@@ -12,6 +12,8 @@ export interface user extends Document {
   popularPins: Boolean;
   pinsForYou: Boolean;
   activateaccount: Boolean;
+  followNotification: Boolean;
+  pinsNotification: Boolean;
   pinsInspired: Boolean;
   birthDate: Date;
   about: String;

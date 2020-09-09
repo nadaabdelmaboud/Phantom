@@ -21,6 +21,7 @@ import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 import { topic } from '../types/topic';
 import { use } from 'passport';
+import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 @Injectable()
 export class UserService {
   constructor(
@@ -29,7 +30,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -145,12 +146,21 @@ export class UserService {
 
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
-    const salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(registerDto.password, salt);
+
+    let hash,
+      picture = '';
+    if (registerDto.isGoogle) {
+      hash = '';
+      picture = registerDto.profileImage;
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      hash = await bcrypt.hash(registerDto.password, salt);
+    }
     var newUser = new this.userModel({
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
       location: '',
+      profileImage: picture,
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
@@ -162,11 +172,14 @@ export class UserService {
       pinsInspired: true,
       history: [],
       facebook: false,
-      google: false,
+      google: registerDto.isGoogle ? registerDto.isGoogle : false,
       about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
       country: registerDto.country,
       birthDate: registerDto.birthday,
+      activateaccount: true,
+      followNotification: true,
+      pinsNotification: true,
       pins: [],
       homeFeed: [],
       uploadedImages: [],
@@ -335,13 +348,21 @@ export class UserService {
       pinsForYou?: Boolean;
       pinsInspired?: Boolean;
       activateaccount?: Boolean;
+      followNotification?: Boolean;
+      pinsNotification?: Boolean;
     },
   ) {
     const user = await this.getUserById(userId);
-/*    if (settings.deleteflag) {
+    if (settings.deleteflag) {
+      for (let i = 0; i < user.followers.length; i++) {
+        await this.unfollowUser(user.followers[i], user._id);
+      }
+      for (let i = 0; i < user.following.length; i++) {
+        await this.unfollowUser(user._id, user.followers[i]);
+      }
       await this.deleteUser(userId);
     }
-  */  await this.userModel.updateOne({ _id: userId }, settings);
+    await this.userModel.updateOne({ _id: userId }, settings);
     /*if(settings.facebook)
     login with facebook
     else if(settings.google)
@@ -367,7 +388,7 @@ export class UserService {
   async deleteUser(id) {
     const user = await this.getUserById(id);
     // delete following
-    //delete followers 
+    //delete followers
     // delete pins saved created
     return await this.userModel.findByIdAndDelete(id);
   }
@@ -443,7 +464,11 @@ export class UserService {
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
     await followedUser.save();
-    await this.notification.followUser(followedUser, userFollow);
+    if (
+      !followedUser.followNotification ||
+      followedUser.followNotification == true
+    )
+      await this.notification.followUser(followedUser, userFollow);
     return 1;
   }
 

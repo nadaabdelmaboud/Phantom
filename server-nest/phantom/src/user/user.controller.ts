@@ -12,12 +12,11 @@ import { NotAcceptableException } from '@nestjs/common';
 export class UserController {
   constructor(
     private userService: UserService,
-    private authService: AuthService,
-  /*  private TopicService: TopicService,
+    /*  private authService: AuthService,
+    private TopicService: TopicService,
     private BoardService: BoardService,
-    private PinsService: PinsService,
-    */private email: Email,
-  ) { }
+    */ private email: Email,
+  ) {}
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/me')
@@ -42,8 +41,7 @@ export class UserController {
     @nestCommon.Body('oldPassword') oldPassword: string,
     @nestCommon.Body('forgetPassword') forgetPassword: Boolean,
   ) {
-    if (forgetPassword == true)
-      oldPassword = undefined;
+    if (forgetPassword == true) oldPassword = undefined;
     else if (!oldPassword)
       throw new nestCommon.HttpException(
         'oldPassword is reqired',
@@ -52,7 +50,7 @@ export class UserController {
     const ifRest = await this.userService.resetPassword(
       req.user._id,
       newPassword,
-      oldPassword
+      oldPassword,
     );
   }
 
@@ -69,25 +67,35 @@ export class UserController {
     return user;
   }
 
-
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/me/update-settings')
   async updateUserSettings(
     @nestCommon.Request() req,
     @nestCommon.Body() updateData,
-  ) {/*
-    if (updateData.deleteflag) {
+  ) {
+    /*if (updateData.deleteflag) {
       const user = await this.userService.getUserById(req.user._id);
       // delete boards created saved
       for (let i = 0; i < user.boards.length; i++) {
         await this.BoardService.deleteBoard(req.user._id, user.boards[i].boardId);
       }
       for (let i = 0; i < user.pins.length; i++) {
-        await this.PinsService.deletePin(req.user._id, user.pins[i].pinId);
+        await this.BoardService.deletePin(user.pins[i].pinId, req.user._id);
       }
-      // delete following
-      //delete followers 
-      // delete pins saved created
+      for (let i = 0; i < user.savedPins.length; i++) {
+        await this.BoardService.unsavePin(user.savedPins[i].pinId, user.savedPins[i].boardId, user.savedPins[i].sectionId, req.user._id, true);
+      }
+
+      for (let i = 0; i < user.followers.length; i++) {
+        await this.userService.unfollowUser(user.followers[i], user._id);
+      }
+      for (let i = 0; i < user.following.length; i++) {
+        await this.userService.unfollowUser(user._id, user.followers[i]);
+      }
+      for (let i = 0; i < user.followingTopics.length; i++) {
+        await this.TopicService.unfollowTopic(user._id, user.followingTopics[i])
+      }
+
     }*/
     await this.userService.updateSettings(req.user._id, updateData);
     const user = await this.userService.getUserById(req.user._id);
@@ -181,18 +189,16 @@ export class UserController {
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/me/:fcmToken')
-  async setFCMToken(
-    @nestCommon.Param() params,
-    @nestCommon.Request() req,
-  ) {
-    const user = await this.userService.updateFCMTocken(params.fcmToken, req.user._id);
+  async setFCMToken(@nestCommon.Param() params, @nestCommon.Request() req) {
+    const user = await this.userService.updateFCMTocken(
+      params.fcmToken,
+      req.user._id,
+    );
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Put('/log-out')
-  async logOut(
-    @nestCommon.Request() req,
-  ) {
+  async logOut(@nestCommon.Request() req) {
     const user = await this.userService.updateFCMTocken(' ', req.user._id);
   }
 
