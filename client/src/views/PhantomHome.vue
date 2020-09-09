@@ -95,7 +95,6 @@ import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
 import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
 
-
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",

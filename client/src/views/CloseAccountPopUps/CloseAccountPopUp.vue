@@ -3,11 +3,16 @@
     <div class="popup-content">
       <p class="title">Are you sure?</p>
       <p>
-        Closing your account means you won’t be able to get your Pins or boards back. All your Pinterest account data will be deleted.
-If you’re ready to leave forever, we’ll send you an email with the final step to <strong>{{ email }}</strong>
+        Closing your account means you won’t be able to get your Pins or boards
+        back. All your Pinterest account data will be deleted. If you’re ready
+        to leave forever, we’ll send you an email with the final step to
+        <strong>{{ email }}</strong>
       </p>
       <div class="row action-buttons">
-        <button @click="closePopup" style="background-color: #dedddd; color: black;">
+        <button
+          @click="closePopup"
+          style="background-color: #dedddd; color: black;"
+        >
           Cancel
         </button>
         <button @click="sendEmail">
@@ -33,7 +38,7 @@ export default {
         deleteFlag: true
       });
       this.removeUserData();
-      this.$router.push("/")
+      this.$router.push("/");
     }
   },
   computed: {
