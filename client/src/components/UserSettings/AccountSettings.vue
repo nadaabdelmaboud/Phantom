@@ -78,7 +78,7 @@
       <h5>Account changes</h5>
       <div>
         <p>Delete your account and account data</p>
-        <button>Close account</button>
+        <button @click="openClosePopUp">Close account</button>
       </div>
     </section>
   </div>
@@ -119,6 +119,9 @@ export default {
     },
     changePassword: function() {
       this.$store.commit("popUpsState/toggleChangePasswordPopUp");
+    },
+    openClosePopUp: function() {
+      this.$store.commit("popUpsState/toggleLeavingPopUp");
     }
   },
   computed: {

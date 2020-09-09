@@ -9,7 +9,8 @@ const state = {
   TopicsPopup: false,
   changePasswordPopUp: false,
   forgetPasswordPopUp: false,
-  changePhotoPopUp: false
+  changePhotoPopUp: false,
+  leavingPopUp: false
 };
 
 const mutations = {
@@ -45,6 +46,12 @@ const mutations = {
   },
   toggleChangePhotoPopUp(state) {
     state.changePhotoPopUp = !state.changePhotoPopUp;
+  },
+  toggleLeavingPopUp(state) {
+    state.leavingPopUp = !state.leavingPopUp;
+  },
+  toggleAccountClosingPopup(state) {
+    state.accountClosingPopup = !state.accountClosingPopup;
   }
 };
 export default {
