@@ -22,7 +22,7 @@ let app = firebase.initializeApp({
 });
 @Injectable()
 export class NotificationService {
-  constructor() {}
+  constructor() { }
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -57,13 +57,16 @@ export class NotificationService {
   async followUser(followedUser, followerUser) {
     let message: {
       data: {
+        followerImageId: string;
         followerId: string;
         title: string;
         body: string;
+        time: string;
       };
       tokens?: [string];
     } = {
       data: {
+        followerImageId: String(followerUser.profileImage),
         followerId: String(followerUser._id),
         title: 'your follower increase ',
         body:
@@ -71,9 +74,13 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
+        time: Date.now().toString(),
       },
     };
     console.log(message);
+    followedUser.notificationCounter = followedUser.notificationCounter ? followedUser.notificationCounter + 1 : 1;
+    await followedUser.save();
+
     if (!followedUser.notifications) followedUser.notifications = [];
     followedUser.notifications.push(message);
     console.log(followedUser.notifications);
@@ -94,6 +101,45 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         message.tokens = null;
         followedUser.offlineNotifications.push(message);
+      }
+    }
+    await followedUser.save();
+    return 1;
+  }
+  async unfollowUser(followedUser, followerUser) {
+    let message: {
+      data: {
+        followerImageId: string;
+        followerId: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } = {
+      data: {
+        followerImageId: String(followerUser.profileImage),
+        followerId: String(followerUser._id),
+        title: 'your follower increase ',
+        body:
+          followerUser.firstName +
+          ' ' +
+          followerUser.lastName +
+          ' has followed You 😮',
+      },
+    };
+    let notificationData = followedUser.offlineNotifications;
+    for (let i = 0; followedUser.offlineNotifications.length; i++) {
+      notificationData[i].data.time = undefined;
+      if (message == notificationData[i]) {
+        followedUser.offlineNotifications.splice(i, 1);
+        await followedUser.offlineNotifications.save();
+      }
+    }
+    notificationData = followedUser.notifications;
+    for (let i = 0; followedUser.notifications.length; i++) {
+      notificationData[i].data.time = undefined;
+      if (message == notificationData[i]) {
+        followedUser.notifications.splice(i, 1);
         await followedUser.save();
       }
     }
@@ -103,14 +149,18 @@ export class NotificationService {
   async followBoard(ownerUser, followerUser, boardName, boardId) {
     let message: {
       data: {
+        followerImageId: string;
         followerId: string;
         boardId: string;
         title: string;
         body: string;
+        time: string;
       };
       tokens?: [string];
     } = {
       data: {
+        time: Date.now().toString(),
+        followerImageId: String(followerUser.profileImage),
         followerId: String(followerUser._id),
         boardId: boardId,
         title: '😮 your board is followed',
@@ -124,6 +174,8 @@ export class NotificationService {
           '"',
       },
     };
+    ownerUser.notificationCounter = ownerUser.notificationCounter ? ownerUser.notificationCounter + 1 : 1;
+    await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
     ownerUser.notifications.push(message);
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
@@ -140,14 +192,16 @@ export class NotificationService {
         message.tokens = null;
         ownerUser.offlineNotifications.push(message);
       }
-      await ownerUser.save();
     }
+    await ownerUser.save();
     return 1;
   }
 
   async commentPin(ownerUser, commenterUser, comment, pinName, pinId, imageId) {
     let message: {
       data: {
+        time: string;
+        commenterImageId: string;
         commenterId: string;
         imageLink: string;
         pinId: string;
@@ -157,6 +211,8 @@ export class NotificationService {
       tokens?: [string];
     } = {
       data: {
+        time: Date.now().toString(),
+        commenterImageId: String(commenterUser.profileImage),
         commenterId: String(commenterUser._id),
         imageLink: 'http://localhost:3000/image/' + imageId,
         pinId: pinId,
@@ -173,6 +229,8 @@ export class NotificationService {
           comment,
       },
     };
+    ownerUser.notificationCounter = ownerUser.notificationCounter ? ownerUser.notificationCounter + 1 : 1;
+    await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
     ownerUser.notifications.push(message);
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
@@ -191,6 +249,7 @@ export class NotificationService {
       }
       await ownerUser.save();
     }
+    await ownerUser.save();
     return 1;
   }
 
@@ -203,6 +262,8 @@ export class NotificationService {
 
     let message: {
       data: {
+        time: string;
+        userImageId: string;
         userId: string;
         imageLink: string;
         pinId: string;
@@ -212,6 +273,8 @@ export class NotificationService {
       tokens?: [string];
     } = {
       data: {
+        time: Date.now().toString(),
+        userImageId: String(reactUser.profileImage),
         userId: String(reactUser._id),
         imageLink: 'http://localhost:3000/image/' + imageId,
         pinId: pinId,
@@ -226,6 +289,8 @@ export class NotificationService {
           '"',
       },
     };
+    ownerUser.notificationCounter = ownerUser.notificationCounter ? ownerUser.notificationCounter + 1 : 1;
+    await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
     ownerUser.notifications.push(message);
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
@@ -244,6 +309,7 @@ export class NotificationService {
       }
       await ownerUser.save();
     }
+    await ownerUser.save();
     return 1;
   }
 
@@ -273,6 +339,8 @@ export class NotificationService {
         body: 'we think that you may get interested in some of these boards',
       },
     };
+    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -290,6 +358,8 @@ export class NotificationService {
         return 0;
       }
     }
+
+    await user.save();
     return 1;
   }
 
@@ -319,6 +389,8 @@ export class NotificationService {
         body: 'check out these popular pins on phantom',
       },
     };
+    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -370,6 +442,8 @@ export class NotificationService {
         body: 'We think that you may get instersted in some of these pins',
       },
     };
+    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -415,6 +489,8 @@ export class NotificationService {
         body: 'check out these pins',
       },
     };
+    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
     if (!user.fcmToken || user.fcmToken == ' ') {
