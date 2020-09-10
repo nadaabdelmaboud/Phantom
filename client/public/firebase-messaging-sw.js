@@ -1,5 +1,5 @@
-importScripts("https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/7.14.1/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/7.19.1/firebase-messaging.js");
 // import {get_messaging} from "../src/messaging/init";
 
 if (firebase.messaging.isSupported()) {

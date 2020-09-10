@@ -11,13 +11,13 @@ const mutations = {
 };
 
 const actions = {
-  async notifyUser({ dispatch }) {
+  notifyUser({ dispatch }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    await axios.get("me/boardsForYou")
-    await axios.get("me/pinsForYou")
-    await axios.get("me/popularPins")
-    await axios.get("me/pinsRecentActivity")
+    axios.get("me/boardsForYou")
+    axios.get("me/pinsForYou")
+    axios.get("me/popularPins")
+    axios.get("me/pinsRecentActivity")
     dispatch("user/getUserProfile",null,{root:true});
   },
 };

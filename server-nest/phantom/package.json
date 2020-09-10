@@ -40,7 +40,7 @@
     "class-transformer": "^0.2.3",
     "dotenv": "^8.2.0",
     "elasticsearch": "^16.7.1",
-    "firebase-admin": "^9.1.0",
+    "firebase-admin": "^9.1.1",
     "fuzzy-search": "^3.2.1",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
