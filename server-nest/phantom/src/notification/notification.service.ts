@@ -83,13 +83,13 @@ export class NotificationService {
 
     if (!followedUser.notifications) followedUser.notifications = [];
     followedUser.notifications.push(message);
-    console.log(followedUser.notifications);
+   // console.log(followedUser.notifications);
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
       followedUser.offlineNotifications.push(message);
       await followedUser.save();
-      console.log(followedUser.offlineNotifications);
+     // console.log(followedUser.offlineNotifications);
     } else {
       await followedUser.save();
       message.tokens = [followedUser.fcmToken];
