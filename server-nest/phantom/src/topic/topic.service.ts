@@ -79,10 +79,7 @@ export class TopicService {
     let topicInfo = [];
     let topic = {};
     for (let i = 0; i < topics.length; i++) {
-      let isFollow = await this.UserService.isFollowingTopic(
-        userId,
-        topics[i]._id,
-      );
+      let isFollow = topics[i].followers.includes(userId);
       topic['follow'] = isFollow;
       topic['_id'] = topics[i]._id;
       topic['name'] = topics[i].name;
