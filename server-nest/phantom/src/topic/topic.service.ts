@@ -72,17 +72,11 @@ export class TopicService {
     return topic;
   }
   async getTopics(userId): Promise<topic[]> {
-    const topics = await this.topicModel.find({}, (err, topic) => {
-      if (err) throw new Error('topic not found');
-      return topic;
-    });
+    const topics = await this.topicModel.find({});
     let topicInfo = [];
     let topic = {};
     for (let i = 0; i < topics.length; i++) {
-      let isFollow = await this.UserService.isFollowingTopic(
-        userId,
-        topics[i]._id,
-      );
+      let isFollow = topics[i].followers.includes(userId);
       topic['follow'] = isFollow;
       topic['_id'] = topics[i]._id;
       topic['name'] = topics[i].name;
@@ -91,6 +85,7 @@ export class TopicService {
       topicInfo.push(topic);
       topic = {};
     }
+    console.log(topics.length);
     return topicInfo;
   }
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
