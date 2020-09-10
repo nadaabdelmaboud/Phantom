@@ -2,10 +2,6 @@ import axios from "axios";
 import getUserToken from "../../mixins/getUserToken";
 const state = {
   signUpState: null,
-  userToken: "",
-  userFirstName: "",
-  userLastName: "",
-  userEmail: "",
   validPasswordLength: null,
   containCapitalChar: null,
   containSpecialChar: null,
@@ -18,7 +14,8 @@ const state = {
   sendEmailStatus: null,
   resetPasswordStatus: null,
   userData: null,
-  isLoading: false
+  isLoading: false,
+  imgID: null
 };
 
 const mutations = {
@@ -75,6 +72,9 @@ const mutations = {
   },
   setUpdateStatus(state, payload) {
     state.updateStatus = payload;
+  },
+  changeImgID(state, payload) {
+    state.imgID = payload;
   }
 };
 
@@ -115,13 +115,14 @@ const actions = {
         console.log(error);
       });
   },
-  login({ commit }, data) {
+  login({ commit, dispatch}, data) {
     axios
       .post("login", data)
       .then(response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
         commit("setLogin", true);
+        dispatch("notifications/notifyUser",null,{root:true})
       })
       .catch(error => {
         commit("setLogin", false);
@@ -145,7 +146,10 @@ const actions = {
   resetPassword({ commit }, payload) {
     axios
       .put(
-        "/me/reset-password?newPassword=" + payload.newPassword,
+        "/me/reset-password?newPassword=" +
+          payload.newPassword +
+          "&oldPassword=" +
+          payload.oldPassword,
         {},
         {
           headers: {
@@ -160,10 +164,10 @@ const actions = {
         console.log(error);
       });
   },
-  getUserProfile({ commit }) {
+  async getUserProfile({ commit}) {
     commit("setLoading");
     let token = getUserToken.methods.getUserToken();
-    axios
+    await axios
       .get("/me", {
         headers: {
           Authorization: token
@@ -185,9 +189,47 @@ const actions = {
           Authorization: token
         }
       })
-      .then(() => {
+      .then(response => {
         commit("setUpdateStatus", true);
-        commit("setUserData", payload);
+        commit("setUserData", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async uploadImg({ commit }, img) {
+    console.log(img);
+    await axios({
+      method: "post",
+      url: "me/uploadImage",
+      data: img
+    })
+      .then(response => {
+        commit("changeImgID", response.data[0].id);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async changeProfilePic({ state, commit, dispatch }, imgFile) {
+    await dispatch("uploadImg", imgFile).then(async () => {
+      await dispatch("updateUserInfo", { profileImage: state.imgID }).then(
+        () => {
+          localStorage.setItem("imgProfileID", state.imgID);
+          commit("popUpsState/toggleChangePhotoPopUp", null, { root: true });
+        }
+      );
+    });
+  },
+  updateUserSettings({ commit }, payload) {
+    axios
+      .put("/me/update-settings", payload, {
+        headers: {
+          Authorization: localStorage.getItem("userToken")
+        }
+      })
+      .then(response => {
+        commit("setUserData", response.data);
       })
       .catch(error => {
         console.log(error);

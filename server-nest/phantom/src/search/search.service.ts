@@ -16,7 +16,7 @@ export class SearchService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async Fuzzy(model, params, name, limit, offset) {
     const searcher = new search(model, params, {
       caseSensitive: false,
@@ -49,10 +49,13 @@ export class SearchService {
   }
 
   async getPeople(name, limit, offset) {
-    let user = await this.userModel.find({}, (err, user) => {
+
+    let user = await this.userModel.find({ activateaccount: true }, (err, user) => {
       if (err) return 0;
       return user;
     });
+    console.log(user);
+
     let users = await this.Fuzzy(
       user,
       ['firstName', 'lastName'],

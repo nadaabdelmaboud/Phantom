@@ -6,7 +6,11 @@
         <label class="col col1">Old Password</label>
         <input class="col col2" type="password" v-model="oldPassword" />
         <br />
-        <button @click="forgetPassword" class="col forget-button">
+        <p v-if="emptyOldPassword" class="error">
+          You must enter the old password click forget it if you don't remeber
+          it.
+        </p>
+        <button @click="forgetPassword" class="forget-button">
           Forget it?
         </button>
         <hr />
@@ -24,13 +28,22 @@
         />
         <hr />
         <label class="col col1">Type it again</label>
-        <input class="col col2" type="password" v-model="confirmPassword" />
-        <br /><br />
+        <input
+          class="col col2"
+          type="password"
+          v-model="confirmPassword"
+          @input="passwordMatch()"
+        />
+        <br />
+        <div v-if="!this.passwordMatching">
+          <p class="error">Password mismatching</p>
+        </div>
+        <br />
         <div class="row action-buttons">
           <button @click="closePopup">
             Cancel
           </button>
-          <button>
+          <button @click="changePassword">
             Change Password
           </button>
         </div>
@@ -47,7 +60,9 @@ export default {
     return {
       oldPassword: "",
       newPassword: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      passwordMatching: true,
+      emptyOldPassword: false
     };
   },
   methods: {
@@ -56,14 +71,41 @@ export default {
     },
     forgetPassword() {
       this.closePopup();
+      this.$store.dispatch(
+        "user/forgetPassword",
+        this.$store.state.user.userData.email
+      );
       this.$store.commit("popUpsState/toggleForgetPasswordPopUp");
     },
     validatePassword() {
       this.$store.commit("user/validatePassword", this.newPassword);
+      if (this.oldPassword == "") this.emptyOldPassword = true;
+    },
+    passwordMatch() {
+      if (this.newPassword === this.confirmPassword)
+        this.passwordMatching = true;
+      else this.passwordMatching = false;
+    },
+    changePassword() {
+      this.validatePassword();
+      this.passwordMatch();
+      if (this.passwordMatching && this.validPassword && this.oldPassword) {
+        this.$store.dispatch("user/resetPassword", {
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword,
+          token: localStorage.getItem("userToken")
+        });
+        this.closePopup();
+      }
     }
   },
   components: {
     CheckPasswordFormat
+  },
+  computed: {
+    validPassword: function() {
+      return this.$store.state.user.validPassword;
+    }
   }
 };
 </script>
@@ -83,7 +125,7 @@ export default {
 .popup-content {
   @include popUpContent;
   width: 500px;
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 
 /**Input Fields
@@ -94,7 +136,8 @@ input {
 
 /**Buttons
 *****************/
-button {
+button,
+button:focus {
   @include profileButton;
   background-color: $qainsboro;
   color: black;
@@ -125,5 +168,12 @@ label {
 
 .col2 {
   width: 18vw;
+}
+/**Input Error
+******************/
+.error {
+  color: red;
+  font-size: 12px;
+  margin-left: 10vw;
 }
 </style>

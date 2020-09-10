@@ -1,32 +1,29 @@
 import axios from "axios";
 
 const state = {
- notifications:[]
+  notifications: [],
 };
 
 const mutations = {
   setNotifications(state, notifications) {
     state.notifications = notifications;
-  }
+  },
 };
 
 const actions = {
-  getUser({ commit }, userId) {
+  async notifyUser({ dispatch }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
-      .get("user/" + userId)
-      .then(response => {
-        commit("setUser", response.data.user);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    await axios.get("me/boardsForYou")
+    await axios.get("me/pinsForYou")
+    await axios.get("me/popularPins")
+    await axios.get("me/pinsRecentActivity")
+    dispatch("user/getUserProfile",null,{root:true});
+  },
 };
 
 const getters = {
-  notifications: state => state.notifications
+  notifications: (state) => state.notifications,
 };
 
 export default {
@@ -34,5 +31,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

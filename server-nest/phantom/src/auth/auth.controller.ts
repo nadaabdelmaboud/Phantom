@@ -6,6 +6,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { AuthService } from '../shared/auth.service';
 import { Email } from '../shared/send-email.service';
+import { UseGuards, Req, NotFoundException, Res } from '@nestjs/common';
 @nestCommon.Controller()
 export class AuthController {
   constructor(
@@ -13,7 +14,20 @@ export class AuthController {
     private authService: AuthService,
     private email: Email,
   ) {}
+  @nestCommon.Get('google')
+  @UseGuards(AuthGuard('google'))
+  async googleAuth(@Req() req) {}
 
+  @nestCommon.Get('google/redirect')
+  @UseGuards(AuthGuard('google'))
+  async googleAuthRedirect(@Req() req, @Res() res) {
+    const token = await this.authService.googleLogin(req);
+    if (token) {
+      res.redirect('http://localhost:8080/aouth/google?token=' + token);
+    } else {
+      throw new NotFoundException();
+    }
+  }
   @nestCommon.Post('/login')
   async login(@nestCommon.Body() userDTO: LoginDto) {
     const user = await this.userService.findByLogin(userDTO);

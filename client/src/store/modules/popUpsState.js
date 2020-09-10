@@ -9,7 +9,10 @@ const state = {
   TopicsPopup: false,
   changePasswordPopUp: false,
   forgetPasswordPopUp: false,
-  addSection:false
+  addSection:false,
+  changePhotoPopUp: false,
+  leavingPopUp: false,
+  accountClosingPopup: false
 };
 
 const mutations = {
@@ -45,6 +48,15 @@ const mutations = {
   },
   toggleAddSection(state) {
     state.addSection = !state.addSection;
+  },
+  toggleChangePhotoPopUp(state) {
+    state.changePhotoPopUp = !state.changePhotoPopUp;
+  },
+  toggleLeavingPopUp(state) {
+    state.leavingPopUp = !state.leavingPopUp;
+  },
+  toggleAccountClosingPopup(state) {
+    state.accountClosingPopup = !state.accountClosingPopup;
   }
 };
 export default {

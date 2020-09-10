@@ -5,15 +5,14 @@ importScripts("https://www.gstatic.com/firebasejs/7.14.1/firebase-messaging.js")
 if (firebase.messaging.isSupported()) {
   console.log("hooooooooo");
   var firebaseConfig = {
-    apiKey: "AIzaSyAr0_LjcEdJVsvhQD8SC6Aggl9gzfgsRjA",
-    authDomain: "notif-demo-e8dae.firebaseapp.com",
-    databaseURL: "https://notif-demo-e8dae.firebaseio.com",
-    projectId: "notif-demo-e8dae",
-    storageBucket: "notif-demo-e8dae.appspot.com",
-    messagingSenderId: "356913468865",
-    appId: "1:356913468865:web:52bba10aea1a12265a4b40",
-    measurementId: "G-89JE5P29CZ"
-     // messagingSenderId: "648404578436",
+      apiKey: "AIzaSyDJGcM4-rKBLozMQu1uJmTORQPnQKVkS_M",
+      authDomain: "phantom-30457.firebaseapp.com",
+      databaseURL: "https://phantom-30457.firebaseio.com",
+      projectId: "phantom-30457",
+      storageBucket: "phantom-30457.appspot.com",
+      messagingSenderId: "822902693694",
+      appId: "1:822902693694:web:c433556b3c92dcc483966f",
+      measurementId: "G-BJ0XRKXP5E"
   };
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);

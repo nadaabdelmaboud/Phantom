@@ -1,3 +1,4 @@
+import axios from "axios"
 export default {
   methods: {
     removeUserData() {
@@ -5,6 +6,8 @@ export default {
         localStorage.removeItem("userToken");
         localStorage.removeItem("imgProfileID");
       }
+      axios.put("log-out")
+      .catch(err=>console.log(err))
     }
   }
 };

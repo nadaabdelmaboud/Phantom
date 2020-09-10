@@ -1,5 +1,5 @@
 import axios from "axios";
-
+let num;
 const state = {
   homeCards: [],
   postImage: "",
@@ -9,12 +9,21 @@ const state = {
   userFirstName: "",
   userLastName: "",
   numberofFollowers: 0,
-  pinCreatorId: ""
+  pinCreatorId: "",
+  cardsGenerated: false,
+  offsetnum: 0,
+  totalCards: 0,
+  finishCalling: false,
+  requestFinished: false
 };
 
 const mutations = {
   sethomeCards(state, cards) {
-    state.homeCards = cards;
+    for (let index = 0; index < cards.length; index++)
+      state.homeCards.push(cards[index]);
+  },
+  homeGenerated(state, check) {
+    state.cardsGenerated = check;
   },
   setpostImage(state, postImage) {
     state.postImage = postImage;
@@ -39,6 +48,15 @@ const mutations = {
   },
   setpinCreatorId(state, pinCreatorId) {
     state.pinCreatorId = pinCreatorId;
+  },
+  totalNumCards(state, totalNum) {
+    state.totalCards = totalNum;
+  },
+  finishCalling(state, value) {
+    state.finishCalling = value;
+  },
+  setRequestFinished(state, check) {
+    state.requestFinished = check;
   }
 };
 
@@ -46,12 +64,39 @@ const actions = {
   userHome({ commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    num = state.offsetnum - 12;
+    state.totalCards = 0;
     axios
-      .get("me/home")
+      .put("home/me")
       .then(response => {
-        commit("sethomeCards", response.data);
+        console.log("totalllllllllllllllllllllllllllll", response.data.total);
+        commit("homeGenerated", true);
+        commit("totalNumCards", response.data.total);
       })
       .catch(error => {
+        console.log(error);
+      });
+  },
+
+  async userGenerateCards({ commit }) {
+    commit("setRequestFinished", false);
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    num += 12;
+    console.log("state.requestFinished", state.requestFinished);
+    await axios
+      .get("me/home?limit=12&offset=" + num)
+      .then(response => {
+        commit("sethomeCards", response.data);
+        commit("setRequestFinished", true);
+        console.log("state.requestFinished", state.requestFinished);
+      })
+      .catch(error => {
+        // state.requestFinished = false;
+        if (num == state.totalCards) state.finishCalling = true;
+        setTimeout(() => {
+          this.userGenerateCards;
+        }, 3000);
         console.log(error);
       });
   },
@@ -87,7 +132,8 @@ const getters = {
   userFirstName: state => state.userFirstName,
   userLastName: state => state.userLastName,
   numberofFollowers: state => state.numberofFollowers,
-  pinCreatorId: state => state.pinCreatorId
+  pinCreatorId: state => state.pinCreatorId,
+  finishCalling: state => state.finishCalling
 };
 
 export default {

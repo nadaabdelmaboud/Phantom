@@ -21,6 +21,7 @@ import ResetPassword from "../views/ResetPassword.vue";
 import BoardView from "../views/BoardView.vue";
 import BoardPins from "../components/BoardPins";
 import BoardMoreLike from "../components/BoardMoreLike";
+import TopicsPage from "../views/TopicsPage.vue";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
         path: "Following",
         name: "Following",
         component: Following
+      },
+      {
+        path: "/TopicsPage",
+        name: "TopicsPage",
+        component: TopicsPage
       },
       {
         path: "PinBuilder",

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding-bottom: 20px;">
     <div class="row">
       <div class="col">
         <h1>Norifications</h1>
@@ -13,6 +13,7 @@
           v-bind:class="{
             'changed-cancel': this.isChanged
           }"
+          @click="cancelChanges"
         >
           Cancel
         </button>
@@ -21,6 +22,7 @@
           v-bind:class="{
             'changed-done': this.isChanged
           }"
+          @click="changeDone"
         >
           Done
         </button>
@@ -77,32 +79,44 @@
         </div>
       </div>
       <div v-if="!showPushEdit">
-        <button class="trun-off">Trun off all</button><br />
+        <button class="trun-off" @click="switchAll" v-if="!off">
+          Trun off all
+        </button>
+        <button class="trun-off" @click="switchAll" v-if="off">
+          Enable all</button
+        ><br />
         <p class="small-title">Recommendation</p>
         <br />
-        <input type="checkbox" v-model="pins" />
+        <input type="checkbox" v-model="pinsForYou" />
         <p>Pins picked for you</p>
         <br />
-        <input type="checkbox" v-model="boards" />
+        <input type="checkbox" v-model="boardsForYou" />
         <p>Boards for you</p>
         <br />
-        <input type="checkbox" v-model="topics" />
-        <p>Topics for you</p>
-        <br /><br />
+        <input type="checkbox" v-model="popularPins" />
+        <p>Popular Pins</p>
+        <br />
+        <input type="checkbox" v-model="pinsInspired" />
+        <p>Pins inspired by your recent activity</p>
+        <br />
+        <br />
 
         <p class="small-title">Social</p>
         <br />
-        <input type="checkbox" v-model="boardUpdates" />
+        <input type="checkbox" v-model="boardUpdate" />
         <p>Group board updates</p>
         <br />
-        <input type="checkbox" v-model="invitations" />
+        <input type="checkbox" v-model="invitation" />
         <p>Invitations</p>
+        <br /><br />
+
+        <p class="small-title">Actions</p>
         <br />
-        <input type="checkbox" v-model="messages" />
-        <p>Messages</p>
+        <input type="checkbox" v-model="followNotification" />
+        <p>People who folllow you</p>
         <br />
-        <input type="checkbox" v-model="mentions" />
-        <p>Comment Mentions</p>
+        <input type="checkbox" v-model="pinsNotification" />
+        <p>Reacts and comments on your pins</p>
         <br />
       </div>
     </section>
@@ -111,20 +125,92 @@
 
 <script>
 export default {
+  created: async function() {
+    this.$store.dispatch("user/getUserProfile");
+    this.updateModels();
+  },
   data: function() {
     return {
       showPhantomEdit: true,
       showPushEdit: true,
       activity: false,
-      pins: false,
-      boards: false,
-      topics: false,
-      boardUpdates: false,
-      invitations: false,
-      messages: false,
-      mentions: false,
-      isChanged: false
+      pinsForYou: false,
+      pinsInspired: false,
+      popularPins: false,
+      boardsForYou: false,
+      boardUpdate: false,
+      invitation: false,
+      pinsNotification: false,
+      followNotification: false,
+      off: false
     };
+  },
+  methods: {
+    updateModels: function() {
+      this.activity = this.userData.activity;
+      this.pinsForYou = this.userData.pinsForYou;
+      this.pinsInspired = this.userData.pinsInspired;
+      this.popularPins = this.userData.popularPins;
+      this.boardsForYou = this.userData.boardsForYou;
+      this.boardUpdate = this.userData.boardUpdate;
+      this.invitation = this.userData.invitation;
+      this.pinsNotification = this.userData.pinsNotification;
+      this.followNotification = this.userData.followNotification;
+    },
+    cancelChanges: function() {
+      this.updateModels();
+    },
+    changeDone: function() {
+      this.$store.dispatch("user/updateUserSettings", {
+        activity: this.activity,
+        pinsForYou: this.pinsForYou,
+        pinsInspired: this.pinsInspired,
+        popularPins: this.popularPins,
+        boardsForYou: this.boardsForYou,
+        boardUpdate: this.boardUpdate,
+        invitation: this.invitation,
+        pinsNotifica: this.pinsNotification,
+        followNotification: this.followNotification
+      });
+    },
+    switchAll: function() {
+      this.pinsForYou = this.off;
+      this.pinsInspired = this.off;
+      this.popularPins = this.off;
+      this.boardsForYou = this.off;
+      this.boardUpdate = this.off;
+      this.invitation = this.off;
+      this.pinsNotification = this.off;
+      this.followNotification = this.off;
+      this.off = !this.off;
+    }
+  },
+  computed: {
+    userData: function() {
+      return this.$store.state.user.userData;
+    },
+    isLoading: function() {
+      return this.$store.state.user.isLoading;
+    },
+    isChanged: function() {
+      if (this.isLoading) return false;
+      if (this.userData.activity !== this.activity) return true;
+      if (this.userData.pinsForYou !== this.pinsForYou) return true;
+      if (this.userData.pinsInspired !== this.pinsInspired) return true;
+      if (this.userData.popularPins !== this.popularPins) return true;
+      if (this.userData.boardsForYou !== this.boardsForYou) return true;
+      if (this.userData.boardUpdate !== this.boardUpdate) return true;
+      if (this.userData.invitation !== this.invitation) return true;
+      if (this.userData.pinsNotification !== this.pinsNotification) return true;
+      if (this.userData.followNotification !== this.followNotification)
+        return true;
+      return false;
+    }
+  },
+  watch: {
+    userData: function() {
+      this.updateModels();
+    }
   }
 };
 </script>
@@ -188,6 +274,21 @@ hr {
 .settings p {
   display: inline;
   margin-left: 4px;
+}
+
+/**Settings Buttons
+-----------------------------------*/
+button:focus {
+  outline: none;
+}
+.changed-done {
+  background-color: $queenBlue;
+  color: $qainsboro;
+}
+
+.changed-cancel {
+  background-color: $qainsboro;
+  color: black;
 }
 
 /*Swithch
