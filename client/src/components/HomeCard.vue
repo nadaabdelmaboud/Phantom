@@ -27,9 +27,9 @@
             <p class="title">This Pin is inspired by your recent activity</p>
             <hr />
             <ul>
-              <li>Hide Pin</li>
+              <li @click="deletePin">Hide Pin</li>
               <li>Download image</li>
-              <li>Report Pin</li>
+              <li @click="showReportPin">Report Pin</li>
             </ul>
           </div>
         </div>
@@ -163,6 +163,13 @@ export default {
       }
       // Remaining
       // shift list 180 degree for the most right card in the page
+    },
+    showReportPin() {
+      this.$store.commit("popUpsState/toggleReportPinPopUp");
+    },
+    deletePin() {
+      //not Tested yet
+      this.$store.dispatch("homeCards/deletePin", this.postPageId);
     },
     defaultStyle() {
       var listIcon = document.getElementById("added-list");

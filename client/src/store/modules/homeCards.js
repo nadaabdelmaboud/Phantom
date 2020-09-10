@@ -14,7 +14,8 @@ const state = {
   offsetnum: 0,
   totalCards: 0,
   finishCalling: false,
-  requestFinished: false
+  requestFinished: false,
+  deletePin: false
 };
 
 const mutations = {
@@ -57,6 +58,9 @@ const mutations = {
   },
   setRequestFinished(state, check) {
     state.requestFinished = check;
+  },
+  deletePin(state, check) {
+    state.deletePin = check;
   }
 };
 
@@ -116,6 +120,18 @@ const actions = {
         commit("setuserLastName", res.pin.creator.lastName);
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  deletePin({ commit }, pinId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .delete("me/pins/" + pinId)
+      .then(() => {
+        commit("deletePin", true);
       })
       .catch(error => {
         console.log(error);
