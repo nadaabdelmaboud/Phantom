@@ -9,6 +9,7 @@ const state = {
   TopicsPopup: false,
   changePasswordPopUp: false,
   forgetPasswordPopUp: false,
+  addSection:false,
   changePhotoPopUp: false,
   leavingPopUp: false,
   accountClosingPopup: false,
@@ -45,6 +46,9 @@ const mutations = {
   },
   toggleForgetPasswordPopUp(state) {
     state.forgetPasswordPopUp = !state.forgetPasswordPopUp;
+  },
+  toggleAddSection(state) {
+    state.addSection = !state.addSection;
   },
   toggleChangePhotoPopUp(state) {
     state.changePhotoPopUp = !state.changePhotoPopUp;

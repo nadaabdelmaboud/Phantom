@@ -26,6 +26,7 @@ export interface user extends Document {
   gender: String;
   sortType: String;
   socketId: string;
+  notificationCounter: Number;
   profileImage: mongoose.Types.ObjectId;
   history: Array<{
     topic: String;

@@ -11,7 +11,7 @@
       <h2>Last step! Tell us what you're interested in</h2>
       <div class="topicsContainer">
         <div v-for="t in topics" :key="t.name" @click="addTopic(t._id)">
-          <TopicsCard :topicName="t.name" :topicId="t._id" :imageId="''" />
+          <TopicsCard :topicName="t.name" :topicId="t._id" :imageId="t.imageId" />
         </div>
       </div>
       <div class="buttonDiv">

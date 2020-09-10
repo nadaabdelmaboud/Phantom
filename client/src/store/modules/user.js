@@ -115,13 +115,14 @@ const actions = {
         console.log(error);
       });
   },
-  login({ commit }, data) {
+  login({ commit, dispatch}, data) {
     axios
       .post("login", data)
       .then(response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
         commit("setLogin", true);
+        dispatch("notifications/notifyUser",null,{root:true})
       })
       .catch(error => {
         commit("setLogin", false);
@@ -163,7 +164,7 @@ const actions = {
         console.log(error);
       });
   },
-  async getUserProfile({ commit }) {
+  async getUserProfile({ commit}) {
     commit("setLoading");
     let token = getUserToken.methods.getUserToken();
     await axios
@@ -174,6 +175,7 @@ const actions = {
       })
       .then(response => {
         commit("setUserData", response.data.user);
+        console.log("notify",response.data.user.notifications)
       })
       .catch(error => {
         console.log("axios caught an error");

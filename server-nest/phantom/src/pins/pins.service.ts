@@ -26,7 +26,7 @@ export class PinsService {
     private ValidationService: ValidationService,
     private BoardService: BoardService,
     private NotificationService: NotificationService,
-  ) { }
+  ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -184,14 +184,12 @@ export class PinsService {
   }
   async getCurrentUserPins(userId, ifMe: Boolean) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid Id');
     }
-    let user
-    if (ifMe == true)
-      user = await this.UserService.getUserById(userId);
-    else
-      user = await this.UserService.getActivateUserById(userId);
-    if (!user) return false;
+    let user;
+    if (ifMe == true) user = await this.UserService.getUserById(userId);
+    else user = await this.UserService.getActivateUserById(userId);
+    if (!user) throw new BadRequestException('no such user');
     let retPins = [];
     for (var i = 0; i < user.pins.length; i++) {
       let pinFound = await this.pinModel.findById(user.pins[i].pinId);
@@ -359,8 +357,7 @@ export class PinsService {
         pin.comments[i].commenter,
       );
       if (commenter) {
-        if (commenter.activateaccount == false)
-          continue;
+        if (commenter.activateaccount == false) continue;
         let comment = {
           commenter: pin.comments[i].commenter,
           commenterName: commenter.firstName + ' ' + commenter.lastName,
@@ -375,10 +372,8 @@ export class PinsService {
             pin.comments[i].replies[j].replier,
           );
           if (replier) {
-            if (replier.activateaccount == false)
-              continue;
+            if (replier.activateaccount == false) continue;
             let reply = {
-
               replier: pin.comments[i].replies[j].replier,
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
@@ -431,7 +426,6 @@ export class PinsService {
       case 'Good idea':
         pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() + 1;
         break;
-
     }
     if (!pinOwner.pinsNotification || pinOwner.pinsNotification == true)
       await this.NotificationService.reactPin(
@@ -635,8 +629,7 @@ export class PinsService {
     var pins = [];
     for (let i = 0; i < user.following.length; i++) {
       var followUser = await this.UserService.getUserById(user.following[i]);
-      if (followUser.activateaccount == false)
-        continue;
+      if (followUser.activateaccount == false) continue;
       var userPin = await this.getCurrentUserPins(user.following[i], false);
       console.log(pins);
       pins = await pins.concat(userPin);

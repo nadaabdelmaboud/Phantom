@@ -30,22 +30,20 @@
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
-        <router-link
+        <div
           class="buttons"
-          to="/UserProfile/Boards"
-          tag="div"
+          @click="toBoards"
           :class="{ inRoute: inBoards }"
         >
           Boards
-        </router-link>
-        <router-link
+        </div>
+        <div
           class="buttons"
-          to="/UserProfile/Pins"
-          tag="div"
+          @click="toPins"
           :class="{ inRoute: inPins }"
         >
           Pins
-        </router-link>
+        </div>
       </div>
       <div class="col-sm-4 col-4 col3">
         <i
@@ -67,14 +65,24 @@
     <div class="create view" v-if="showViewOptions">
       <p>Sort by</p>
       <ul>
-        <li @click="sortAz">A to Z</li>
-        <li>Drag and drop</li>
-        <li @click="sortDate">Last saved to</li>
+        <li @click="sortAz">
+          <i class="fa fa-check" v-if="meUser.sortType == 'A-Z'" aria-hidden="true"></i>
+          A to Z</li>
+        <li @click="reorder">
+          <i class="fa fa-check"  v-if="meUser.sortType == 'Reorder'" aria-hidden="true"></i>
+          Drag and drop</li>
+        <li @click="sortDate">
+          <i class="fa fa-check" aria-hidden="true"  v-if="meUser.sortType == 'Date'"></i>
+          Last saved to</li>
       </ul>
       <p>View options</p>
       <ul>
-        <li>Default</li>
-        <li>Compact</li>
+        <li>
+           <i class="fa fa-check" aria-hidden="true"></i>
+           Default</li>
+        <li>
+           <i class="fa fa-check" aria-hidden="true"></i>
+           Compact</li>
       </ul>
     </div>
     <div class="create" v-if="showCreate">
@@ -124,6 +132,12 @@ export default {
     sortDate() {
       this.$store.dispatch("boards/sortDate");
     },
+    reorder(){
+      this.$store.dispatch("boards/reorderBoards", {
+        from: 0,
+        to: 1
+      });
+    },
     alterFollow() {
       let userId = this.$route.params.userId;
       if (this.isFollowed) {
@@ -131,6 +145,20 @@ export default {
       } else {
         this.$store.dispatch("followers/followUser", userId);
       }
+    },
+    toBoards(){
+      if(this.myprofile){
+        this.$router.push("/UserProfile/Boards");
+      }
+      else
+        this.$router.push("/User/"+this.user._id);
+    },
+    toPins(){
+      if(this.myprofile){
+        this.$router.push("/UserProfile/Pins");
+      }
+      else
+        this.$router.push("/User/"+this.user._id+"/Pins");
     }
   },
   computed: {
@@ -144,10 +172,10 @@ export default {
   },
   watch: {
     $route: function() {
-      if (this.$route.path == "/UserProfile/Pins") {
+      if (this.$route.path.includes("/Pins")) {
         this.inBoards = false;
         this.inPins = true;
-      } else if (this.$route.path == "/UserProfile/Boards") {
+      } else if (this.$route.path.includes("/Boards")) {
         this.inBoards = true;
         this.inPins = false;
       } else {
@@ -226,6 +254,18 @@ i {
 }
 i:hover {
   background-color: $lightPink;
+}
+.fa-check{
+  height: 24px;
+  width: 24px;
+  font-size: 16px;
+  color: black;
+  padding: 4px 0;
+  text-align: center;
+  cursor: pointer;
+}
+.fa-check:hover{
+  background-color: transparent;
 }
 .col2 {
   padding: 0 60px;
