@@ -255,4 +255,11 @@ export class UserController {
   ) {
     return await this.userService.userFollowings(params.user_id, limit, offset);
   }
+  @nestCommon.UseGuards(AuthGuard('jwt'))
+  @nestCommon.Put('/me/update-notification-counter')
+  async notificationCounter(@nestCommon.Request() req,) {
+    const user = await this.userService.getUserById(req.user._id);
+    user.notificationCounter = 0;
+    await user.save();
+  }
 }

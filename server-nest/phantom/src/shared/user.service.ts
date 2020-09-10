@@ -160,6 +160,7 @@ export class UserService {
       firstName: registerDto.firstName,
       lastName: registerDto.lastName,
       location: '',
+      notificationCounter: 0,
       profileImage: picture,
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,

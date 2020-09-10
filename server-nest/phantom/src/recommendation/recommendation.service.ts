@@ -129,7 +129,7 @@ export class RecommendationService {
         pinExist[String(user.history[i].pinId)] = true;
     }
 
-    for (let i = 0; i < user.followingTopics.length; i++) {
+    for (let i = user.followingTopics.length - 1; i >= 0; i--) {
       let followTopic = await this.topicModel.findById(user.followingTopics[i]);
       console.log(followTopic.name);
       if (followTopic) {
@@ -185,6 +185,7 @@ export class RecommendationService {
     while (out < sortedTopics.length) {
       for (let i = 0; i < sortedTopics.length; i++) {
         let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
+        console.log(topic.name);
         for (let k = count; k < count + 10; k++) {
           if (k >= topic.pins.length) {
             out++;
@@ -855,7 +856,9 @@ export class RecommendationService {
         images.push(allPins[i].imageId);
       }
     }
+    console.log('here');
     let res = await this.NotificationService.popularPins(user, allPins, images);
+    console.log('here2');
     return 1;
   }
   async pinsForYou(userId) {
