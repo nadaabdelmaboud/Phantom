@@ -11,6 +11,7 @@ export const User = new Schema({
   followingTopics: Array(mongoose.Types.ObjectId),
   location: String,
   activateaccount: Boolean,
+  notificationCounter: Number,
   activity: Boolean,
   invitation: Boolean,
   boardUpdate: Boolean,
