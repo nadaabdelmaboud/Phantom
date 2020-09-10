@@ -30,7 +30,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -38,7 +38,19 @@ export class UserService {
     if (!user.about) user.about = '';
     return user;
   }
-
+  async getUserMe(id) {
+    const user = await this.userModel.findById(id);
+    if (!user)
+      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about = '';
+    return {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userName: user.userName,
+      followers: user.followers,
+    };
+  }
   async getActivateUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -358,7 +370,8 @@ export class UserService {
       followNotification?: Boolean;
       pinsNotification?: Boolean;
     },
-  ) {/*
+  ) {
+    /*
     settings = {
       facebook: false,
       activity: false,

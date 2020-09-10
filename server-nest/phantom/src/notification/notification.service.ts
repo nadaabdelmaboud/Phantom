@@ -22,7 +22,7 @@ let app = firebase.initializeApp({
 });
 @Injectable()
 export class NotificationService {
-  constructor() { }
+  constructor() {}
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -36,8 +36,11 @@ export class NotificationService {
             }
           });
         } else {
-          console.log('Message has been sent successfully');
+          console.log('Yaay Message has been sent successfully');
         }
+      })
+      .catch(err => {
+        console.log(err);
       });
     return notSendTokens;
   }
@@ -78,7 +81,9 @@ export class NotificationService {
       },
     };
     console.log(message);
-    followedUser.notificationCounter = followedUser.notificationCounter ? followedUser.notificationCounter + 1 : 1;
+    followedUser.notificationCounter = followedUser.notificationCounter
+      ? followedUser.notificationCounter + 1
+      : 1;
     await followedUser.save();
 
     if (!followedUser.notifications) followedUser.notifications = [];
@@ -174,7 +179,9 @@ export class NotificationService {
           '"',
       },
     };
-    ownerUser.notificationCounter = ownerUser.notificationCounter ? ownerUser.notificationCounter + 1 : 1;
+    ownerUser.notificationCounter = ownerUser.notificationCounter
+      ? ownerUser.notificationCounter + 1
+      : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
     ownerUser.notifications.push(message);
@@ -229,7 +236,9 @@ export class NotificationService {
           comment,
       },
     };
-    ownerUser.notificationCounter = ownerUser.notificationCounter ? ownerUser.notificationCounter + 1 : 1;
+    ownerUser.notificationCounter = ownerUser.notificationCounter
+      ? ownerUser.notificationCounter + 1
+      : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
     ownerUser.notifications.push(message);
@@ -289,7 +298,9 @@ export class NotificationService {
           '"',
       },
     };
-    ownerUser.notificationCounter = ownerUser.notificationCounter ? ownerUser.notificationCounter + 1 : 1;
+    ownerUser.notificationCounter = ownerUser.notificationCounter
+      ? ownerUser.notificationCounter + 1
+      : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
     ownerUser.notifications.push(message);
@@ -321,25 +332,10 @@ export class NotificationService {
       title: 'Boards For You!',
       body: 'we think that you may get interested in some of these boards',
     };
-    let message: {
-      data: {
-        boards: string;
-        images: string;
-        time: string;
-        title: string;
-        body: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        boards: boards.toString(),
-        images: images.toString(),
-        time: Date.now().toString(),
-        title: 'Boards For You!',
-        body: 'we think that you may get interested in some of these boards',
-      },
-    };
-    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    let message;
+    user.notificationCounter = user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
     await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
@@ -347,7 +343,14 @@ export class NotificationService {
       return 0;
     } else {
       await user.save();
-      message.tokens = [user.fcmToken];
+      message = {
+        data: {
+          title: 'Boards For You!',
+          body: 'we think that you may get interested in some of these boards',
+        },
+        tokens: [user.fcmToken],
+      };
+
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
@@ -371,35 +374,29 @@ export class NotificationService {
       time: Date.now(),
       body: 'check out these popular pins on phantom',
     };
-    let message: {
-      data: {
-        pins: string;
-        images: string;
-        time: string;
-        title: string;
-        body: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        pins: pins.toString(),
-        images: images.toString(),
-        title: 'Popular Phantom Pins!',
-        time: Date.now().toString(),
-        body: 'check out these popular pins on phantom',
-      },
-    };
-    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    let message;
+    user.notificationCounter = user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
     await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+    console.log('aywa');
+    console.log(user.fcmToken);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
       await user.save().catch(err => {
         console.log(err);
       });
-      message.tokens = [user.fcmToken];
+      message = {
+        data: {
+          title: 'Popular Phantom Pins!',
+          body: 'check out these popular pins on phantom',
+        },
+        tokens: [user.fcmToken],
+      };
+
       let checkFailed = await this.sendNotification([user.fcmToken], message);
 
       if (checkFailed.length > 0) {
@@ -424,25 +421,10 @@ export class NotificationService {
       title: 'Pins For You!',
       body: 'We think that you may get instersted in some of these pins',
     };
-    let message: {
-      data: {
-        pins: string;
-        time: string;
-        images: string;
-        title: string;
-        body: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        pins: pins.toString(),
-        images: images.toString(),
-        time: Date.now().toString(),
-        title: 'Pins For You!',
-        body: 'We think that you may get instersted in some of these pins',
-      },
-    };
-    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    let message;
+    user.notificationCounter = user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
     await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
@@ -450,7 +432,14 @@ export class NotificationService {
       return 0;
     } else {
       await user.save();
-      message.tokens = [user.fcmToken];
+
+      message = {
+        data: {
+          title: 'Pins For You!',
+          body: 'We think that you may get instersted in some of these pins',
+        },
+        tokens: [user.fcmToken],
+      };
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
@@ -471,25 +460,10 @@ export class NotificationService {
       title: 'Pins Inspired By Your Recent Activity!',
       body: 'check out these pins',
     };
-    let message: {
-      data: {
-        pins: string;
-        images: string;
-        time: string;
-        title: string;
-        body: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        pins: pins.toString(),
-        images: images.toString(),
-        time: Date.now().toString(),
-        title: 'Pins Inspired By Your Recent Activity!',
-        body: 'check out these pins',
-      },
-    };
-    user.notificationCounter = user.notificationCounter ? user.notificationCounter + 1 : 1;
+    let message;
+    user.notificationCounter = user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
     await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
@@ -497,7 +471,14 @@ export class NotificationService {
       return 0;
     } else {
       await user.save();
-      message.tokens = [user.fcmToken];
+      message = {
+        data: {
+          title: 'Pins Inspired By Your Recent Activity!',
+          body: 'check out these pins',
+        },
+        tokens: [String(user.fcmToken)],
+      };
+
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed.length > 0) {
         let last = user.notifications.pop(message);

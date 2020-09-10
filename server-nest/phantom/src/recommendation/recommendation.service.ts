@@ -185,7 +185,6 @@ export class RecommendationService {
     while (out < sortedTopics.length) {
       for (let i = 0; i < sortedTopics.length; i++) {
         let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
-        console.log(topic.name);
         for (let k = count; k < count + 10; k++) {
           if (k >= topic.pins.length) {
             out++;
