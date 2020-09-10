@@ -302,7 +302,7 @@ export class BoardService {
       await board.save();
     }
     for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i] == userId)) {
+      if (String(board.collaborators[i].collaboratorId) == String(userId)) {
         return true;
       }
     }
@@ -327,8 +327,8 @@ export class BoardService {
       board.collaborators = [];
       await board.save();
     }
-    for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i]) == String(userId)) {
+    for (let i = 0; i < board.collaborators.length; i++) {
+      if (String(board.collaborators[i].collaboratorId) == String(userId)) {
         return board.collaborators[i];
       }
     }
@@ -410,6 +410,7 @@ export class BoardService {
       console.log(collaboratores);
       for (var i = 0; i < collaboratores.length; i++) {
         console.log(collaboratores.length);
+
         if (
           (await this.ValidationService.checkMongooseID([collaboratores[i]])) ==
           0
@@ -461,7 +462,11 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    if (String(board.creator.id) != String(userId)) {
+
+    let isCreator = await this.isCreator(board, userId);
+    let isCollaborator = await this.isCollaborator(board, userId);
+    console.log(isCollaborator);
+    if (!isCreator && !isCollaborator) {
       throw new UnauthorizedException(
         'this user is unauthorized to get this board permissions',
       );
@@ -527,7 +532,7 @@ export class BoardService {
     }
     if (String(board.creator.id) != String(userId)) {
       throw new UnauthorizedException(
-        'this user is unauthorized to get this board permissions',
+        'this user is unauthorized to edit this board permissions',
       );
     }
     for (var i = 0; i < board.collaborators.length; i++) {
@@ -1283,5 +1288,77 @@ export class BoardService {
       }
     }
     return { board: board, pins: pins, type: type, permissions: permissions };
+  }
+  async getSectionFull(boardId, sectionId, userId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        boardId,
+        sectionId,
+        userId,
+      ])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    let pins = [];
+    let sectionIndex;
+    for (let j = 0; j < board.sections.length; j++) {
+      if (String(board.sections[j]._id) == String(sectionId)) {
+        sectionIndex = j;
+        for (let i = 0; i < board.sections[j].pins.length; i++) {
+          let pinType = 'none';
+          let pin = await this.pinModel.findById(
+            board.sections[j].pins[i].pinId,
+          );
+          if (String(pin.creator.id) == String(userId)) {
+            pinType = 'creator';
+          } else {
+            for (let k = 0; k < user.savedPins.length; k++) {
+              if (String(user.savedPins[k].pinId) == String(pin._id)) {
+                pinType = 'saved';
+                break;
+              }
+            }
+          }
+          if (pin) {
+            pins.push({ pin: pin, type: pinType });
+          }
+        }
+        break;
+      }
+    }
+    let type = 'none';
+    let permissions = {};
+    if (String(userId) == String(board.creator.id)) {
+      type = 'creator';
+    } else {
+      for (let i = 0; i < board.collaborators.length; i++) {
+        if (String(userId) == String(board.collaborators[i].collaboratorId)) {
+          type = 'collaborator';
+          permissions = {
+            savePin: board.collaborators[i].savePin,
+            createPin: board.collaborators[i].createPin,
+            addCollaborators: board.collaborators[i].addCollaborators,
+            editDescription: board.collaborators[i].editDescription,
+            editTitle: board.collaborators[i].editTitle,
+            personalization: board.collaborators[i].personalization,
+          };
+          break;
+        }
+      }
+    }
+    return {
+      section: board.sections[sectionIndex],
+      pins: pins,
+      type: type,
+      permissions: permissions,
+    };
   }
 }

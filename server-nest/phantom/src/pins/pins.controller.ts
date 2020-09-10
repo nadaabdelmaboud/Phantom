@@ -28,7 +28,7 @@ export class PinsController {
     private PinsService: PinsService,
     private ImagesService: ImagesService,
     private BoardService: BoardService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/pins')
@@ -57,6 +57,17 @@ export class PinsController {
   async getCurrentUserPins(@Request() req) {
     let userId = req.user._id;
     let pins = await this.PinsService.getCurrentUserPins(userId, true);
+    if (pins && pins.length != 0) {
+      return pins;
+    } else {
+      throw new NotFoundException({ message: 'no pins' });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user/:userId/pins')
+  async getSomeUserPins(@Request() req, @Param('userId') userId: string) {
+    let pins = await this.PinsService.getCurrentUserPins(userId, false);
     if (pins && pins.length != 0) {
       return pins;
     } else {

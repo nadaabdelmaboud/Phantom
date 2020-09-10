@@ -5,17 +5,17 @@ import * as firebase from 'firebase-admin';
 
 const params = {
   type: 'service_account',
-  projectId: 'phantom-286304',
-  privateKeyId: 'cf900f244489aa10a3e4287c2265467d2452c16f',
+  projectId: 'phantom-30457',
+  privateKeyId: '7981418fbe2e57b0c762a3a90bff454eb029ae4d',
   privateKey:
-    '-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDK+yPqQ6u6xie5\ndT3LwhSbvC34Qw651BAzoBcA62RPBTFnkhj9rKgv9friolYO+MuBQtewBkTVwhpX\nefagJBe2zORUxs3mVt5JYqWBc51xQKnWhPJB15pC8KzSTtdoM0Uac7W2qQVmQWnD\nUEhSx2KxZnutbaleLehgowzfI4kAlLVJmTrQPTyatAASw2JD/GfWPIwpWrt+Re2q\nfpzLPTAc/g2uPFKfGd0CHflHwb//0skvjYz0luHKiNDMeVYyFRzpzBgBcIpEGwGi\n6PD1z1tHSNVaRPcl+ojpzPzuf6yJWK7cij+5ysiFNdPF745GRAZla0cgldLZ47aV\n7Kxt2NRJAgMBAAECggEAO9h42diS2NIUo0L0cc9qmRIN8az/uf1Su43fSmecnwm2\na8Vw9dYCjoV1L33SZr6m7ZkCE8V9ZRLCBnmQo92QWlalmXM2AMwq5LMfff/S8zGw\nAW4YKR6CvmrMYYNaUkAPh0GHWXATBfeSUcIpWLKtoAVJwLPc5EYfxeI86MtG2PL4\nSYfre4so4jAmyRgaZMWWFGrix+pj+9YCSy8Iuirsk3lF/ZYEsJREwjgpJWczFISD\n7tljWTedWtun4g/iK70681gH4pd9LQhDjYDnY9Ne8t+67pfiGopEgR+Xp20VT5fN\nD/nKR8aBmIwydCXedljUR+f7uBSLIVpUYGn6sAtjqwKBgQD61ViTMf1O0Hz7n0Op\nV1Cnu0lkujEW7PZhr9wM5dkHyqfclLEFp9LOXtULBMeZIXlMmfWJTFC0uFDnE27D\nJmObpOfH16QlY0ray9EUf4Y6vb8Ve2hFI3wgfAT6jsV9GfcT5/r6Ed2VD36IcHR8\n+n6K6UPGJwrdxokQm6EOC9x+wwKBgQDPKXeJqcEh1U2+/bY/eyKzO+gbyNdvcz4f\ndlCbLm4NFw6RuaR/CCg3UzeA8eWCqqh4VVHRy0cnz88DK770KhZirThEjJAzgZhA\n/xXV5OxGniGHxVWHSIq6jZBan7xZLFB49+1DKF6y1vi5NVJVKP1MQan58uG9po4y\nR4EzvinIAwKBgCt5lOuWS4BAlJkMJq8QKjOYO4VQ3DdMBPwzfeFiaTZ3gpax0ujX\nCKuqNiS9xFafPaXwPWV5q7dXBva2IImEetk8QMwbbSDpz8ySbP+vhrVhs9/mTtFE\n8Du1IyvGWSZwvKlfmNmFBTHTyKufSiFrTUmIWq3akICV66XMQ6LqnWH/AoGBALs7\nXy6snkFV586WwADf6ZzUqBN0kkHIhn0pEfEvJYfvLtvGTUYCuVZHgAKqniRa2ajo\nc+qJLuZsi0zyXMOQxmqo5BIQeMQUfOdBpRqMrH+mq+dqEsMSbU/uYmmFtVVjF9g9\nO9NWyUAZyvKZnrAZO9WQA3BEdIJT5nDK75s0Y87BAoGBAKcbyfkrVl6C3tTUe31M\nx1NLBxvsiyDAfiZGMUAbEf5QhB3HfmKzX3wSq+vf7HhPt1Uk38ZFr+NcF3E7hd1o\nh8LMoekWGzu8mY+8K+U3X1gtgbOZmMRVLqj+fU2KTobjzBcKZkXtA1XgWbcT/jiT\nJDUw6uIlL//LAAzqMvtzmcKo\n-----END PRIVATE KEY-----\n',
-  clientEmail: 'phantom@phantom-286304.iam.gserviceaccount.com',
-  clientId: '100690891016453659830',
+    '-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCmsAW07tzhfqKt\nDAd8JppRKyhJI5rHXI7rzRP+UYHHpGcE9cCGm/QaCIeZoHt7lWXHeOX8eGV9Sg0k\nhs4CbO/IVaFybXdhV7PFOpbCeHj8gjPjTzgxW8U0J6qVc601LiBkfEAdy0e5eTvi\nG8UXoKa6E1vBP/5vE25JMfWAv9WP+9OWOtSPiTQF6GUZbRginEkrVM1oPK8dgAzj\nV06Tgpg2g6cqfBNyV3jk9+flekWtX3/C3asal3orV8bfKpWpDyZtUcbNc/xCuDzk\n9EFoieSt9kLW4zun2EaQLIEwg3+PQcuCZrbcaqf4pAa4/UoIFdvvkyq2BLAIg5uG\nn3cKwu9xAgMBAAECggEAAoGCcHQn128BMJNN+ICXENHShvj1Tnp2fpaEbq4YgqEW\n2GT+ajelfY+zxCw8twCpuUw4vukrc2z90hcBuVkcaLla1j7NjOXV4sjs88r+XKNz\ndr8d4+YSiqRvBNSqnbJOE9ynVRtVfnUTYKSUu7RzVThNyJO29kIHRivtWixoIEQ9\ncJ+WJAfcAhulIZToBYMxHEyL3TJ5KzDEqt89QYlcNzOC1BWxtGVFLaEFVk3bcFLJ\niMY0cNKDTJ6N6QkyBHVURU0OUTqRajWSEU5we1q9MSwImcbRH/eh1cu8t+gm6UCR\nz1qN+Hd+UQpSNyvcTCcjcvl0a+HCBWacA3vrxe6HLQKBgQDf6M3qRQjT+fOMvK/m\nR4fe+qe6PF6awBFXz9mrOSLcNePvJSVfUK0OXaomZ259pClftuDSQNhr9LeU7rH0\nYBoWdrCLUgALmIdH1szha+3qRGZJWnRuUIfR2/QPzbiSH1mEX12zuGOf0O2mJns1\nJP/LudMTlzQss1sNM0hEdU2u5QKBgQC+k8KXX74j52j+PSjeVzloss+4XJA6xxId\nKuZh3la0YulfpyS9l5I7hmhVH2qfQqQBoWTrSqfVeHdkxzIBtTemX2MqpikBi/1O\n/UNMCIESy3XromPI6j9sV9TLHuFSBGgZbR9nTPXfzq8ZtHYjLKKr0f/oANJ8qmoe\n9ohN1uwpnQKBgQCqZk6G8eClCXyK53HqCxfg3trUhWrt1Cueq0SY5NOdyLldXuSR\nJCF/ZFLABUj1/v+potB30feiOMuZYQo20wgnfk4eyNnV+U9Cobqr9upJtaIuQtOG\nvGyQjhawDDxhn9ANSFJUGohesK6bGn/7UtwEW7fCGfkP57LsWdGun6Lt7QKBgQC5\n47zaFEyODumtm5Bil6fqxQeyJ6+TdZvokXDYo5vlJdnHMGy49cBwiWD5LsS8ha8d\n3ARpMY/VvESRK29OlSmsAbzj2+GBnb++LXFYF6922rix19sHHd4xWta4Le3QJ3Y2\n3ubTxxDJdnv7UbguBRrDB/panXqymTMb8pLvgiUnTQKBgQCzZYGr7S53XDdrpbCs\njLXj5+EA63bPfqsQwUJcWWnj8DjaZ2Frn4bWeKBX0ebthHvInxliHWXAOoYiR4sg\nxZfedKIvcjO/TLve7iSfFBjKBB3LihDJ974M3nxAITHuCptp4xjTGUh0yPeI0u50\ncmXmuUBAK738LxpeBL0zea4Ofw==\n-----END PRIVATE KEY-----\n',
+  clientEmail: 'firebase-adminsdk-xzh9e@phantom-30457.iam.gserviceaccount.com',
+  clientId: '114806940192433175805',
   authUri: 'https://accounts.google.com/o/oauth2/auth',
   tokenUri: 'https://oauth2.googleapis.com/token',
   authProviderX509CertUrl: 'https://www.googleapis.com/oauth2/v1/certs',
-  clientC509CertUrl:
-    'https://www.googleapis.com/robot/v1/metadata/x509/phantom%40phantom-286304.iam.gserviceaccount.com',
+  clientX509CertUrl:
+    'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xzh9e%40phantom-30457.iam.gserviceaccount.com',
 };
 let app = firebase.initializeApp({
   credential: firebase.credential.cert(params),
@@ -98,7 +98,7 @@ export class NotificationService {
         message,
       );
       console.log(checkFailed);
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         message.tokens = null;
         followedUser.offlineNotifications.push(message);
       }
@@ -188,7 +188,7 @@ export class NotificationService {
         [ownerUser.fcmToken],
         message,
       );
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         message.tokens = null;
         ownerUser.offlineNotifications.push(message);
       }
@@ -243,7 +243,7 @@ export class NotificationService {
         [ownerUser.fcmToken],
         message,
       );
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         message.tokens = null;
         ownerUser.offlineNotifications.push(message);
       }
@@ -303,7 +303,7 @@ export class NotificationService {
         [ownerUser.fcmToken],
         message,
       );
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         message.tokens = null;
         ownerUser.offlineNotifications.push(message);
       }
@@ -349,9 +349,9 @@ export class NotificationService {
       await user.save();
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         let last = user.notifications.pop();
-        if (String(last.data.title) != String(arrayMessage.title)) {
+        if (String(last.title) != String(arrayMessage.title)) {
           user.notifications.push(arrayMessage);
         }
         await user.save();
@@ -396,15 +396,21 @@ export class NotificationService {
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
-      await user.save();
+      await user.save().catch(err => {
+        console.log(err);
+      });
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
-      if (checkFailed) {
+
+      if (checkFailed.length > 0) {
         let last = user.notifications.pop();
-        if (String(last.data.title) != String(arrayMessage.title)) {
+        if (String(last.title) != String(arrayMessage.title)) {
           user.notifications.push(arrayMessage);
         }
-        await user.save();
+        await user.save().catch(err => {
+          console.log(err);
+        });
+
         return 0;
       }
     }
@@ -446,9 +452,9 @@ export class NotificationService {
       await user.save();
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         let last = user.notifications.pop();
-        if (String(last.data.title) != String(arrayMessage.title)) {
+        if (String(last.title) != String(arrayMessage.title)) {
           user.notifications.push(arrayMessage);
         }
         await user.save();
@@ -493,9 +499,9 @@ export class NotificationService {
       await user.save();
       message.tokens = [user.fcmToken];
       let checkFailed = await this.sendNotification([user.fcmToken], message);
-      if (checkFailed) {
+      if (checkFailed.length > 0) {
         let last = user.notifications.pop(message);
-        if (String(last.data.title) != String(arrayMessage.title)) {
+        if (String(last.title) != String(arrayMessage.title)) {
           user.notifications.push(arrayMessage);
         }
         await user.save();

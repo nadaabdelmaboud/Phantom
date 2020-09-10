@@ -855,7 +855,9 @@ export class RecommendationService {
         images.push(allPins[i].imageId);
       }
     }
+    console.log('here');
     let res = await this.NotificationService.popularPins(user, allPins, images);
+    console.log('here2');
     return 1;
   }
   async pinsForYou(userId) {

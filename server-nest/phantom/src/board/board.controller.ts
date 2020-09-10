@@ -276,6 +276,25 @@ export class BoardController {
     }
   }
   @UseGuards(AuthGuard('jwt'))
+  @Get('/boards/:boardId/sections/:sectionId')
+  async getFullSection(
+    @Request() req,
+    @Param('boardId') boardId: string,
+    @Param('sectionId') sectionId: string,
+  ) {
+    let userId = req.user._id;
+    let section = await this.BoardService.getSectionFull(
+      boardId,
+      sectionId,
+      userId,
+    );
+    if (section) {
+      return section;
+    } else {
+      throw new NotAcceptableException({ message: 'section is not found' });
+    }
+  }
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/me/savedPins/:pinId')
   async unsavePinFromBoard(
     @Request() req,
