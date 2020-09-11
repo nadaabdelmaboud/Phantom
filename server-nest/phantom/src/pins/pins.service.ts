@@ -346,6 +346,7 @@ export class PinsService {
       imageId: 1,
       comments: 1,
       counts: 1,
+      creator: 1,
     });
     let ownerUser = await this.userModel.findById(pin.creator.id, {
       notifications: 1,
@@ -485,6 +486,7 @@ export class PinsService {
       counts: 1,
       title: 1,
       imageId: 1,
+      creator: 1,
     });
     let pinOwner = await this.userModel.findById(pin.creator.id, {
       notifications: 1,
@@ -493,27 +495,58 @@ export class PinsService {
       notificationCounter: 1,
       pinsNotification: 1,
     });
+
     if (!user || !pin) return false;
-    pin.reacts.push({
-      reactType: reactType,
-      userId: userId,
-    });
-    switch (reactType) {
-      case 'Wow':
-        pin.counts.wowReacts = pin.counts.wowReacts.valueOf() + 1;
+    let found = false;
+    for (let i = 0; i < pin.reacts.length; i++) {
+      if (String(pin.reacts[i].userId) == String(userId)) {
+        switch (pin.reacts[i].reactType) {
+          case 'Wow':
+            pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
+            break;
+          case 'Love':
+            pin.counts.loveReacts = pin.counts.loveReacts.valueOf() - 1;
+            break;
+          case 'Haha':
+            pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() - 1;
+            break;
+          case 'Thanks':
+            pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() - 1;
+            break;
+          case 'Good idea':
+            pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() - 1;
+            break;
+        }
+        pin.reacts[i].reactType = reactType;
+        await pin.save();
+        found = true;
         break;
-      case 'Love':
-        pin.counts.loveReacts = pin.counts.loveReacts.valueOf() + 1;
-        break;
-      case 'Haha':
-        pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() + 1;
-        break;
-      case 'Thanks':
-        pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() + 1;
-        break;
-      case 'Good idea':
-        pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() + 1;
-        break;
+      }
+    }
+    if (!found) {
+      pin.reacts.push({
+        reactType: reactType,
+        userId: userId,
+      });
+
+      switch (reactType) {
+        case 'Wow':
+          pin.counts.wowReacts = pin.counts.wowReacts.valueOf() + 1;
+          break;
+        case 'Love':
+          pin.counts.loveReacts = pin.counts.loveReacts.valueOf() + 1;
+          break;
+        case 'Haha':
+          pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() + 1;
+          break;
+        case 'Thanks':
+          pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() + 1;
+          break;
+        case 'Good idea':
+          pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() + 1;
+          break;
+      }
+      await pin.save();
     }
     if (!pinOwner.pinsNotification || pinOwner.pinsNotification == true)
       await this.NotificationService.reactPin(
@@ -524,7 +557,6 @@ export class PinsService {
         String(reactType),
         pin.imageId,
       );
-    await pin.save();
     return true;
   }
   async likeComment(pinId, commentId, userId) {
