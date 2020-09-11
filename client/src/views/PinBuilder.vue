@@ -19,7 +19,7 @@
           class="imageInput doubleBorder"
           :class="{
             dragging: dragover,
-            noImage: validate && !imageFile,
+            noImage: validate && !imageFile
           }"
           v-if="!imageFile"
           @click="$refs.fileInput.click()"
@@ -71,31 +71,32 @@
         <input type="text" v-model="searchBoard" placeholder="Search" />
         <p><strong>All Boards </strong></p>
         <div v-for="(b, i) in boards" :key="i">
-        <ul>
-          <li
-            v-if="b.board.name.search(new RegExp(searchBoard, 'i')) != -1"
-            @click="chooseBoard(b.board.name, b.board._id, $event)"
-          >
-            {{ b.board.name }}
-            <i 
-            class="fa fa-chevron-right arrow" 
-            :class="{ rotate: showSections.includes(i)  }"
-            id="openArrow" 
-            v-if="b.board.sections.length"
-            @click="showSection(i)"></i>
-          </li>
-        </ul>
-        <p> {{showSection[i]}}</p>
-        <div v-if="showSections.includes(i)">
-          <ul v-for="s in b.board.sections" :key="s._id">
+          <ul>
+            <li
+              v-if="b.board.name.search(new RegExp(searchBoard, 'i')) != -1"
+              @click="chooseBoard(b.board.name, b.board._id, $event)"
+            >
+              {{ b.board.name }}
+              <i
+                class="fa fa-chevron-right arrow"
+                :class="{ rotate: showSections.includes(i) }"
+                id="openArrow"
+                v-if="b.board.sections.length"
+                @click="showSection(i)"
+              ></i>
+            </li>
+          </ul>
+          <p>{{ showSection[i] }}</p>
+          <div v-if="showSections.includes(i)">
+            <ul v-for="s in b.board.sections" :key="s._id">
               <li
                 v-if="s.sectionName.search(new RegExp(searchBoard, 'i')) != -1"
-                @click="chooseSection(s.sectionName, s._id,b.board._id)"
+                @click="chooseSection(s.sectionName, s._id, b.board._id)"
               >
                 {{ s.sectionName }}
               </li>
             </ul>
-        </div>
+          </div>
         </div>
         <div class="createBoard" @click="createBoardPopup">
           <i class="fa fa-plus globalIcons"></i>
@@ -287,19 +288,18 @@
 .deleteicon:hover {
   transform: scale(1.2);
 }
-li{
+li {
   position: relative;
-.arrow{
-  position: absolute;
-  right:10px;
-  top:15px;
-  font-size: 13px;
+  .arrow {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    font-size: 13px;
+  }
+  .rotate {
+    transform: rotateZ(90deg);
+  }
 }
-.rotate{
-transform: rotateZ(90deg);
-}
-}
-
 </style>
 
 <script>
@@ -333,7 +333,7 @@ export default {
       validate: false,
       // To store the classification
       label: "",
-      showSections:[]
+      showSections: []
     };
   },
   methods: {
@@ -406,25 +406,31 @@ export default {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
       this.showBoard = false;
     },
-    chooseBoard(boardName, boardId,event) {
-      console.log("event",event.target.id)
-      let sectionId ="";
-      if(event.target.id != "openArrow"){
+    chooseBoard(boardName, boardId, event) {
+      console.log("event", event.target.id);
+      let sectionId = "";
+      if (event.target.id != "openArrow") {
         this.showBoard = false;
-        this.$store.commit("boards/chooseBoard", { boardName, boardId,sectionId});
+        this.$store.commit("boards/chooseBoard", {
+          boardName,
+          boardId,
+          sectionId
+        });
       }
     },
-    chooseSection(boardName,sectionId,boardId){
-        this.showBoard = false;
-        //choosing section Name and setting it as display boardName and also choosing section id
-        this.$store.commit("boards/chooseBoard", { boardName , boardId,sectionId });
+    chooseSection(boardName, sectionId, boardId) {
+      this.showBoard = false;
+      //choosing section Name and setting it as display boardName and also choosing section id
+      this.$store.commit("boards/chooseBoard", {
+        boardName,
+        boardId,
+        sectionId
+      });
     },
-    showSection(i){
+    showSection(i) {
       let index = this.showSections.indexOf(i);
-      if(index == -1)
-        this.showSections.push(i);
-      else
-        this.showSections.splice(index,1);
+      if (index == -1) this.showSections.push(i);
+      else this.showSections.splice(index, 1);
     },
     createPin() {
       if (this.chosenBoardName == "Select") {
@@ -438,24 +444,24 @@ export default {
             board: this.chosenBoardId,
             imageWidth: this.width,
             imageHeight: this.height,
-            imageId: this.imageFile,
+            imageId: this.imageFile
           };
-          if(this.chosenSectionId != ""){
+          if (this.chosenSectionId != "") {
             pin.section = this.chosenSectionId;
           }
           if (this.note != "") pin.note = this.note;
           this.$store.dispatch("pins/createPin", { pin, label: this.label });
         }
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards",
       chosenBoardName: "boards/chosenBoardName",
       chosenBoardId: "boards/chosenBoardId",
-      chosenSectionId:"boards/chosenSectionId"
-    }),
-  },
+      chosenSectionId: "boards/chosenSectionId"
+    })
+  }
 };
 </script>

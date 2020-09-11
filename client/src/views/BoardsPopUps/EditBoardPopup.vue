@@ -3,64 +3,94 @@
     <div class="editBoard" v-if="editState == 1">
       <h3>Edit your Board</h3>
       <div class="formBoard">
-        <div v-if="board.type == 'creator' || (board.type == 'collaborator' && board.permissions.editTitle)">
-        <label>Name</label>
-        <br />
-        <input class="inputFields" type="text" value="" v-model="name" />
-        <br />
-        </div>
-        <div  v-if="board.type == 'creator' || (board.type == 'collaborator' && board.permissions.editDescription)">
-        <label>Description</label>
-        <br />
-        <input class="inputFields" type="text" value="" v-model="description" />
-        <br />
-        </div>
-        <div  v-if="board.type == 'creator'">
-        <label>Dates · Optional – this can help you plan!</label>
-        <br />
-        <date-range-picker
-          ref="picker"
-          :locale-data="{ firstDay: 1, format: 'mm/dd/yyyy' }"
-          :minDate="minDate"
-          :maxDate="maxDate"
-          :opens="'right'"
-          :timePicker="false"
-          :showWeekNumbers="false"
-          :showDropdowns="true"
-          :control-container-class="'custumClass'"
-          :autoApply="true"
-          v-model="dateRange"
-          @toggle="checkOpen = !checkOpen"
-          :always-show-calendars="false"
-          :linkedCalendars="true"
+        <div
+          v-if="
+            board.type == 'creator' ||
+              (board.type == 'collaborator' && board.permissions.editTitle)
+          "
         >
-        </date-range-picker>
-        <br />
+          <label>Name</label>
+          <br />
+          <input class="inputFields" type="text" value="" v-model="name" />
+          <br />
         </div>
-        <div v-if="board.type == 'creator' || (board.type == 'collaborator' && board.permissions.personalization)">
-        <label>
-          Personalisation <br />
-          Show Pins inspired by this board in your home feed.
-        </label>
-        <input
-          type="range"
-          min="1"
-          max="2"
-          value="2"
-          class="slider"
-          id="myRange"
-          :class="{ isPrivate: status == 2 }"
-        />
+        <div
+          v-if="
+            board.type == 'creator' ||
+              (board.type == 'collaborator' &&
+                board.permissions.editDescription)
+          "
+        >
+          <label>Description</label>
+          <br />
+          <input
+            class="inputFields"
+            type="text"
+            value=""
+            v-model="description"
+          />
+          <br />
+        </div>
+        <div v-if="board.type == 'creator'">
+          <label>Dates · Optional – this can help you plan!</label>
+          <br />
+          <date-range-picker
+            ref="picker"
+            :locale-data="{ firstDay: 1, format: 'mm/dd/yyyy' }"
+            :minDate="minDate"
+            :maxDate="maxDate"
+            :opens="'right'"
+            :timePicker="false"
+            :showWeekNumbers="false"
+            :showDropdowns="true"
+            :control-container-class="'custumClass'"
+            :autoApply="true"
+            v-model="dateRange"
+            @toggle="checkOpen = !checkOpen"
+            :always-show-calendars="false"
+            :linkedCalendars="true"
+          >
+          </date-range-picker>
+          <br />
+        </div>
+        <div
+          v-if="
+            board.type == 'creator' ||
+              (board.type == 'collaborator' &&
+                board.permissions.personalization)
+          "
+        >
+          <label>
+            Personalisation <br />
+            Show Pins inspired by this board in your home feed.
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="2"
+            value="2"
+            class="slider"
+            id="myRange"
+            :class="{ isPrivate: status == 2 }"
+          />
         </div>
       </div>
       <div class="buttonDiv">
         <button @click="editBoard">
           Done
         </button>
-        <button v-if="board.type == 'creator'" @click="editState = 2" class="leftButton">
+        <button
+          v-if="board.type == 'creator'"
+          @click="editState = 2"
+          class="leftButton"
+        >
           Delete
         </button>
-        <button v-if="board.type == 'creator'" @click="editState = 3" class="leftButton">
+        <button
+          v-if="board.type == 'creator'"
+          @click="editState = 3"
+          class="leftButton"
+        >
           Merge
         </button>
       </div>

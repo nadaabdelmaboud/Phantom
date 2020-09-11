@@ -17,18 +17,18 @@ export function initializeFirebase() {
       storageBucket: "phantom-30457.appspot.com",
       messagingSenderId: "822902693694",
       appId: "1:822902693694:web:c433556b3c92dcc483966f",
-      measurementId: "G-BJ0XRKXP5E",
+      measurementId: "G-BJ0XRKXP5E"
     };
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
     messaging = firebase.messaging();
-    messaging.onMessage((payload) => {
+    messaging.onMessage(payload => {
       console.log("Message received. ", payload);
 
       var notificationTitle = payload.data.title;
       var notificationOptions = {
-        body: payload.data.body,
+        body: payload.data.body
       };
       new Notification(notificationTitle, notificationOptions);
       // notification.onclick = function(event) {
@@ -47,21 +47,21 @@ export function initializeFirebase() {
         var token = messaging.getToken();
         return token;
       })
-      .then((token) => {
+      .then(token => {
         console.log(token);
         axios.defaults.headers.common["Authorization"] = localStorage.getItem(
           "userToken"
         );
         axios
           .put("me/" + token)
-          .then((response) => {
+          .then(response => {
             console.log("response", response);
           })
-          .catch((error) => {
+          .catch(error => {
             console.log("Error Occurred", error);
           });
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.code === "messaging/permission-blocked") {
           console.log("Please Unblock Notification Request Manually");
         } else {

@@ -15,7 +15,9 @@ const state = {
   totalCards: 0,
   finishCalling: false,
   requestFinished: false,
-  deletePin: false
+  deletePin: false,
+  cardImageId: "",
+  CardId: ""
 };
 
 const mutations = {
@@ -61,6 +63,12 @@ const mutations = {
   },
   deletePin(state, check) {
     state.deletePin = check;
+  },
+  setCardImageId(state, id) {
+    state.cardImageId = id;
+  },
+  setCardId(state, id) {
+    state.CardId = id;
   }
 };
 
