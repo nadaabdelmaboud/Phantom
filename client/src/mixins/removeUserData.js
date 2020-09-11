@@ -1,4 +1,5 @@
 import axios from "axios"
+
 export default {
   methods: {
     removeUserData() {
@@ -7,6 +8,10 @@ export default {
         localStorage.removeItem("imgProfileID");
       }
       axios.put("log-out")
+      .then(()=>{
+        delete axios.defaults.headers.common["Authorization"];
+        this.$router.push("/");
+      })
       .catch(err=>console.log(err))
     }
   }

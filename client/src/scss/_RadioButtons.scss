@@ -1,0 +1,36 @@
+.radio {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: black;
+    display: grid;
+    grid-template-columns: min-content auto;
+    grid-gap: 0.5em;
+  }
+
+  .radioInput {
+    input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      &:checked + .radioControl {
+        background: radial-gradient(white 15%, black 76%);
+        border: black;
+      }
+    }
+  }
+
+  .radioInput {
+    display: flex;
+  }
+
+  .radioControl {
+    display: block;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 0.1em solid rgb(177, 171, 171);
+  }
+  .radioLabel {
+    line-height: 1;
+  }

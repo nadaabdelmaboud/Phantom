@@ -12,7 +12,8 @@ const state = {
   addSection:false,
   changePhotoPopUp: false,
   leavingPopUp: false,
-  accountClosingPopup: false
+  accountClosingPopup: false,
+  reportPinPopUp: false
 };
 
 const mutations = {
@@ -57,6 +58,9 @@ const mutations = {
   },
   toggleAccountClosingPopup(state) {
     state.accountClosingPopup = !state.accountClosingPopup;
+  },
+  toggleReportPinPopUp(state) {
+    state.reportPinPopUp = !state.reportPinPopUp;
   }
 };
 export default {
