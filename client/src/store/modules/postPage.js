@@ -2,7 +2,8 @@ import axios from "axios";
 
 const state = {
   comments: false,
-  followUser: false
+  followUser: false,
+  react: ""
 };
 
 const mutations = {
@@ -11,6 +12,9 @@ const mutations = {
   },
   followUser(state, followUser) {
     state.followUser = followUser;
+  },
+  setpinReacts(state, react) {
+    state.react = react;
   }
 };
 
@@ -47,6 +51,18 @@ const actions = {
       .delete("me/follow-user/" + pinCreatorId)
       .then(() => {
         commit("followUser", false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  reactPin({ commit }, { pinId, reactType }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .post("pins/" + pinId + "/reacts?reactType=" + reactType)
+      .then(() => {
+        commit("setpinReacts", reactType);
       })
       .catch(error => {
         console.log(error);

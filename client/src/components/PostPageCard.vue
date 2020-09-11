@@ -12,9 +12,50 @@
             <button class="save-post" id="saveImage">
               Save
             </button>
-            <button class="share-icon" id="shareIcon">
-              <i class="fa fa-upload" id="upload-icon"></i>
+            <button class="heart-icon" id="heartIcon" @click="showReactsList">
+              <i class="fa fa-heart" id="heart-icon"></i>
             </button>
+            <!-- //////////////////////////////// -->
+            <div class="reactsList" id="reactsList" v-if="showReacts">
+              <ul>
+                <li>
+                  <img
+                    src="../assets/Haha.png"
+                    alt="reactHaha"
+                    @click="reactHaha"
+                  />
+                </li>
+                <li>
+                  <img
+                    src="../assets/Wow.png"
+                    alt="reactWow"
+                    @click="reactWow"
+                  />
+                </li>
+                <li>
+                  <img
+                    src="../assets/Love.jpg"
+                    alt="reactLove"
+                    @click="reactLove"
+                  />
+                </li>
+                <li>
+                  <img
+                    src="../assets/GoodIdea.png"
+                    alt="reactGoodIdea"
+                    @click="reactGoodIdea"
+                  />
+                </li>
+                <li>
+                  <img
+                    src="../assets/Thanks.jpg"
+                    alt="reactThanks"
+                    @click="reactThanks"
+                  />
+                </li>
+              </ul>
+            </div>
+            <!-- //////////////////////// -->
             <button
               class="added-list"
               id="added-list"
@@ -99,6 +140,44 @@
               </div>
               <div id="postComments"></div>
             </div>
+            <div class="reactsSection">
+              <p>
+                {{ this.numReactHaha }}
+                <img
+                  src="../assets/Haha.png"
+                  alt="reactHaha"
+                  id="reactImages"
+                />
+              </p>
+              <p>
+                {{ this.numReactWow }}
+                <img src="../assets/Wow.png" alt="reactWow" id="reactImages" />
+              </p>
+              <p>
+                {{ this.numReactLove }}
+                <img
+                  src="../assets/Love.jpg"
+                  alt="reactLove"
+                  id="reactImages"
+                />
+              </p>
+              <p>
+                {{ this.numReactGoodIdea }}
+                <img
+                  src="../assets/GoodIdea.png"
+                  alt="reactGoodIdea"
+                  id="reactImages"
+                />
+              </p>
+              <p>
+                {{ this.numReactThanks }}
+                <img
+                  src="../assets/Thanks.jpg"
+                  alt="reactThanks"
+                  id="reactImages"
+                />
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -140,6 +219,7 @@
   //margin:top right bottom left
   margin: 20px 20px 40px 5px;
   box-sizing: border-box;
+  position: relative;
 }
 img {
   width: 100%;
@@ -185,13 +265,46 @@ button:focus {
   margin: 15px 5px 5px 5px;
 }
 
-.share-icon {
+.heart-icon {
   @include circleButtons;
   background: transparent;
   height: 40px;
   width: 40px;
   &:hover {
     background-color: $lightgrey;
+  }
+}
+.reactsList {
+  position: absolute;
+  width: 330px;
+  height: 80px;
+  background-color: $offWhite;
+  z-index: 1;
+  border-radius: 50px;
+  padding: 15px;
+  box-shadow: 0 5px 10px 10px rgba(0, 0, 0, 0.06);
+  ul {
+    position: relative;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    display: inline;
+    list-style: none;
+    font-size: 12px;
+    padding: 5px;
+  }
+  img {
+    margin-top: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.5s;
+    &:hover {
+      transform: scale(1.4);
+      z-index: 100;
+    }
   }
 }
 .added-list {
@@ -203,9 +316,12 @@ button:focus {
     background-color: $lightgrey;
   }
 }
-#upload-icon,
+#heart-icon,
 #added-list {
   font-size: 22px;
+}
+#heart-icon {
+  padding-top: 5px;
 }
 .dropdownlist {
   position: absolute;
@@ -404,6 +520,20 @@ li button {
   color: red;
 }
 
+.reactsSection {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+}
+#reactImages {
+  margin-top: 0;
+  margin-right: 5px;
+  margin-left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
 @media screen and (max-width: 1540px) {
   .container {
     width: 1000px;
@@ -417,10 +547,18 @@ li button {
   }
   .box {
     width: 100%;
-    margin: 7px 7px 35px 7px;
+    margin: 7px 7px 30px 7px;
   }
   .contentbox {
     margin-left: 0;
+  }
+  .AddComments {
+    margin-bottom: 55px;
+  }
+  .reactsSection {
+    p {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -477,6 +615,14 @@ li button {
       width: 150px;
     }
   }
+  .reactsList {
+    width: 250px;
+    height: 60px;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
 }
 </style>
 
@@ -491,7 +637,9 @@ export default {
       firstTime: true,
       followPinCreatorBtn: false,
       show: false,
-      typingComment: false
+      typingComment: false,
+      showReacts: false,
+      reactType: ""
     };
   },
   mixins: [getImage],
@@ -517,6 +665,54 @@ export default {
     },
     showDropdownlist() {
       this.show = !this.show;
+    },
+    showReactsList() {
+      this.showReacts = !this.showReacts;
+    },
+    reactHaha() {
+      this.reactType = "Haha";
+      this.$store.dispatch("postPage/reactPin", {
+        pinId: this.pinId,
+        reactType: this.reactType
+      });
+      document.getElementById("heart-icon").style.color = "yellow";
+      this.showReacts = !this.showReacts;
+    },
+    reactWow() {
+      this.reactType = "Wow";
+      this.$store.dispatch("postPage/reactPin", {
+        pinId: this.pinId,
+        reactType: this.reactType
+      });
+      document.getElementById("heart-icon").style.color = "green";
+      this.showReacts = !this.showReacts;
+    },
+    reactLove() {
+      this.reactType = "Love";
+      this.$store.dispatch("postPage/reactPin", {
+        pinId: this.pinId,
+        reactType: this.reactType
+      });
+      document.getElementById("heart-icon").style.color = "red";
+      this.showReacts = !this.showReacts;
+    },
+    reactGoodIdea() {
+      this.reactType = "Good idea";
+      this.$store.dispatch("postPage/reactPin", {
+        pinId: this.pinId,
+        reactType: this.reactType
+      });
+      document.getElementById("heart-icon").style.color = "blue";
+      this.showReacts = !this.showReacts;
+    },
+    reactThanks() {
+      this.reactType = "Thanks";
+      this.$store.dispatch("postPage/reactPin", {
+        pinId: this.pinId,
+        reactType: this.reactType
+      });
+      document.getElementById("heart-icon").style.color = "pink";
+      this.showReacts = !this.showReacts;
     },
     hideList(event) {
       if (event.target.id != ("list-icon" || "added-list")) {
@@ -569,7 +765,13 @@ export default {
       userLastName: "homeCards/userLastName",
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
-      isFollowed: "phantomUser/isFollowed"
+      isFollowed: "phantomUser/isFollowed",
+      pinId: "homeCards/pinId",
+      numReactHaha: "homeCards/numReactHaha",
+      numReactWow: "homeCards/numReactWow",
+      numReactLove: "homeCards/numReactLove",
+      numReactGoodIdea: "homeCards/numReactGoodIdea",
+      numReactThanks: "homeCards/numReactThanks"
     })
   }
 };
