@@ -146,7 +146,10 @@ export class BoardService {
     return board;
   }
   async sortBoardsAtoZ(userId): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
 
     await user.boards.sort((a, b) => a.name.localeCompare(b.name.toString()));
     user.sortType = 'A-Z';
@@ -155,7 +158,10 @@ export class BoardService {
   }
 
   async sortBoardsDate(userId): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
 
     await user.boards.sort(function(a, b) {
       if (a.createdAt < b.createdAt) {
@@ -178,7 +184,10 @@ export class BoardService {
     startIndex,
     positionIndex,
   ): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
     if (
       startIndex < 0 ||
       startIndex >= user.boards.length ||
@@ -253,13 +262,11 @@ export class BoardService {
         }
       }
       if (board) {
-        console.log(board);
         retBoards.push({
           board: board,
           createdOrjoined: createdOrjoined,
           permissions: permissions,
         });
-        console.log(retBoards[0]);
       }
     }
     return retBoards;
