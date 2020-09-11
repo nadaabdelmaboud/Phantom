@@ -17,10 +17,12 @@ import {
   ApiCreatedResponse,
   ApiConsumes,
   ApiBadRequestResponse,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
 import { FileResponseVm } from './file-response-vm..model';
+import { fsync } from 'fs';
 var path = require('path');
 @Controller()
 export class ImagesController {
@@ -69,9 +71,11 @@ export class ImagesController {
 
   @Get('/image/:id')
   async getFile(@Param('id') id: string, @Res() res) {
-    var filePath = './default.jpg';
-    var resolvedPath = await path.resolve(filePath);
-    return res.sendFile(resolvedPath);
+    if (!id || id == ' ' || id == '') {
+      var filePath = './default.jpg';
+      var resolvedPath = await path.resolve(filePath);
+      return res.sendFile(resolvedPath);
+    }
     const checkImage = await this.ImagesService.checkImage(id);
     if (!checkImage) {
       var filePath = './default.jpg';
@@ -85,7 +89,9 @@ export class ImagesController {
       var resolvedPath = await path.resolve(filePath);
       return res.sendFile(resolvedPath);
     }
+    res.header('Content-Length', file.length);
     res.header('Content-Type', file.contentType);
+
     fileStream.pipe(res);
   }
 
