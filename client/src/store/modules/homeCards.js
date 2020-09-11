@@ -17,7 +17,8 @@ const state = {
   requestFinished: false,
   deletePin: false,
   cardImageId: "",
-  CardId: ""
+  CardId: "",
+  reportPin: ""
 };
 
 const mutations = {
@@ -69,6 +70,9 @@ const mutations = {
   },
   setCardId(state, id) {
     state.CardId = id;
+  },
+  reportPin(state, check) {
+    state.reportPin = check;
   }
 };
 
@@ -140,6 +144,19 @@ const actions = {
       .delete("me/pins/" + pinId)
       .then(() => {
         commit("deletePin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  reportPin({ commit }, { pinId, reportReason }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    console.log("ReportReason", reportReason);
+    axios
+      .post("pins/" + pinId + "/report", reportReason)
+      .then(() => {
+        commit("reportPin", true);
       })
       .catch(error => {
         console.log(error);
