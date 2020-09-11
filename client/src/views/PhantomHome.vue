@@ -8,7 +8,7 @@
     <TopicsPopup v-if="topics" />
     <div>
       <HomeNavigationBar />
-      <router-view class="mainComponent" />
+      <router-view class="mainComponent" :key="componentKey" />
       <i class="fa fa-comment globalIcons" @click="toggleChat"></i>
       <router-link
         tag="i"
@@ -103,8 +103,9 @@ export default {
   name: "PhantomHome",
   data: function() {
     return {
-      chat: false
-    };
+      chat: false,
+      componentKey: 0
+      };
   },
   components: {
     HomeNavigationBar,
@@ -154,6 +155,11 @@ export default {
       accountClosingPopup: state => state.popUpsState.accountClosingPopup,
       leavingPopUp: state => state.popUpsState.leavingPopUp
     })
-  }
+  },
+  watch: {
+    $route() {
+      this.componentKey = (this.componentKey + 1) % 4;
+  },
+  },
 };
 </script>

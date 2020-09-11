@@ -30,18 +30,10 @@
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
-        <div
-          class="buttons"
-          @click="toBoards"
-          :class="{ inRoute: inBoards }"
-        >
+        <div class="buttons" @click="toBoards" :class="{ inRoute: inBoards }">
           Boards
         </div>
-        <div
-          class="buttons"
-          @click="toPins"
-          :class="{ inRoute: inPins }"
-        >
+        <div class="buttons" @click="toPins" :class="{ inRoute: inPins }">
           Pins
         </div>
       </div>
@@ -66,23 +58,40 @@
       <p>Sort by</p>
       <ul>
         <li @click="sortAz">
-          <i class="fa fa-check" v-if="meUser.sortType == 'A-Z'" aria-hidden="true"></i>
-          A to Z</li>
+          <i
+            class="fa fa-check"
+            v-if="meUser.sortType == 'A-Z'"
+            aria-hidden="true"
+          ></i>
+          A to Z
+        </li>
         <li @click="reorder">
-          <i class="fa fa-check"  v-if="meUser.sortType == 'Reorder'" aria-hidden="true"></i>
-          Drag and drop</li>
+          <i
+            class="fa fa-check"
+            v-if="meUser.sortType == 'Reorder'"
+            aria-hidden="true"
+          ></i>
+          Drag and drop
+        </li>
         <li @click="sortDate">
-          <i class="fa fa-check" aria-hidden="true"  v-if="meUser.sortType == 'Date'"></i>
-          Last saved to</li>
+          <i
+            class="fa fa-check"
+            aria-hidden="true"
+            v-if="meUser.sortType == 'Date'"
+          ></i>
+          Last saved to
+        </li>
       </ul>
       <p>View options</p>
       <ul>
         <li>
-           <i class="fa fa-check" aria-hidden="true"></i>
-           Default</li>
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Default
+        </li>
         <li>
-           <i class="fa fa-check" aria-hidden="true"></i>
-           Compact</li>
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Compact
+        </li>
       </ul>
     </div>
     <div class="create" v-if="showCreate">
@@ -103,14 +112,15 @@ export default {
   name: "UserProfile",
   data: function() {
     return {
-      inBoards: true,
+      inBoards: false,
       inPins: false,
       showCreate: false,
       showViewOptions: false,
       myprofile: false,
       userName: "",
       imageId: "",
-      followers: ""
+      followers: "",
+      userId: "",
     };
   },
   mixins: [getImage],
@@ -132,66 +142,59 @@ export default {
     sortDate() {
       this.$store.dispatch("boards/sortDate");
     },
-    reorder(){
+    reorder() {
       this.$store.dispatch("boards/reorderBoards", {
         from: 0,
-        to: 1
+        to: 1,
       });
     },
     alterFollow() {
-      let userId = this.$route.params.userId;
+      //let userId = this.$route.params.userId;
       if (this.isFollowed) {
-        this.$store.dispatch("followers/unfollowUser", userId);
+        this.$store.dispatch("followers/unfollowUser", this.userId);
       } else {
-        this.$store.dispatch("followers/followUser", userId);
+        this.$store.dispatch("followers/followUser", this.userId);
       }
     },
-    toBoards(){
-      if(this.myprofile){
-        this.$router.push("/UserProfile/Boards");
-      }
-      else
-        this.$router.push("/User/"+this.user._id);
+    toBoards() {
+      if (this.myprofile) this.$router.push("/UserProfile/Boards");
+      else this.$router.push("/User/" + this.userId);
+      this.inBoards = true;
+      this.inPins = false;
     },
-    toPins(){
-      if(this.myprofile){
-        this.$router.push("/UserProfile/Pins");
-      }
-      else
-        this.$router.push("/User/"+this.user._id+"/Pins");
-    }
+    toPins() {
+      if (this.myprofile) this.$router.push("/UserProfile/Pins");
+      else this.$router.push("/User/" + this.userId + "/Pins");
+      this.inPins = true;
+      this.inBoards = false;
+      //console.log()
+    },
   },
   computed: {
     ...mapGetters({
       user: "phantomUser/user",
-      isFollowed: "phantomUser/isFollowed"
+      isFollowed: "phantomUser/isFollowed",
     }),
     ...mapState({
-      meUser: state => state.user.userData
-    })
-  },
-  watch: {
-    $route: function() {
-      if (this.$route.path.includes("/Pins")) {
-        this.inBoards = false;
-        this.inPins = true;
-      } else if (this.$route.path.includes("/Boards")) {
-        this.inBoards = true;
-        this.inPins = false;
-      } else {
-        this.inBoards = false;
-        this.inPins = false;
-      }
-    }
+      meUser: (state) => state.user.userData,
+    }),
   },
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
     if (!this.myprofile) {
-      let userId = this.$route.params.userId;
-      this.$store.dispatch("phantomUser/getUser", userId);
-      this.$store.dispatch("phantomUser/isFollowed", userId);
+      this.userId = this.$route.params.userId;
+      this.$store.dispatch("phantomUser/getUser", this.userId);
+      this.$store.dispatch("phantomUser/isFollowed", this.userId);
+    }
+    if (this.$route.path.includes("/Pins")) {
+      this.inBoards = false;
+      this.inPins = true;
+    } else if (this.$route.path.includes("/Boards")) {
+      this.inBoards = true;
+      this.inPins = false;
     } else {
-      this.$store.dispatch("user/getUserProfile");
+      this.inBoards = false;
+      this.inPins = false;
     }
   },
   mounted() {
@@ -205,8 +208,8 @@ export default {
         this.imageId = this.meUser.profileImage;
         this.followers = this.meUser.followers.length;
       }
-    }, 4000);
-  }
+    }, 0);
+  },
 };
 </script>
 
@@ -255,7 +258,7 @@ i {
 i:hover {
   background-color: $lightPink;
 }
-.fa-check{
+.fa-check {
   height: 24px;
   width: 24px;
   font-size: 16px;
@@ -264,7 +267,7 @@ i:hover {
   text-align: center;
   cursor: pointer;
 }
-.fa-check:hover{
+.fa-check:hover {
   background-color: transparent;
 }
 .col2 {
