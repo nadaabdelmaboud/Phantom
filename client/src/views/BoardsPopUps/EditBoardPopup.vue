@@ -71,8 +71,21 @@
             value="2"
             class="slider"
             id="myRange"
+            v-model="status"
             :class="{ isPrivate: status == 2 }"
           />
+          <br />
+          <label>
+            Board sections
+          </label>
+          <div class="section" v-for="s in board.board.sections" :key="s._id">
+            <img :src="getImage(s.coverImages[0])" v-if="!s.coverImages.length" />
+            <img :src="getImage('')" v-else />
+            <p>{{ s.sectionName }}</p>
+            <button class="editButton" @click="deleteSection(s._id)">
+            Delete
+          </button>
+          </div>
         </div>
       </div>
       <div class="buttonDiv">
@@ -163,30 +176,32 @@
 import DateRangePicker from "vue2-daterange-picker";
 import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 import { mapGetters } from "vuex";
+import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "EditPopup",
+   mixins: [getImage],
   data: function() {
     return {
       name: "",
       description: "",
-      status: 1,
+      status: 2,
       editState: 1,
       minDate: new Date(),
       maxDate: null,
       dateRange: {
         startDate: new Date(),
-        endDate: new Date()
+        endDate: new Date(),
       },
       checkOpen: false,
       MergeTo: "Pick a board",
       MergeToId: "",
       showBoard: false,
-      searchBoard: ""
+      searchBoard: "",
     };
   },
 
   components: {
-    DateRangePicker
+    DateRangePicker,
   },
   methods: {
     editPopup(event) {
@@ -198,9 +213,9 @@ export default {
       let newBoard = {
         name: this.name,
         description: this.description,
-        status: "public"
+        personalization: false,
       };
-      if (this.status == 2) newBoard.status = "private";
+      if (this.status == 2) newBoard.personalization = true;
       this.$store.dispatch("boards/editBoard", newBoard);
       this.$store.commit("popUpsState/toggleEditBoardPopup");
     },
@@ -218,7 +233,7 @@ export default {
       if (this.MergeToId != "") {
         let merge = {
           mergedBoardId: this.board.board._id,
-          originalBoardId: this.MergeToId
+          originalBoardId: this.MergeToId,
         };
         this.$store.dispatch("boards/mergeBoard", merge);
         this.$store.commit("popUpsState/toggleEditBoardPopup");
@@ -228,20 +243,25 @@ export default {
     hideBoard(event) {
       console.log(event.target.id);
       if (event.target.id != "showControl") this.showBoard = false;
-    }
+    },
+    deleteSection(sectionId) {
+      this.$store.dispatch("boards/deleteSection", {
+        boardId: this.board.board._id,
+        sectionId: sectionId,
+      });
+    },
   },
   computed: {
     ...mapGetters({
       board: "boards/currentBoard",
-      userBoards: "boards/userBoards"
-    })
+      userBoards: "boards/userBoards",
+    }),
   },
   created() {
     this.name = this.board.board.name;
     this.description = this.board.board.description;
-    if (this.board.board.status == "public") this.status = 1;
     this.$store.dispatch("boards/userBoards");
-  }
+  },
 };
 </script>
 
@@ -307,5 +327,24 @@ h3 {
   margin-top: 10px;
   max-height: 400px;
   overflow-y: auto;
+}
+.section {
+  display: flex;
+  margin: 5px 0;
+  img {
+    width: 48px;
+    border-radius: 50%;
+    align-self: start;
+  }
+  p {
+    margin: 0;
+    font-size: 16px;
+    min-height: 48px;
+    padding: 10px 10px;
+    width: 80%;
+  }
+  button{
+    width: 100px;
+  }
 }
 </style>
