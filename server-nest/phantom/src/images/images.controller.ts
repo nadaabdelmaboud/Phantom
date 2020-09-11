@@ -77,6 +77,7 @@ export class ImagesController {
     }
     const file = await this.ImagesService.findInfo(id);
     const fileStream = await this.ImagesService.readStream(id);
+    console.log(file.filename);
     if (!fileStream) {
       var filePath = './default.jpg';
       var resolvedPath = await path.resolve(filePath);

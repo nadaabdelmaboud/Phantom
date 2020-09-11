@@ -39,17 +39,35 @@ export class UserService {
     return user;
   }
   async getUserMe(id) {
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel
+      .findById(id, {
+        email: 1,
+        gender: 1,
+        country: 1,
+        firstName: 1,
+        lastName: 1,
+        location: 1,
+        imageId: 1,
+        activity: 1,
+        pinsForYou: 1,
+        pinsInspired: 1,
+        popularPins: 1,
+        boardsForYou: 1,
+        boardUpdate: 1,
+        invitation: 1,
+        pinsNotification: 1,
+        followNotification: 1,
+        userName: 1,
+        sortType: 1,
+        ProfileImage: 1,
+        followers: 1,
+      })
+      .lean();
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
-    return {
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      userName: user.userName,
-      followers: user.followers,
-    };
+
+    return user;
   }
   async getActivateUserById(id) {
     const user = await this.userModel.findById(id);

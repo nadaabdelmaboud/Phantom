@@ -21,7 +21,7 @@ export class Email {
     var mailOptions;
     if (type === 'confirm') {
       mailOptions = {
-        from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
         to: email,
         subject: '👋 Please confirm your email',
         html:
@@ -33,7 +33,7 @@ export class Email {
       };
     } else if (type === 'change email') {
       mailOptions = {
-        from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
         to: email,
         subject: 'You changed your email address on Phantom',
         html:
@@ -45,7 +45,7 @@ export class Email {
       };
     } else if (type === 'set email') {
       mailOptions = {
-        from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
         to: email,
         subject: '👋 You reset your email address on Phantom',
         html:
@@ -57,7 +57,7 @@ export class Email {
       };
     } else if (type === 'forget Password') {
       mailOptions = {
-        from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
         to: email,
         subject: '👋 Please reset your password ',
         html:
@@ -69,7 +69,7 @@ export class Email {
       };
     } else if (type === 'Delete account') {
       mailOptions = {
-        from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
         to: email,
         subject: '😔 Sure delete account ',
         html:
@@ -77,9 +77,23 @@ export class Email {
           userName +
           '  </h1> <p>Really, We are very sad because you will leave us </p> <p>We have been very happy with you </p> <p>follow this link  and return to us  <p></p> <h2> <a href=http://localhost:8080" target ="_blank">phantom</a></h2></html>',
       };
+    } else if (type === 'report') {
+      mailOptions = {
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
+        to: email,
+        subject: 'Pin Is Reported',
+        html:
+          '<html><p> ' +
+          message.userName +
+          ' (userId: ' +
+          message.userId +
+          " ) has reported a pin </p> <h2> <a href='http://localhost:8080/PostPage/" +
+          message.pinId +
+          "' target ='_blank'>Pin Page</a></h2></html>",
+      };
     } else {
       mailOptions = {
-        from: '"Phantom Contact" <' + String(process.env.EMAIL) + '>',
+        from: '"Phantom" <' + String(process.env.EMAIL) + '>',
         to: email,
         subject: 'Phantom has a message for you',
         text: message,
