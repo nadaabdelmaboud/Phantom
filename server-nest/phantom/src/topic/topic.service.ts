@@ -72,7 +72,9 @@ export class TopicService {
     return topic;
   }
   async getTopics(userId): Promise<topic[]> {
-    const topics = await this.topicModel.find({});
+    const topics = await this.topicModel
+      .find({}, { name: 1, description: 1, imageId: 1, followers: 1 })
+      .lean();
     let topicInfo = [];
     let topic = {};
     for (let i = 0; i < topics.length; i++) {

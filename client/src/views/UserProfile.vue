@@ -120,7 +120,7 @@ export default {
       userName: "",
       imageId: "",
       followers: "",
-      userId: "",
+      userId: ""
     };
   },
   mixins: [getImage],
@@ -145,11 +145,10 @@ export default {
     reorder() {
       this.$store.dispatch("boards/reorderBoards", {
         from: 0,
-        to: 1,
+        to: 1
       });
     },
     alterFollow() {
-      //let userId = this.$route.params.userId;
       if (this.isFollowed) {
         this.$store.dispatch("followers/unfollowUser", this.userId);
       } else {
@@ -167,49 +166,46 @@ export default {
       else this.$router.push("/User/" + this.userId + "/Pins");
       this.inPins = true;
       this.inBoards = false;
-      //console.log()
-    },
+    }
   },
   computed: {
     ...mapGetters({
       user: "phantomUser/user",
-      isFollowed: "phantomUser/isFollowed",
+      isFollowed: "phantomUser/isFollowed"
     }),
     ...mapState({
-      meUser: (state) => state.user.userData,
-    }),
+      meUser: state => state.user.userData
+    })
   },
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
     if (!this.myprofile) {
       this.userId = this.$route.params.userId;
-      this.$store.dispatch("phantomUser/getUser", this.userId);
-      this.$store.dispatch("phantomUser/isFollowed", this.userId);
-    }
-    if (this.$route.path.includes("/Pins")) {
-      this.inBoards = false;
-      this.inPins = true;
-    } else if (this.$route.path.includes("/Boards")) {
-      this.inBoards = true;
-      this.inPins = false;
+      if (!this.user || this.userId != this.user._id) {
+        this.$store.dispatch("phantomUser/getUser", this.userId);
+        this.$store.dispatch("phantomUser/isFollowed", this.userId);
+      }
     } else {
-      this.inBoards = false;
-      this.inPins = false;
+      this.userName = this.meUser.firstName + " " + this.meUser.lastName;
+      this.imageId = this.meUser.profileImage;
+      this.followers = this.meUser.followers.length;
     }
   },
   mounted() {
-    setTimeout(() => {
-      if (!this.myprofile) {
-        this.userName = this.user.firstName + " " + this.user.lastName;
-        this.imageId = this.user.profileImage;
-        this.followers = this.user.followers.length;
-      } else {
-        this.userName = this.meUser.userName;
-        this.imageId = this.meUser.profileImage;
-        this.followers = this.meUser.followers.length;
-      }
-    }, 0);
-  },
+    if (!this.myprofile) {
+      this.userName = this.user.firstName + " " + this.user.lastName;
+      this.imageId = this.user.profileImage;
+      this.followers = this.user.followers.length;
+    }
+
+    if (this.$route.path.includes("/Pins")) {
+      this.inBoards = false;
+      this.inPins = true;
+    } else {
+      this.inBoards = true;
+      this.inPins = false;
+    }
+  }
 };
 </script>
 

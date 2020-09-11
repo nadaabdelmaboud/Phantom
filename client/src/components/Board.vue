@@ -45,18 +45,17 @@ export default {
     pinsCount: {
       type: Number
     },
-    boardObject: {
-      type: Object
+    isBoard: {
+      type: Boolean
+    },
+    sectionId: {
+      type: String
     }
   },
   methods: {
     toBoard() {
-      this.$router.push("/Board/" + this.boardId + "/Pins");
-      this.$store.commit("boards/chooseBoard", {
-        name: this.boardName,
-        id: this.boardId
-      });
-      this.$store.commit("boards/setCurrentBoard", this.boardObject);
+      if (this.isBoard) this.$router.push("/Board/" + this.boardId + "/Pins");
+      else this.$router.push("/Section/" + this.boardId + "/" + this.sectionId);
     }
   }
 };

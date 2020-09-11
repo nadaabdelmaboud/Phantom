@@ -3,7 +3,7 @@
     <router-link :to="{ path: '/PostPage/' + postPageId }">
       <img :src="getImage(cardImage)" class="card-img" alt="Card image" />
       <div class="card-img-overlay d-flex flex-column align-items-end">
-        <button class="save-post" id="saveImage" @click.capture="clicked">
+        <button class="save-post" id="saveImage" @click.capture="showSavePin">
           Save
         </button>
         <div class="mt-auto">
@@ -27,9 +27,8 @@
             <p class="title">This Pin is inspired by your recent activity</p>
             <hr />
             <ul>
-              <li>Hide Pin</li>
               <li>Download image</li>
-              <li>Report Pin</li>
+              <li @click="showReportPin">Report Pin</li>
             </ul>
           </div>
         </div>
@@ -163,6 +162,15 @@ export default {
       }
       // Remaining
       // shift list 180 degree for the most right card in the page
+    },
+    showReportPin() {
+      this.$store.commit("popUpsState/toggleReportPinPopUp");
+    },
+    showSavePin(event) {
+      event.preventDefault();
+      this.$store.commit("homeCards/setCardImageId", this.cardImage);
+      this.$store.commit("homeCards/setCardId", this.postPageId);
+      this.$store.commit("popUpsState/toggleSavePinPopUp");
     },
     defaultStyle() {
       var listIcon = document.getElementById("added-list");

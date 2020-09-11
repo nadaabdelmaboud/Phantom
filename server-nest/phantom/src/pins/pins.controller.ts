@@ -289,4 +289,21 @@ export class PinsController {
       throw new NotAcceptableException({ message: 'pin is not edited' });
     }
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/pins/:pinId/report')
+  async reportPin(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Body('reason') reason: string,
+  ) {
+    let userId = req.user._id;
+    console.log(userId);
+    let report = await this.PinsService.reportPin(userId, pinId, reason);
+    if (report) {
+      return 1;
+    } else {
+      throw new NotAcceptableException({ message: 'pin is not reported' });
+    }
+  }
 }

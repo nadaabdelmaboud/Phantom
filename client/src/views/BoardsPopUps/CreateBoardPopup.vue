@@ -82,9 +82,6 @@ export default {
     DateRangePicker
   },
   methods: {
-    // classObject: function () {
-    // return
-    //  },
     createBoardPopup(event) {
       if (event.target.id == "createBoard")
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
@@ -108,6 +105,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/GlobalPopup";
+@import "../../scss/Colors";
+@import "../../scss/GlobalPopup";
 </style>

@@ -38,7 +38,7 @@
         v-for="follower in followers"
         :key="follower._id"
       >
-        <div v-if="!collaborators.some((c) => c.id === follower._id)">
+        <div v-if="!collaborators.some(c => c.id === follower._id)">
           <img :src="getImage(follower.profileImage)" />
           <span>{{ follower.firstName }} </span>
           <span>{{ follower.lastName }}</span>
@@ -48,13 +48,13 @@
         </div>
       </div>
 
-      <div
-        class="followerInfo"
-        v-for="f in following"
-        :key="f._id"
-      >
-        <div v-if="!collaborators.some((c) => c.id === f._id)
-           && !followers.some((follower) => follower._id === f._id)">
+      <div class="followerInfo" v-for="f in following" :key="f._id">
+        <div
+          v-if="
+            !collaborators.some(c => c.id === f._id) &&
+              !followers.some(follower => follower._id === f._id)
+          "
+        >
           <img :src="getImage(f.profileImage)" />
           <span>{{ f.firstName }} </span>
           <span>{{ f.lastName }}</span>
@@ -77,11 +77,11 @@ export default {
   mixins: [getImage],
   data: function() {
     return {
-      copied: false,
+      copied: false
     };
   },
   components: {
-    CallaboratorsCard,
+    CallaboratorsCard
   },
   methods: {
     editPopup(event) {
@@ -101,7 +101,7 @@ export default {
     },
     addCollaborator(id) {
       this.$store.dispatch("boards/editBoard", { collaboratores: id });
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -109,14 +109,14 @@ export default {
       followers: "followers/userFollowers",
       following: "followers/userFollowing",
       board: "boards/currentBoard"
-    }),
+    })
   },
   mounted() {
     this.$store.dispatch("boards/getCollaborators");
     this.$store.dispatch("followers/getFollowers");
     this.$store.dispatch("followers/getFollowing");
   },
-  created() {},
+  created() {}
 };
 </script>
 

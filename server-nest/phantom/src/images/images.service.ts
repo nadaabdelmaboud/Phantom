@@ -19,6 +19,8 @@ export class ImagesService {
   }
 
   async readStream(id: string): Promise<GridFSBucketReadStream> {
+    var readOpts = { highWaterMark: Math.pow(2, 16) }; // 65536
+    var writeOpts = { highWaterMark: Math.pow(2, 16) }; // 65536
     return await this.fileModel.readFileStream(id);
   }
   async checkImage(id: string): Promise<Boolean> {
@@ -33,10 +35,10 @@ export class ImagesService {
     }
   }
   async findInfo(id: string) {
-    const result = await this.fileModel
-      .findById(id);
-      if(!result||result==undefined){return;}
-      
+    const result = await this.fileModel.findById(id);
+    if (!result || result == undefined) {
+      return;
+    }
     return {
       filename: result.filename,
       length: result.length,

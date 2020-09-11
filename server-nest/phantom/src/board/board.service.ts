@@ -16,12 +16,14 @@ import { section } from '../types/board';
 import { topic } from 'src/types/topic';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
+import { user } from 'src/types/user';
 @Injectable()
 export class BoardService {
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('User') private readonly userModel: Model<user>,
     private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
@@ -144,7 +146,10 @@ export class BoardService {
     return board;
   }
   async sortBoardsAtoZ(userId): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
 
     await user.boards.sort((a, b) => a.name.localeCompare(b.name.toString()));
     user.sortType = 'A-Z';
@@ -153,7 +158,10 @@ export class BoardService {
   }
 
   async sortBoardsDate(userId): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
 
     await user.boards.sort(function(a, b) {
       if (a.createdAt < b.createdAt) {
@@ -176,7 +184,10 @@ export class BoardService {
     startIndex,
     positionIndex,
   ): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
     if (
       startIndex < 0 ||
       startIndex >= user.boards.length ||
@@ -220,15 +231,19 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user;
-    if (ifMe == true) user = await this.UserService.getUserById(userId);
-    else user = await this.UserService.getActivateUserById(userId);
+    let user = await this.userModel.findById(userId, { boards: 1 });
 
     if (!user) return false;
     let retBoards = [];
     let permissions = {};
     for (let i = 0; i < user.boards.length; i++) {
-      let board = await this.boardModel.findById(user.boards[i].boardId);
+      let board = await this.boardModel.findById(user.boards[i].boardId, {
+        coverImages: 1,
+        collaborators: 1,
+        counts: 1,
+        name: 1,
+        sections: 1,
+      });
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';
@@ -247,7 +262,6 @@ export class BoardService {
         }
       }
       if (board) {
-        console.log(board);
         retBoards.push({
           board: board,
           createdOrjoined: createdOrjoined,

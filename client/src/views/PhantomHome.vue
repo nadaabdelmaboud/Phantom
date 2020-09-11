@@ -81,7 +81,7 @@
 </style>
 <script>
 import HomeNavigationBar from "../components/HomeNavigationBar";
-import CreateBoardPopup from "../views/CreateBoardPopup";
+import CreateBoardPopup from "../views/BoardsPopUps/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
@@ -97,7 +97,6 @@ import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
 import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
 
-
 import { mapState } from "vuex";
 export default {
   name: "PhantomHome",
@@ -105,7 +104,7 @@ export default {
     return {
       chat: false,
       componentKey: 0
-      };
+    };
   },
   components: {
     HomeNavigationBar,
@@ -145,7 +144,7 @@ export default {
       editBoard: state => state.popUpsState.editBoardPopup,
       collaborators: state => state.popUpsState.CollaboratorsPopup,
       topics: state => state.popUpsState.TopicsPopup,
-      addSection:state=>state.popUpsState.addSection,
+      addSection: state => state.popUpsState.addSection,
       changePassword: state => state.popUpsState.changePasswordPopUp,
       forgetPassword: state => state.popUpsState.forgetPasswordPopUp,
       welcomePopUp: state => state.popUpsState.welcomePopUp,
@@ -159,7 +158,7 @@ export default {
   watch: {
     $route() {
       this.componentKey = (this.componentKey + 1) % 4;
-  },
-  },
+    }
+  }
 };
 </script>

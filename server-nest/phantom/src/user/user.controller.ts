@@ -20,7 +20,7 @@ export class UserController {
   ) {}
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/me')
+  @nestCommon.Get('users/me')
   async me(@nestCommon.Request() req) {
     const user = await this.userService.getUserMe(req.user._id);
 

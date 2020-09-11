@@ -39,17 +39,34 @@ export class UserService {
     return user;
   }
   async getUserMe(id) {
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel
+      .findById(id, {
+        email: 1,
+        gender: 1,
+        country: 1,
+        firstName: 1,
+        lastName: 1,
+        location: 1,
+        activity: 1,
+        pinsForYou: 1,
+        pinsInspired: 1,
+        popularPins: 1,
+        boardsForYou: 1,
+        boardUpdate: 1,
+        invitation: 1,
+        pinsNotification: 1,
+        followNotification: 1,
+        userName: 1,
+        sortType: 1,
+        profileImage: 1,
+        followers: 1,
+      })
+      .lean();
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
-    return {
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      userName: user.userName,
-      followers: user.followers,
-    };
+
+    return user;
   }
   async getActivateUserById(id) {
     const user = await this.userModel.findById(id);
@@ -64,7 +81,7 @@ export class UserService {
   async findByLogin(loginDto: LoginDto): Promise<any> {
     console.log(loginDto.password);
     const user = await this.userModel
-      .findOne({ email: loginDto.email })
+      .findOne({ email: loginDto.email }, { password: 1, profileImage: 1 })
       .exec()
       .then(async user => {
         return user ? user : 0;
@@ -620,7 +637,7 @@ export class UserService {
   async userFollowings(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = await this.getUserById(userId);
+    const user = await this.userModel.findById(userId, { following: 1 });
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.following || user.following.length == 0)
       return { followings: [], numOfFollowings: 0 };
@@ -629,9 +646,14 @@ export class UserService {
       offset,
       user.following,
     );
-    var followingsInfo = [];
+    let followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
-      var currentUser = await this.getUserById(followings[i]);
+      let currentUser = await this.userModel.findById(followings[i], {
+        activateaccount: 1,
+        firstName: 1,
+        lastName: 1,
+        profileImage: 1,
+      });
       if (currentUser && currentUser.activateaccount != false)
         followingsInfo.push({
           _id: currentUser._id,
