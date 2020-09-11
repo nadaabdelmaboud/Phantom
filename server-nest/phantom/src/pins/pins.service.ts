@@ -517,7 +517,11 @@ export class PinsService {
             pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() - 1;
             break;
         }
-        pin.reacts[i].reactType = reactType;
+        if (reactType == 'none') {
+          pin.reacts.splice(i, 1);
+        } else {
+          pin.reacts[i].reactType = reactType;
+        }
         await pin.save();
         found = true;
         break;
@@ -548,7 +552,10 @@ export class PinsService {
       }
       await pin.save();
     }
-    if (!pinOwner.pinsNotification || pinOwner.pinsNotification == true)
+    if (
+      (!pinOwner.pinsNotification || pinOwner.pinsNotification == true) &&
+      reactType != 'none'
+    )
       await this.NotificationService.reactPin(
         pinOwner,
         user,
@@ -569,14 +576,25 @@ export class PinsService {
     ) {
       return false;
     }
-    let user = await this.UserService.getUserById(userId);
-    let pin = await this.getPinById(pinId);
-    if (!user || !pin) return false;
-    for (var i = 0; i < pin.comments.length; i++) {
+    let pin = await this.pinModel.findById(pinId, { comments: 1 });
+    if (!pin) return false;
+    for (let i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
-        pin.comments[i].likes.likers.push(userId);
-        pin.comments[i].likes.counts =
-          pin.comments[i].likes.counts.valueOf() + 1;
+        if (pin.comments[i].likes.likers.includes(userId)) {
+          for (let k = 0; k < pin.comments[i].likes.likers.length; k++) {
+            if (String(userId) == String(pin.comments[i].likes.likers[k])) {
+              pin.comments[i].likes.likers.splice(k, 1);
+              pin.comments[i].likes.counts =
+                pin.comments[i].likes.counts.valueOf() - 1;
+              break;
+            }
+          }
+        } else {
+          pin.comments[i].likes.likers.push(userId);
+          pin.comments[i].likes.counts =
+            pin.comments[i].likes.counts.valueOf() + 1;
+        }
+
         await pin.save();
         return true;
       }
@@ -594,16 +612,33 @@ export class PinsService {
     ) {
       return false;
     }
-    let user = await this.UserService.getUserById(userId);
-    let pin = await this.getPinById(pinId);
-    if (!user || !pin) return false;
-    for (var i = 0; i < pin.comments.length; i++) {
+    let pin = await this.pinModel.findById(pinId, { comments: 1 });
+    if (!pin) return false;
+    for (let i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
-        for (var j = 0; j < pin.comments[i].replies.length; j++) {
+        for (let j = 0; j < pin.comments[i].replies.length; j++) {
           if (String(pin.comments[i].replies[j]._id) == String(replyId)) {
-            pin.comments[i].replies[j].likes.likers.push(userId);
-            pin.comments[i].replies[j].likes.counts =
-              pin.comments[i].replies[j].likes.counts.valueOf() + 1;
+            if (pin.comments[i].replies[j].likes.likers.includes(userId)) {
+              for (
+                let k = 0;
+                k < pin.comments[i].replies[j].likes.likers.length;
+                k++
+              ) {
+                if (
+                  String(userId) ==
+                  String(pin.comments[i].replies[j].likes.likers[k])
+                ) {
+                  pin.comments[i].replies[j].likes.likers.splice(k, 1);
+                  pin.comments[i].replies[j].likes.counts =
+                    pin.comments[i].replies[j].likes.counts.valueOf() - 1;
+                  break;
+                }
+              }
+            } else {
+              pin.comments[i].replies[j].likes.likers.push(userId);
+              pin.comments[i].replies[j].likes.counts =
+                pin.comments[i].replies[j].likes.counts.valueOf() + 1;
+            }
             await pin.save();
             return true;
           }
