@@ -352,7 +352,7 @@ export class PinsService {
       offlineNotifications: 1,
       fcmToken: 1,
       notificationCounter: 1,
-      pinsNotification:1
+      pinsNotification: 1,
     });
     var cs = <comment>(<unknown>{
       commenter: userId,
@@ -416,15 +416,18 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
       return false;
     }
-    let pin = await this.pinModel.findById(pinId,{comments:1}).lean();
+    let pin = await this.pinModel.findById(pinId, { comments: 1 }).lean();
     if (!pin) return false;
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
-      let commenter = await this.userModel.findById(
-        pin.comments[i].commenter
-      ,{firstName:1,lastName:1,profileImage:1}).lean();
+      let commenter = await this.userModel
+        .findById(pin.comments[i].commenter, {
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+        })
+        .lean();
       if (commenter) {
-        
         let comment = {
           commenter: pin.comments[i].commenter,
           commenterName: commenter.firstName + ' ' + commenter.lastName,
@@ -435,11 +438,14 @@ export class PinsService {
         };
         let replies = [];
         for (var j = 0; j < pin.comments[i].replies.length; j++) {
-          let replier = await this.userModel.findById(
-            pin.comments[i].replies[j].replier,{firstName:1,lastName:1,profileImage:1}
-          ).lean();
+          let replier = await this.userModel
+            .findById(pin.comments[i].replies[j].replier, {
+              firstName: 1,
+              lastName: 1,
+              profileImage: 1,
+            })
+            .lean();
           if (replier) {
-           
             let reply = {
               replier: pin.comments[i].replies[j].replier,
               replierName: replier.firstName + ' ' + replier.lastName,
@@ -469,12 +475,24 @@ export class PinsService {
     ) {
       return false;
     }
-    let user = await this.userModel.findById(userId,{profileImage:1,firstName:1,lastName:1});
-    let pin = await this.pinModel.findById(pinId,{reacts:1,counts:1,title:1,imageId:1});
-    let pinOwner = await this.userModel.findById(pin.creator.id,{ notifications: 1,
+    let user = await this.userModel.findById(userId, {
+      profileImage: 1,
+      firstName: 1,
+      lastName: 1,
+    });
+    let pin = await this.pinModel.findById(pinId, {
+      reacts: 1,
+      counts: 1,
+      title: 1,
+      imageId: 1,
+    });
+    let pinOwner = await this.userModel.findById(pin.creator.id, {
+      notifications: 1,
       offlineNotifications: 1,
       fcmToken: 1,
-      notificationCounter: 1,pinsNotification:1});
+      notificationCounter: 1,
+      pinsNotification: 1,
+    });
     if (!user || !pin) return false;
     pin.reacts.push({
       reactType: reactType,
@@ -708,7 +726,7 @@ export class PinsService {
     console.log(pins);
     return pins;
   }
-  async reportPin(userId, pinId) {
+  async reportPin(userId, pinId, reason) {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
@@ -722,7 +740,7 @@ export class PinsService {
     }
     await this.EmailService.sendEmail(
       process.env.EMAIL,
-      { pinId: pinId, userId: userId, userName: user.userName },
+      { pinId: pinId, userId: userId, userName: user.userName, reason: reason },
       'report',
       '',
     );

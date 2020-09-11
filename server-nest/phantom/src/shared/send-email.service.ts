@@ -87,7 +87,9 @@ export class Email {
           message.userName +
           ' (userId: ' +
           message.userId +
-          " ) has reported a pin </p> <h2> <a href='http://localhost:8080/PostPage/" +
+          ' ) has reported a pin for ' +
+          message.reason +
+          " </p> <h2> <a href='http://localhost:8080/PostPage/" +
           message.pinId +
           "' target ='_blank'>Pin Page</a></h2></html>",
       };
