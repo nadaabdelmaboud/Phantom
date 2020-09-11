@@ -233,6 +233,7 @@ export class BoardService {
         collaborators: 1,
         counts: 1,
         name: 1,
+        sections: 1,
       });
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {

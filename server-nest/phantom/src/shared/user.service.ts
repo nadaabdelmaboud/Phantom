@@ -47,7 +47,6 @@ export class UserService {
         firstName: 1,
         lastName: 1,
         location: 1,
-        imageId: 1,
         activity: 1,
         pinsForYou: 1,
         pinsInspired: 1,
@@ -59,7 +58,7 @@ export class UserService {
         followNotification: 1,
         userName: 1,
         sortType: 1,
-        ProfileImage: 1,
+        profileImage: 1,
         followers: 1,
       })
       .lean();
@@ -82,7 +81,7 @@ export class UserService {
   async findByLogin(loginDto: LoginDto): Promise<any> {
     console.log(loginDto.password);
     const user = await this.userModel
-      .findOne({ email: loginDto.email })
+      .findOne({ email: loginDto.email }, { password: 1, profileImage: 1 })
       .exec()
       .then(async user => {
         return user ? user : 0;

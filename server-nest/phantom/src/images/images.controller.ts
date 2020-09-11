@@ -80,14 +80,13 @@ export class ImagesController {
     }
     const file = await this.ImagesService.findInfo(id);
     const fileStream = await this.ImagesService.readStream(id);
-    console.log(file.filename);
     if (!fileStream) {
       var filePath = './default.jpg';
       var resolvedPath = await path.resolve(filePath);
       return res.sendFile(resolvedPath);
     }
     res.header('Content-Type', file.contentType);
-    return fileStream.pipe(res);
+    fileStream.pipe(res);
   }
 
   @Get('download/:id')
