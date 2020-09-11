@@ -69,6 +69,9 @@ export class ImagesController {
 
   @Get('/image/:id')
   async getFile(@Param('id') id: string, @Res() res) {
+    var filePath = './default.jpg';
+    var resolvedPath = await path.resolve(filePath);
+    return res.sendFile(resolvedPath);
     const checkImage = await this.ImagesService.checkImage(id);
     if (!checkImage) {
       var filePath = './default.jpg';

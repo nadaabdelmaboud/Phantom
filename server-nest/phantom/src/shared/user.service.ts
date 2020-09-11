@@ -638,7 +638,7 @@ export class UserService {
   async userFollowings(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = await this.getUserById(userId);
+    const user = await this.userModel.findById(userId, { following: 1 });
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.following || user.following.length == 0)
       return { followings: [], numOfFollowings: 0 };
@@ -647,9 +647,14 @@ export class UserService {
       offset,
       user.following,
     );
-    var followingsInfo = [];
+    let followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
-      var currentUser = await this.getUserById(followings[i]);
+      let currentUser = await this.userModel.findById(followings[i], {
+        activateaccount: 1,
+        firstName: 1,
+        lastName: 1,
+        profileImage: 1,
+      });
       if (currentUser && currentUser.activateaccount != false)
         followingsInfo.push({
           _id: currentUser._id,
