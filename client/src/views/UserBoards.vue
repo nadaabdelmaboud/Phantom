@@ -1,10 +1,11 @@
 <template>
   <div class="home">
     <div class="row m-0">
-      <draggable 
-      class="dragStyle" 
-      @end="ReorderBoards"
-       :sort="myData.sortType == 'Reorder'">
+      <draggable
+        class="dragStyle"
+        @end="ReorderBoards"
+        :sort="myData.sortType == 'Reorder'"
+      >
         <Board
           v-for="board in boards"
           class="col-sm-3"
@@ -42,11 +43,11 @@ export default {
   },
   methods: {
     ReorderBoards(event) {
-      if(this.myData.sortType == 'Reorder'){
-      this.$store.dispatch("boards/reorderBoards", {
-        from: event.oldIndex,
-        to: event.newIndex + 1
-      });
+      if (this.myData.sortType == "Reorder") {
+        this.$store.dispatch("boards/reorderBoards", {
+          from: event.oldIndex,
+          to: event.newIndex + 1
+        });
       }
     }
   },
@@ -55,7 +56,7 @@ export default {
       boards: "boards/userBoards"
     }),
     ...mapState({
-      myData:state=>state.user.userData
+      myData: state => state.user.userData
     })
   }
 };

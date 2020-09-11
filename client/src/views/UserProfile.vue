@@ -30,18 +30,10 @@
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
-        <div
-          class="buttons"
-          @click="toBoards"
-          :class="{ inRoute: inBoards }"
-        >
+        <div class="buttons" @click="toBoards" :class="{ inRoute: inBoards }">
           Boards
         </div>
-        <div
-          class="buttons"
-          @click="toPins"
-          :class="{ inRoute: inPins }"
-        >
+        <div class="buttons" @click="toPins" :class="{ inRoute: inPins }">
           Pins
         </div>
       </div>
@@ -66,23 +58,40 @@
       <p>Sort by</p>
       <ul>
         <li @click="sortAz">
-          <i class="fa fa-check" v-if="meUser.sortType == 'A-Z'" aria-hidden="true"></i>
-          A to Z</li>
+          <i
+            class="fa fa-check"
+            v-if="meUser.sortType == 'A-Z'"
+            aria-hidden="true"
+          ></i>
+          A to Z
+        </li>
         <li @click="reorder">
-          <i class="fa fa-check"  v-if="meUser.sortType == 'Reorder'" aria-hidden="true"></i>
-          Drag and drop</li>
+          <i
+            class="fa fa-check"
+            v-if="meUser.sortType == 'Reorder'"
+            aria-hidden="true"
+          ></i>
+          Drag and drop
+        </li>
         <li @click="sortDate">
-          <i class="fa fa-check" aria-hidden="true"  v-if="meUser.sortType == 'Date'"></i>
-          Last saved to</li>
+          <i
+            class="fa fa-check"
+            aria-hidden="true"
+            v-if="meUser.sortType == 'Date'"
+          ></i>
+          Last saved to
+        </li>
       </ul>
       <p>View options</p>
       <ul>
         <li>
-           <i class="fa fa-check" aria-hidden="true"></i>
-           Default</li>
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Default
+        </li>
         <li>
-           <i class="fa fa-check" aria-hidden="true"></i>
-           Compact</li>
+          <i class="fa fa-check" aria-hidden="true"></i>
+          Compact
+        </li>
       </ul>
     </div>
     <div class="create" v-if="showCreate">
@@ -132,7 +141,7 @@ export default {
     sortDate() {
       this.$store.dispatch("boards/sortDate");
     },
-    reorder(){
+    reorder() {
       this.$store.dispatch("boards/reorderBoards", {
         from: 0,
         to: 1
@@ -146,19 +155,15 @@ export default {
         this.$store.dispatch("followers/followUser", userId);
       }
     },
-    toBoards(){
-      if(this.myprofile){
+    toBoards() {
+      if (this.myprofile) {
         this.$router.push("/UserProfile/Boards");
-      }
-      else
-        this.$router.push("/User/"+this.user._id);
+      } else this.$router.push("/User/" + this.user._id);
     },
-    toPins(){
-      if(this.myprofile){
+    toPins() {
+      if (this.myprofile) {
         this.$router.push("/UserProfile/Pins");
-      }
-      else
-        this.$router.push("/User/"+this.user._id+"/Pins");
+      } else this.$router.push("/User/" + this.user._id + "/Pins");
     }
   },
   computed: {
@@ -255,7 +260,7 @@ i {
 i:hover {
   background-color: $lightPink;
 }
-.fa-check{
+.fa-check {
   height: 24px;
   width: 24px;
   font-size: 16px;
@@ -264,7 +269,7 @@ i:hover {
   text-align: center;
   cursor: pointer;
 }
-.fa-check:hover{
+.fa-check:hover {
   background-color: transparent;
 }
 .col2 {

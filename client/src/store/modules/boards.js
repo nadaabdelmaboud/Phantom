@@ -17,10 +17,10 @@ const mutations = {
   setBoards(state, boards) {
     state.userBoards = boards;
   },
-  chooseBoard(state, { boardName,boardId,sectionId }) {
-    (state.chosenBoardName = boardName);
-    (state.chosenBoardId = boardId);
-    (state.chosenSectionId=sectionId)
+  chooseBoard(state, { boardName, boardId, sectionId }) {
+    state.chosenBoardName = boardName;
+    state.chosenBoardId = boardId;
+    state.chosenSectionId = sectionId;
   },
   setCurrentBoard(state, board) {
     state.currentBoard = board;
@@ -63,7 +63,7 @@ const actions = {
         console.log(error);
       });
   },
-  getBoard({ commit ,dispatch }, boardId) {
+  getBoard({ commit, dispatch }, boardId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
@@ -72,11 +72,11 @@ const actions = {
         let board = response.data;
         commit("setCurrentBoard", board);
         commit("chooseBoard", {
-           boardName:board.board.name,
-           boardId:board.board._id,
-           sectionId:""
-           })
-        dispatch("")
+          boardName: board.board.name,
+          boardId: board.board._id,
+          sectionId: ""
+        });
+        dispatch("");
       })
       .catch(error => {
         console.log(error);
@@ -100,7 +100,7 @@ const actions = {
       .put("me/boards/sortAZ")
       .then(() => {
         dispatch("userBoards");
-        dispatch("user/getUserProfile",null,{root:true})
+        dispatch("user/getUserProfile", null, { root: true });
       })
       .catch(error => {
         console.log(error);
@@ -111,7 +111,7 @@ const actions = {
       .put("me/boards/sortDate")
       .then(() => {
         dispatch("userBoards");
-        dispatch("user/getUserProfile",null,{root:true})
+        dispatch("user/getUserProfile", null, { root: true });
       })
       .catch(error => {
         console.log(error);
@@ -124,7 +124,7 @@ const actions = {
       )
       .then(() => {
         dispatch("userBoards");
-        dispatch("user/getUserProfile",null,{root:true})
+        dispatch("user/getUserProfile", null, { root: true });
       })
       .catch(error => {
         console.log(error);
@@ -212,27 +212,27 @@ const actions = {
         console.log(error);
       });
   },
-  createSection({dispatch},{id,name}){
+  createSection({ dispatch }, { id, name }) {
     axios
-    .post("me/boards/"+ id +"/section",{
-      sectionName:name
-    })
-    .then(()=>{
-      dispatch("getBoard",id)
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .post("me/boards/" + id + "/section", {
+        sectionName: name
+      })
+      .then(() => {
+        dispatch("getBoard", id);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
-  deleteSection({dispatch},{boardId,sectionId}){
+  deleteSection({ dispatch }, { boardId, sectionId }) {
     axios
-    .delete("me/boards/"+ boardId+"/section/"+sectionId)
-    .then(()=>{
-      dispatch("getBoard",boardId)
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .delete("me/boards/" + boardId + "/section/" + sectionId)
+      .then(() => {
+        dispatch("getBoard", boardId);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 

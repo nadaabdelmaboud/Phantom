@@ -10,7 +10,7 @@ import phantomUser from "./modules/phantomUser.js";
 import postPage from "./modules/postPage.js";
 import topics from "./modules/topics.js";
 import chat from "./modules/chat";
-import notifications from "./modules/notifications"
+import notifications from "./modules/notifications";
 
 Vue.use(Vuex);
 
