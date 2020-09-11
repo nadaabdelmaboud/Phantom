@@ -6,6 +6,7 @@ import { Board } from '../models/board.schema';
 import { Pin } from 'src/models/pin.schema';
 import { SharedModule } from 'src/shared/shared.module';
 import { Topic } from 'src/models/topic.schema';
+import { User } from 'src/models/user.schema';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { Topic } from 'src/models/topic.schema';
       { name: 'Board', schema: Board },
       { name: 'Pin', schema: Pin },
       { name: 'Topic', schema: Topic },
+      { name: 'User', schema: User },
     ]),
   ],
   controllers: [BoardController],

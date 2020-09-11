@@ -16,12 +16,14 @@ import { section } from '../types/board';
 import { topic } from 'src/types/topic';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
+import { user } from 'src/types/user';
 @Injectable()
 export class BoardService {
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('User') private readonly userModel: Model<user>,
     private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
@@ -220,15 +222,18 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user;
-    if (ifMe == true) user = await this.UserService.getUserById(userId);
-    else user = await this.UserService.getActivateUserById(userId);
+    let user = await this.userModel.findById(userId, { boards: 1 });
 
     if (!user) return false;
     let retBoards = [];
     let permissions = {};
     for (let i = 0; i < user.boards.length; i++) {
-      let board = await this.boardModel.findById(user.boards[i].boardId);
+      let board = await this.boardModel.findById(user.boards[i].boardId, {
+        coverImages: 1,
+        collaborators: 1,
+        counts: 1,
+        name: 1,
+      });
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';
@@ -253,6 +258,7 @@ export class BoardService {
           createdOrjoined: createdOrjoined,
           permissions: permissions,
         });
+        console.log(retBoards[0]);
       }
     }
     return retBoards;

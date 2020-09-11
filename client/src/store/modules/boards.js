@@ -7,7 +7,7 @@ const state = {
   chosenSectionId: "",
   currentBoard: "",
   collaborators: [],
-  moreLike: []
+  moreLike: [],
 };
 
 const mutations = {
@@ -17,10 +17,10 @@ const mutations = {
   setBoards(state, boards) {
     state.userBoards = boards;
   },
-  chooseBoard(state, { boardName,boardId,sectionId }) {
-    (state.chosenBoardName = boardName);
-    (state.chosenBoardId = boardId);
-    (state.chosenSectionId=sectionId)
+  chooseBoard(state, { boardName, boardId, sectionId }) {
+    state.chosenBoardName = boardName;
+    state.chosenBoardId = boardId;
+    state.chosenSectionId = sectionId;
   },
   setCurrentBoard(state, board) {
     state.currentBoard = board;
@@ -30,7 +30,7 @@ const mutations = {
   },
   setMoreLike(state, more) {
     state.moreLike = more;
-  }
+  },
 };
 
 const actions = {
@@ -42,11 +42,11 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .post("me/boards", boardData)
-      .then(response => {
+      .then((response) => {
         dispatch("userBoards");
         state.chosenBoardId = response.data._id;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -56,29 +56,30 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("me/boards")
-      .then(response => {
+      .then((response) => {
+        console.log(response.data);
         commit("setBoards", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
-  getBoard({ commit ,dispatch }, boardId) {
+  getBoard({ commit, dispatch }, boardId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("boards/" + boardId)
-      .then(response => {
+      .then((response) => {
         let board = response.data;
         commit("setCurrentBoard", board);
         commit("chooseBoard", {
-           boardName:board.board.name,
-           boardId:board.board._id,
-           sectionId:""
-           })
-        dispatch("")
+          boardName: board.board.name,
+          boardId: board.board._id,
+          sectionId: "",
+        });
+        dispatch("");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -88,10 +89,10 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("users/" + userId + "/boards")
-      .then(response => {
+      .then((response) => {
         commit("setBoards", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -100,9 +101,9 @@ const actions = {
       .put("me/boards/sortAZ")
       .then(() => {
         dispatch("userBoards");
-        dispatch("user/getUserProfile",null,{root:true})
+        dispatch("user/getUserProfile", null, { root: true });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -111,9 +112,9 @@ const actions = {
       .put("me/boards/sortDate")
       .then(() => {
         dispatch("userBoards");
-        dispatch("user/getUserProfile",null,{root:true})
+        dispatch("user/getUserProfile", null, { root: true });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -124,9 +125,9 @@ const actions = {
       )
       .then(() => {
         dispatch("userBoards");
-        dispatch("user/getUserProfile",null,{root:true})
+        dispatch("user/getUserProfile", null, { root: true });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -139,7 +140,7 @@ const actions = {
         dispatch("followers/getFollowing", null, { root: true });
         dispatch("getCollaborators");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -149,7 +150,7 @@ const actions = {
       .then(() => {
         dispatch("userBoards");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -159,7 +160,7 @@ const actions = {
       .then(() => {
         dispatch("userBoards");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -168,10 +169,10 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("me/boards/" + state.currentBoard.board._id + "/collaboratores")
-      .then(response => {
+      .then((response) => {
         commit("setCollaborators", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -184,7 +185,7 @@ const actions = {
       .then(() => {
         dispatch("getCollaborators");
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -197,7 +198,7 @@ const actions = {
       .then(() => {
         dispatch("getCollaborators");
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch("getCollaborators");
         console.log(error);
       });
@@ -205,45 +206,45 @@ const actions = {
   moreLike({ commit }, boardId) {
     axios
       .get("more/boards/" + boardId)
-      .then(response => {
+      .then((response) => {
         commit("setMoreLike", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
-  createSection({dispatch},{id,name}){
+  createSection({ dispatch }, { id, name }) {
     axios
-    .post("me/boards/"+ id +"/section",{
-      sectionName:name
-    })
-    .then(()=>{
-      dispatch("getBoard",id)
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .post("me/boards/" + id + "/section", {
+        sectionName: name,
+      })
+      .then(() => {
+        dispatch("getBoard", id);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
-  deleteSection({dispatch},{boardId,sectionId}){
+  deleteSection({ dispatch }, { boardId, sectionId }) {
     axios
-    .delete("me/boards/"+ boardId+"/section/"+sectionId)
-    .then(()=>{
-      dispatch("getBoard",boardId)
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  }
+      .delete("me/boards/" + boardId + "/section/" + sectionId)
+      .then(() => {
+        dispatch("getBoard", boardId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
 };
 
 const getters = {
-  userBoards: state => state.userBoards,
-  chosenBoardName: state => state.chosenBoardName,
-  chosenBoardId: state => state.chosenBoardId,
-  chosenSectionId: state => state.chosenSectionId,
-  currentBoard: state => state.currentBoard,
-  collaborators: state => state.collaborators,
-  moreLike: state => state.moreLike
+  userBoards: (state) => state.userBoards,
+  chosenBoardName: (state) => state.chosenBoardName,
+  chosenBoardId: (state) => state.chosenBoardId,
+  chosenSectionId: (state) => state.chosenSectionId,
+  currentBoard: (state) => state.currentBoard,
+  collaborators: (state) => state.collaborators,
+  moreLike: (state) => state.moreLike,
 };
 
 export default {
@@ -251,5 +252,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };
