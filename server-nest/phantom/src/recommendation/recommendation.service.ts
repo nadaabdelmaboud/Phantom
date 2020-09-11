@@ -77,7 +77,7 @@ export class RecommendationService {
   async getHomeFeed(userId, limit: number, offset: number) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { homeFeed: 1 });
     if (!user) throw new Error('no such user');
     if (!user.homeFeed) user.homeFeed = [];
     console.log(user.homeFeed.length);
@@ -109,7 +109,12 @@ export class RecommendationService {
       throw new Error('not valid id');
     let pinExist = {};
     let topics = [];
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      history: 1,
+      followingTopics: 1,
+      homeFeed: 1,
+      boards: 1,
+    });
     if (!user) throw new Error('no such user');
     let homeFeedArr = [];
     console.log('jojo');
@@ -118,8 +123,6 @@ export class RecommendationService {
       .catch(err => {
         console.log(err);
       });
-    console.log('jojo1');
-    console.log(user.followingTopics);
 
     if (!user.history) user.history = [];
     if (!user.followingTopics) user.followingTopics = [];
@@ -130,7 +133,10 @@ export class RecommendationService {
     }
 
     for (let i = user.followingTopics.length - 1; i >= 0; i--) {
-      let followTopic = await this.topicModel.findById(user.followingTopics[i]);
+      let followTopic = await this.topicModel.findById(
+        user.followingTopics[i],
+        { name: 1 },
+      );
       console.log(followTopic.name);
       if (followTopic) {
         topics.push(followTopic.name);
@@ -138,7 +144,14 @@ export class RecommendationService {
     }
     console.log('here1');
     for (let i = 0; i < user.boards.length; i++) {
-      let board = await this.boardModel.findById(user.boards[i].boardId);
+      let board = await this.boardModel
+        .findById(user.boards[i].boardId, {
+          topic: 1,
+          personalization: 1,
+          pins: 1,
+          sections: 1,
+        })
+        .lean();
       if (board && board.personalization) {
         if (board.topic && board.topic != '') {
           topics.push(board.topic);
@@ -184,7 +197,9 @@ export class RecommendationService {
     let out = 0;
     while (out < sortedTopics.length) {
       for (let i = 0; i < sortedTopics.length; i++) {
-        let topic = await this.topicModel.findOne({ name: sortedTopics[i][0] });
+        let topic = await this.topicModel
+          .findOne({ name: sortedTopics[i][0] }, { pins: 1 })
+          .lean();
         for (let k = count; k < count + 10; k++) {
           if (k >= topic.pins.length) {
             out++;
@@ -194,7 +209,13 @@ export class RecommendationService {
             continue;
           }
           pinExist[String(topic.pins[k])] = true;
-          let pin = await this.pinModel.findById(topic.pins[k]);
+          let pin = await this.pinModel
+            .findById(topic.pins[k], {
+              imageId: 1,
+              imageHeight: 1,
+              imageWidth: 1,
+            })
+            .lean();
           homeFeedArr.push(pin);
           homeFeedArr = [...new Set(homeFeedArr)];
           await this.userModel
@@ -208,14 +229,20 @@ export class RecommendationService {
       count += 10;
     }
     if (pinsHome.length < 20) {
-      let allTopics = await this.topicModel.find({});
+      let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
         for (let j = 0; j < 10; j++) {
           if (pinExist[String(allTopics[i].pins[j])] == true) {
             continue;
           }
           pinExist[String(allTopics[i].pins[j])] = true;
-          let pin = await this.pinModel.findById(allTopics[i].pins[j]);
+          let pin = await this.pinModel
+            .findById(allTopics[i].pins[j], {
+              imageId: 1,
+              imageHeight: 1,
+              imageWidth: 1,
+            })
+            .lean();
           homeFeedArr.push(pin);
           homeFeedArr = [...new Set(homeFeedArr)];
           await this.userModel
