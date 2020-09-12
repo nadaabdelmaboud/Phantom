@@ -158,6 +158,7 @@ const actions = {
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
         commit("setPinId", res.pin._id);
+        console.log("Haha Reacts", res.pin.counts.hahaReacts);
         commit("setNumReactHaha", res.pin.counts.hahaReacts);
         commit("setNumReactWow", res.pin.counts.wowReacts);
         commit("setNumReactLove", res.pin.counts.loveReacts);

@@ -20,35 +20,35 @@
               <ul>
                 <li>
                   <img
-                    src="../assets/Haha.png"
+                    src="../assets/Haha.gif"
                     alt="reactHaha"
                     @click="reactHaha"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Wow.png"
+                    src="../assets/Wow1.gif"
                     alt="reactWow"
                     @click="reactWow"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Love.jpg"
+                    src="../assets/Love2.gif"
                     alt="reactLove"
                     @click="reactLove"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/GoodIdea.png"
+                    src="../assets/GoodIdea1.gif"
                     alt="reactGoodIdea"
                     @click="reactGoodIdea"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Thanks.jpg"
+                    src="../assets/Thanks.gif"
                     alt="reactThanks"
                     @click="reactThanks"
                   />
@@ -666,7 +666,18 @@ export default {
       this.show = !this.show;
     },
     showReactsList() {
-      this.showReacts = !this.showReacts;
+      const heart = document.getElementById("heart-icon");
+      console.log("heartColor", heart.style.color);
+      if (heart.style.color !== "black") {
+        heart.style.color = "black";
+        this.reactType = "none";
+        this.$store.dispatch("postPage/reactPin", {
+          pinId: this.pinId,
+          reactType: this.reactType
+        });
+      } else {
+        this.showReacts = !this.showReacts;
+      }
     },
     reactHaha() {
       this.reactType = "Haha";
@@ -753,6 +764,10 @@ export default {
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
+  },
+  mounted() {
+    const heart = document.getElementById("heart-icon");
+    heart.style.color = "black";
   },
   computed: {
     ...mapGetters({
