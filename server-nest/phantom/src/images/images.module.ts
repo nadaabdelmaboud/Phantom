@@ -6,7 +6,7 @@ import { ImagesController } from './images.controller';
 import { ImagesService } from './images.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { GridFsMulterConfigService } from './multer-config.service';
-import { SharedModule } from 'src/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 @Module({
   imports: [
     SharedModule,

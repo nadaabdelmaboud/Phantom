@@ -5,11 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Pin } from '../models/pin.schema';
 import { BoardModule } from '../board/board.module';
 import { ImagesModule } from '../images/images.module';
-import { Board } from 'src/models/board.schema';
-import { SharedModule } from 'src/shared/shared.module';
-import { Topic } from 'src/models/topic.schema';
+import { Board } from '../models/board.schema';
+import { SharedModule } from '../shared/shared.module';
+import { Topic } from '../models/topic.schema';
 import { NotificationService } from '../notification/notification.service';
-import { User } from 'src/models/user.schema';
+import { User } from '../models/user.schema';
 
 @Module({
   imports: [

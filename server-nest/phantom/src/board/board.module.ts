@@ -3,10 +3,10 @@ import { BoardController } from './board.controller';
 import { BoardService } from './board.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Board } from '../models/board.schema';
-import { Pin } from 'src/models/pin.schema';
-import { SharedModule } from 'src/shared/shared.module';
-import { Topic } from 'src/models/topic.schema';
-import { User } from 'src/models/user.schema';
+import { Pin } from '../models/pin.schema';
+import { SharedModule } from '../shared/shared.module';
+import { Topic } from '../models/topic.schema';
+import { User } from '../models/user.schema';
 
 @Module({
   imports: [

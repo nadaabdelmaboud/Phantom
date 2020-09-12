@@ -5,10 +5,10 @@ import { Pin } from '../models/pin.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BoardModule } from '../board/board.module';
 import { ImagesModule } from '../images/images.module';
-import { Topic } from 'src/models/topic.schema';
+import { Topic } from '../models/topic.schema';
 import { PinsModule } from '../pins/pins.module';
-import { SharedModule } from 'src/shared/shared.module';
-import { User } from 'src/models/user.schema';
+import { SharedModule } from '../shared/shared.module';
+import { User } from '../models/user.schema';
 
 @Module({
   imports: [
