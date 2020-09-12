@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <ReportPin v-if="showReportPin" />
+    <SavePin v-if="showSavePin" />
     <div v-if="isLoggedIn() == false">
       <p>Home Page ,Signup or Login</p>
     </div>
@@ -63,6 +64,7 @@ body {
 <script>
 import HomeCard from "../components/HomeCard";
 import ReportPin from "../components/ReportPin";
+import SavePin from "../components/SavePin";
 import { mapGetters, mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 // import Masonry from "masonry-layout";
@@ -80,7 +82,8 @@ export default {
   name: "UserHome",
   components: {
     HomeCard,
-    ReportPin
+    ReportPin,
+    SavePin
   },
   mixins: [isLoggedIn],
   mounted() {
@@ -105,7 +108,8 @@ export default {
     }),
     ...mapState({
       requestFinished: state => state.homeCards.requestFinished,
-      showReportPin: state => state.popUpsState.reportPinPopUp
+      showReportPin: state => state.popUpsState.reportPinPopUp,
+      showSavePin: state => state.popUpsState.savePinPopUp
     })
   },
   methods: {

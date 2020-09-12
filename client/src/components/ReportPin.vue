@@ -362,6 +362,7 @@ button:focus {
 </style>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "ReportPin",
   data: function() {
@@ -375,8 +376,14 @@ export default {
       dangerousGoods: false,
       privacyViolations: false,
       graphicViolence: false,
-      myProperty: false
+      myProperty: false,
+      reason: ""
     };
+  },
+  computed: {
+    ...mapState({
+      CardId: state => state.homeCards.CardId
+    })
   },
   methods: {
     closePopUp() {
@@ -396,7 +403,13 @@ export default {
       this.showReportMsg = true;
     },
     reportPin() {
-      //call delete Pin
+      let reportReason = {
+        reason: this.reason
+      };
+      this.$store.dispatch("homeCards/reportPin", {
+        pinId: this.CardId,
+        reportReason
+      });
       this.$store.commit("popUpsState/toggleReportPinPopUp");
     },
     nextButtonStyle() {
@@ -414,6 +427,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = false),
         (this.myProperty = false);
+      this.reason = "Spam";
     },
     showSelfHarm() {
       (this.spam = false),
@@ -424,6 +438,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = false),
         (this.myProperty = false);
+      this.reason = "Self-Harm";
     },
     showMisinformation() {
       (this.spam = false),
@@ -434,6 +449,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = false),
         (this.myProperty = false);
+      this.reason = "Misinformation";
     },
     showHatefulActivities() {
       (this.spam = false),
@@ -444,6 +460,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = false),
         (this.myProperty = false);
+      this.reason = "Hateful-Activities";
     },
     showDangerousGoods() {
       (this.spam = false),
@@ -454,6 +471,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = false),
         (this.myProperty = false);
+      this.reason = "Dangerous goods";
     },
     showPrivacyViolations() {
       (this.spam = false),
@@ -464,6 +482,7 @@ export default {
         (this.privacyViolations = true),
         (this.graphicViolence = false),
         (this.myProperty = false);
+      this.reason = "Privacy Violations";
     },
     showGraphicViolence() {
       (this.spam = false),
@@ -474,6 +493,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = true),
         (this.myProperty = false);
+      this.reason = "Graphic Violence";
     },
     showMyProperty() {
       (this.spam = false),
@@ -484,6 +504,7 @@ export default {
         (this.privacyViolations = false),
         (this.graphicViolence = false),
         (this.myProperty = true);
+      this.reason = "My intellectual property";
     }
   },
   mounted() {

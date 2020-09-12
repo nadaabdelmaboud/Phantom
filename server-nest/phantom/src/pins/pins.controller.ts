@@ -292,10 +292,14 @@ export class PinsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/pins/:pinId/report')
-  async reportPin(@Request() req, @Param('pinId') pinId: string) {
+  async reportPin(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Body('reason') reason: string,
+  ) {
     let userId = req.user._id;
     console.log(userId);
-    let report = await this.PinsService.reportPin(userId, pinId);
+    let report = await this.PinsService.reportPin(userId, pinId, reason);
     if (report) {
       return 1;
     } else {

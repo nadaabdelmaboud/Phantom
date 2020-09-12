@@ -91,7 +91,6 @@ export class NotificationService {
         followedUser.offlineNotifications = [];
       followedUser.offlineNotifications.push(message);
     } else {
-
       message.tokens = [followedUser.fcmToken];
       let checkFailed = await this.sendNotification(
         [followedUser.fcmToken],
@@ -102,7 +101,6 @@ export class NotificationService {
         followedUser.offlineNotifications.push(message);
       }
     }
-
     return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
   }
 

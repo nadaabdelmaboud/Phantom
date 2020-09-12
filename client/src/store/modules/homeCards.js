@@ -15,7 +15,16 @@ const state = {
   totalCards: 0,
   finishCalling: false,
   requestFinished: false,
-  deletePin: false
+  deletePin: false,
+  cardImageId: "",
+  CardId: "",
+  reportPin: "",
+  pinId: "",
+  numReactHaha: 0,
+  numReactWow: 0,
+  numReactLove: 0,
+  numReactGoodIdea: 0,
+  numReactThanks: 0
 };
 
 const mutations = {
@@ -61,6 +70,34 @@ const mutations = {
   },
   deletePin(state, check) {
     state.deletePin = check;
+  },
+  setCardImageId(state, id) {
+    state.cardImageId = id;
+  },
+  setCardId(state, id) {
+    console.log("Home id", id);
+    state.CardId = id;
+  },
+  reportPin(state, check) {
+    state.reportPin = check;
+  },
+  setPinId(state, id) {
+    state.pinId = id;
+  },
+  setNumReactHaha(state, react) {
+    state.numReactHaha = react;
+  },
+  setNumReactWow(state, react) {
+    state.numReactWow = react;
+  },
+  setNumReactLove(state, react) {
+    state.numReactLove = react;
+  },
+  setNumReactGoodIdea(state, react) {
+    state.numReactGoodIdea = react;
+  },
+  setNumReactThanks(state, react) {
+    state.numReactThanks = react;
   }
 };
 
@@ -120,6 +157,12 @@ const actions = {
         commit("setuserLastName", res.pin.creator.lastName);
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
+        commit("setPinId", res.pin._id);
+        commit("setNumReactHaha", res.pin.counts.hahaReacts);
+        commit("setNumReactWow", res.pin.counts.wowReacts);
+        commit("setNumReactLove", res.pin.counts.loveReacts);
+        commit("setNumReactGoodIdea", res.pin.counts.goodIdeaReacts);
+        commit("setNumReactThanks", res.pin.counts.thanksReacts);
       })
       .catch(error => {
         console.log(error);
@@ -132,6 +175,19 @@ const actions = {
       .delete("me/pins/" + pinId)
       .then(() => {
         commit("deletePin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  reportPin({ commit }, { pinId, reportReason }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    console.log("ReportReason", reportReason);
+    axios
+      .post("pins/" + pinId + "/report", reportReason)
+      .then(() => {
+        commit("reportPin", true);
       })
       .catch(error => {
         console.log(error);
@@ -149,7 +205,13 @@ const getters = {
   userLastName: state => state.userLastName,
   numberofFollowers: state => state.numberofFollowers,
   pinCreatorId: state => state.pinCreatorId,
-  finishCalling: state => state.finishCalling
+  finishCalling: state => state.finishCalling,
+  pinId: state => state.pinId,
+  numReactHaha: state => state.numReactHaha,
+  numReactWow: state => state.numReactWow,
+  numReactLove: state => state.numReactLove,
+  numReactGoodIdea: state => state.numReactGoodIdea,
+  numReactThanks: state => state.numReactThanks
 };
 
 export default {

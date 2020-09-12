@@ -2,42 +2,43 @@
   <div id="add" @click="closeAdd">
     <div class="addSection">
       <h3>Add Section</h3>
-      <input type="text" v-model="name"/>
+      <input type="text" v-model="name" />
       <div class="buttonDiv">
-      <button 
-      @click="addSection"
-      :class="{disable : name.length==0}"
-      >Add</button>
-      <button class="leftButton" id="close" @click="addSection">Cancel</button>
+        <button @click="addSection" :class="{ disable: name.length == 0 }">
+          Add
+        </button>
+        <button class="leftButton" id="close" @click="addSection">
+          Cancel
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "AddSectionPopup",
-  data:function(){
-      return{
-          name
-      };
+  data: function() {
+    return {
+      name
+    };
   },
   methods: {
     addSection(event) {
-        if(event.target.id != "close"){
-            if(this.name.length !=0){
-            let id = this.$route.params.boardId
-            this.$store.dispatch("boards/createSection",{id:id,name:this.name});
-            this.$store.commit("popUpsState/toggleAddSection");
-            }
+      if (event.target.id != "close") {
+        if (this.name.length != 0) {
+          let id = this.$route.params.boardId;
+          this.$store.dispatch("boards/createSection", {
+            id: id,
+            name: this.name
+          });
+          this.$store.commit("popUpsState/toggleAddSection");
         }
-        else
-            this.$store.commit("popUpsState/toggleAddSection");
+      } else this.$store.commit("popUpsState/toggleAddSection");
     },
     closeAdd(event) {
-        console.log(event.target.id )
-        if(event.target.id == "add")
+      console.log(event.target.id);
+      if (event.target.id == "add")
         this.$store.commit("popUpsState/toggleAddSection");
     }
   }
@@ -66,18 +67,18 @@ export default {
   width: 450px;
   padding: 20px;
   border-radius: 32px;
-  input{
-      border: none;
-      width: 100%;
-      height: 48px;
-      border-radius: 32px;
-      border: 2px $lightPink solid;
-      transition: linear 0.5s;
-      margin-top: 20px;
-      padding: 0 20px;
+  input {
+    border: none;
+    width: 100%;
+    height: 48px;
+    border-radius: 32px;
+    border: 2px $lightPink solid;
+    transition: linear 0.5s;
+    margin-top: 20px;
+    padding: 0 20px;
   }
-  input:hover{
-      border-color: $lightPinkHover;
+  input:hover {
+    border-color: $lightPinkHover;
   }
 }
 h3 {

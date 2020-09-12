@@ -9,11 +9,12 @@ const state = {
   TopicsPopup: false,
   changePasswordPopUp: false,
   forgetPasswordPopUp: false,
-  addSection:false,
+  addSection: false,
   changePhotoPopUp: false,
   leavingPopUp: false,
   accountClosingPopup: false,
-  reportPinPopUp: false
+  reportPinPopUp: false,
+  savePinPopUp: false
 };
 
 const mutations = {
@@ -61,6 +62,9 @@ const mutations = {
   },
   toggleReportPinPopUp(state) {
     state.reportPinPopUp = !state.reportPinPopUp;
+  },
+  toggleSavePinPopUp(state) {
+    state.savePinPopUp = !state.savePinPopUp;
   }
 };
 export default {
