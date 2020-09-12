@@ -26,8 +26,9 @@
           tag="i"
           class="fa fa-pencil"
           aria-hidden="true"
+          v-if="myprofile"
         ></router-link>
-        <i class="fa fa-upload" aria-hidden="true"></i>
+        <i class="fa fa-upload" aria-hidden="true" v-if="myprofile"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
         <div class="buttons" @click="toBoards" :class="{ inRoute: inBoards }">
@@ -51,6 +52,7 @@
           id="view"
           style="float:right;"
           @click="showViewOptions = !showViewOptions"
+          v-if="myprofile"
         ></i>
       </div>
     </div>
@@ -84,12 +86,20 @@
       </ul>
       <p>View options</p>
       <ul>
-        <li>
-          <i class="fa fa-check" aria-hidden="true"></i>
+        <li @click="alterView('Default')">
+          <i
+            class="fa fa-check"
+            aria-hidden="true"
+            v-if="viewState == 'Default'"
+          ></i>
           Default
         </li>
-        <li>
-          <i class="fa fa-check" aria-hidden="true"></i>
+        <li @click="alterView('Compact')">
+          <i
+            class="fa fa-check"
+            aria-hidden="true"
+            v-if="viewState == 'Compact'"
+          ></i>
           Compact
         </li>
       </ul>
@@ -112,7 +122,7 @@ export default {
   name: "UserProfile",
   data: function() {
     return {
-      inBoards: true,
+      inBoards: false,
       inPins: false,
       showCreate: false,
       showViewOptions: false,
@@ -120,6 +130,7 @@ export default {
       userName: "",
       imageId: "",
       followers: "",
+      userId: ""
     };
   },
   mixins: [getImage],
@@ -148,70 +159,67 @@ export default {
       });
     },
     alterFollow() {
-      let userId = this.$route.params.userId;
       if (this.isFollowed) {
-        this.$store.dispatch("followers/unfollowUser", userId);
+        this.$store.dispatch("followers/unfollowUser", this.userId);
       } else {
-        this.$store.dispatch("followers/followUser", userId);
+        this.$store.dispatch("followers/followUser", this.userId);
       }
     },
     toBoards() {
-      if (this.myprofile) {
-        this.$router.push("/UserProfile/Boards");
-      } else this.$router.push("/User/" + this.user._id);
+      if (this.myprofile) this.$router.push("/UserProfile/Boards");
+      else this.$router.push("/User/" + this.userId);
+      this.inBoards = true;
+      this.inPins = false;
     },
     toPins() {
-      if (this.myprofile) {
-        this.$router.push("/UserProfile/Pins");
-      } else this.$router.push("/User/" + this.user._id + "/Pins");
+      if (this.myprofile) this.$router.push("/UserProfile/Pins");
+      else this.$router.push("/User/" + this.userId + "/Pins");
+      this.inPins = true;
+      this.inBoards = false;
     },
+    alterView(view) {
+      this.$store.dispatch("boards/setViewState", view);
+    }
   },
   computed: {
     ...mapGetters({
       user: "phantomUser/user",
       isFollowed: "phantomUser/isFollowed",
+      viewState: "boards/viewState"
     }),
     ...mapState({
       meUser: (state) => state.user.userData,
     }),
   },
-  watch: {
-    $route: function() {
-      if (this.$route.path.includes("/Pins")) {
-        this.inBoards = false;
-        this.inPins = true;
-      } else if (this.$route.path.includes("/Boards")) {
-        this.inBoards = true;
-        this.inPins = false;
-      } else {
-        this.inBoards = false;
-        this.inPins = false;
-      }
-    },
-  },
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
     if (!this.myprofile) {
-      let userId = this.$route.params.userId;
-      this.$store.dispatch("phantomUser/getUser", userId);
-      this.$store.dispatch("phantomUser/isFollowed", userId);
+      this.userId = this.$route.params.userId;
+      if (!this.user || this.userId != this.user._id) {
+        this.$store.dispatch("phantomUser/getUser", this.userId);
+        this.$store.dispatch("phantomUser/isFollowed", this.userId);
+      }
     } else {
-      this.$store.dispatch("user/getUserProfile");
+      this.userName = this.meUser.firstName + " " + this.meUser.lastName;
+      this.imageId = this.meUser.profileImage;
+      this.followers = this.meUser.followers.length;
     }
   },
   mounted() {
-    setTimeout(() => {
-      if (!this.myprofile) {
-        this.userName = this.user.firstName + " " + this.user.lastName;
-        this.imageId = this.user.profileImage;
-        this.followers = this.user.followers;
-      } else {
-        this.userName = this.meUser.userName;
-        this.imageId = this.meUser.profileImage;
-        this.followers = this.meUser.followers;
-      }
-    }, 4000);
-  },
+    if (!this.myprofile) {
+      this.userName = this.user.firstName + " " + this.user.lastName;
+      this.imageId = this.user.profileImage;
+      this.followers = this.user.followers.length;
+    }
+
+    if (this.$route.path.includes("/Pins")) {
+      this.inBoards = false;
+      this.inPins = true;
+    } else {
+      this.inBoards = true;
+      this.inPins = false;
+    }
+  }
 };
 </script>
 

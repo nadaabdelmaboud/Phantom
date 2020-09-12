@@ -22,6 +22,7 @@ import BoardView from "../views/BoardView.vue";
 import BoardPins from "../components/BoardPins";
 import BoardMoreLike from "../components/BoardMoreLike";
 import TopicsPage from "../views/TopicsPage.vue";
+import SectionView from "../views/SectionView";
 
 Vue.use(VueRouter);
 
@@ -107,6 +108,11 @@ const routes = [
             component: BoardMoreLike
           }
         ]
+      },
+      {
+        path: "Section/:boardId/:sectionId",
+        name: "Section",
+        component: SectionView
       },
       {
         path: "/settings",

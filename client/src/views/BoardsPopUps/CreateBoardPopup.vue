@@ -43,11 +43,11 @@
         type="range"
         min="1"
         max="2"
-        value="1"
+        value="2"
         class="slider"
         id="myRange"
-        v-model="isPrivate"
-        :class="{ isPrivate: isPrivate == 2 }"
+        v-model="status"
+        :class="{ isPrivate: status == 2 }"
       />
       <div class="buttonDiv">
         <button :class="{ disable: boardName == '' }" @click="createBoard">
@@ -75,16 +75,13 @@ export default {
         endDate: new Date()
       },
       checkOpen: false,
-      isPrivate: 1
+      status: 2
     };
   },
   components: {
     DateRangePicker
   },
   methods: {
-    // classObject: function () {
-    // return
-    //  },
     createBoardPopup(event) {
       if (event.target.id == "createBoard")
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
@@ -95,9 +92,9 @@ export default {
           name: this.boardName,
           startDate: this.dateRange.startDate,
           endDate: this.dateRange.endDate,
-          status: "public"
+          personalisation: false
         };
-        if (this.isPrivate == 2) boardData.status = "private";
+        if (this.status == 2) boardData.personalisation = true;
         this.$store.dispatch("boards/createBoard", boardData);
         this.$store.commit("popUpsState/toggleCreateBoardPopup");
       }
@@ -108,6 +105,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/GlobalPopup";
+@import "../../scss/Colors";
+@import "../../scss/GlobalPopup";
 </style>

@@ -11,9 +11,13 @@
         <i class="fa fa-plus" @click="showTopics"></i>
       </div>
       <div class="masonry">
-        <div v-for="homecard in cards" :key="homecard._id" class="masonryItem">
-          <HomeCard :cardImage="homecard.imageId" :postPageId="homecard._id" />
-        </div>
+        <HomeCard
+          v-for="homecard in cards"
+          :key="homecard._id"
+          class="masonryItem"
+          :cardImage="homecard.imageId"
+          :postPageId="homecard._id"
+        />
       </div>
     </div>
   </div>
@@ -132,6 +136,7 @@ export default {
     requestFinished: {
       handler: function(newValue) {
         console.log("requestFinished", newValue);
+        if(this.$route.path == "/")
         if (newValue === true) {
           console.log("start scroll event");
           window.addEventListener("scroll", this.generateHomeCards);

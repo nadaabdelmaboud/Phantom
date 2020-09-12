@@ -1,28 +1,13 @@
 <template>
   <div>
-    <div class="row m-0 justify-content-center">
-      <div class="col-9">
-        <div class="row m-0">
-          <Board
-            v-for="b in board.board.sections"
-            class="col-sm-4"
-            :key="b._id"
-            :boardId="boardId"
-            :boardName="b.sectionName"
-            :pinsImages="b.coverImages"
-            :pinsCount="b.pins.length"
-            :boardObject="b"
-            :isBoard="false"
-            :sectionId="b._id"
-          />
-        </div>
-      </div>
+    <div class="secctionInfo">
+      <h1>{{ section.section.sectionName }}</h1>
+      <p>{{ section.pins.length }} pins</p>
     </div>
-
     <div class="flexWrap">
       <div class="masonry">
         <HomeCard
-          v-for="b in board.pins"
+          v-for="b in section.pins"
           :key="b.pin._id"
           :cardImage="b.pin.imageId"
           :postPageId="b.pin._id"
@@ -36,33 +21,54 @@
 <script>
 import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
-import Board from "../components/Board";
+
 export default {
-  name: "BoardPins",
+  name: "SectionView",
   data: function() {
     return {
+      sectonId: "",
       boardId: ""
     };
   },
   components: {
-    Board,
     HomeCard
   },
   computed: {
     ...mapGetters({
-      board: "boards/currentBoard"
+      section: "boards/section"
     })
   },
-  created: function() {
+  created() {
+    console.log("sss", this.$route.params);
     this.boardId = this.$route.params.boardId;
+    this.sectionId = this.$route.params.sectionId;
+    this.$store.dispatch("boards/getFullSection", {
+      boardId: this.boardId,
+      sectionId: this.sectionId
+    });
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../scss/Colors";
+@import "../scss/mixins";
 @import "../scss/MasonryGrid";
+
 .flexWrap {
   margin: auto;
   width: 90%;
+}
+
+h1 {
+  text-align: center;
+  font-weight: 700;
+  font-size: 36px;
+}
+p {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
 }
 </style>
