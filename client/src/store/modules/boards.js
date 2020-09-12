@@ -7,7 +7,9 @@ const state = {
   chosenSectionId: "",
   currentBoard: "",
   collaborators: [],
-  moreLike: []
+  moreLike: [],
+  section: {},
+  viewState: "Default"
 };
 
 const mutations = {
@@ -30,6 +32,9 @@ const mutations = {
   },
   setMoreLike(state, more) {
     state.moreLike = more;
+  },
+  setCurrentSection(state, section) {
+    state.section = section;
   }
 };
 
@@ -64,7 +69,7 @@ const actions = {
         console.log(error);
       });
   },
-  getBoard({ commit, dispatch }, boardId) {
+  getBoard({ commit }, boardId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
@@ -77,7 +82,6 @@ const actions = {
           boardId: board.board._id,
           sectionId: ""
         });
-        dispatch("");
       })
       .catch(error => {
         console.log(error);
@@ -213,6 +217,19 @@ const actions = {
         console.log(error);
       });
   },
+  getFullSection({ commit }, { boardId, sectionId }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .get("boards/" + boardId + "/sections/" + sectionId)
+      .then(response => {
+        let section = response.data;
+        commit("setCurrentSection", section);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   createSection({ dispatch }, { id, name }) {
     axios
       .post("me/boards/" + id + "/section", {
@@ -234,6 +251,26 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  getViewState({ state }) {
+    axios
+      .get("me/boards/view")
+      .then(response => {
+        state.viewState = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  setViewState({ state }, view) {
+    axios
+      .put("me/boards/view?viewState=" + view)
+      .then(() => {
+        state.viewState = view;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 
@@ -244,7 +281,9 @@ const getters = {
   chosenSectionId: state => state.chosenSectionId,
   currentBoard: state => state.currentBoard,
   collaborators: state => state.collaborators,
-  moreLike: state => state.moreLike
+  moreLike: state => state.moreLike,
+  section: state => state.section,
+  viewState: state => state.viewState
 };
 
 export default {

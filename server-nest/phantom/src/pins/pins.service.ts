@@ -220,7 +220,7 @@ export class PinsService {
     let user;
     if (ifMe == true)
       user = await this.userModel.findById(userId, { pins: 1 }).lean();
-    else user = await this.UserService.getActivateUserById(userId);
+    else user = await this.UserService.getUserById(userId);
     console.log(user);
     if (!user) throw new BadRequestException('no such user');
     let retPins = [];
@@ -430,6 +430,7 @@ export class PinsService {
         .lean();
       if (commenter) {
         let comment = {
+          id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
           commenterName: commenter.firstName + ' ' + commenter.lastName,
           commenterImage: commenter.profileImage,
@@ -448,6 +449,7 @@ export class PinsService {
             .lean();
           if (replier) {
             let reply = {
+              id: pin.comments[i].replies[j]._id,
               replier: pin.comments[i].replies[j].replier,
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
@@ -472,7 +474,8 @@ export class PinsService {
       String(reactType) != 'Love' &&
       String(reactType) != 'Good idea' &&
       String(reactType) != 'Thanks' &&
-      String(reactType) != 'Haha'
+      String(reactType) != 'Haha' &&
+      String(reactType) != 'none'
     ) {
       return false;
     }
@@ -500,6 +503,7 @@ export class PinsService {
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
+        console.log('asas');
         switch (pin.reacts[i].reactType) {
           case 'Wow':
             pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
@@ -517,7 +521,9 @@ export class PinsService {
             pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() - 1;
             break;
         }
+        console.log(reactType);
         if (reactType == 'none') {
+          console.log('here');
           pin.reacts.splice(i, 1);
         } else {
           pin.reacts[i].reactType = reactType;
@@ -783,8 +789,6 @@ export class PinsService {
     const user = await this.UserService.getUserById(userId);
     var pins = [];
     for (let i = 0; i < user.following.length; i++) {
-      var followUser = await this.UserService.getUserById(user.following[i]);
-      if (followUser.activateaccount == false) continue;
       var userPin = await this.getCurrentUserPins(user.following[i], false);
       console.log(pins);
       pins = await pins.concat(userPin);

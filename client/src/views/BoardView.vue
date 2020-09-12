@@ -2,9 +2,7 @@
   <div class="profile" @click="clear">
     <div class="boardInfo">
       <h1>{{ board.board.name }}</h1>
-      <img
-        src="https://images.unsplash.com/photo-1594843310575-90756e33c484?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-      />
+      <img :src="getUserImage()" />
       <i
         class="fa fa-plus globalIcons"
         v-if="
@@ -25,22 +23,12 @@
         <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
-        <router-link
-          class="buttons"
-          :to="{ path: '/Board/' + boardId + '/Pins' }"
-          tag="div"
-          :class="{ inRoute: inPins }"
-        >
+        <div class="buttons" :class="{ inRoute: inPins }" @click="toPins">
           Pins
-        </router-link>
-        <router-link
-          class="buttons"
-          :to="{ path: '/Board/' + boardId + '/More' }"
-          tag="div"
-          :class="{ inRoute: inMore }"
-        >
+        </div>
+        <div class="buttons" @click="toMore" :class="{ inRoute: inMore }">
           MoreIdeas
-        </router-link>
+        </div>
       </div>
       <div class="col-sm-4 col-4 col3">
         <i
@@ -69,6 +57,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import getUserImage from "../mixins/getUserImage.js";
 export default {
   name: "BoardView",
   data: function() {
@@ -80,6 +69,7 @@ export default {
       boardId: ""
     };
   },
+  mixins: [getUserImage],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
@@ -100,20 +90,16 @@ export default {
     },
     addSection() {
       this.$store.commit("popUpsState/toggleAddSection");
-    }
-  },
-  watch: {
-    $route: function() {
-      if (this.$route.path.includes("/Pins")) {
-        this.inMore = false;
-        this.inPins = true;
-      } else if (this.$route.path.includes("/More")) {
-        this.inMore = true;
-        this.inPins = false;
-      } else {
-        this.inMore = false;
-        this.inPins = false;
-      }
+    },
+    toPins() {
+      this.$router.push("/Board/" + this.boardId + "/Pins");
+      this.inPins = true;
+      this.inMore = false;
+    },
+    toMore() {
+      this.$router.push("/Board/" + this.boardId + "/More");
+      this.inPins = false;
+      this.inMore = true;
     }
   },
   computed: {
@@ -122,7 +108,13 @@ export default {
     })
   },
   mounted() {
-    this.boardId = this.$route.params.boardId;
+    if (this.$route.path.includes("/Pins")) {
+      this.inMore = false;
+      this.inPins = true;
+    } else {
+      this.inMore = true;
+      this.inPins = false;
+    }
   },
   created() {
     this.boardId = this.$route.params.boardId;

@@ -3,7 +3,6 @@ importScripts("https://www.gstatic.com/firebasejs/7.19.1/firebase-messaging.js")
 // import {get_messaging} from "../src/messaging/init";
 
 if (firebase.messaging.isSupported()) {
-  console.log("hooooooooo");
   var firebaseConfig = {
       apiKey: "AIzaSyDJGcM4-rKBLozMQu1uJmTORQPnQKVkS_M",
       authDomain: "phantom-30457.firebaseapp.com",

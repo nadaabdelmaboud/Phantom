@@ -27,7 +27,7 @@
       class="icons"
       @click="shownNotification = !shownNotification"
     >
-      <i class="fa fa-bell"></i>
+      <i class="fa fa-bell"><span>1</span></i>
     </div>
     <NotificationDropDown v-if="shownNotification" />
     <router-link

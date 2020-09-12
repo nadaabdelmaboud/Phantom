@@ -38,7 +38,12 @@
         v-for="follower in followers"
         :key="follower._id"
       >
-        <div v-if="!collaborators.some(c => c.id === follower._id)">
+        <div
+          v-if="
+            !collaborators.some(c => c.id === follower._id) &&
+              !(board.board.creator.id === follower._id)
+          "
+        >
           <img :src="getImage(follower.profileImage)" />
           <span>{{ follower.firstName }} </span>
           <span>{{ follower.lastName }}</span>
@@ -52,7 +57,8 @@
         <div
           v-if="
             !collaborators.some(c => c.id === f._id) &&
-              !followers.some(follower => follower._id === f._id)
+              !followers.some(follower => follower._id === f._id) &&
+              !(board.board.creator.id === f._id)
           "
         >
           <img :src="getImage(f.profileImage)" />
