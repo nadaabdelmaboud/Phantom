@@ -57,10 +57,8 @@ export class ChatService {
   async getChats(userId: String) {
     if (!this.ValidationService.checkMongooseID([userId]))
       throw new Error('not mongoose id');
-    let chat = await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { date: -1 } });
-    for(let i=0;i< chat.userIds.length;i++){
-      
-    }
+    return await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { date: -1 } });
+    
   }
   async seenDeliverMessage(userId: String, messageId: String, isSeen: boolean, isDelivered: boolean) {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
