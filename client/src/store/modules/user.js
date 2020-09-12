@@ -175,7 +175,6 @@ const actions = {
       })
       .then(response => {
         commit("setUserData", response.data);
-        console.log("notify", response.data);
       })
       .catch(error => {
         console.log("axios caught an error");

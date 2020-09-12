@@ -27,7 +27,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -35,35 +35,57 @@ export class UserService {
     if (!user.about) user.about = '';
     return user;
   }
+
   async getUserMe(id) {
-    const user = await this.userModel
-      .findById(id, {
-        email: 1,
-        gender: 1,
-        country: 1,
-        firstName: 1,
-        lastName: 1,
-        location: 1,
-        activity: 1,
-        pinsForYou: 1,
-        pinsInspired: 1,
-        popularPins: 1,
-        boardsForYou: 1,
-        boardUpdate: 1,
-        invitation: 1,
-        pinsNotification: 1,
-        followNotification: 1,
-        userName: 1,
-        sortType: 1,
-        profileImage: 1,
-        followers: 1,
-      })
-      .lean();
+    let userId = mongoose.Types.ObjectId(id);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          followers: { $size: '$followers' },
+          email: 1,
+          gender: 1,
+          country: 1,
+          firstName: 1,
+          lastName: 1,
+          location: 1,
+          activity: 1,
+          pinsForYou: 1,
+          pinsInspired: 1,
+          popularPins: 1,
+          boardsForYou: 1,
+          boardUpdate: 1,
+          invitation: 1,
+          pinsNotification: 1,
+          followNotification: 1,
+          userName: 1,
+          sortType: 1,
+          profileImage: 1,
+        },
+      },
+    ]);
+
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
-    if (!user.about) user.about = '';
+    if (!user[0].about) user[0].about = '';
 
-    return user;
+    return user[0];
+  }
+  async getUserNotifications(userId) {
+    let user = await this.userModel.findById(userId, {
+      notifications: 1,
+      notificationCounter: 1,
+    });
+    let offset: number =
+      user.notifications.length > 30 ? user.notifications.length - 30 : 0;
+    let limit: number =
+      user.notifications.length > 30 ? offset + 30 : user.notifications.length;
+    console.log(limit);
+    let ret = {
+      notificationCounter: user.notificationCounter,
+      notifications: user.notifications.slice(offset, limit),
+    };
+    return ret;
   }
   async findUserAndGetData(findData: {}, data: {}) {
     const user = await this.userModel.findOne(findData, data).lean();
@@ -71,12 +93,14 @@ export class UserService {
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
-
   }
 
   async findByLogin(loginDto: LoginDto): Promise<any> {
     // console.log(loginDto.password);
-    const user = await this.findUserAndGetData({ email: loginDto.email }, { password: 1, profileImage: 1, email: 1, _id: 1 });
+    const user = await this.findUserAndGetData(
+      { email: loginDto.email },
+      { password: 1, profileImage: 1, email: 1, _id: 1 },
+    );
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
     if (await bcrypt.compare(loginDto.password, user.password)) {
@@ -147,7 +171,10 @@ export class UserService {
   }
 
   async updateFCMTocken(fcmToken, userId) {
-    const user = await this.findUserAndGetData({ _id: userId }, { fcmToken: 1, _id: 1, email: 1 })
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { fcmToken: 1, _id: 1, email: 1 },
+    );
     await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
     if (fcmToken && fcmToken != ' ')
       await this.notification.sendOfflineNotification(
@@ -158,7 +185,10 @@ export class UserService {
   }
 
   async followingTopics(userId) {
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1, followingTopics: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, email: 1, followingTopics: 1 },
+    );
     return user.followingTopics;
   }
 
@@ -253,12 +283,18 @@ export class UserService {
     const validate = shcema.validate(body);
     if (validate.error != null)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData({ email: email }, { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1 });
+    const user = await this.findUserAndGetData(
+      { email: email },
+      { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1 },
+    );
     return user;
   }
 
   async resetPassword(userId, newPassword, oldPassword) {
-    const user = await this.findUserAndGetData({ _id: userId }, { email: 1, password: 1, _id: 1, fristName: 1 })
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { email: 1, password: 1, _id: 1, fristName: 1 },
+    );
     if (!user || !newPassword)
       throw new HttpException('there is no new password', HttpStatus.FORBIDDEN);
     if (oldPassword) {
@@ -403,7 +439,10 @@ export class UserService {
    */
   async setEmail(userId, newEmail) {
     // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
-    const user = await this.findUserAndGetData({ _id: userId }, { email: 1, _id: 1 })
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { email: 1, _id: 1 },
+    );
     if (!user || !newEmail) return 0;
     await this.userModel.updateOne({ _id: userId }, { email: newEmail });
     return 1;
@@ -426,7 +465,10 @@ export class UserService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1, viewState: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, email: 1, viewState: 1 },
+    );
     if (!user) throw new NotFoundException('user not found');
     if (viewState != 'Default' && viewState != 'Compact') {
       throw new BadRequestException(
@@ -441,7 +483,10 @@ export class UserService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, viewState: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, viewState: 1 },
+    );
     if (!user) throw new NotFoundException('user not found');
     if (!user.viewState) {
       user.viewState = 'Default';
@@ -480,8 +525,22 @@ export class UserService {
       ])) === 0
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    let userFollow = await this.findUserAndGetData({ _id: followerId }, { _id: 1, followers: 1, following: 1 });
-    let followedUser = await this.findUserAndGetData({ _id: followingId }, { _id: 1, followers: 1, following: 1, notifications: 1, notificationCounter: 1, offlineNotifications: 1, profileImage: 1 });
+    let userFollow = await this.findUserAndGetData(
+      { _id: followerId },
+      { _id: 1, followers: 1, following: 1 },
+    );
+    let followedUser = await this.findUserAndGetData(
+      { _id: followingId },
+      {
+        _id: 1,
+        followers: 1,
+        following: 1,
+        notifications: 1,
+        notificationCounter: 1,
+        offlineNotifications: 1,
+        profileImage: 1,
+      },
+    );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
     if (await this.checkFollowUser(userFollow, followingId))
@@ -493,14 +552,21 @@ export class UserService {
     );
     if (!followedUser.followers) followedUser.followers = [];
     followedUser.followers.push(followerId);
-    await this.userModel.update({ _id: followingId }, { followers: followedUser.followers })
+    await this.userModel.update(
+      { _id: followingId },
+      { followers: followedUser.followers },
+    );
     if (
       !followedUser.followNotification ||
       followedUser.followNotification == true
     ) {
-      var newUserData = await this.notification.followUser(followedUser, userFollow);
+      var newUserData = await this.notification.followUser(
+        followedUser,
+        userFollow,
+      );
       await this.updateDataInUser(followingId, newUserData);
-    } return 1;
+    }
+    return 1;
   }
   async updateDataInUser(userId, data: {}) {
     await this.userModel.update({ _id: userId }, data);
@@ -522,8 +588,22 @@ export class UserService {
       ])) === 0
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    let userFollow = await this.findUserAndGetData({ _id: followerId }, { _id: 1, followers: 1, following: 1 });
-    let followedUser = await this.findUserAndGetData({ _id: followingId }, { _id: 1, followers: 1, following: 1, notifications: 1, notificationCounter: 1, offlineNotifications: 1, profileImage: 1 });
+    let userFollow = await this.findUserAndGetData(
+      { _id: followerId },
+      { _id: 1, followers: 1, following: 1 },
+    );
+    let followedUser = await this.findUserAndGetData(
+      { _id: followingId },
+      {
+        _id: 1,
+        followers: 1,
+        following: 1,
+        notifications: 1,
+        notificationCounter: 1,
+        offlineNotifications: 1,
+        profileImage: 1,
+      },
+    );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
     if (!(await this.checkFollowUser(userFollow, followingId)))
@@ -549,7 +629,10 @@ export class UserService {
             { followers: followedUser.followers },
           );
           //console.log(100);
-          var newUserData = await this.notification.unfollowUser(followedUser, userFollow);
+          var newUserData = await this.notification.unfollowUser(
+            followedUser,
+            userFollow,
+          );
           //console.log(100);
           await this.updateDataInUser(followingId, newUserData);
           //console.log(1000);
@@ -571,7 +654,10 @@ export class UserService {
   async userFollowers(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData({ _id: userId }, { following: 1, _id: 1, followers: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { following: 1, _id: 1, followers: 1 },
+    );
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.followers || user.followers.length == 0)
       return { followers: [], numOfFollowers: 0 };
@@ -582,14 +668,16 @@ export class UserService {
     );
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
-      var currentUser = await this.findUserAndGetData({ _id: followers[i] }, {
-        _id: 1,
-        firstName: 1,
-        lastName: 1,
-        profileImage: 1
-      });
-      if (currentUser)
-        followersInfo.push(currentUser);
+      var currentUser = await this.findUserAndGetData(
+        { _id: followers[i] },
+        {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+        },
+      );
+      if (currentUser) followersInfo.push(currentUser);
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
   }
@@ -604,7 +692,10 @@ export class UserService {
   async userFollowings(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData({ _id: userId }, { following: 1, _id: 1, followers: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { following: 1, _id: 1, followers: 1 },
+    );
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.following || user.following.length == 0)
       return { followings: [], numOfFollowings: 0 };
@@ -615,14 +706,16 @@ export class UserService {
     );
     let followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
-      var currentUser = await this.findUserAndGetData({ _id: followings[i] }, {
-        _id: 1,
-        firstName: 1,
-        lastName: 1,
-        profileImage: 1
-      });
-      if (currentUser)
-        followingsInfo.push(currentUser);
+      var currentUser = await this.findUserAndGetData(
+        { _id: followings[i] },
+        {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+        },
+      );
+      if (currentUser) followingsInfo.push(currentUser);
     }
     return {
       followings: followingsInfo,

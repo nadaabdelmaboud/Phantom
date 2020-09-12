@@ -3,7 +3,6 @@ importScripts("https://www.gstatic.com/firebasejs/7.19.1/firebase-messaging.js")
 // import {get_messaging} from "../src/messaging/init";
 
 if (firebase.messaging.isSupported()) {
-  console.log("hooooooooo");
   var firebaseConfig = {
       apiKey: "AIzaSyDJGcM4-rKBLozMQu1uJmTORQPnQKVkS_M",
       authDomain: "phantom-30457.firebaseapp.com",
@@ -20,15 +19,14 @@ if (firebase.messaging.isSupported()) {
   const messaging = firebase.messaging();
   messaging.setBackgroundMessageHandler(function(payload) {
     console.log(' Received background message ', payload);
-    // var sender = JSON.parse(payload.data.message);
-    // var notificationTitle = payload.data.title;
-    // var notificationOptions = {
-    //   body: payload.data.body,
-    // };
-    // return self.registration.showNotification(
-    //   notificationTitle,
-    //   notificationOptions
-    // );
+    var notificationTitle = payload.data.title;
+    var notificationOptions = {
+      body: payload.data.body,
+    };
+    return self.registration.showNotification(
+      notificationTitle,
+      notificationOptions
+    );
   });
   self.addEventListener("notificationclick", function (event) {
     event.notification.close();

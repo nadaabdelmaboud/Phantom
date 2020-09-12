@@ -11,9 +11,13 @@
         <i class="fa fa-plus" @click="showTopics"></i>
       </div>
       <div class="masonry">
-        <div v-for="homecard in cards" :key="homecard._id" class="masonryItem">
-          <HomeCard :cardImage="homecard.imageId" :postPageId="homecard._id" />
-        </div>
+        <HomeCard
+          v-for="homecard in cards"
+          :key="homecard._id"
+          class="masonryItem"
+          :cardImage="homecard.imageId"
+          :postPageId="homecard._id"
+        />
       </div>
     </div>
   </div>
@@ -122,6 +126,7 @@ export default {
       console.log("finish", this.finishCalling);
       console.log("scrollY", window.scrollY);
       console.log("screenHeight", screenHeight);
+      console.log("sbfjkd", document.body.height);
       if (window.scrollY >= screenHeight) {
         screenHeight += 200;
         await this.$store.dispatch("homeCards/userGenerateCards");
@@ -132,13 +137,14 @@ export default {
     requestFinished: {
       handler: function(newValue) {
         console.log("requestFinished", newValue);
-        if (newValue === true) {
-          console.log("start scroll event");
-          window.addEventListener("scroll", this.generateHomeCards);
-        } else {
-          console.log("end scroll event");
-          window.removeEventListener("scroll", this.generateHomeCards);
-        }
+        if (this.$route.path == "/")
+          if (newValue === true) {
+            console.log("start scroll event");
+            window.addEventListener("scroll", this.generateHomeCards);
+          } else {
+            console.log("end scroll event");
+            window.removeEventListener("scroll", this.generateHomeCards);
+          }
       },
       deep: true,
       immediate: true

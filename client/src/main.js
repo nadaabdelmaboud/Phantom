@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import { makeServer } from "./server";
 import axios from "axios";
+import VueLazyload from "vue-lazyload";
 import "./registerServiceWorker";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,3 +21,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+Vue.use(VueLazyload);

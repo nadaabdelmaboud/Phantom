@@ -60,7 +60,7 @@
           Image is required to create a pin.
         </p>
         <br />
-        <i class="fa fa-user-circle"> Mostafa--</i>
+        <i class="fa fa-user-circle"> {{ user.userName }} --</i>
         <br />
         <input type="text" placeholder="Tell everyone what your pin is about" />
         <br />
@@ -304,7 +304,7 @@ li {
 
 <script>
 import ml5 from "ml5";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "PinBuilder",
@@ -461,6 +461,9 @@ export default {
       chosenBoardName: "boards/chosenBoardName",
       chosenBoardId: "boards/chosenBoardId",
       chosenSectionId: "boards/chosenSectionId"
+    }),
+    ...mapState({
+      user: state => state.user.userData
     })
   }
 };

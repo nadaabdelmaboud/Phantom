@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) { }
+  ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -57,8 +57,10 @@ export class PinsService {
         imageHeight: 1,
         imageWidth: 1,
         comments: 1,
+        counts: 1,
       })
       .lean();
+
     let user = await this.userModel.findById(userId, {
       savedPins: 1,
       history: 1,
@@ -353,7 +355,7 @@ export class PinsService {
       offlineNotifications: 1,
       fcmToken: 1,
       notificationCounter: 1,
-      pinsNotification: 1
+      pinsNotification: 1,
     });
     var cs = <comment>(<unknown>{
       commenter: userId,
@@ -421,11 +423,14 @@ export class PinsService {
     if (!pin) return false;
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
-      let commenter = await this.userModel.findById(
-        pin.comments[i].commenter
-        , { firstName: 1, lastName: 1, profileImage: 1 }).lean();
+      let commenter = await this.userModel
+        .findById(pin.comments[i].commenter, {
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+        })
+        .lean();
       if (commenter) {
-
         let comment = {
           id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
@@ -471,7 +476,8 @@ export class PinsService {
       String(reactType) != 'Love' &&
       String(reactType) != 'Good idea' &&
       String(reactType) != 'Thanks' &&
-      String(reactType) != 'Haha'
+      String(reactType) != 'Haha' &&
+      String(reactType) != 'none'
     ) {
       return false;
     }
@@ -499,24 +505,48 @@ export class PinsService {
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
-        switch (pin.reacts[i].reactType) {
-          case 'Wow':
-            pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
-            break;
-          case 'Love':
-            pin.counts.loveReacts = pin.counts.loveReacts.valueOf() - 1;
-            break;
-          case 'Haha':
-            pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() - 1;
-            break;
-          case 'Thanks':
-            pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() - 1;
-            break;
-          case 'Good idea':
-            pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() - 1;
-            break;
+        console.log('asas');
+        if (reactType != pin.reacts[i].reactType) {
+          switch (pin.reacts[i].reactType) {
+            case 'Wow':
+              pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
+              break;
+            case 'Love':
+              pin.counts.loveReacts = pin.counts.loveReacts.valueOf() - 1;
+              break;
+            case 'Haha':
+              pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() - 1;
+              break;
+            case 'Thanks':
+              pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() - 1;
+              break;
+            case 'Good idea':
+              pin.counts.goodIdeaReacts =
+                pin.counts.goodIdeaReacts.valueOf() - 1;
+              break;
+          }
+          switch (reactType) {
+            case 'Wow':
+              pin.counts.wowReacts = pin.counts.wowReacts.valueOf() + 1;
+              break;
+            case 'Love':
+              pin.counts.loveReacts = pin.counts.loveReacts.valueOf() + 1;
+              break;
+            case 'Haha':
+              pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() + 1;
+              break;
+            case 'Thanks':
+              pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() + 1;
+              break;
+            case 'Good idea':
+              pin.counts.goodIdeaReacts =
+                pin.counts.goodIdeaReacts.valueOf() + 1;
+              break;
+          }
         }
+        console.log(reactType);
         if (reactType == 'none') {
+          console.log('here');
           pin.reacts.splice(i, 1);
         } else {
           pin.reacts[i].reactType = reactType;
@@ -526,7 +556,7 @@ export class PinsService {
         break;
       }
     }
-    if (!found) {
+    if (!found && reactType != 'none') {
       pin.reacts.push({
         reactType: reactType,
         userId: userId,
