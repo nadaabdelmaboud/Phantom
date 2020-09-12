@@ -57,8 +57,10 @@ export class PinsService {
         imageHeight: 1,
         imageWidth: 1,
         comments: 1,
+        counts: 1,
       })
       .lean();
+
     let user = await this.userModel.findById(userId, {
       savedPins: 1,
       history: 1,
@@ -504,22 +506,43 @@ export class PinsService {
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
         console.log('asas');
-        switch (pin.reacts[i].reactType) {
-          case 'Wow':
-            pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
-            break;
-          case 'Love':
-            pin.counts.loveReacts = pin.counts.loveReacts.valueOf() - 1;
-            break;
-          case 'Haha':
-            pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() - 1;
-            break;
-          case 'Thanks':
-            pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() - 1;
-            break;
-          case 'Good idea':
-            pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() - 1;
-            break;
+        if (reactType != pin.reacts[i].reactType) {
+          switch (pin.reacts[i].reactType) {
+            case 'Wow':
+              pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
+              break;
+            case 'Love':
+              pin.counts.loveReacts = pin.counts.loveReacts.valueOf() - 1;
+              break;
+            case 'Haha':
+              pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() - 1;
+              break;
+            case 'Thanks':
+              pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() - 1;
+              break;
+            case 'Good idea':
+              pin.counts.goodIdeaReacts =
+                pin.counts.goodIdeaReacts.valueOf() - 1;
+              break;
+          }
+          switch (reactType) {
+            case 'Wow':
+              pin.counts.wowReacts = pin.counts.wowReacts.valueOf() + 1;
+              break;
+            case 'Love':
+              pin.counts.loveReacts = pin.counts.loveReacts.valueOf() + 1;
+              break;
+            case 'Haha':
+              pin.counts.hahaReacts = pin.counts.hahaReacts.valueOf() + 1;
+              break;
+            case 'Thanks':
+              pin.counts.thanksReacts = pin.counts.thanksReacts.valueOf() + 1;
+              break;
+            case 'Good idea':
+              pin.counts.goodIdeaReacts =
+                pin.counts.goodIdeaReacts.valueOf() + 1;
+              break;
+          }
         }
         console.log(reactType);
         if (reactType == 'none') {
