@@ -25,11 +25,12 @@
     <div
       v-if="isLoggedIn()"
       class="icons"
-      @click="shownNotification = !shownNotification"
+      id="alertIcon"
     >
-      <i class="fa fa-bell"><span>1</span></i>
+      <i class="fa fa-bell" id="alertIcon"></i>
+      <div class="count" id="alertIcon">{{ notification.notificationCounter }}</div>
     </div>
-    <NotificationDropDown v-if="shownNotification" />
+    <NotificationDropDown v-if="showNotifications" />
     <router-link
       v-if="isLoggedIn()"
       tag="div"
@@ -148,18 +149,62 @@
 .view {
   right: 40px;
 }
+.count {
+  display: inline-block;
+  font-size: 12px;
+  // color:$lightPink ;
+  background-color: $offWhite;
+  min-height: 16px;
+  min-width: 16px;
+  //padding-top: 2px;
+  border-radius: 50%;
+  margin-left: -8px;
+  position: absolute;
+  top: 30px;
+  animation: pop 1s linear;
+}
+.icons:hover {
+  .count {
+    transform: scale(1.1);
+  }
+  .fa-bell {
+    animation: ring 0.75s linear infinite;
+  }
+}
+.fa-bell {
+  transform: rotateZ(25deg);
+}
+@keyframes pop {
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes ring {
+  0% {
+    transform: rotateZ(25deg);
+  }
+  25% {
+    transform: rotateZ(0deg);
+  }
+  50% {
+    transform: rotateZ(-25deg);
+  }
+  75% {
+    transform: rotateZ(0deg);
+  }
+}
 </style>
 <script>
 import NotificationDropDown from "./Notification/NotificationDropdown";
 import isLoggedIn from "../mixins/isLoggedIn.js";
 import removeUser from "../mixins/removeUserData.js";
+import { mapGetters } from "vuex";
 export default {
   name: "HomeNavigationBar",
   data: function() {
     return {
       inHome: true,
       inFollowing: false,
-      shownNotification: false,
       showList: false
     };
   },
@@ -181,6 +226,12 @@ export default {
       this.showList = false;
       this.$router.push("/TopicsPage");
     }
+  },
+  computed: {
+    ...mapGetters({
+      notification: "notifications/notifications",
+      showNotifications: "notifications/show"
+    })
   },
   watch: {
     $route: function() {

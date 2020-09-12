@@ -19,15 +19,14 @@ if (firebase.messaging.isSupported()) {
   const messaging = firebase.messaging();
   messaging.setBackgroundMessageHandler(function(payload) {
     console.log(' Received background message ', payload);
-    // var sender = JSON.parse(payload.data.message);
-    // var notificationTitle = payload.data.title;
-    // var notificationOptions = {
-    //   body: payload.data.body,
-    // };
-    // return self.registration.showNotification(
-    //   notificationTitle,
-    //   notificationOptions
-    // );
+    var notificationTitle = payload.data.title;
+    var notificationOptions = {
+      body: payload.data.body,
+    };
+    return self.registration.showNotification(
+      notificationTitle,
+      notificationOptions
+    );
   });
   self.addEventListener("notificationclick", function (event) {
     event.notification.close();
