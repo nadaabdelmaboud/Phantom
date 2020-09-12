@@ -80,7 +80,7 @@ export class NotificationService {
         time: Date.now().toString(),
       },
     };
-    console.log(message);
+    //console.log(message);
     followedUser.notificationCounter = followedUser.notificationCounter
       ? followedUser.notificationCounter + 1
       : 1;
@@ -127,37 +127,34 @@ export class NotificationService {
         time: undefined
       },
     };
-    console.log(4567)
     let notificationData = followedUser.offlineNotifications;
-    if (!followedUser.offlineNotifications) followedUser.offlineNotifications = [];
-    for (let i = 0; notificationData.length; i++) {
-      console.log(i)
-      console.log(1);
-      if (notificationData[i] && notificationData[i].data) {
-        notificationData[i].data.time = undefined;
-        console.log(2);
-        console.log(message.data.followerId)
-        console.log(notificationData[i].data.followerId)
-        console.log()
-        if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
-          console.log(4);
-          followedUser.offlineNotifications.splice(i, 1);
-        }
-      }
-    }
-    console.log(456789)
-    if (!followedUser.notifications) followedUser.notifications = [];
-    notificationData = followedUser.notifications;
-    for (let i = 0; notificationData.length; i++) {
-      if (notificationData[i] && notificationData[i].data) {
-        notificationData[i].data.time = undefined;
-        if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
-          followedUser.notifications.splice(i, 1);
-        }
-      }
-    }
-    console.log(45678910)
+    if (!followedUser.offlineNotifications)
+      followedUser.offlineNotifications = [];
+    // console.log(followedUser.offlineNotifications);
+    //console.log(100);
 
+    for (let i = 0; i < notificationData.length; i++) {
+      notificationData[i].data.time = undefined;
+      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+        followedUser.offlineNotifications.splice(i, 1);
+      }
+    }
+    //console.log(followedUser.offlineNotifications);
+    //console.log(100);
+    if (!followedUser.notifications)
+      followedUser.notifications = [];
+    notificationData = followedUser.notifications;
+    //console.log(followedUser.notifications);
+
+    for (let i = 0; i < notificationData.length; i++) {
+      notificationData[i].data.time = undefined;
+      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+        followedUser.notifications.splice(i, 1);
+      }
+    }
+    // console.log(100);
+
+    //console.log(followedUser.notifications);
     return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
   }
 
@@ -391,8 +388,8 @@ export class NotificationService {
     await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
-    console.log('aywa');
-    console.log(user.fcmToken);
+    //console.log('aywa');
+    //console.log(user.fcmToken);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {

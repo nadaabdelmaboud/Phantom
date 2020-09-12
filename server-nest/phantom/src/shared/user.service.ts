@@ -78,7 +78,7 @@ export class UserService {
   }
 
   async findByLogin(loginDto: LoginDto): Promise<any> {
-    console.log(loginDto.password);
+    // console.log(loginDto.password);
     const user = await this.findUserAndGetData({ email: loginDto.email }, { password: 1, profileImage: 1, email: 1, _id: 1 });
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
@@ -551,11 +551,11 @@ export class UserService {
             { _id: followedUser._id },
             { followers: followedUser.followers },
           );
-          console.log(100);
+          //console.log(100);
           var newUserData = await this.notification.unfollowUser(followedUser, userFollow);
-          console.log(100);
+          //console.log(100);
           await this.updateDataInUser(followingId, newUserData);
-          console.log(1000);
+          //console.log(1000);
 
           return 1;
         }
