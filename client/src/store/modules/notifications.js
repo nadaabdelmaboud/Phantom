@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const state = {
-  notifications: []
+  notifications: [],
+  counter:0
 };
 
 const mutations = {
@@ -19,6 +20,15 @@ const actions = {
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");
     dispatch("user/getUserProfile", null, { root: true });
+  },
+  resetCounter({ state }){
+    axios.put("me/update-notification-counter")
+    .then(()=>{
+      state.counter = 0;
+    })
+    .catch(error=>{
+      console.log(error)
+    })
   }
 };
 
