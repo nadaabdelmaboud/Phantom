@@ -26,8 +26,9 @@
           tag="i"
           class="fa fa-pencil"
           aria-hidden="true"
+          v-if="myprofile"
         ></router-link>
-        <i class="fa fa-upload" aria-hidden="true"></i>
+        <i class="fa fa-upload" aria-hidden="true" v-if="myprofile"></i>
       </div>
       <div class="col-sm-4 col-4 col2">
         <div class="buttons" @click="toBoards" :class="{ inRoute: inBoards }">
@@ -51,6 +52,7 @@
           id="view"
           style="float:right;"
           @click="showViewOptions = !showViewOptions"
+          v-if="myprofile"
         ></i>
       </div>
     </div>
@@ -84,12 +86,12 @@
       </ul>
       <p>View options</p>
       <ul>
-        <li>
-          <i class="fa fa-check" aria-hidden="true"></i>
+        <li @click="alterView('Default')">
+          <i class="fa fa-check" aria-hidden="true" v-if="viewState == 'Default'"></i>
           Default
         </li>
-        <li>
-          <i class="fa fa-check" aria-hidden="true"></i>
+        <li @click="alterView('Compact')">
+          <i class="fa fa-check" aria-hidden="true" v-if="viewState == 'Compact'"></i>
           Compact
         </li>
       </ul>
@@ -166,12 +168,16 @@ export default {
       else this.$router.push("/User/" + this.userId + "/Pins");
       this.inPins = true;
       this.inBoards = false;
+    },
+    alterView(view){
+       this.$store.dispatch("boards/setViewState",view);
     }
   },
   computed: {
     ...mapGetters({
       user: "phantomUser/user",
-      isFollowed: "phantomUser/isFollowed"
+      isFollowed: "phantomUser/isFollowed",
+      viewState: "boards/viewState"
     }),
     ...mapState({
       meUser: state => state.user.userData

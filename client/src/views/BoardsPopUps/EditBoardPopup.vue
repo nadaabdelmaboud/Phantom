@@ -75,6 +75,7 @@
             :class="{ isPrivate: status == 2 }"
           />
           <br />
+          <div v-if="board.type == 'creator'">
           <label>
             Board sections
           </label>
@@ -86,6 +87,7 @@
             Delete
           </button>
           </div>
+        </div>
         </div>
       </div>
       <div class="buttonDiv">
