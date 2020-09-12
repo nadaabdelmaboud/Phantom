@@ -46,6 +46,7 @@ export default {
     toPage() {
       if (this.title == "Boards For You!") this.$router.push("/BoardForYou");
       else this.$router.push("/PinsForYou");
+      this.$store.commit("notifications/alterShow",false)
     }
   }
 };

@@ -35,8 +35,9 @@ export default {
   methods: {
     toPage() {
       if (this.title == "your follower increase")
-        this.$router.push("/User/" + this.id);
-      else this.$router.push("/User/" + this.id);
+        this.$router.push("/User/" + this.followeId);
+      else this.$router.push("/User/" + this.pinId);
+      this.$store.commit("notifications/alterShow",false)
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div @click="checkLists">
     <router-view></router-view>
   </div>
 </template>
@@ -20,6 +20,15 @@ export default {
       console.log(document.body.clientHeight, "   ", window.scrollY);
       if (window.scrollY == window.scrollHeight) console.log("scroloo");
     });
+  },
+  methods:{
+    checkLists(event){
+      console.log(event.target.id)
+      if(event.target.id == "alertIcon")
+        this.$store.commit("notifications/alterShow",true)
+      else
+        this.$store.commit("notifications/alterShow",false)
+    }
   }
 };
 </script>

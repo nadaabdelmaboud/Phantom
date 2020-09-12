@@ -11,7 +11,8 @@
         <NotificationActionsCard
           v-else
           :imageId="n.followerImageId"
-          :id="n.followerId"
+          :followerId="n.followerId"
+          :pinId="n.pinId"
           :title="n.title"
           :body="n.body"
         />

@@ -25,12 +25,12 @@
     <div
       v-if="isLoggedIn()"
       class="icons"
-      @click="shownNotification = !shownNotification"
+      id="alertIcon"
     >
-      <i class="fa fa-bell"></i>
-      <div class="count">{{ notification.notificationCounter }}</div>
+      <i class="fa fa-bell" id="alertIcon"></i>
+      <div class="count" id="alertIcon">{{ notification.notificationCounter }}</div>
     </div>
-    <NotificationDropDown v-if="shownNotification" />
+    <NotificationDropDown v-if="showNotifications" />
     <router-link
       v-if="isLoggedIn()"
       tag="div"
@@ -205,7 +205,6 @@ export default {
     return {
       inHome: true,
       inFollowing: false,
-      shownNotification: false,
       showList: false
     };
   },
@@ -230,7 +229,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      notification: "notifications/notifications"
+      notification: "notifications/notifications",
+      showNotifications: "notifications/show"
     })
   },
   watch: {
