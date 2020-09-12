@@ -16,11 +16,11 @@ export default {
   created() {
     this.$store.dispatch("user/getUserProfile");
     initializeFirebase();
-  },
-  watch: {
-    $route() {
-      //this.newKey = (this.newKey + 1) % 4;
-    }
+    window.addEventListener("scroll",()=>{
+      console.log(document.body.clientHeight , "   ",window.scrollY)
+      if(window.scrollY == window.scrollHeight)
+        console.log("scroloo")
+    })
   }
 };
 </script>

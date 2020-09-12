@@ -12,6 +12,15 @@ const mutations = {
 };
 
 const actions = {
+  getNotifications({ commit }){
+    axios.get("me/notifications")
+    .then((response)=>{
+      commit("setNotifications",response.data);
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },
   notifyUser({ dispatch }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
@@ -19,7 +28,7 @@ const actions = {
     axios.get("me/pinsForYou");
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");
-    dispatch("user/getUserProfile", null, { root: true });
+    dispatch("getNotifications");
   },
   resetCounter({ state }) {
     axios
