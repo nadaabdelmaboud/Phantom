@@ -57,8 +57,10 @@ export class PinsService {
         imageHeight: 1,
         imageWidth: 1,
         comments: 1,
+        counts: 1,
       })
       .lean();
+
     let user = await this.userModel.findById(userId, {
       savedPins: 1,
       history: 1,
