@@ -140,7 +140,6 @@ export class UserService {
 
   async followingTopics(userId) {
     const user = await this.getUserById(userId);
-
     return user.followingTopics;
   }
 

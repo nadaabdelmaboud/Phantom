@@ -2,7 +2,6 @@ import {
   Injectable,
   HttpException,
   HttpStatus,
-  BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
@@ -11,22 +10,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { topic } from '../types/topic';
 import { ValidationService } from 'src/shared/validation.service';
 import { UserService } from 'src/shared/user.service';
-import { promises, NOTFOUND } from 'dns';
 import { pin } from 'src/types/pin';
-import { async } from 'rxjs';
-import e from 'express';
+
 
 @Injectable()
 export class TopicService {
   constructor(
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
+    @InjectModel('User') private readonly userModel: Model<pin>,
+
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async topicsSeeds(topics) {
     for (var i = 0; i < topics.length; i++) {
-      let topic = await this.createTopic(
+      await this.createTopic(
         topics[i].imageId,
         '',
         200,
@@ -41,14 +40,14 @@ export class TopicService {
       await this.topicModel.findOneAndUpdate(
         { name: topics[i].name },
         { imageId: topics[i].imageId },
-      );
+      ).lean();
     }
     return 1;
   }
   async createTopic(imageId, description, imageWidth, imageHeight, name) {
     if (!this.ValidationService.checkMongooseID([imageId]))
       throw new Error('not mongoose id');
-    let topicExist = await this.topicModel.findOne({ name: name });
+    let topicExist = await this.topicModel.findOne({ name: name }, '_id').lean();
     if (topicExist) throw new Error('topic has been already exists');
     let topic = new this.topicModel({
       name: name,
@@ -71,27 +70,15 @@ export class TopicService {
     });
     return topic;
   }
-  async getTopics(userId): Promise<topic[]> {
-    const topics = await this.topicModel.find({}, (err, topic) => {
+  async getTopics(userId): Promise<any> {
+    let topics = await this.topicModel.find({}, 'name description imageId followers', (err, topic) => {
       if (err) throw new Error('topic not found');
       return topic;
     });
-    let topicInfo = [];
-    let topic = {};
-    for (let i = 0; i < topics.length; i++) {
-      let isFollow = await this.UserService.isFollowingTopic(
-        userId,
-        topics[i]._id,
-      );
-      topic['follow'] = isFollow;
-      topic['_id'] = topics[i]._id;
-      topic['name'] = topics[i].name;
-      topic['description'] = topics[i].description;
-      topic['imageId'] = topics[i].imageId;
-      topicInfo.push(topic);
-      topic = {};
-    }
-    return topicInfo;
+    return topics.map(topic => {
+      let isFollow = topic.followers.includes(userId)
+      return { isFollow, '_id': topic._id, 'name': topic.name, 'description': topic.description, 'imageId': topic.imageId }
+    })
   }
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))
@@ -99,20 +86,15 @@ export class TopicService {
     let topic = await this.topicModel.find({ name: topicName });
     let id = mongoose.Types.ObjectId(pinId);
     const pin = await this.pinModel.findById(id);
-    console.log(pin);
-    console.log(topic);
     if (!pin) throw new NotFoundException();
     pin.topic = topicName;
     await pin.save().catch(err => {
-      console.log(err);
+      return err;
     });
-    console.log('asas');
-    console.log(pin);
-    console.log(topic[0]);
     if (topic && pin) {
       topic[0].pins.push(pinId);
       await topic[0].save().catch(err => {
-        console.log(err);
+        return err;
       });
       return true;
     }
@@ -122,7 +104,7 @@ export class TopicService {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
     const topic = await this.getTopicById(topicId, userId);
-    if (topic.pins.length) return [];
+    if (!topic.pins.length) return [];
     let pinsIds = await this.ValidationService.limitOffset(
       limit,
       offset,
@@ -130,7 +112,7 @@ export class TopicService {
     );
     let pins = [];
     for (let i = 0; i < pinsIds.length; i++) {
-      await this.pinModel.findById(pinsIds[i], (err, pin) => {
+      await this.pinModel.findById(pinsIds[i], 'imageId', (err, pin) => {
         if (pin) pins.push(pin);
       });
     }
@@ -139,67 +121,40 @@ export class TopicService {
   async checkFollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = await this.UserService.getUserById(userId);
-
-    if (!user)
+    if (!await this.UserService.getUserById(userId))
       throw new HttpException(
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
     const topic = await this.getTopicById(topicId, userId);
-    //console.log(11);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
-    //console.log(12);
     if (!topic.followers || topic.followers.length == 0) return false;
-    //console.log(13);
-    for (let i = 0; i < topic.followers.length; i++) {
-      //console.log(14);
-      if (String(userId) == String(topic.followers[i])) {
-        //console.log(15)
-        return true;
-      }
-    }
-    //console.log(16)
-    return false;
+    return topic.followers.includes(userId);
   }
   async followTopic(userId, topicId) {
-    //console.log(40000)
-
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    //console.log(100000);
     if (await this.checkFollowTopic(userId, topicId))
       throw new HttpException(
         'you are already follow this topic',
         HttpStatus.BAD_REQUEST,
       );
-    //console.log(100);
-
     const user = await this.UserService.getUserById(userId);
-    //console.log(0);
     if (!user)
       throw new HttpException(
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
     const topic = await this.getTopicById(topicId, userId);
-
-    //console.log(1);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers) topic.followers = [];
     topic.followers.push(userId);
-    //console.log(2);
     await topic.save();
-    //console.log(3);
     if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
-    //console.log(4);
     await user.save();
-    //console.log(5)
-    //  await this.topicModel.update({}, { followers: [] });
-
     return 1;
   }
 
@@ -225,30 +180,17 @@ export class TopicService {
         'you dont follow this topic',
         HttpStatus.BAD_REQUEST,
       );
-    for (let i = 0; i < topic.followers.length; i++)
-      if (String(userId) == String(topic.followers[i]))
-        topic.followers.splice(i, 1);
-    await topic.save();
+    await this.topicModel.findByIdAndUpdate(topicId, { $pull: { followers: userId } }).lean()
     if (!user.followingTopics)
       throw new HttpException(
         'you dont follow this topic',
         HttpStatus.BAD_REQUEST,
       );
-    for (let i = 0; i < user.followingTopics.length; i++)
-      if (String(topicId) == String(user.followingTopics[i]))
-        user.followingTopics.splice(i, 1);
-    await user.save();
+    await this.userModel.findByIdAndUpdate(userId, { $pull: { followingTopics: { topicId } } }).lean()
     return 1;
   }
 
   async followingTopics(userId) {
-    const followingTopics = await this.UserService.followingTopics(userId);
-    if (!followingTopics || followingTopics.length == 0) return [];
-    var topics = [];
-    for (let i = 0; i < followingTopics.length; i++) {
-      const topic = await this.topicModel.findById(followingTopics[i]);
-      if (topic) topics.push(topic);
-    }
-    return topics;
+    return await this.topicModel.aggregate([{ $match: { followers: mongoose.Types.ObjectId(userId) } }, { $project: { followers: { $size: '$followers' }, imageId: 1, name: 1 } }])
   }
 }

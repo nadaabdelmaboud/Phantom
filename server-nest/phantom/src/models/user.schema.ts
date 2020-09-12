@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 export const User = new Schema({
+  recentSearch: Array(String),
   firstName: String,
   lastName: String,
   email: String,
