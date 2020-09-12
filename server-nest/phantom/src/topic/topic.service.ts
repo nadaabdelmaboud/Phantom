@@ -23,7 +23,7 @@ export class TopicService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async topicsSeeds(topics) {
     for (var i = 0; i < topics.length; i++) {
       let topic = await this.createTopic(
@@ -171,8 +171,6 @@ export class TopicService {
         'you are already follow this topic',
         HttpStatus.BAD_REQUEST,
       );
-    //console.log(100);
-
     const user = await this.UserService.getUserById(userId);
     //console.log(0);
     if (!user)
@@ -181,22 +179,14 @@ export class TopicService {
         HttpStatus.UNAUTHORIZED,
       );
     const topic = await this.getTopicById(topicId, userId);
-
-    //console.log(1);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers) topic.followers = [];
     topic.followers.push(userId);
-    //console.log(2);
     await topic.save();
-    //console.log(3);
     if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
-    //console.log(4);
     await user.save();
-    //console.log(5)
-    //  await this.topicModel.update({}, { followers: [] });
-
     return 1;
   }
 

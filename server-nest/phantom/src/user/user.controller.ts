@@ -17,7 +17,7 @@ export class UserController {
     private TopicService: TopicService,
     private BoardService: BoardService,
     */ private email: Email,
-  ) {}
+  ) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('users/me')
@@ -29,7 +29,7 @@ export class UserController {
 
   @nestCommon.Get('/user/:user_id')
   async getUser(@nestCommon.Param() params) {
-    const user = await this.userService.getActivateUserById(params.user_id);
+    const user = await this.userService.getUserById(params.user_id);
     user.password = undefined;
     return { user };
   }

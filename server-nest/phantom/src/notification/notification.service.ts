@@ -22,7 +22,7 @@ let app = firebase.initializeApp({
 });
 @Injectable()
 export class NotificationService {
-  constructor() {}
+  constructor() { }
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -84,33 +84,28 @@ export class NotificationService {
     followedUser.notificationCounter = followedUser.notificationCounter
       ? followedUser.notificationCounter + 1
       : 1;
-    await followedUser.save();
-
     if (!followedUser.notifications) followedUser.notifications = [];
     followedUser.notifications.push(message);
-   // console.log(followedUser.notifications);
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
       followedUser.offlineNotifications.push(message);
-      await followedUser.save();
-     // console.log(followedUser.offlineNotifications);
     } else {
-      await followedUser.save();
+
       message.tokens = [followedUser.fcmToken];
       let checkFailed = await this.sendNotification(
         [followedUser.fcmToken],
         message,
       );
-      console.log(checkFailed);
       if (checkFailed.length > 0) {
         message.tokens = null;
         followedUser.offlineNotifications.push(message);
       }
     }
-    await followedUser.save();
-    return 1;
+
+    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
   }
+
   async unfollowUser(followedUser, followerUser) {
     let message: {
       data: {
@@ -118,6 +113,7 @@ export class NotificationService {
         followerId: string;
         title: string;
         body: string;
+        time?: string;
       };
       tokens?: [string];
     } = {
@@ -130,25 +126,37 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
+        time: undefined
       },
     };
+    console.log(4567)
     let notificationData = followedUser.offlineNotifications;
-    for (let i = 0; followedUser.offlineNotifications.length; i++) {
+    if (!followedUser.offlineNotifications) followedUser.offlineNotifications = [];
+    for (let i = 0; notificationData.length; i++) {
+      console.log(i)
+      console.log(1);
       notificationData[i].data.time = undefined;
-      if (message == notificationData[i]) {
+      console.log(2);
+      console.log(message.data.followerId)
+      console.log(notificationData[i].data.followerId)
+      console.log()
+      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+        console.log(4);
         followedUser.offlineNotifications.splice(i, 1);
-        await followedUser.offlineNotifications.save();
       }
     }
+    console.log(456789)
+    if (!followedUser.notifications) followedUser.notifications = [];
     notificationData = followedUser.notifications;
-    for (let i = 0; followedUser.notifications.length; i++) {
+    for (let i = 0; notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message == notificationData[i]) {
+      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
         followedUser.notifications.splice(i, 1);
-        await followedUser.save();
       }
     }
-    return 1;
+    console.log(45678910)
+
+    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
   }
 
   async followBoard(ownerUser, followerUser, boardName, boardId) {
