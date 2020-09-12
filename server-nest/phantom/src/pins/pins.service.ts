@@ -556,7 +556,7 @@ export class PinsService {
         break;
       }
     }
-    if (!found) {
+    if (!found && reactType != 'none') {
       pin.reacts.push({
         reactType: reactType,
         userId: userId,
