@@ -135,23 +135,27 @@ export class NotificationService {
     for (let i = 0; notificationData.length; i++) {
       console.log(i)
       console.log(1);
-      notificationData[i].data.time = undefined;
-      console.log(2);
-      console.log(message.data.followerId)
-      console.log(notificationData[i].data.followerId)
-      console.log()
-      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
-        console.log(4);
-        followedUser.offlineNotifications.splice(i, 1);
+      if (notificationData[i] && notificationData[i].data) {
+        notificationData[i].data.time = undefined;
+        console.log(2);
+        console.log(message.data.followerId)
+        console.log(notificationData[i].data.followerId)
+        console.log()
+        if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+          console.log(4);
+          followedUser.offlineNotifications.splice(i, 1);
+        }
       }
     }
     console.log(456789)
     if (!followedUser.notifications) followedUser.notifications = [];
     notificationData = followedUser.notifications;
     for (let i = 0; notificationData.length; i++) {
-      notificationData[i].data.time = undefined;
-      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
-        followedUser.notifications.splice(i, 1);
+      if (notificationData[i] && notificationData[i].data) {
+        notificationData[i].data.time = undefined;
+        if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+          followedUser.notifications.splice(i, 1);
+        }
       }
     }
     console.log(45678910)
