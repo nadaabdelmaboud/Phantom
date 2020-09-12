@@ -4,6 +4,7 @@
     <NewPinPopup v-if="newPin" />
     <EditBoardPopup v-if="editBoard" />
     <CollaboratorsPopup v-if="collaborators" />
+    <AddSectionPopup v-if="addSection" />
     <TopicsPopup v-if="topics" />
     <div>
       <HomeNavigationBar />
@@ -84,6 +85,7 @@ import CreateBoardPopup from "../views/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
+import AddSectionPopup from "../views/BoardsPopUps/AddSection";
 import TopicsPopup from "../components/Topics/TopicsPopup";
 import ChatWindow from "../components/Chat/ChatWindow";
 import ChangePasswordPopUp from "../views/PasswordPopUps/ChangePasswordPopUp";
@@ -110,6 +112,7 @@ export default {
     EditBoardPopup,
     CollaboratorsPopup,
     TopicsPopup,
+    AddSectionPopup,
     ChatWindow,
     ChangePasswordPopUp,
     ForgetPasswordPopUp,
@@ -140,6 +143,7 @@ export default {
       editBoard: state => state.popUpsState.editBoardPopup,
       collaborators: state => state.popUpsState.CollaboratorsPopup,
       topics: state => state.popUpsState.TopicsPopup,
+      addSection: state => state.popUpsState.addSection,
       changePassword: state => state.popUpsState.changePasswordPopUp,
       forgetPassword: state => state.popUpsState.forgetPasswordPopUp,
       welcomePopUp: state => state.popUpsState.welcomePopUp,

@@ -28,7 +28,7 @@ export class PinsController {
     private PinsService: PinsService,
     private ImagesService: ImagesService,
     private BoardService: BoardService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/pins')
@@ -57,6 +57,17 @@ export class PinsController {
   async getCurrentUserPins(@Request() req) {
     let userId = req.user._id;
     let pins = await this.PinsService.getCurrentUserPins(userId, true);
+    if (pins && pins.length != 0) {
+      return pins;
+    } else {
+      throw new NotFoundException({ message: 'no pins' });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user/:userId/pins')
+  async getSomeUserPins(@Request() req, @Param('userId') userId: string) {
+    let pins = await this.PinsService.getCurrentUserPins(userId, false);
     if (pins && pins.length != 0) {
       return pins;
     } else {
@@ -276,6 +287,23 @@ export class PinsController {
       return { success: 'pin has been edited' };
     } else {
       throw new NotAcceptableException({ message: 'pin is not edited' });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('/pins/:pinId/report')
+  async reportPin(
+    @Request() req,
+    @Param('pinId') pinId: string,
+    @Body('reason') reason: string,
+  ) {
+    let userId = req.user._id;
+    console.log(userId);
+    let report = await this.PinsService.reportPin(userId, pinId, reason);
+    if (report) {
+      return 1;
+    } else {
+      throw new NotAcceptableException({ message: 'pin is not reported' });
     }
   }
 }

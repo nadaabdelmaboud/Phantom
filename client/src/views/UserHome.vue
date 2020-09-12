@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <ReportPin v-if="showReportPin" />
+    <SavePin v-if="showSavePin" />
     <div v-if="isLoggedIn() == false">
       <p>Home Page ,Signup or Login</p>
     </div>
@@ -9,13 +11,9 @@
         <i class="fa fa-plus" @click="showTopics"></i>
       </div>
       <div class="masonry">
-        <HomeCard
-          class="masonryItem"
-          v-for="homecard in cards"
-          :key="homecard._id"
-          :cardImage="homecard.imageId"
-          :postPageId="homecard._id"
-        />
+        <div v-for="homecard in cards" :key="homecard._id" class="masonryItem">
+          <HomeCard :cardImage="homecard.imageId" :postPageId="homecard._id" />
+        </div>
       </div>
     </div>
   </div>
@@ -65,6 +63,8 @@ body {
 
 <script>
 import HomeCard from "../components/HomeCard";
+import ReportPin from "../components/ReportPin";
+import SavePin from "../components/SavePin";
 import { mapGetters, mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 // import Masonry from "masonry-layout";
@@ -81,7 +81,9 @@ let screenHeight;
 export default {
   name: "UserHome",
   components: {
-    HomeCard
+    HomeCard,
+    ReportPin,
+    SavePin
   },
   mixins: [isLoggedIn],
   mounted() {
@@ -105,7 +107,9 @@ export default {
       finishCalling: "homeCards/finishCalling"
     }),
     ...mapState({
-      requestFinished: state => state.homeCards.requestFinished
+      requestFinished: state => state.homeCards.requestFinished,
+      showReportPin: state => state.popUpsState.reportPinPopUp,
+      showSavePin: state => state.popUpsState.savePinPopUp
     })
   },
   methods: {

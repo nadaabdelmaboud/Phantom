@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { initializeFirebase } from "../src/messaging/init";
 export default {
   name: "App",
   data: function() {
@@ -14,6 +15,7 @@ export default {
   },
   created() {
     this.$store.dispatch("user/getUserProfile");
+    initializeFirebase();
   },
   watch: {
     $route() {

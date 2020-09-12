@@ -9,6 +9,7 @@ import { Board } from 'src/models/board.schema';
 import { SharedModule } from 'src/shared/shared.module';
 import { Topic } from 'src/models/topic.schema';
 import { NotificationService } from '../notification/notification.service';
+import { User } from 'src/models/user.schema';
 
 @Module({
   imports: [
@@ -19,10 +20,11 @@ import { NotificationService } from '../notification/notification.service';
       { name: 'Pin', schema: Pin },
       { name: 'Board', schema: Board },
       { name: 'Topic', schema: Topic },
+      { name: 'User', schema: User },
     ]),
   ],
   controllers: [PinsController],
   providers: [PinsService, NotificationService],
   exports: [PinsService],
 })
-export class PinsModule { }
+export class PinsModule {}

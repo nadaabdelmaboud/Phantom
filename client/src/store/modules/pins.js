@@ -3,18 +3,21 @@ import axios from "axios";
 const state = {
   pin: "",
   demo: "",
-  pins: []
+  pins: [],
+  savePin: false
 };
 
 const mutations = {
   setPins(state, pins) {
     state.pins = pins;
+  },
+  savePin(state, check) {
+    state.savePin = check;
   }
 };
 
 const actions = {
   createPin({ state, commit, dispatch }, { pin, label }) {
-    console.log(pin);
     const file = new FormData();
     file.append("file", pin.imageId);
     axios({
@@ -83,7 +86,19 @@ const actions = {
 
     commit("setPins", pins);
   },
-  getUserPins() {}
+  getUserPins() {},
+  savePost({ commit }, pinId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .post("me/savedPins/" + pinId)
+      .then(() => {
+        commit("savePin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 };
 
 const getters = {

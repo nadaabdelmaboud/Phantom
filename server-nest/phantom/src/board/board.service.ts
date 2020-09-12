@@ -16,15 +16,17 @@ import { section } from '../types/board';
 import { topic } from 'src/types/topic';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
+import { user } from 'src/types/user';
 @Injectable()
 export class BoardService {
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('User') private readonly userModel: Model<user>,
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getBoardById(boardId): Promise<board> {
     try {
       if (!this.ValidationService.checkMongooseID([boardId]))
@@ -144,7 +146,10 @@ export class BoardService {
     return board;
   }
   async sortBoardsAtoZ(userId): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
 
     await user.boards.sort((a, b) => a.name.localeCompare(b.name.toString()));
     user.sortType = 'A-Z';
@@ -153,9 +158,12 @@ export class BoardService {
   }
 
   async sortBoardsDate(userId): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
 
-    await user.boards.sort(function(a, b) {
+    await user.boards.sort(function (a, b) {
       if (a.createdAt < b.createdAt) {
         return -1;
       }
@@ -176,7 +184,10 @@ export class BoardService {
     startIndex,
     positionIndex,
   ): Promise<Array<object>> {
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      boards: 1,
+      sortType: 1,
+    });
     if (
       startIndex < 0 ||
       startIndex >= user.boards.length ||
@@ -220,15 +231,19 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user;
-    if (ifMe == true) user = await this.UserService.getUserById(userId);
-    else user = await this.UserService.getActivateUserById(userId);
+    let user = await this.userModel.findById(userId, { boards: 1 });
 
     if (!user) return false;
     let retBoards = [];
     let permissions = {};
     for (let i = 0; i < user.boards.length; i++) {
-      let board = await this.boardModel.findById(user.boards[i].boardId);
+      let board = await this.boardModel.findById(user.boards[i].boardId, {
+        coverImages: 1,
+        collaborators: 1,
+        counts: 1,
+        name: 1,
+        sections: 1,
+      });
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';
@@ -247,7 +262,6 @@ export class BoardService {
         }
       }
       if (board) {
-        console.log(board);
         retBoards.push({
           board: board,
           createdOrjoined: createdOrjoined,
@@ -265,7 +279,7 @@ export class BoardService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let boardUser = await this.UserService.getActivateUserById(boardUserId);
+    let boardUser = await this.UserService.getUserById(boardUserId);
     if (!boardUser) return false;
     let retBoards = [];
     for (var i = 0; i < boardUser.boards.length; i++) {
@@ -302,7 +316,7 @@ export class BoardService {
       await board.save();
     }
     for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i] == userId)) {
+      if (String(board.collaborators[i].collaboratorId) == String(userId)) {
         return true;
       }
     }
@@ -327,8 +341,8 @@ export class BoardService {
       board.collaborators = [];
       await board.save();
     }
-    for (var i = 0; i < board.collaborators.length; i++) {
-      if (String(board.collaborators[i]) == String(userId)) {
+    for (let i = 0; i < board.collaborators.length; i++) {
+      if (String(board.collaborators[i].collaboratorId) == String(userId)) {
         return board.collaborators[i];
       }
     }
@@ -348,7 +362,7 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    let creator = await this.UserService.getActivateUserById(board.creator.id);
+    let creator = await this.UserService.getUserById(board.creator.id);
     if (!creator) {
       throw new BadRequestException('no board creator found');
     }
@@ -410,6 +424,7 @@ export class BoardService {
       console.log(collaboratores);
       for (var i = 0; i < collaboratores.length; i++) {
         console.log(collaboratores.length);
+
         if (
           (await this.ValidationService.checkMongooseID([collaboratores[i]])) ==
           0
@@ -461,14 +476,18 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    if (String(board.creator.id) != String(userId)) {
+
+    let isCreator = await this.isCreator(board, userId);
+    let isCollaborator = await this.isCollaborator(board, userId);
+    console.log(isCollaborator);
+    if (!isCreator && !isCollaborator) {
       throw new UnauthorizedException(
         'this user is unauthorized to get this board permissions',
       );
     }
     let retCollaborators = [];
     for (var i = 0; i < board.collaborators.length; i++) {
-      let collaborator = await this.UserService.getActivateUserById(
+      let collaborator = await this.UserService.getUserById(
         board.collaborators[i].collaboratorId,
       );
       retCollaborators.push({
@@ -527,7 +546,7 @@ export class BoardService {
     }
     if (String(board.creator.id) != String(userId)) {
       throw new UnauthorizedException(
-        'this user is unauthorized to get this board permissions',
+        'this user is unauthorized to edit this board permissions',
       );
     }
     for (var i = 0; i < board.collaborators.length; i++) {
@@ -1283,5 +1302,77 @@ export class BoardService {
       }
     }
     return { board: board, pins: pins, type: type, permissions: permissions };
+  }
+  async getSectionFull(boardId, sectionId, userId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        boardId,
+        sectionId,
+        userId,
+      ])) == 0
+    ) {
+      throw new BadRequestException('not valid id');
+    }
+    let user = await this.UserService.getUserById(userId);
+    if (!user) {
+      throw new BadRequestException('not valid user');
+    }
+    let board = await this.boardModel.findById(boardId);
+    if (!board) {
+      throw new BadRequestException('not valid board');
+    }
+    let pins = [];
+    let sectionIndex;
+    for (let j = 0; j < board.sections.length; j++) {
+      if (String(board.sections[j]._id) == String(sectionId)) {
+        sectionIndex = j;
+        for (let i = 0; i < board.sections[j].pins.length; i++) {
+          let pinType = 'none';
+          let pin = await this.pinModel.findById(
+            board.sections[j].pins[i].pinId,
+          );
+          if (String(pin.creator.id) == String(userId)) {
+            pinType = 'creator';
+          } else {
+            for (let k = 0; k < user.savedPins.length; k++) {
+              if (String(user.savedPins[k].pinId) == String(pin._id)) {
+                pinType = 'saved';
+                break;
+              }
+            }
+          }
+          if (pin) {
+            pins.push({ pin: pin, type: pinType });
+          }
+        }
+        break;
+      }
+    }
+    let type = 'none';
+    let permissions = {};
+    if (String(userId) == String(board.creator.id)) {
+      type = 'creator';
+    } else {
+      for (let i = 0; i < board.collaborators.length; i++) {
+        if (String(userId) == String(board.collaborators[i].collaboratorId)) {
+          type = 'collaborator';
+          permissions = {
+            savePin: board.collaborators[i].savePin,
+            createPin: board.collaborators[i].createPin,
+            addCollaborators: board.collaborators[i].addCollaborators,
+            editDescription: board.collaborators[i].editDescription,
+            editTitle: board.collaborators[i].editTitle,
+            personalization: board.collaborators[i].personalization,
+          };
+          break;
+        }
+      }
+    }
+    return {
+      section: board.sections[sectionIndex],
+      pins: pins,
+      type: type,
+      permissions: permissions,
+    };
   }
 }
