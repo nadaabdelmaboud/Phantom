@@ -6,15 +6,17 @@
 
 <script>
 import { initializeFirebase } from "../src/messaging/init";
+import axios from "axios"
 export default {
   name: "App",
   data: function() {
-    return {
-      newKey: 0
-    };
   },
   created() {
-    this.$store.dispatch("user/getUserProfile");
+    let token = localStorage.getItem("userToken");
+    if(token){
+      axios.defaults.headers.common["Authorization"] = token;
+      this.$store.dispatch("user/getUserProfile");
+    }
     initializeFirebase();
     window.addEventListener("scroll", () => {
       console.log(document.body.clientHeight, "   ", window.scrollY);

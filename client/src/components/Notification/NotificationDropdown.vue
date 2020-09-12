@@ -1,12 +1,14 @@
 <template>
   <div class="notificationBody" id="mydiv">
     <div class="scroll">
-      <div v-for="n in notifications.notifications" :key="n" class="">
+      <div v-for="n in notifications.notifications" :key="n.time" class="">
         <NotificationPinsCard
           v-if="n.pins"
           :imageIds="n.images"
           :title="n.title"
           :body="n.body"
+          :pins="n.pins"
+          :boards="n.boards"
         />
         <NotificationActionsCard
           v-else

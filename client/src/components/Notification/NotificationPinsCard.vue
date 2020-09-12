@@ -40,12 +40,26 @@ export default {
     },
     body: {
       type: String
+    },
+    pins:{
+      type:Array
+    },
+    boards:{
+      type:Array
     }
   },
   methods: {
     toPage() {
-      if (this.title == "Boards For You!") this.$router.push("/BoardForYou");
-      else this.$router.push("/PinsForYou");
+      if (this.title == "Boards For You!") 
+      {
+        this.$router.push("/BoardForYou");
+        this.$store.commit("notifications/setBoards",this.boards)
+      }
+      else 
+      {
+        this.$router.push("/PinsForYou");
+        this.$store.commit("notifications/setPins",this.pins)
+      }
       this.$store.commit("notifications/alterShow",false)
     }
   }
