@@ -27,7 +27,6 @@ export class ChatService {
     const fromUser = await this.userModel.findById(secondUserId);
     if (!toUser || !fromUser) throw new UnauthorizedException();
     if (!toUser.sentMessages) toUser.sentMessages = [];
-    console.log(toUser);
     for (let i = 0; i < toUser.sentMessages.length; i++) {
       if (String(toUser.sentMessages[i].userId) == String(secondUserId)) {
         return toUser.sentMessages[i].message;

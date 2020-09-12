@@ -50,6 +50,7 @@ export interface user extends Document {
     }>;
     userId: mongoose.Types.ObjectId;
   }>;
+  recentSearch: Array<String>,
   recievedMessages: Array<{
     message: Array<{
       note: String;

@@ -354,7 +354,7 @@ export class BoardService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let boardUser = await this.UserService.getActivateUserById(boardUserId);
+    let boardUser = await this.UserService.getUserById(boardUserId);
     if (!boardUser) return false;
     let retBoards = [];
     for (var i = 0; i < boardUser.boards.length; i++) {
@@ -437,7 +437,7 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    let creator = await this.UserService.getActivateUserById(board.creator.id);
+    let creator = await this.UserService.getUserById(board.creator.id);
     if (!creator) {
       throw new BadRequestException('no board creator found');
     }
@@ -562,7 +562,7 @@ export class BoardService {
     }
     let retCollaborators = [];
     for (var i = 0; i < board.collaborators.length; i++) {
-      let collaborator = await this.UserService.getActivateUserById(
+      let collaborator = await this.UserService.getUserById(
         board.collaborators[i].collaboratorId,
       );
       retCollaborators.push({

@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -220,7 +220,7 @@ export class PinsService {
     let user;
     if (ifMe == true)
       user = await this.userModel.findById(userId, { pins: 1 }).lean();
-    else user = await this.UserService.getActivateUserById(userId);
+    else user = await this.UserService.getUserById(userId);
     console.log(user);
     if (!user) throw new BadRequestException('no such user');
     let retPins = [];
@@ -353,7 +353,7 @@ export class PinsService {
       offlineNotifications: 1,
       fcmToken: 1,
       notificationCounter: 1,
-      pinsNotification: 1,
+      pinsNotification: 1
     });
     var cs = <comment>(<unknown>{
       commenter: userId,
@@ -421,14 +421,11 @@ export class PinsService {
     if (!pin) return false;
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
-      let commenter = await this.userModel
-        .findById(pin.comments[i].commenter, {
-          firstName: 1,
-          lastName: 1,
-          profileImage: 1,
-        })
-        .lean();
+      let commenter = await this.userModel.findById(
+        pin.comments[i].commenter
+        , { firstName: 1, lastName: 1, profileImage: 1 }).lean();
       if (commenter) {
+
         let comment = {
           id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
@@ -785,8 +782,6 @@ export class PinsService {
     const user = await this.UserService.getUserById(userId);
     var pins = [];
     for (let i = 0; i < user.following.length; i++) {
-      var followUser = await this.UserService.getUserById(user.following[i]);
-      if (followUser.activateaccount == false) continue;
       var userPin = await this.getCurrentUserPins(user.following[i], false);
       console.log(pins);
       pins = await pins.concat(userPin);

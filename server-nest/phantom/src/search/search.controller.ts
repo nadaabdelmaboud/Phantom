@@ -1,10 +1,5 @@
 import {
   Controller,
-  Body,
-  UseFilters,
-  ForbiddenException,
-  NotAcceptableException,
-  Param,
   Get,
   NotFoundException,
   UseGuards,
@@ -12,76 +7,88 @@ import {
   Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { HttpExceptionFilter } from '../shared/http-exception.filter';
-import { ImagesService } from '../images/images.service';
 import { SearchService } from './search.service';
-import { of, from } from 'rxjs';
-import { QueryCursor } from 'mongoose';
 @Controller('search')
 export class SearchController {
-  constructor(
-    private SearchService: SearchService,
-    private ImageService: ImagesService,
-  ) {}
-  //get all the pins
-
-  @Get('/allPins/:name')
+  constructor(private SearchService: SearchService) { }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/allPins')
   async getAllPins(
     @Request() req,
-    @Param('name') name: string,
-    @Query('limit') limit: Number,
-    @Query('offset') offset: Number,
-  ) {
-    let pins = await this.SearchService.getAllPins(name, limit, offset);
-    if (pins) {
-      return pins;
-    } else {
-      return new NotFoundException();
-    }
-  }
-  @UseGuards(AuthGuard('jwt'))
-  @Get('/myPins/:name')
-  async getMyPins(
-    @Request() req,
-    @Param('name') name: string,
+    @Query('name') name: string,
+    @Query('recentSearch') recentSearch: Boolean,
     @Query('limit') limit: Number,
     @Query('offset') offset: Number,
   ) {
     let userId = req.user._id;
+    if (recentSearch)
+      await this.SearchService.addToRecentSearch(userId, name);
+    let pins = await this.SearchService.getAllPins(name, limit, offset);
+    if (pins) return pins;
+    return new NotFoundException();
 
-    let pins = await this.SearchService.getMyPins(name, userId, limit, offset);
-    if (pins) {
-      return pins;
-    } else {
-      return new NotFoundException();
-    }
   }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/myPins')
+  async getMyPins(
+    @Request() req,
+    @Query('name') name: string,
+    @Query('recentSearch') recentSearch: Boolean,
+    @Query('limit') limit: Number,
+    @Query('offset') offset: Number,
+  ) {
+    let userId = req.user._id;
+    if (recentSearch)
+      await this.SearchService.addToRecentSearch(userId, name);
+    let pins = await this.SearchService.getMyPins(name, userId, limit, offset);
+    if (pins)
+      return pins;
+    return new NotFoundException();
+
+  }
+  @UseGuards(AuthGuard('jwt'))
   @Get('/people')
   async getPeople(
     @Request() req,
     @Query('name') name: string,
+    @Query('recentSearch') recentSearch: Boolean,
     @Query('limit') limit: Number,
     @Query('offset') offset: Number,
   ) {
+    let userId = req.user._id;
+    if (recentSearch)
+      await this.SearchService.addToRecentSearch(userId, name);
     let users = await this.SearchService.getPeople(name, limit, offset);
-    if (users) {
-      return users;
-    } else {
-      return new NotFoundException();
-    }
+    if (users) return users;
+    return new NotFoundException();
+
   }
-  @Get('/board/:name')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/board')
   async getBoards(
     @Request() req,
-    @Param('name') name: string,
+    @Query('recentSearch') recentSearch: Boolean,
+    @Query('name') name: string,
     @Query('limit') limit: Number,
     @Query('offset') offset: Number,
   ) {
+    let userId = req.user._id;
+    if (recentSearch)
+      await this.SearchService.addToRecentSearch(userId, name);
     let boards = await this.SearchService.getBoards(name, limit, offset);
-    if (boards) {
-      return boards;
-    } else {
-      return new NotFoundException();
-    }
+    if (boards) return boards;
+    return new NotFoundException();
+
+  }
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/recentSearch')
+  async getRecentSearch(
+    @Request() req,
+  ) {
+    let userId = req.user._id;
+    let recentSearch = await this.SearchService.getRecentSearch(userId);
+    if (recentSearch) return recentSearch;
+    return new NotFoundException();
+
   }
 }
