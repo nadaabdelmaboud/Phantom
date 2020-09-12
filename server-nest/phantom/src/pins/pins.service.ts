@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) { }
+  ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -353,7 +353,7 @@ export class PinsService {
       offlineNotifications: 1,
       fcmToken: 1,
       notificationCounter: 1,
-      pinsNotification: 1
+      pinsNotification: 1,
     });
     var cs = <comment>(<unknown>{
       commenter: userId,
@@ -421,11 +421,14 @@ export class PinsService {
     if (!pin) return false;
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
-      let commenter = await this.userModel.findById(
-        pin.comments[i].commenter
-        , { firstName: 1, lastName: 1, profileImage: 1 }).lean();
+      let commenter = await this.userModel
+        .findById(pin.comments[i].commenter, {
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+        })
+        .lean();
       if (commenter) {
-
         let comment = {
           id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
@@ -471,7 +474,8 @@ export class PinsService {
       String(reactType) != 'Love' &&
       String(reactType) != 'Good idea' &&
       String(reactType) != 'Thanks' &&
-      String(reactType) != 'Haha'
+      String(reactType) != 'Haha' &&
+      String(reactType) != 'none'
     ) {
       return false;
     }
@@ -499,6 +503,7 @@ export class PinsService {
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
+        console.log('asas');
         switch (pin.reacts[i].reactType) {
           case 'Wow':
             pin.counts.wowReacts = pin.counts.wowReacts.valueOf() - 1;
@@ -516,7 +521,9 @@ export class PinsService {
             pin.counts.goodIdeaReacts = pin.counts.goodIdeaReacts.valueOf() - 1;
             break;
         }
+        console.log(reactType);
         if (reactType == 'none') {
+          console.log('here');
           pin.reacts.splice(i, 1);
         } else {
           pin.reacts[i].reactType = reactType;
