@@ -136,14 +136,14 @@ export default {
     requestFinished: {
       handler: function(newValue) {
         console.log("requestFinished", newValue);
-        if(this.$route.path == "/")
-        if (newValue === true) {
-          console.log("start scroll event");
-          window.addEventListener("scroll", this.generateHomeCards);
-        } else {
-          console.log("end scroll event");
-          window.removeEventListener("scroll", this.generateHomeCards);
-        }
+        if (this.$route.path == "/")
+          if (newValue === true) {
+            console.log("start scroll event");
+            window.addEventListener("scroll", this.generateHomeCards);
+          } else {
+            console.log("end scroll event");
+            window.removeEventListener("scroll", this.generateHomeCards);
+          }
       },
       deep: true,
       immediate: true

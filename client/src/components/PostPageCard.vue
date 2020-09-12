@@ -768,6 +768,15 @@ export default {
   mounted() {
     const heart = document.getElementById("heart-icon");
     heart.style.color = "black";
+    setTimeout(() => {
+      console.log("this.reactThisPin", this.reactThisPin);
+      if (this.reactThisPin == "none") heart.style.color = "black";
+      else if (this.reactThisPin == "Haha") heart.style.color = "yellow";
+      else if (this.reactThisPin == "Wow") heart.style.color = "green";
+      else if (this.reactThisPin == "Love") heart.style.color = "red";
+      else if (this.reactThisPin == "Good Idea") heart.style.color = "blue";
+      else if (this.reactThisPin == "Thanks") heart.style.color = "pink";
+    }, 1000);
   },
   computed: {
     ...mapGetters({
@@ -785,7 +794,8 @@ export default {
       numReactWow: "homeCards/numReactWow",
       numReactLove: "homeCards/numReactLove",
       numReactGoodIdea: "homeCards/numReactGoodIdea",
-      numReactThanks: "homeCards/numReactThanks"
+      numReactThanks: "homeCards/numReactThanks",
+      reactThisPin: "homeCards/reactThisPin"
     })
   }
 };
