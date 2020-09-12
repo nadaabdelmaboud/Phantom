@@ -7,7 +7,7 @@
       </div>
       <div class="buttonDiv">
         <div @click="closePopup">
-          <router-link :to="{ path:'/PostPage/'+ pin._id}" tag="button">
+          <router-link :to="{ path: '/PostPage/' + pin._id }" tag="button">
             See it now
           </router-link>
         </div>

@@ -87,11 +87,19 @@
       <p>View options</p>
       <ul>
         <li @click="alterView('Default')">
-          <i class="fa fa-check" aria-hidden="true" v-if="viewState == 'Default'"></i>
+          <i
+            class="fa fa-check"
+            aria-hidden="true"
+            v-if="viewState == 'Default'"
+          ></i>
           Default
         </li>
         <li @click="alterView('Compact')">
-          <i class="fa fa-check" aria-hidden="true" v-if="viewState == 'Compact'"></i>
+          <i
+            class="fa fa-check"
+            aria-hidden="true"
+            v-if="viewState == 'Compact'"
+          ></i>
           Compact
         </li>
       </ul>
@@ -169,8 +177,8 @@ export default {
       this.inPins = true;
       this.inBoards = false;
     },
-    alterView(view){
-       this.$store.dispatch("boards/setViewState",view);
+    alterView(view) {
+      this.$store.dispatch("boards/setViewState", view);
     }
   },
   computed: {

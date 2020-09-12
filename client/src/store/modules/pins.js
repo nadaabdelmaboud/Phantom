@@ -86,14 +86,15 @@ const actions = {
 
     commit("setPins", pins);
   },
-  getUserPins({commit},userId) {
-    axios.get("user/"+userId+"/pins")
-    .then((response)=>{
-      commit("setPins", response.data);
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+  getUserPins({ commit }, userId) {
+    axios
+      .get("user/" + userId + "/pins")
+      .then(response => {
+        commit("setPins", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   savePost({ commit }, pinId) {
     let token = localStorage.getItem("userToken");

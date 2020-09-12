@@ -2,11 +2,11 @@
   <div class="home">
     <div class="row m-0">
       <div
-      class="boardsDefault"
+        class="boardsDefault"
         :class="[
           {
-            boards: myprofile && viewState == 'Compact',
-          },
+            boards: myprofile && viewState == 'Compact'
+          }
         ]"
       >
         <draggable
@@ -19,8 +19,8 @@
             :class="[
               {
                 'col-sm-2': viewState == 'Compact',
-                'col-sm-3': !myprofile || viewState == 'Default',
-              },
+                'col-sm-3': !myprofile || viewState == 'Default'
+              }
             ]"
             :key="board.board._id"
             :boardId="board.board._id"
@@ -42,9 +42,9 @@ import draggable from "vuedraggable";
 
 export default {
   name: "UserBoards",
-  date:function(){
-    return{
-      myprofile:""
+  date: function() {
+    return {
+      myprofile: ""
     };
   },
   created() {
@@ -59,27 +59,27 @@ export default {
   },
   components: {
     Board,
-    draggable,
+    draggable
   },
   methods: {
     ReorderBoards(event) {
       if (this.myprofile && this.myData.sortType == "Reorder") {
         this.$store.dispatch("boards/reorderBoards", {
           from: event.oldIndex,
-          to: event.newIndex + 1,
+          to: event.newIndex + 1
         });
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards",
-      viewState: "boards/viewState",
+      viewState: "boards/viewState"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
-  },
+      myData: state => state.user.userData
+    })
+  }
 };
 </script>
 
@@ -87,10 +87,10 @@ export default {
 .dragStyle {
   width: 100%;
 }
-.boardsDefault{
+.boardsDefault {
   width: 100%;
 }
-.boards{
+.boards {
   width: 70%;
   margin: 0 auto;
 }

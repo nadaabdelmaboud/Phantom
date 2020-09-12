@@ -3,7 +3,11 @@
     <div class="userInfo">
       <img :src="getImage(imageId)" />
       <span>{{ collabName }}</span>
-      <button class="editButton" v-if="board.type == 'creator' && !edit" @click="edit = !edit">
+      <button
+        class="editButton"
+        v-if="board.type == 'creator' && !edit"
+        @click="edit = !edit"
+      >
         Edit
       </button>
       <button class="editButton" v-if="edit" @click="edit = !edit">
@@ -107,7 +111,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import { mapGetters } from "vuex";
 import { default as getImage } from "../../mixins/getImage";
 
 export default {
@@ -178,11 +182,11 @@ export default {
       });
     }
   },
-   computed: {
+  computed: {
     ...mapGetters({
       board: "boards/currentBoard"
-    }),
-  },
+    })
+  }
 };
 </script>
 

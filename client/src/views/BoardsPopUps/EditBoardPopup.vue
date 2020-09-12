@@ -76,18 +76,21 @@
           />
           <br />
           <div v-if="board.type == 'creator'">
-          <label>
-            Board sections
-          </label>
-          <div class="section" v-for="s in board.board.sections" :key="s._id">
-            <img :src="getImage(s.coverImages[0])" v-if="!s.coverImages.length" />
-            <img :src="getImage('')" v-else />
-            <p>{{ s.sectionName }}</p>
-            <button class="editButton" @click="deleteSection(s._id)">
-            Delete
-          </button>
+            <label>
+              Board sections
+            </label>
+            <div class="section" v-for="s in board.board.sections" :key="s._id">
+              <img
+                :src="getImage(s.coverImages[0])"
+                v-if="!s.coverImages.length"
+              />
+              <img :src="getImage('')" v-else />
+              <p>{{ s.sectionName }}</p>
+              <button class="editButton" @click="deleteSection(s._id)">
+                Delete
+              </button>
+            </div>
           </div>
-        </div>
         </div>
       </div>
       <div class="buttonDiv">
@@ -181,7 +184,7 @@ import { mapGetters } from "vuex";
 import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "EditPopup",
-   mixins: [getImage],
+  mixins: [getImage],
   data: function() {
     return {
       name: "",
@@ -192,18 +195,18 @@ export default {
       maxDate: null,
       dateRange: {
         startDate: new Date(),
-        endDate: new Date(),
+        endDate: new Date()
       },
       checkOpen: false,
       MergeTo: "Pick a board",
       MergeToId: "",
       showBoard: false,
-      searchBoard: "",
+      searchBoard: ""
     };
   },
 
   components: {
-    DateRangePicker,
+    DateRangePicker
   },
   methods: {
     editPopup(event) {
@@ -215,7 +218,7 @@ export default {
       let newBoard = {
         name: this.name,
         description: this.description,
-        personalization: false,
+        personalization: false
       };
       if (this.status == 2) newBoard.personalization = true;
       this.$store.dispatch("boards/editBoard", newBoard);
@@ -235,7 +238,7 @@ export default {
       if (this.MergeToId != "") {
         let merge = {
           mergedBoardId: this.board.board._id,
-          originalBoardId: this.MergeToId,
+          originalBoardId: this.MergeToId
         };
         this.$store.dispatch("boards/mergeBoard", merge);
         this.$store.commit("popUpsState/toggleEditBoardPopup");
@@ -249,21 +252,21 @@ export default {
     deleteSection(sectionId) {
       this.$store.dispatch("boards/deleteSection", {
         boardId: this.board.board._id,
-        sectionId: sectionId,
+        sectionId: sectionId
       });
-    },
+    }
   },
   computed: {
     ...mapGetters({
       board: "boards/currentBoard",
-      userBoards: "boards/userBoards",
-    }),
+      userBoards: "boards/userBoards"
+    })
   },
   created() {
     this.name = this.board.board.name;
     this.description = this.board.board.description;
     this.$store.dispatch("boards/userBoards");
-  },
+  }
 };
 </script>
 
@@ -345,7 +348,7 @@ h3 {
     padding: 10px 10px;
     width: 80%;
   }
-  button{
+  button {
     width: 100px;
   }
 }

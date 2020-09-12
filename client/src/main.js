@@ -16,11 +16,10 @@ if (process.env.NODE_ENV !== "development") {
 // axios.defaults.baseURL = "/api";
 axios.defaults.baseURL = "http://localhost:3000/api";
 
-
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount("#app");
 
-Vue.use(VueLazyload)
+Vue.use(VueLazyload);
