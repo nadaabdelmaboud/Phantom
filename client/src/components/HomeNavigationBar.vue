@@ -27,7 +27,8 @@
       class="icons"
       @click="shownNotification = !shownNotification"
     >
-      <i class="fa fa-bell"><span>1</span></i>
+      <i class="fa fa-bell"></i>
+      <div class="count">{{ notification.notificationCounter }}</div>
     </div>
     <NotificationDropDown v-if="shownNotification" />
     <router-link
@@ -148,11 +149,56 @@
 .view {
   right: 40px;
 }
+.count {
+  display: inline-block;
+  font-size: 12px;
+  // color:$lightPink ;
+  background-color: $offWhite;
+  min-height: 16px;
+  min-width: 16px;
+  //padding-top: 2px;
+  border-radius: 50%;
+  margin-left: -8px;
+  position: absolute;
+  top: 30px;
+  animation: pop 1s linear;
+}
+.icons:hover {
+  .count {
+    transform: scale(1.1);
+  }
+  .fa-bell {
+    animation: ring 0.75s linear infinite;
+  }
+}
+.fa-bell {
+  transform: rotateZ(25deg);
+}
+@keyframes pop {
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes ring {
+  0% {
+    transform: rotateZ(25deg);
+  }
+  25% {
+    transform: rotateZ(0deg);
+  }
+  50% {
+    transform: rotateZ(-25deg);
+  }
+  75% {
+    transform: rotateZ(0deg);
+  }
+}
 </style>
 <script>
 import NotificationDropDown from "./Notification/NotificationDropdown";
 import isLoggedIn from "../mixins/isLoggedIn.js";
 import removeUser from "../mixins/removeUserData.js";
+import { mapGetters } from "vuex";
 export default {
   name: "HomeNavigationBar",
   data: function() {
@@ -181,6 +227,11 @@ export default {
       this.showList = false;
       this.$router.push("/TopicsPage");
     }
+  },
+  computed: {
+    ...mapGetters({
+      notification: "notifications/notifications"
+    })
   },
   watch: {
     $route: function() {

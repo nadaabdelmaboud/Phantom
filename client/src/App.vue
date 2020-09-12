@@ -16,11 +16,10 @@ export default {
   created() {
     this.$store.dispatch("user/getUserProfile");
     initializeFirebase();
-    window.addEventListener("scroll",()=>{
-      console.log(document.body.clientHeight , "   ",window.scrollY)
-      if(window.scrollY == window.scrollHeight)
-        console.log("scroloo")
-    })
+    window.addEventListener("scroll", () => {
+      console.log(document.body.clientHeight, "   ", window.scrollY);
+      if (window.scrollY == window.scrollHeight) console.log("scroloo");
+    });
   }
 };
 </script>

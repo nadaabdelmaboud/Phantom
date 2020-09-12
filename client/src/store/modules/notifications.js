@@ -1,25 +1,39 @@
 import axios from "axios";
 
 const state = {
-  notifications: [],
-  counter: 0
+  notifications: {
+    notifications: [],
+    notificationCounter: 0
+  }
 };
 
 const mutations = {
   setNotifications(state, notifications) {
-    state.notifications = notifications;
+    state.notifications.notifications = [];
+    notifications.notifications.forEach(n => {
+      if (typeof n.data == "undefined") {
+        n.pins = true;
+        state.notifications.notifications.push(n);
+      } else {
+        n.pins = false;
+        state.notifications.notifications.push(n.data);
+      }
+    });
+    state.notifications.notifications.reverse();
+    state.notifications.notificationCounter = notifications.notificationCounter;
   }
 };
 
 const actions = {
-  getNotifications({ commit }){
-    axios.get("me/notifications")
-    .then((response)=>{
-      commit("setNotifications",response.data);
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
+  getNotifications({ commit }) {
+    axios
+      .get("notifications/me")
+      .then(response => {
+        commit("setNotifications", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   notifyUser({ dispatch }) {
     let token = localStorage.getItem("userToken");
@@ -34,7 +48,7 @@ const actions = {
     axios
       .put("me/update-notification-counter")
       .then(() => {
-        state.counter = 0;
+        state.notifications.notificationCounter = 0;
       })
       .catch(error => {
         console.log(error);

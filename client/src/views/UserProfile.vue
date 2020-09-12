@@ -155,7 +155,7 @@ export default {
     reorder() {
       this.$store.dispatch("boards/reorderBoards", {
         from: 0,
-        to: 1,
+        to: 1
       });
     },
     alterFollow() {
@@ -188,8 +188,8 @@ export default {
       viewState: "boards/viewState"
     }),
     ...mapState({
-      meUser: (state) => state.user.userData,
-    }),
+      meUser: state => state.user.userData
+    })
   },
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
