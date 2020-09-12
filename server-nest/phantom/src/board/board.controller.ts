@@ -84,7 +84,7 @@ export class BoardController {
   async sortBoardsAtoZ(@Request() req) {
     let userId = req.user._id;
     let boards = await this.BoardService.sortBoardsAtoZ(userId);
-    if (boards && boards.length != 0) {
+    if (boards) {
       return boards;
     } else {
       throw new NotFoundException({ message: 'no boards' });
@@ -95,7 +95,7 @@ export class BoardController {
   async sortBoardsDate(@Request() req) {
     let userId = req.user._id;
     let boards = await this.BoardService.sortBoardsDate(userId);
-    if (boards && boards.length != 0) {
+    if (boards) {
       return boards;
     } else {
       throw new NotFoundException({ message: 'no boards' });
@@ -115,7 +115,7 @@ export class BoardController {
       startIndex,
       positionIndex,
     );
-    if (boards && boards.length != 0) {
+    if (boards) {
       return boards;
     } else {
       throw new NotFoundException({ message: 'no boards' });
