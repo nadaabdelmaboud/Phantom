@@ -3,18 +3,16 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { MongoGridFS } from 'mongo-gridfs';
 import { GridFSBucketReadStream } from 'mongodb';
-import { FileInfoVm } from './file-info-vm.model';
-import { response } from 'express';
-import { AxiosResponse } from 'axios';
-import { Observable } from 'rxjs';
-import { fstat } from 'fs';
-import { error } from 'console';
+import { ValidationService } from '../shared/validation.service';
 
 @Injectable()
 export class ImagesService {
   private fileModel: MongoGridFS;
 
-  constructor(@InjectConnection() private readonly connection: Connection) {
+  constructor(
+    @InjectConnection() private readonly connection: Connection,
+    private ValidationService: ValidationService,
+  ) {
     this.fileModel = new MongoGridFS(this.connection.db, 'images');
   }
 
@@ -24,6 +22,9 @@ export class ImagesService {
     return await this.fileModel.readFileStream(id);
   }
   async checkImage(id: string): Promise<Boolean> {
+    if ((await this.ValidationService.checkMongooseID([id])) == 0) {
+      return false;
+    }
     let isFound = true;
     let im = await this.fileModel.findById(id).catch(err => {
       isFound = false;

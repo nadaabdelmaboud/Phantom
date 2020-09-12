@@ -119,7 +119,7 @@ export default {
       myprofile: false,
       userName: "",
       imageId: "",
-      followers: ""
+      followers: "",
     };
   },
   mixins: [getImage],
@@ -144,7 +144,7 @@ export default {
     reorder() {
       this.$store.dispatch("boards/reorderBoards", {
         from: 0,
-        to: 1
+        to: 1,
       });
     },
     alterFollow() {
@@ -164,16 +164,16 @@ export default {
       if (this.myprofile) {
         this.$router.push("/UserProfile/Pins");
       } else this.$router.push("/User/" + this.user._id + "/Pins");
-    }
+    },
   },
   computed: {
     ...mapGetters({
       user: "phantomUser/user",
-      isFollowed: "phantomUser/isFollowed"
+      isFollowed: "phantomUser/isFollowed",
     }),
     ...mapState({
-      meUser: state => state.user.userData
-    })
+      meUser: (state) => state.user.userData,
+    }),
   },
   watch: {
     $route: function() {
@@ -187,7 +187,7 @@ export default {
         this.inBoards = false;
         this.inPins = false;
       }
-    }
+    },
   },
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
@@ -204,14 +204,14 @@ export default {
       if (!this.myprofile) {
         this.userName = this.user.firstName + " " + this.user.lastName;
         this.imageId = this.user.profileImage;
-        this.followers = this.user.followers.length;
+        this.followers = this.user.followers;
       } else {
         this.userName = this.meUser.userName;
         this.imageId = this.meUser.profileImage;
-        this.followers = this.meUser.followers.length;
+        this.followers = this.meUser.followers;
       }
     }, 4000);
-  }
+  },
 };
 </script>
 

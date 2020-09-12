@@ -39,26 +39,26 @@ export default {
   },
   components: {
     Board,
-    draggable
+    draggable,
   },
   methods: {
     ReorderBoards(event) {
       if (this.myData.sortType == "Reorder") {
         this.$store.dispatch("boards/reorderBoards", {
           from: event.oldIndex,
-          to: event.newIndex + 1
+          to: event.newIndex + 1,
         });
       }
-    }
+    },
   },
   computed: {
     ...mapGetters({
-      boards: "boards/userBoards"
+      boards: "boards/userBoards",
     }),
     ...mapState({
-      myData: state => state.user.userData
-    })
-  }
+      myData: (state) => state.user.userData,
+    }),
+  },
 };
 </script>
 

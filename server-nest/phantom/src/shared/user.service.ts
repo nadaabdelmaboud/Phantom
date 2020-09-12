@@ -38,35 +38,41 @@ export class UserService {
     if (!user.about) user.about = '';
     return user;
   }
+
   async getUserMe(id) {
-    const user = await this.userModel
-      .findById(id, {
-        email: 1,
-        gender: 1,
-        country: 1,
-        firstName: 1,
-        lastName: 1,
-        location: 1,
-        activity: 1,
-        pinsForYou: 1,
-        pinsInspired: 1,
-        popularPins: 1,
-        boardsForYou: 1,
-        boardUpdate: 1,
-        invitation: 1,
-        pinsNotification: 1,
-        followNotification: 1,
-        userName: 1,
-        sortType: 1,
-        profileImage: 1,
-        followers: 1,
-      })
-      .lean();
+    let userId = mongoose.Types.ObjectId(id);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          followers: { $size: '$followers' },
+          email: 1,
+          gender: 1,
+          country: 1,
+          firstName: 1,
+          lastName: 1,
+          location: 1,
+          activity: 1,
+          pinsForYou: 1,
+          pinsInspired: 1,
+          popularPins: 1,
+          boardsForYou: 1,
+          boardUpdate: 1,
+          invitation: 1,
+          pinsNotification: 1,
+          followNotification: 1,
+          userName: 1,
+          sortType: 1,
+          profileImage: 1,
+        },
+      },
+    ]);
+
     if (!user)
       new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
-    if (!user.about) user.about = '';
+    if (!user[0].about) user[0].about = '';
 
-    return user;
+    return user[0];
   }
   async getActivateUserById(id) {
     const user = await this.userModel.findById(id);
