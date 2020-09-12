@@ -22,7 +22,7 @@ let app = firebase.initializeApp({
 });
 @Injectable()
 export class NotificationService {
-  constructor() {}
+  constructor() { }
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -80,37 +80,30 @@ export class NotificationService {
         time: Date.now().toString(),
       },
     };
-    console.log(message);
+    //console.log(message);
     followedUser.notificationCounter = followedUser.notificationCounter
       ? followedUser.notificationCounter + 1
       : 1;
-    await followedUser.save();
-
     if (!followedUser.notifications) followedUser.notifications = [];
     followedUser.notifications.push(message);
-   // console.log(followedUser.notifications);
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
       followedUser.offlineNotifications.push(message);
-      await followedUser.save();
-     // console.log(followedUser.offlineNotifications);
     } else {
-      await followedUser.save();
       message.tokens = [followedUser.fcmToken];
       let checkFailed = await this.sendNotification(
         [followedUser.fcmToken],
         message,
       );
-      console.log(checkFailed);
       if (checkFailed.length > 0) {
         message.tokens = null;
         followedUser.offlineNotifications.push(message);
       }
     }
-    await followedUser.save();
-    return 1;
+    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
   }
+
   async unfollowUser(followedUser, followerUser) {
     let message: {
       data: {
@@ -118,6 +111,7 @@ export class NotificationService {
         followerId: string;
         title: string;
         body: string;
+        time?: string;
       };
       tokens?: [string];
     } = {
@@ -130,25 +124,38 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
+        time: undefined
       },
     };
     let notificationData = followedUser.offlineNotifications;
-    for (let i = 0; followedUser.offlineNotifications.length; i++) {
+    if (!followedUser.offlineNotifications)
+      followedUser.offlineNotifications = [];
+    // console.log(followedUser.offlineNotifications);
+    //console.log(100);
+
+    for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message == notificationData[i]) {
+      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
         followedUser.offlineNotifications.splice(i, 1);
-        await followedUser.offlineNotifications.save();
       }
     }
+    //console.log(followedUser.offlineNotifications);
+    //console.log(100);
+    if (!followedUser.notifications)
+      followedUser.notifications = [];
     notificationData = followedUser.notifications;
-    for (let i = 0; followedUser.notifications.length; i++) {
+    //console.log(followedUser.notifications);
+
+    for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message == notificationData[i]) {
+      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
         followedUser.notifications.splice(i, 1);
-        await followedUser.save();
       }
     }
-    return 1;
+    // console.log(100);
+
+    //console.log(followedUser.notifications);
+    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
   }
 
   async followBoard(ownerUser, followerUser, boardName, boardId) {
@@ -381,8 +388,8 @@ export class NotificationService {
     await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
-    console.log('aywa');
-    console.log(user.fcmToken);
+    //console.log('aywa');
+    //console.log(user.fcmToken);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {

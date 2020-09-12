@@ -48,9 +48,28 @@ export class BoardService {
     } else {
       sectionId = null;
     }
-    let board = await this.getBoardById(boardId);
+    boardId = mongoose.Types.ObjectId(boardId);
+    pinId = mongoose.Types.ObjectId(pinId);
+    let board = await this.boardModel.aggregate([
+      { $match: { _id: boardId } },
+      {
+        $project: {
+          sections: 1,
+          pins: 1,
+          coverImages: 1,
+        },
+      },
+    ])[0];
     if (!board) return false;
-    let pin = await this.pinModel.findById(pinId);
+    let pin = await this.pinModel.aggregate([
+      { $match: { _id: pinId } },
+      {
+        $project: {
+          topic: 1,
+          imageId: 1,
+        },
+      },
+    ])[0];
     if (!pin) return false;
 
     let pinObjectId = mongoose.Types.ObjectId(pinId);
@@ -87,13 +106,17 @@ export class BoardService {
     console.log('pin saved');
     return true;
   }
-  async createBoard(
-    name: string,
-    startDate: string,
-    endDate: string,
-    userId: string,
-  ) {
-    let user = await this.UserService.getUserById(userId);
+  async createBoard(name: string, startDate: string, endDate: string, userId) {
+    userId = mongoose.Types.ObjectId(userId);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          firstName: 1,
+          lastName: 1,
+        },
+      },
+    ])[0];
     if (!user) throw new NotFoundException('no such user');
     let sd = startDate ? startDate : null;
     let ed = endDate ? endDate : null;
@@ -129,7 +152,15 @@ export class BoardService {
     console.log('saved');
     await this.addBoardtoUser(userId, board._id);
     console.log('saved 2');
-    let topics = await this.topicModel.find({});
+    let topics = await this.topicModel.aggregate([
+      {},
+      {
+        $project: {
+          name: 1,
+          recommendedUsers: 1,
+        },
+      },
+    ]);
     for (let i = 0; i < topics.length; i++) {
       if (
         board.name.includes(String(topics[i].name)) ||
@@ -143,26 +174,37 @@ export class BoardService {
         }
       }
     }
-    return board;
+    return true;
   }
-  async sortBoardsAtoZ(userId): Promise<Array<object>> {
-    let user = await this.userModel.findById(userId, {
-      boards: 1,
-      sortType: 1,
-    });
+  async sortBoardsAtoZ(userId) {
+    userId = mongoose.Types.ObjectId(userId);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          boards: 1,
+          sortType: 1,
+        },
+      },
+    ])[0];
 
     await user.boards.sort((a, b) => a.name.localeCompare(b.name.toString()));
     user.sortType = 'A-Z';
     await user.save();
-    return user.boards;
+    return true;
   }
 
-  async sortBoardsDate(userId): Promise<Array<object>> {
-    let user = await this.userModel.findById(userId, {
-      boards: 1,
-      sortType: 1,
-    });
-
+  async sortBoardsDate(userId) {
+    userId = mongoose.Types.ObjectId(userId);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          boards: 1,
+          sortType: 1,
+        },
+      },
+    ])[0];
     await user.boards.sort(function(a, b) {
       if (a.createdAt < b.createdAt) {
         return -1;
@@ -175,19 +217,21 @@ export class BoardService {
     user.sortType = 'Date';
     await user.save();
     console.log(user.boards);
-    return user.boards;
+    return true;
   }
   //start index  0 based index of the element in the array
   //positionIndex  the postion the element would be in from (>= 1 to the <= array.size())
-  async reorderBoards(
-    userId,
-    startIndex,
-    positionIndex,
-  ): Promise<Array<object>> {
-    let user = await this.userModel.findById(userId, {
-      boards: 1,
-      sortType: 1,
-    });
+  async reorderBoards(userId, startIndex, positionIndex) {
+    userId = mongoose.Types.ObjectId(userId);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          boards: 1,
+          sortType: 1,
+        },
+      },
+    ])[0];
     if (
       startIndex < 0 ||
       startIndex >= user.boards.length ||
@@ -202,7 +246,7 @@ export class BoardService {
     await user.boards.splice(positionIndex - 1, 0, desiredBorder[0]);
     user.sortType = 'Reorder';
     await user.save();
-    return user.boards;
+    return true;
   }
   async addBoardtoUser(userId, boardId) {
     if (
@@ -210,9 +254,27 @@ export class BoardService {
     ) {
       return false;
     }
-    let board = await this.getBoardById(boardId);
+    boardId = mongoose.Types.ObjectId(boardId);
+    userId = mongoose.Types.ObjectId(userId);
+    let board = await this.boardModel.aggregate([
+      { $match: { _id: boardId } },
+      {
+        $project: {
+          name: 1,
+          createdAt: 1,
+        },
+      },
+    ])[0];
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          boards: 1,
+          sortType: 1,
+        },
+      },
+    ])[0];
     if (!board) return false;
-    let user = await this.UserService.getUserById(userId);
     if (!user) return false;
     let id = mongoose.Types.ObjectId(boardId);
     user.boards.push({
@@ -231,19 +293,32 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       return false;
     }
-    let user = await this.userModel.findById(userId, { boards: 1 });
+    userId = mongoose.Types.ObjectId(userId);
+    let user = await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          boards: 1,
+        },
+      },
+    ])[0];
 
     if (!user) return false;
     let retBoards = [];
     let permissions = {};
     for (let i = 0; i < user.boards.length; i++) {
-      let board = await this.boardModel.findById(user.boards[i].boardId, {
-        coverImages: 1,
-        collaborators: 1,
-        counts: 1,
-        name: 1,
-        sections: 1,
-      });
+      let board = await this.boardModel.aggregate([
+        { $match: { _id: user.boards[i].boardId } },
+        {
+          $project: {
+            coverImages: 1,
+            collaborators: 1,
+            counts: 1,
+            name: 1,
+            sections: 1,
+          },
+        },
+      ])[0];
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';
@@ -279,7 +354,7 @@ export class BoardService {
     }
     let user = await this.UserService.getUserById(userId);
     if (!user) return false;
-    let boardUser = await this.UserService.getActivateUserById(boardUserId);
+    let boardUser = await this.UserService.getUserById(boardUserId);
     if (!boardUser) return false;
     let retBoards = [];
     for (var i = 0; i < boardUser.boards.length; i++) {
@@ -362,7 +437,7 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    let creator = await this.UserService.getActivateUserById(board.creator.id);
+    let creator = await this.UserService.getUserById(board.creator.id);
     if (!creator) {
       throw new BadRequestException('no board creator found');
     }
@@ -487,7 +562,7 @@ export class BoardService {
     }
     let retCollaborators = [];
     for (var i = 0; i < board.collaborators.length; i++) {
-      let collaborator = await this.UserService.getActivateUserById(
+      let collaborator = await this.UserService.getUserById(
         board.collaborators[i].collaboratorId,
       );
       retCollaborators.push({

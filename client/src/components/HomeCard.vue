@@ -164,6 +164,7 @@ export default {
       // shift list 180 degree for the most right card in the page
     },
     showReportPin() {
+      this.$store.commit("homeCards/setCardId", this.postPageId);
       this.$store.commit("popUpsState/toggleReportPinPopUp");
     },
     showSavePin(event) {

@@ -8,6 +8,7 @@ import { ImagesModule } from '../images/images.module';
 import { Topic } from 'src/models/topic.schema';
 import { PinsModule } from '../pins/pins.module';
 import { SharedModule } from 'src/shared/shared.module';
+import { User } from 'src/models/user.schema';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SharedModule } from 'src/shared/shared.module';
     MongooseModule.forFeature([
       { name: 'Topic', schema: Topic },
       { name: 'Pin', schema: Pin },
+      {name: 'User', schema:User}
     ]),
   ],
   controllers: [TopicController],

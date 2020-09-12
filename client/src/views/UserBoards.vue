@@ -59,17 +59,17 @@ export default {
   },
   components: {
     Board,
-    draggable
+    draggable,
   },
   methods: {
     ReorderBoards(event) {
       if (this.myprofile && this.myData.sortType == "Reorder") {
         this.$store.dispatch("boards/reorderBoards", {
           from: event.oldIndex,
-          to: event.newIndex + 1
+          to: event.newIndex + 1,
         });
       }
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -77,9 +77,9 @@ export default {
       viewState: "boards/viewState"
     }),
     ...mapState({
-      myData: state => state.user.userData
-    })
-  }
+      myData: (state) => state.user.userData,
+    }),
+  },
 };
 </script>
 

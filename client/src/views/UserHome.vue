@@ -136,6 +136,7 @@ export default {
     requestFinished: {
       handler: function(newValue) {
         console.log("requestFinished", newValue);
+        if(this.$route.path == "/")
         if (newValue === true) {
           console.log("start scroll event");
           window.addEventListener("scroll", this.generateHomeCards);
