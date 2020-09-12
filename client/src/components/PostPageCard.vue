@@ -490,6 +490,7 @@ li button {
 
 .AddComments {
   margin: 12px;
+  margin-bottom: 35px;
   p {
     font-size: 13px;
     color: black;
@@ -524,6 +525,9 @@ li button {
   display: flex;
   position: absolute;
   bottom: 0;
+  p {
+    margin-bottom: 0;
+  }
 }
 #reactImages {
   margin-top: 0;
@@ -554,11 +558,6 @@ li button {
   }
   .AddComments {
     margin-bottom: 55px;
-  }
-  .reactsSection {
-    p {
-      margin-bottom: 0;
-    }
   }
 }
 

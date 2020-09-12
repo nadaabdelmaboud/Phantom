@@ -3,7 +3,7 @@ import axios from "axios";
 const state = {
   comments: false,
   followUser: false,
-  react: ""
+  react: false
 };
 
 const mutations = {
@@ -61,8 +61,8 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .post("pins/" + pinId + "/reacts?reactType=" + reactType)
-      .then(() => {
-        commit("setpinReacts", reactType);
+      .then(response => {
+        commit("setpinReacts", response.data.success);
       })
       .catch(error => {
         console.log(error);
