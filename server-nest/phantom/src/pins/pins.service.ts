@@ -430,6 +430,7 @@ export class PinsService {
         .lean();
       if (commenter) {
         let comment = {
+          id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
           commenterName: commenter.firstName + ' ' + commenter.lastName,
           commenterImage: commenter.profileImage,
@@ -448,6 +449,7 @@ export class PinsService {
             .lean();
           if (replier) {
             let reply = {
+              id: pin.comments[i].replies[j]._id,
               replier: pin.comments[i].replies[j].replier,
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
