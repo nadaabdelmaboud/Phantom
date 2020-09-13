@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { board } from 'src/types/board';
-import { pin } from 'src/types/pin';
-import { topic } from 'src/types/topic';
+import { board } from '../types/board';
+import { pin } from '../types/pin';
+import { topic } from '../types/topic';
 import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
-import { user } from 'src/types/user';
-import { NotificationService } from 'src/notification/notification.service';
+import { user } from '../types/user';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class RecommendationService {
@@ -685,19 +685,38 @@ export class RecommendationService {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let boards = [];
-    let user = await this.userModel.findById(userId);
+    let user = await this.userModel.findById(userId, {
+      notifications: 1,
+      boards: 1,
+      following: 1,
+      followingTopics: 1,
+      notificationCounter: 1,
+      fcmToken: 1,
+      boardsForYou: 1,
+    });
     if (!user.boardsForYou) {
       throw new BadRequestException('user should allow boards for you first');
     }
-    let allBoards = await this.boardModel.find({});
-    console.log(user.boards.length);
-    console.log(user.firstName);
+    let allBoards = await this.boardModel.find(
+      {},
+      {
+        topic: 1,
+        name: 1,
+        counts: 1,
+        description: 1,
+        coverImages: 1,
+      },
+    );
     for (let i = 0; i < user.boards.length; i++) {
       let count = 0;
       for (let j = allBoards.length - 1; j >= 0; j--) {
         if (count == 10) break;
         if (String(allBoards[j]._id) != String(user.boards[i].boardId)) {
-          let board = await this.boardModel.findById(user.boards[i].boardId);
+          let board = await this.boardModel.findById(user.boards[i].boardId, {
+            name: 1,
+            topic: 1,
+            description: 1,
+          });
           if (
             allBoards[j].topic == board.topic ||
             allBoards[j].name.includes(String(board.name)) ||
@@ -743,7 +762,9 @@ export class RecommendationService {
     }
     console.log('1 ', boards.length);
     for (let i = 0; i < user.followingTopics.length; i++) {
-      let topic = await this.topicModel.findById(user.followingTopics[i]);
+      let topic = await this.topicModel.findById(user.followingTopics[i], {
+        name: 1,
+      });
       let count = 0;
       for (let j = allBoards.length - 1; j >= 0; j--) {
         if (count > 5) break;
@@ -789,9 +810,14 @@ export class RecommendationService {
     console.log('2 ', boards.length);
 
     for (let i = 0; i < user.following.length; i++) {
-      let following = await this.userModel.findById(user.following[i]);
+      let following = await this.userModel.findById(user.following[i], {
+        boards: 1,
+      });
       for (let j = 0; j < following.boards.length; j++) {
-        let board = await this.boardModel.findById(following.boards[j].boardId);
+        let board = await this.boardModel.findById(
+          following.boards[j].boardId,
+          { topic: 1, name: 1, counts: 1, description: 1, coverImages: 1 },
+        );
         if (!boards.includes(board)) {
           boards.push(board);
           if (boards.length >= 50) {
@@ -960,7 +986,7 @@ export class RecommendationService {
       }
     }
     await this.NotificationService.pinsForYou(user, pins, images);
-    return 1;
+    return pins;
   }
   async pinsInspired(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -1024,6 +1050,6 @@ export class RecommendationService {
       }
     }
     await this.NotificationService.pinsInspired(user, pins, images);
-    return 1;
+    return pins;
   }
 }

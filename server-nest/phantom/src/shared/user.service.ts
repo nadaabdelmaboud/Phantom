@@ -14,14 +14,11 @@ import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { UpdateDto } from '../user/dto/update-user.dto';
-import { Payload } from '../types/payload';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 import { topic } from '../types/topic';
-import { use } from 'passport';
-import { POINT_CONVERSION_UNCOMPRESSED } from 'constants';
 @Injectable()
 export class UserService {
   constructor(

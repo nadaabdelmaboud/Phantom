@@ -8,10 +8,10 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from '../shared/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
-import { Pin } from 'src/models/pin.schema';
+import { Pin } from '../models/pin.schema';
 import { Email } from './send-email.service';
 import { NotificationService } from '../notification/notification.service';
-import { Topic } from 'src/models/topic.schema';
+import { Topic } from '../models/topic.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
