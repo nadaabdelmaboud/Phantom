@@ -136,7 +136,8 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-
+    console.log(board);
+    console.log(user);
     let isCreator = await this.BoardService.isCreator(board, userId);
     let isCollaborator = await this.BoardService.isCollaborator(board, userId);
     if (!isCreator && !(isCollaborator && isCollaborator.createPin)) {
@@ -180,18 +181,22 @@ export class PinsService {
       },
       reacts: [],
     });
-    await pin.save();
+    await pin.save().catch(err => {
+      console.log(err);
+    });
     await this.BoardService.addPintoBoard(
       pin._id,
       createPinDto.board,
       createPinDto.section,
     );
+    console.log('asas1');
     await this.addPintoUser(
       userId,
       pin._id,
       createPinDto.board,
       createPinDto.section,
     );
+    console.log('asas2');
     return pin;
   }
   async addPintoUser(userId, pinId, boardId, sectionId) {

@@ -48,48 +48,38 @@ export class BoardService {
     } else {
       sectionId = null;
     }
-    boardId = mongoose.Types.ObjectId(boardId);
-    pinId = mongoose.Types.ObjectId(pinId);
+
     let board = await this.boardModel.findById(boardId, {
       sections: 1,
       pins: 1,
-      coverImages: 1,
+      counts: 1,
     });
+    console.log('1');
     if (!board) return false;
     let pin = await this.pinModel.findById(pinId, {
       topic: 1,
       imageId: 1,
     });
+    console.log('2');
+
     if (!pin) return false;
 
-    let pinObjectId = mongoose.Types.ObjectId(pinId);
     if (sectionId) {
       for (let i = 0; i < board.sections.length; i++) {
         if (String(board.sections[i]._id) == String(sectionId)) {
-          board.sections[i].pins.push({ pinId: pinObjectId, topic: pin.topic });
-          if (!board.sections[i].coverImages)
-            board.sections[i].coverImages = [];
-          if (
-            board.sections[i].coverImages &&
-            board.sections[i].coverImages.length < 3
-          ) {
-            board.sections[i].coverImages.push(pin.imageId);
-          }
+          board.sections[i].pins.push({ pinId: pin._id, topic: pin.topic });
+
           break;
         }
       }
     } else {
       board.pins.push({
-        pinId: pinObjectId,
+        pinId: pin._id,
         topic: pin.topic,
       });
       board.counts.pins = board.counts.pins.valueOf() + 1;
-      if (!board.coverImages) board.coverImages = [];
-      if (board.coverImages && board.coverImages.length < 3) {
-        board.coverImages.push(pin.imageId);
-      }
     }
-
+    console.log('4');
     await board.save().catch(err => {
       console.log(err);
     });
@@ -191,10 +181,10 @@ export class BoardService {
       },
     );
     await user.boards.sort(function(a, b) {
-      if (a.createdAt < b.createdAt) {
+      if (a.createdAt > b.createdAt) {
         return -1;
       }
-      if (a.createdAt > b.createdAt) {
+      if (a.createdAt < b.createdAt) {
         return 1;
       }
       return 0;
@@ -281,8 +271,16 @@ export class BoardService {
         collaborators: 1,
         counts: 1,
         name: 1,
-        sections: 1,
       });
+      board.coverImages = [];
+      for (let c = 0; c < 3; c++) {
+        if (c < board.pins.length) {
+          let coverPin = await this.pinModel.findById(board.pins[c].pinId, {
+            imageId: 1,
+          });
+          board.coverImages.push(coverPin.imageId);
+        }
+      }
       console.log(board);
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
@@ -332,9 +330,17 @@ export class BoardService {
         counts: 1,
         creator: 1,
         name: 1,
-        sections: 1,
       });
       if (!board) continue;
+      board.coverImages = [];
+      for (let c = 0; c < 3; c++) {
+        if (c < board.pins.length) {
+          let coverPin = await this.pinModel.findById(board.pins[c].pinId, {
+            imageId: 1,
+          });
+          board.coverImages.push(coverPin.imageId);
+        }
+      }
       let collaborator = await this.isCollaborator(board, userId);
       let isJoined = false;
       let permissions = {};
@@ -365,7 +371,7 @@ export class BoardService {
       board.collaborators = [];
       await board.save();
     }
-    for (var i = 0; i < board.collaborators.length; i++) {
+    for (let i = 0; i < board.collaborators.length; i++) {
       if (String(board.collaborators[i].collaboratorId) == String(userId)) {
         return true;
       }
@@ -1092,6 +1098,8 @@ export class BoardService {
 
     let boardOriginal = await this.boardModel.findById(boardOriginalId, {
       sections: 1,
+      creator: 1,
+      collaborators: 1,
     });
     let boardMerged = await this.boardModel.findById(boardMergedId, {
       sections: 1,
@@ -1105,11 +1113,14 @@ export class BoardService {
     }
 
     let isAuthorized = await this.authorizedBoard(boardOriginal, userId);
+    console.log(isAuthorized);
+    console.log(String(userId) == String(boardMerged.creator.id));
     if (!(String(userId) == String(boardMerged.creator.id)) || !isAuthorized) {
       throw new UnauthorizedException(
         'user is unauthorized to merge these boards',
       );
     }
+    console.log('Weee');
     if (!boardOriginal.sections) boardOriginal.sections = [];
 
     let originalName =
@@ -1421,7 +1432,28 @@ export class BoardService {
     if (!board) {
       throw new BadRequestException('not valid board');
     }
+    board.coverImages = [];
+    for (let c = 0; c < 3; c++) {
+      if (c < board.pins.length) {
+        let coverPin = await this.pinModel.findById(board.pins[c].pinId, {
+          imageId: 1,
+        });
+        board.coverImages.push(coverPin.imageId);
+      }
+    }
     let pins = [];
+    for (let i = 0; i < board.sections.length; i++) {
+      board.sections[i].coverImages = [];
+      for (let c = 0; c < 3; c++) {
+        if (c < board.sections[i].pins.length) {
+          let coverPin = await this.pinModel.findById(
+            board.sections[i].pins[c].pinId,
+            { imageId: 1 },
+          );
+          board.sections[i].coverImages.push(coverPin.imageId);
+        }
+      }
+    }
     for (let i = 0; i < board.pins.length; i++) {
       let pinType = 'none';
       let pin = await this.pinModel.findById(board.pins[i].pinId, {
