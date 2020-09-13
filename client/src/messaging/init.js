@@ -31,11 +31,6 @@ export function initializeFirebase() {
         body: payload.data.body
       };
       new Notification(notificationTitle, notificationOptions);
-      // notification.onclick = function(event) {
-      //   event.preventDefault(); // prevent the browser from focusing the Notification's tab
-      //   window.open(payload.data.click_action, "_blank");
-      //   notification.close();
-      // };
     });
     messaging
       .requestPermission()

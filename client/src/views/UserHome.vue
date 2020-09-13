@@ -126,6 +126,7 @@ export default {
       console.log("finish", this.finishCalling);
       console.log("scrollY", window.scrollY);
       console.log("screenHeight", screenHeight);
+      console.log("sbfjkd", document.body.height);
       if (window.scrollY >= screenHeight) {
         screenHeight += 200;
         await this.$store.dispatch("homeCards/userGenerateCards");

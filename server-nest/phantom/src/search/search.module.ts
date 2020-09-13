@@ -6,10 +6,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BoardModule } from '../board/board.module';
 import { ImagesModule } from '../images/images.module';
 import { PinsModule } from '../pins/pins.module';
-import { SharedModule } from 'src/shared/shared.module';
-import { Board } from 'src/models/board.schema';
-import { User } from 'src/models/user.schema';
-import { UserModule } from 'src/user/user.module';
+import { SharedModule } from '../shared/shared.module';
+import { Board } from '../models/board.schema';
+import { User } from '../models/user.schema';
+import { UserModule } from '../user/user.module';
 import * as search from 'fuzzy-search';
 @Module({
   imports: [

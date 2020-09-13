@@ -11,15 +11,80 @@ import { user } from '../types/user';
 import { chat } from '../types/chat';
 
 import { ValidationService } from '../shared/validation.service';
-import { from } from 'rxjs';
+import { message } from 'src/types/message';
+import { async } from 'rxjs';
 @Injectable()
 export class ChatService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Chat') private readonly chatModel: Model<chat>,
+    @InjectModel('Message') private readonly messageModel: Model<message>,
 
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
+  async sendMessage(senderId: String, recieverIds: String[], text: String, name: String) {
+    if (!this.ValidationService.checkMongooseID([senderId]))
+      throw new Error('not mongoose id');
+    if (!this.ValidationService.checkMongooseID(recieverIds))
+      throw new Error('not mongoose id');
+    let mess = { userId: senderId, message: text, date: new Date() }
+    let ids = recieverIds.concat(senderId)
+    var user;
+    if (!name) {
+      user = await this.userModel.findById(senderId, 'userName');
+      name = user.userName;
+    }
+    let chat = await this.chatModel.findOneAndUpdate({ usersIds: { $all: ids } }, { $set: { lastMessage: mess } });
+    if (!chat) {
+      chat = new this.chatModel({
+        usersIds: ids, lastMessage: mess, date: new Date(), name: name
+      })
+      await chat.save()
+    }
+    let message = new this.messageModel({ chatId: chat._id, senderId: senderId, message: text, date: mess.date })
+    await message.save()
+    return { message, chat };
+
+  }
+  async getMessage(userIds: String[], senderId: String) {
+    if (!this.ValidationService.checkMongooseID(userIds))
+      throw new Error('not mongoose id');
+    let ids = userIds.concat(senderId)
+    let chat = await this.chatModel.findOne({ usersIds: ids }, '_id');
+    return await this.messageModel.find({ chatId: chat._id, senderId: senderId }, 'message date seenStatus deliverStatus', { sort: { date: -1 } })
+  }
+  //id userName imageId
+  async getChats(userId: String) {
+    if (!this.ValidationService.checkMongooseID([userId]))
+      throw new Error('not mongoose id');
+    return await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { date: -1 } });
+    
+  }
+  async seenDeliverMessage(userId: String, messageId: String, isSeen: boolean, isDelivered: boolean) {
+    if (!this.ValidationService.checkMongooseID([userId, messageId]))
+      throw new Error('not mongoose id');
+    if (isSeen)
+      await this.messageModel.findByIdAndUpdate(messageId, {
+        $push: {
+          seenStatus: { userId: userId, time: new Date() }
+        }
+      });
+    if (isDelivered)
+      await this.messageModel.findByIdAndUpdate(messageId, {
+        $push: {
+          deliverStatus: { userId: userId, time: new Date() }
+        }
+      });
+    return 1;
+
+  }
+
+  async findUsers(userId: string) {
+    if (!this.ValidationService.checkMongooseID([userId]))
+      throw new Error('not mongoose id');
+    return await this.userModel.find({ _id: userId, 'sentMessages.userId': mongoose.Types.ObjectId(userId) }, 'userName profileImage sentMessages.message');
+
+  }
   async getMessagesSent(firstUserId: string, secondUserId: string) {
     if (!this.ValidationService.checkMongooseID([firstUserId, secondUserId]))
       throw new Error('not mongoose id');

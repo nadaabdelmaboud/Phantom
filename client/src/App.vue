@@ -1,25 +1,35 @@
 <template>
-  <div id="app">
+  <div @click="checkLists">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { initializeFirebase } from "../src/messaging/init";
+import axios from "axios"
 export default {
   name: "App",
   data: function() {
-    return {
-      newKey: 0
-    };
   },
   created() {
-    this.$store.dispatch("user/getUserProfile");
+    let token = localStorage.getItem("userToken");
+    if(token){
+      axios.defaults.headers.common["Authorization"] = token;
+      this.$store.dispatch("user/getUserProfile");
+    }
     initializeFirebase();
+    window.addEventListener("scroll", () => {
+      console.log(document.body.clientHeight, "   ", window.scrollY);
+      if (window.scrollY == window.scrollHeight) console.log("scroloo");
+    });
   },
-  watch: {
-    $route() {
-      //this.newKey = (this.newKey + 1) % 4;
+  methods:{
+    checkLists(event){
+      console.log(event.target.id)
+      if(event.target.id == "alertIcon")
+        this.$store.commit("notifications/alterShow",true)
+      else
+        this.$store.commit("notifications/alterShow",false)
     }
   }
 };

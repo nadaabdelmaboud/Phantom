@@ -23,6 +23,8 @@ import BoardPins from "../components/BoardPins";
 import BoardMoreLike from "../components/BoardMoreLike";
 import TopicsPage from "../views/TopicsPage.vue";
 import SectionView from "../views/SectionView";
+import NotidicationBoards from "../components/Notification/NotificationBoards";
+import NotidicationPins from "../components/Notification/NotificationPins";
 
 Vue.use(VueRouter);
 
@@ -136,6 +138,16 @@ const routes = [
             component: NotificationsSettings
           }
         ]
+      },
+      {
+        path: "BoardForYou",
+        name: "BoardForYou",
+        component: NotidicationBoards
+      },
+      {
+        path: "PinsForYou",
+        name: "PinsForYou",
+        component: NotidicationPins
       }
     ]
   },
