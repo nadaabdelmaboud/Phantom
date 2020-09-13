@@ -22,7 +22,7 @@ let app = firebase.initializeApp({
 });
 @Injectable()
 export class NotificationService {
-  constructor() { }
+  constructor() {}
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -101,7 +101,11 @@ export class NotificationService {
         followedUser.offlineNotifications.push(message);
       }
     }
-    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
+    return {
+      offlineNotifications: followedUser.offlineNotifications,
+      notifications: followedUser.notifications,
+      notificationCounter: followedUser.notificationCounter,
+    };
   }
 
   async unfollowUser(followedUser, followerUser) {
@@ -124,7 +128,7 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
-        time: undefined
+        time: undefined,
       },
     };
     let notificationData = followedUser.offlineNotifications;
@@ -135,27 +139,36 @@ export class NotificationService {
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+      if (
+        message.data.followerId == notificationData[i].data.followerId &&
+        notificationData[i].data.title == 'your follower increase '
+      ) {
         followedUser.offlineNotifications.splice(i, 1);
       }
     }
     //console.log(followedUser.offlineNotifications);
     //console.log(100);
-    if (!followedUser.notifications)
-      followedUser.notifications = [];
+    if (!followedUser.notifications) followedUser.notifications = [];
     notificationData = followedUser.notifications;
     //console.log(followedUser.notifications);
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+      if (
+        message.data.followerId == notificationData[i].data.followerId &&
+        notificationData[i].data.title == 'your follower increase '
+      ) {
         followedUser.notifications.splice(i, 1);
       }
     }
     // console.log(100);
 
     //console.log(followedUser.notifications);
-    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
+    return {
+      offlineNotifications: followedUser.offlineNotifications,
+      notifications: followedUser.notifications,
+      notificationCounter: followedUser.notificationCounter,
+    };
   }
 
   async followBoard(ownerUser, followerUser, boardName, boardId) {
@@ -343,9 +356,11 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+
+    await user.save();
+
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -385,9 +400,9 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+    await user.save();
     //console.log('aywa');
     //console.log(user.fcmToken);
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -432,9 +447,9 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+    await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -471,9 +486,10 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+
+    await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {

@@ -31,49 +31,7 @@ export class RecommendationService {
     this.followExist = {};
     this.offsetArr = [];
   }
-  async followseeds() {
-    let topics = await this.topicModel.find({});
-    /* for (let i = 11; i < topics.length; i++) {
-      console.log(i);
-      let count: number = 0;
-      for (let j = 0; j < 30; j++) {
-        console.log(j);
-        let user = {
-          firstName: `Nada${j}`,
-          password: '12345678',
-          birthday: '2000-01-2',
-          lastName: String(topics[i].name),
-          email: `nadatopic${i}s${j}@gmail.com`,
-        };
-        let newUser = await this.UserService.createUser(user);
-        let board = await this.BoardService.createBoard(
-          `Sobarashi ${String(topics[i].name)}`,
-          null,
-          null,
-          'public',
-          newUser._id,
-        );
-      }
-    } */
-    let users = await this.userModel.find({});
-    for (let i = 0; i < topics.length; i++) {
-      console.log(i);
-      topics[i].recommendedUsers = [];
-      for (let j = 0; j < users.length; j++) {
-        console.log(j);
-        if (users[j].lastName.includes(String(topics[i].name))) {
-          topics[i].recommendedUsers.push(users[j]._id);
-        }
-        if (i > 0 && topics[i].recommendedUsers.length >= 30) {
-          break;
-        } else if (i == 0 && topics[i].recommendedUsers.length > 30) {
-          break;
-        }
-      }
-      await topics[i].save();
-    }
-    return true;
-  }
+
   async getHomeFeed(userId, limit: number, offset: number) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
@@ -175,10 +133,12 @@ export class RecommendationService {
 
     var freq = {};
     for (let i = 0; i < topics.length; i++) {
-      if (!freq[topics[i]]) {
-        freq[topics[i]] = 0;
+      if (topics[i] && topics[i] != undefined) {
+        if (!freq[topics[i]]) {
+          freq[topics[i]] = 0;
+        }
+        freq[topics[i]]++;
       }
-      freq[topics[i]]++;
     }
 
     let allHome = 0;
@@ -909,9 +869,12 @@ export class RecommendationService {
       }
     }
     console.log('here');
+    for (let i = 0; i < allPins.length; i++) {
+      console.log(allPins[i].reacts.length);
+    }
     let res = await this.NotificationService.popularPins(user, allPins, images);
     console.log('here2');
-    return 1;
+    return allPins;
   }
   async pinsForYou(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
