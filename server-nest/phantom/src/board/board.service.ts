@@ -616,11 +616,12 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException('not valid user');
-    }
-    let board = await this.boardModel.findById(boardId);
+
+    let board = await this.boardModel.findById(boardId, {
+      status: 1,
+      collaborators: 1,
+      creator: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -665,11 +666,12 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException('not valid user');
-    }
-    let board = await this.boardModel.findById(boardId);
+
+    let board = await this.boardModel.findById(boardId, {
+      status: 1,
+      collaborators: 1,
+      creator: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -688,8 +690,9 @@ export class BoardService {
       if (
         String(board.collaborators[i].collaboratorId) == String(collaboratorId)
       ) {
-        collaborator = await this.UserService.getUserById(
+        collaborator = await this.userModel.findById(
           board.collaborators[i].collaboratorId,
+          { boards: 1 },
         );
         board.collaborators.splice(i, 1);
         await board.save();
@@ -719,26 +722,34 @@ export class BoardService {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
-    let pin = await this.pinModel.findById(pinId);
+    let pin = await this.pinModel.findById(pinId, {
+      board: 1,
+      section: 1,
+      topic: 1,
+      savers: 1,
+      creator: 1,
+    });
     if (!pin) {
       throw new BadRequestException('not valid board');
     }
-    let user = await this.UserService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException('not valid user');
-    }
+
     if (String(pin.creator.id) != String(userId)) {
       throw new UnauthorizedException(
         'this user is unauthorized to delete this pin',
       );
     }
-    let creator = await this.UserService.getUserById(pin.creator.id);
+    let creator = await this.userModel.findById(pin.creator.id, {
+      pins: 1,
+    });
     if (!creator) {
       throw new NotAcceptableException('not valid pin creator');
     }
     for (let i = 0; i < creator.pins.length; i++) {
       if (String(creator.pins[i].pinId) == String(pinId)) {
-        let pinBoard = await this.boardModel.findById(creator.pins[i].boardId);
+        let pinBoard = await this.boardModel.findById(creator.pins[i].boardId, {
+          sections: 1,
+          pins: 1,
+        });
         let pinSection = pin.section;
         if (pinSection) {
           for (let j = 0; j < pinBoard.sections.length; j++) {
@@ -771,7 +782,9 @@ export class BoardService {
     }
     let savers = [];
     for (let i = 0; i < pin.savers.length; i++) {
-      let saverUser = await this.UserService.getUserById(pin.savers[i]);
+      let saverUser = await this.userModel.findById(pin.savers[i], {
+        savedPins: 1,
+      });
       if (saverUser) {
         savers.push(saverUser);
       }
@@ -779,15 +792,36 @@ export class BoardService {
 
     for (let k = 0; k < savers.length; k++) {
       for (let i = 0; i < savers[k].savedPins.length; i++) {
-        if (String(savers[k].savedPins[i].id) == String(pinId)) {
+        if (String(savers[k].savedPins[i].pinId) == String(pinId)) {
           let pinBoard = await this.boardModel.findById(
             savers[k].savedPins[i].boardId,
+            {
+              pins: 1,
+              sections: 1,
+            },
           );
-          for (let j = 0; j < pinBoard.pins.length; j++) {
-            if (String(pinBoard.pins[j].pinId) == String(pinId)) {
-              pinBoard.pins.splice(j, 1);
-              await pinBoard.save();
-              break;
+          let pinSection = savers[k].savedPins[i].sectionId;
+          if (pinSection) {
+            for (let j = 0; j < pinBoard.sections.length; j++) {
+              if (String(pinBoard.sections[j]._id) == String(pinSection)) {
+                for (let n = 0; n < pinBoard.sections[j].pins.length; n++) {
+                  if (
+                    String(pinBoard.sections[j].pins[n].pinId) == String(pinId)
+                  ) {
+                    pinBoard.sections[j].pins.splice(n, 1);
+                    await pinBoard.save();
+                    break;
+                  }
+                }
+              }
+            }
+          } else {
+            for (let j = 0; j < pinBoard.pins.length; j++) {
+              if (String(pinBoard.pins[j].pinId) == String(pinId)) {
+                pinBoard.pins.splice(j, 1);
+                await pinBoard.save();
+                break;
+              }
             }
           }
           savers[k].savedPins.splice(i, 1);
@@ -796,7 +830,7 @@ export class BoardService {
         }
       }
     }
-    let topic = await this.topicModel.findOne({ name: pin.topic });
+    let topic = await this.topicModel.findOne({ name: pin.topic }, { pins: 1 });
     if (topic) {
       for (var i = 0; i < topic.pins.length; i++) {
         if (String(topic.pins[i]) == String(pinId)) {
@@ -818,11 +852,15 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { pins: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, {
+      collaborators: 1,
+      creator: 1,
+      status: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -847,8 +885,9 @@ export class BoardService {
     if (!found) {
       console.log('ssss3');
       for (let i = 0; i < board.collaborators.length; i++) {
-        let collaborator = await this.UserService.getUserById(
+        let collaborator = await this.userModel.findById(
           board.collaborators[i].collaboratorId,
+          { pins: 1 },
         );
         if (collaborator) {
           for (let j = 0; j < collaborator.pins.length; j++) {
@@ -872,11 +911,17 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { boards: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, {
+      pins: 1,
+      collaborators: 1,
+      sections: 1,
+      creator: 1,
+      status: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -893,8 +938,11 @@ export class BoardService {
       }
     }
     for (var k = 0; k < board.collaborators.length; k++) {
-      let collaborator = await this.UserService.getUserById(
+      let collaborator = await this.userModel.findById(
         board.collaborators[k].collaboratorId,
+        {
+          boards: 1,
+        },
       );
       if (collaborator) {
         for (var i = 0; i < collaborator.boards.length; i++) {
@@ -941,11 +989,15 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { boards: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, {
+      creator: 1,
+      collaborators: 1,
+      status: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -962,8 +1014,9 @@ export class BoardService {
       }
     }
     for (let k = 0; k < board.collaborators.length; k++) {
-      let collaborator = await this.UserService.getUserById(
+      let collaborator = await this.userModel.findById(
         board.collaborators[k].collaboratorId,
+        { boards: 1 },
       );
       if (collaborator) {
         for (let i = 0; i < collaborator.boards.length; i++) {
@@ -986,11 +1039,13 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException('not valid user');
-    }
-    let board = await this.boardModel.findById(boardId);
+
+    let board = await this.boardModel.findById(boardId, {
+      status: 1,
+      collaborators: 1,
+      creator: 1,
+      sections: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -1034,21 +1089,23 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException('not valid user');
-    }
-    let boardOriginal = await this.boardModel.findById(boardOriginalId);
-    let boardMerged = await this.boardModel.findById(boardMergedId);
+
+    let boardOriginal = await this.boardModel.findById(boardOriginalId, {
+      sections: 1,
+    });
+    let boardMerged = await this.boardModel.findById(boardMergedId, {
+      sections: 1,
+      pins: 1,
+      name: 1,
+      creator: 1,
+      coverImages: 1,
+    });
     if (!boardOriginal || !boardMerged) {
       throw new BadRequestException('not valid boards');
     }
 
     let isAuthorized = await this.authorizedBoard(boardOriginal, userId);
-    if (
-      !(String(user._id) == String(boardMerged.creator.id)) ||
-      !isAuthorized
-    ) {
+    if (!(String(userId) == String(boardMerged.creator.id)) || !isAuthorized) {
       throw new UnauthorizedException(
         'user is unauthorized to merge these boards',
       );
@@ -1109,11 +1166,11 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException('not valid user');
-    }
-    let board = await this.boardModel.findById(boardId);
+
+    let board = await this.boardModel.findById(boardId, {
+      sections: 1,
+      creator: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -1159,17 +1216,18 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { savedPins: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, {
+      creator: 1,
+      sections: 1,
+      pins: 1,
+      collaborators: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
-    }
-    let pin = await this.pinModel.findById(pinId);
-    if (!pin) {
-      throw new BadRequestException('not valid pin');
     }
 
     if (String(userId) != String(board.creator.id)) {
@@ -1214,8 +1272,9 @@ export class BoardService {
     }
     if (!found) {
       for (let i = 0; i < board.collaborators.length; i++) {
-        let collaborator = await this.UserService.getUserById(
+        let collaborator = await this.userModel.findById(
           board.collaborators[i].collaboratorId,
+          { savedPins: 1 },
         );
         if (collaborator) {
           for (let j = 0; j < collaborator.savedPins.length; j++) {
@@ -1242,15 +1301,24 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      pins: 1,
+      savedPins: 1,
+      lastName: 1,
+      firstName: 1,
+    });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, { collaborators: 1 });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
-    let pin = await this.pinModel.findById(pinId);
+    let pin = await this.pinModel.findById(pinId, {
+      board: 1,
+      section: 1,
+      creator: 1,
+    });
     if (!pin) {
       throw new BadRequestException('not valid pin');
     }
@@ -1278,8 +1346,9 @@ export class BoardService {
     }
     if (!found) {
       for (let i = 0; i < board.collaborators.length; i++) {
-        let collaborator = await this.UserService.getUserById(
+        let collaborator = await this.userModel.findById(
           board.collaborators[i].collaboratorId,
+          { pins: 1, savedPins: 1 },
         );
         if (collaborator) {
           for (let j = 0; j < collaborator.pins.length; j++) {
@@ -1335,18 +1404,32 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { savedPins: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, {
+      pins: 1,
+      creator: 1,
+      collaborators: 1,
+      status: 1,
+      name: 1,
+      description: 1,
+      coverImages: 1,
+      sections: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
     let pins = [];
     for (let i = 0; i < board.pins.length; i++) {
       let pinType = 'none';
-      let pin = await this.pinModel.findById(board.pins[i].pinId);
+      let pin = await this.pinModel.findById(board.pins[i].pinId, {
+        creator: 1,
+        imageId: 1,
+        imageHeight: 1,
+        imageWidth: 1,
+      });
       if (String(pin.creator.id) == String(userId)) {
         pinType = 'creator';
       } else {
@@ -1393,11 +1476,17 @@ export class BoardService {
     ) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      savedPins: 1,
+    });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId, {
+      creator: 1,
+      collaborators: 1,
+      sections: 1,
+    });
     if (!board) {
       throw new BadRequestException('not valid board');
     }
@@ -1410,6 +1499,12 @@ export class BoardService {
           let pinType = 'none';
           let pin = await this.pinModel.findById(
             board.sections[j].pins[i].pinId,
+            {
+              creator: 1,
+              imageId: 1,
+              imageHeight: 1,
+              imageWidth: 1,
+            },
           );
           if (String(pin.creator.id) == String(userId)) {
             pinType = 'creator';
