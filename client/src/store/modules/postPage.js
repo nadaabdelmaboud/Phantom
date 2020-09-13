@@ -4,7 +4,7 @@ const state = {
   comments: false,
   followUser: false,
   react: false,
-  pinComments:[]
+  pinComments: []
 };
 
 const mutations = {
@@ -17,20 +17,21 @@ const mutations = {
   setpinReacts(state, react) {
     state.react = react;
   },
-  setPinComments(state , comment){
-   state.pinComments = comment;
+  setPinComments(state, comment) {
+    console.log("Array in mutation", comment);
+    state.pinComments = comment;
   },
-  addNewComment (state , comment){
+  addNewComment(state, comment) {
     state.pinComments.push(comment);
   }
 };
 
 const actions = {
-  postPageAddedComments({ commit }, {postPageId , comment}) {
+  postPageAddedComments({ commit }, { postPageId, comment }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .post("pins/" + postPageId + "/comments" , comment)
+      .post("pins/" + postPageId + "/comments", comment)
       .then(response => {
         commit("commentIsAdded", response.data.success);
         console.log("Comments", response.data);
@@ -75,7 +76,7 @@ const actions = {
         console.log(error);
       });
   },
-  getPinComments({commit} , pinId){
+  getPinComments({ commit }, pinId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
