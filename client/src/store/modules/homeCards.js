@@ -86,6 +86,7 @@ const mutations = {
     state.pinId = id;
   },
   setNumReactHaha(state, react) {
+    console.log("mutation react", react);
     state.numReactHaha = react;
   },
   setNumReactWow(state, react) {
@@ -164,7 +165,6 @@ const actions = {
         commit("setnumberofFollowers", res.creatorInfo.followers);
         commit("setPinId", res.pin._id);
         commit("setReactThisPin", res.react);
-        console.log("Haha Reacts", res);
         commit("setNumReactHaha", res.pin.counts.hahaReacts);
         commit("setNumReactWow", res.pin.counts.wowReacts);
         commit("setNumReactLove", res.pin.counts.loveReacts);
@@ -213,13 +213,7 @@ const getters = {
   numberofFollowers: state => state.numberofFollowers,
   pinCreatorId: state => state.pinCreatorId,
   finishCalling: state => state.finishCalling,
-  pinId: state => state.pinId,
-  numReactHaha: state => state.numReactHaha,
-  numReactWow: state => state.numReactWow,
-  numReactLove: state => state.numReactLove,
-  numReactGoodIdea: state => state.numReactGoodIdea,
-  numReactThanks: state => state.numReactThanks,
-  reactThisPin: state => state.reactThisPin
+  pinId: state => state.pinId
 };
 
 export default {

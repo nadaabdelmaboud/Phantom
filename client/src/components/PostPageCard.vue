@@ -27,21 +27,21 @@
                 </li>
                 <li>
                   <img
-                    src="../assets/Wow1.gif"
+                    src="../assets/Wow.gif"
                     alt="reactWow"
                     @click="reactWow"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Love2.gif"
+                    src="../assets/Love.gif"
                     alt="reactLove"
                     @click="reactLove"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/GoodIdea1.gif"
+                    src="../assets/GoodIdea.gif"
                     alt="reactGoodIdea"
                     @click="reactGoodIdea"
                   />
@@ -141,7 +141,7 @@
               <div id="postComments"></div>
             </div>
             <div class="reactsSection">
-              <p>
+              <p v-if="this.numReactHaha != 0">
                 {{ this.numReactHaha }}
                 <img
                   src="../assets/Haha.png"
@@ -149,11 +149,11 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactWow != 0">
                 {{ this.numReactWow }}
                 <img src="../assets/Wow.png" alt="reactWow" id="reactImages" />
               </p>
-              <p>
+              <p v-if="this.numReactLove != 0">
                 {{ this.numReactLove }}
                 <img
                   src="../assets/Love.jpg"
@@ -161,7 +161,7 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactGoodIdea != 0">
                 {{ this.numReactGoodIdea }}
                 <img
                   src="../assets/GoodIdea.png"
@@ -169,7 +169,7 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactThanks != 0">
                 {{ this.numReactThanks }}
                 <img
                   src="../assets/Thanks.jpg"
@@ -626,7 +626,7 @@ li button {
 </style>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
 import io from "socket.io-client";
 export default {
@@ -669,6 +669,28 @@ export default {
       const heart = document.getElementById("heart-icon");
       console.log("heartColor", heart.style.color);
       if (heart.style.color !== "black") {
+        if (heart.style.color === "yellow")
+          this.$store.commit(
+            "homeCards/setNumReactHaha",
+            this.numReactHaha - 1
+          );
+        else if (heart.style.color === "green")
+          this.$store.commit("homeCards/setNumReactWow", this.numReactWow - 1);
+        else if (heart.style.color === "red")
+          this.$store.commit(
+            "homeCards/setNumReactLove",
+            this.numReactLove - 1
+          );
+        else if (heart.style.color === "blue")
+          this.$store.commit(
+            "homeCards/setNumReactGoodIdea",
+            this.numReactGoodIdea - 1
+          );
+        else if (heart.style.color === "pink")
+          this.$store.commit(
+            "homeCards/setNumReactThanks",
+            this.numReactThanks - 1
+          );
         heart.style.color = "black";
         this.reactType = "none";
         this.$store.dispatch("postPage/reactPin", {
@@ -687,6 +709,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "yellow";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactHaha", this.numReactHaha + 1);
     },
     reactWow() {
       this.reactType = "Wow";
@@ -696,6 +719,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "green";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactWow", this.numReactWow + 1);
     },
     reactLove() {
       this.reactType = "Love";
@@ -705,6 +729,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "red";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactLove", this.numReactLove + 1);
     },
     reactGoodIdea() {
       this.reactType = "Good idea";
@@ -714,6 +739,10 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "blue";
       this.showReacts = !this.showReacts;
+      this.$store.commit(
+        "homeCards/setNumReactGoodIdea",
+        this.numReactGoodIdea + 1
+      );
     },
     reactThanks() {
       this.reactType = "Thanks";
@@ -723,6 +752,10 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "pink";
       this.showReacts = !this.showReacts;
+      this.$store.commit(
+        "homeCards/setNumReactThanks",
+        this.numReactThanks + 1
+      );
     },
     hideList(event) {
       if (event.target.id != ("list-icon" || "added-list")) {
@@ -776,9 +809,17 @@ export default {
       else if (this.reactThisPin == "Love") heart.style.color = "red";
       else if (this.reactThisPin == "Good Idea") heart.style.color = "blue";
       else if (this.reactThisPin == "Thanks") heart.style.color = "pink";
-    }, 1000);
+    }, 2000);
   },
   computed: {
+    ...mapState({
+      reactThisPin: state => state.homeCards.reactThisPin,
+      numReactHaha: state => state.homeCards.numReactHaha,
+      numReactWow: state => state.homeCards.numReactWow,
+      numReactLove: state => state.homeCards.numReactLove,
+      numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
+      numReactThanks: state => state.homeCards.numReactThanks
+    }),
     ...mapGetters({
       postImage: "homeCards/postImage",
       userImageId: "homeCards/userImageId",
@@ -789,14 +830,23 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId",
-      numReactHaha: "homeCards/numReactHaha",
-      numReactWow: "homeCards/numReactWow",
-      numReactLove: "homeCards/numReactLove",
-      numReactGoodIdea: "homeCards/numReactGoodIdea",
-      numReactThanks: "homeCards/numReactThanks",
-      reactThisPin: "homeCards/reactThisPin"
+      pinId: "homeCards/pinId"
     })
   }
+  // watch:{
+  //    reactType:{
+  //     handler: async function() {
+  //       console.log("inside watch")
+  //      await this.$store.dispatch(
+  //       "homeCards/Postpage",
+  //       this.$route.params.postPageId
+  //     );
+  //     console.log("Nihaaaaaaaalll" , this.numReactHaha)
+  //     // this.$forceUpdate();
+  //     },
+  //     deep: true,
+  //     immediate: true
+  //   }
+  // }
 };
 </script>
