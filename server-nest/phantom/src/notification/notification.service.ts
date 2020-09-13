@@ -22,7 +22,7 @@ let app = firebase.initializeApp({
 });
 @Injectable()
 export class NotificationService {
-  constructor() {}
+  constructor() { }
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -85,11 +85,11 @@ export class NotificationService {
       ? followedUser.notificationCounter + 1
       : 1;
     if (!followedUser.notifications) followedUser.notifications = [];
-    followedUser.notifications.push(message);
+    followedUser.notifications = await this.addTolimitedArray(followedUser.notifications, 30, message);
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
-      followedUser.offlineNotifications.push(message);
+      followedUser.offlineNotifications = await this.addTolimitedArray(followedUser.offlineNotifications, 30, message);
     } else {
       message.tokens = [followedUser.fcmToken];
       let checkFailed = await this.sendNotification(
@@ -514,4 +514,13 @@ export class NotificationService {
     }
     return 1;
   }
+  async addTolimitedArray(notificationArray: Array<any>, limit: number, pushedData: {}) {
+    if (notificationArray.length >= limit) {
+      notificationArray = notificationArray.slice(0, limit - 1);
+    }
+    notificationArray.push(pushedData);
+    return notificationArray;
+  }
 }
+
+
