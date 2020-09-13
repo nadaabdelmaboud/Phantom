@@ -94,7 +94,7 @@ export default {
           recieverImage: this.getImage(this.myData.profileImage),
           senderImage: this.getImage(this.myData.profileImage),
           recieverName: this.chatWith.name,
-          recieverId: this.chatWith.id,
+          recieverId: [this.chatWith.id],
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,

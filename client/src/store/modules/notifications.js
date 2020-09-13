@@ -15,10 +15,10 @@ const mutations = {
     state.notifications.notifications = [];
     notifications.notifications.forEach(n => {
       if (typeof n.data == "undefined") {
-        n.pins = true;
+        n.isPins = true;
         state.notifications.notifications.push(n);
       } else {
-        n.pins = false;
+        n.isPins = false;
         state.notifications.notifications.push(n.data);
       }
     });
