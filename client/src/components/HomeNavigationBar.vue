@@ -22,13 +22,11 @@
       Following
     </router-link>
     <input class="searchInput" v-if="isLoggedIn()" placeholder=" Search..." />
-    <div
-      v-if="isLoggedIn()"
-      class="icons"
-      id="alertIcon"
-    >
+    <div v-if="isLoggedIn()" class="icons" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
-      <div class="count" id="alertIcon">{{ notification.notificationCounter }}</div>
+      <div class="count" id="alertIcon">
+        {{ notification.notificationCounter }}
+      </div>
     </div>
     <NotificationDropDown v-if="showNotifications" />
     <router-link

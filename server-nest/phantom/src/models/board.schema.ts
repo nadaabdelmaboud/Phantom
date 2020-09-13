@@ -18,7 +18,7 @@ export const Board = new Schema({
     profileUrl: String,
   },
   more: Array(Object),
-  coverImages: [mongoose.Types.ObjectId],
+  coverImages: Array(mongoose.Types.ObjectId),
   pins: Array({
     pinId: mongoose.Types.ObjectId,
     topic: String,
@@ -34,7 +34,7 @@ export const Board = new Schema({
         topic: String,
       }),
       creatorId: mongoose.Types.ObjectId,
-      coverImages: [mongoose.Types.ObjectId],
+      coverImages: Array(mongoose.Types.ObjectId),
     },
   ],
   collaborators: [

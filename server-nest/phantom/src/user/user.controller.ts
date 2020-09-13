@@ -9,6 +9,7 @@ import { Email } from '../shared/send-email.service';
 import { UpdateDto } from './dto/update-user.dto';
 import { NotAcceptableException } from '@nestjs/common';
 import { json } from 'express';
+console.log(134678)
 @nestCommon.Controller()
 export class UserController {
   constructor(
@@ -17,7 +18,7 @@ export class UserController {
     private TopicService: TopicService,
     private BoardService: BoardService,
     */ private email: Email,
-  ) {}
+  ) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('users/me')
@@ -103,6 +104,9 @@ export class UserController {
       }
 
     }*/
+
+    if (updateData.notificationCounter)
+      return await this.userService.updateDataInUser(req.user._id, { notificationCounter: 0 })
     await this.userService.updateSettings(req.user._id, updateData);
     const user = await this.userService.getUserById(req.user._id);
     user.password = undefined;
@@ -251,6 +255,7 @@ export class UserController {
     return await this.userService.userFollowers(params.user_id, limit, offset);
   }
 
+
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/:user_id/following')
   async getUserFollowings(
@@ -261,11 +266,6 @@ export class UserController {
   ) {
     return await this.userService.userFollowings(params.user_id, limit, offset);
   }
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/update-notification-counter')
-  async notificationCounter(@nestCommon.Request() req) {
-    const user = await this.userService.getUserById(req.user._id);
-    user.notificationCounter = 0;
-    await user.save();
-  }
+
+
 }

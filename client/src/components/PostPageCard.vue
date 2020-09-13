@@ -20,35 +20,35 @@
               <ul>
                 <li>
                   <img
-                    src="../assets/Haha.png"
+                    src="../assets/Haha.gif"
                     alt="reactHaha"
                     @click="reactHaha"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Wow.png"
+                    src="../assets/Wow.gif"
                     alt="reactWow"
                     @click="reactWow"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Love.jpg"
+                    src="../assets/Love.gif"
                     alt="reactLove"
                     @click="reactLove"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/GoodIdea.png"
+                    src="../assets/GoodIdea.gif"
                     alt="reactGoodIdea"
                     @click="reactGoodIdea"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Thanks.jpg"
+                    src="../assets/Thanks.gif"
                     alt="reactThanks"
                     @click="reactThanks"
                   />
@@ -119,6 +119,28 @@
             </div>
             <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
+              <!-- ////////////////////////////////////// -->
+              <ul id="commentsList" v-if="this.pinComments.length != 0">
+                <li
+                  class="displaycomments"
+                  v-for="pinComment in pinComments"
+                  :key="pinComment.comment.id"
+                >
+                  <div class="userimage">
+                    <img
+                      :src="getImage(pinComment.comment.commenter)"
+                      alt="User Image"
+                    />
+                  </div>
+                  <div class="previousCommentsfield">
+                    <h6 class="commentCreatorName">
+                      {{ pinComment.comment.commenterName }}
+                    </h6>
+                    <p>{{ pinComment.comment.commentText }}</p>
+                  </div>
+                </li>
+              </ul>
+              <!-- ////////////////////////////////////// -->
               <div class="displaycomments">
                 <div class="userimage">
                   <img :src="getImage(this.userImageId)" alt="User Image" />
@@ -138,10 +160,9 @@
                   Cancel
                 </button>
               </div>
-              <div id="postComments"></div>
             </div>
             <div class="reactsSection">
-              <p>
+              <p v-if="this.numReactHaha != 0">
                 {{ this.numReactHaha }}
                 <img
                   src="../assets/Haha.png"
@@ -149,11 +170,11 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactWow != 0">
                 {{ this.numReactWow }}
                 <img src="../assets/Wow.png" alt="reactWow" id="reactImages" />
               </p>
-              <p>
+              <p v-if="this.numReactLove != 0">
                 {{ this.numReactLove }}
                 <img
                   src="../assets/Love.jpg"
@@ -161,7 +182,7 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactGoodIdea != 0">
                 {{ this.numReactGoodIdea }}
                 <img
                   src="../assets/GoodIdea.png"
@@ -169,7 +190,7 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactThanks != 0">
                 {{ this.numReactThanks }}
                 <img
                   src="../assets/Thanks.jpg"
@@ -498,9 +519,11 @@ li button {
 }
 .displaycomments {
   display: flex;
+  margin-top: 25px;
 }
-.commentsfield {
-  margin-left: 20px;
+.commentsfield,
+.previousCommentsfield {
+  margin-left: 15px;
   margin-top: 8px;
   width: 350px;
   height: 50px;
@@ -516,11 +539,26 @@ li button {
     line-height: 50px;
   }
 }
-
-#postComments {
-  color: red;
+#commentsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  p {
+    margin: 0;
+    padding: 5px;
+    padding-left: 0;
+  }
+  h6 {
+    margin: 0;
+  }
 }
-
+.previousCommentsfield {
+  min-height: 70px;
+  box-shadow: none;
+  border: 1px solid rgba(189, 186, 186, 0.5);
+  border-radius: 15px;
+  padding: 10px;
+}
 .reactsSection {
   display: flex;
   position: absolute;
@@ -626,7 +664,7 @@ li button {
 </style>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
 import io from "socket.io-client";
 export default {
@@ -666,7 +704,40 @@ export default {
       this.show = !this.show;
     },
     showReactsList() {
-      this.showReacts = !this.showReacts;
+      const heart = document.getElementById("heart-icon");
+      console.log("heartColor", heart.style.color);
+      if (heart.style.color !== "black") {
+        if (heart.style.color === "yellow")
+          this.$store.commit(
+            "homeCards/setNumReactHaha",
+            this.numReactHaha - 1
+          );
+        else if (heart.style.color === "green")
+          this.$store.commit("homeCards/setNumReactWow", this.numReactWow - 1);
+        else if (heart.style.color === "red")
+          this.$store.commit(
+            "homeCards/setNumReactLove",
+            this.numReactLove - 1
+          );
+        else if (heart.style.color === "blue")
+          this.$store.commit(
+            "homeCards/setNumReactGoodIdea",
+            this.numReactGoodIdea - 1
+          );
+        else if (heart.style.color === "pink")
+          this.$store.commit(
+            "homeCards/setNumReactThanks",
+            this.numReactThanks - 1
+          );
+        heart.style.color = "black";
+        this.reactType = "none";
+        this.$store.dispatch("postPage/reactPin", {
+          pinId: this.pinId,
+          reactType: this.reactType
+        });
+      } else {
+        this.showReacts = !this.showReacts;
+      }
     },
     reactHaha() {
       this.reactType = "Haha";
@@ -676,6 +747,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "yellow";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactHaha", this.numReactHaha + 1);
     },
     reactWow() {
       this.reactType = "Wow";
@@ -685,6 +757,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "green";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactWow", this.numReactWow + 1);
     },
     reactLove() {
       this.reactType = "Love";
@@ -694,6 +767,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "red";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactLove", this.numReactLove + 1);
     },
     reactGoodIdea() {
       this.reactType = "Good idea";
@@ -703,6 +777,10 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "blue";
       this.showReacts = !this.showReacts;
+      this.$store.commit(
+        "homeCards/setNumReactGoodIdea",
+        this.numReactGoodIdea + 1
+      );
     },
     reactThanks() {
       this.reactType = "Thanks";
@@ -712,6 +790,10 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "pink";
       this.showReacts = !this.showReacts;
+      this.$store.commit(
+        "homeCards/setNumReactThanks",
+        this.numReactThanks + 1
+      );
     },
     hideList(event) {
       if (event.target.id != ("list-icon" || "added-list")) {
@@ -729,7 +811,6 @@ export default {
     addComment() {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      var comments = document.getElementById("postComments");
       let token = localStorage.getItem("userToken");
       socket.emit("comment", {
         commentText: inputField.value,
@@ -737,15 +818,24 @@ export default {
         token: token,
         text: inputField.value
       });
-      console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL", token);
-      socket.on("sendComment", function(data) {
-        console.log("NIHAAAAAAAAAAAAAAAAAL");
-        comments.innerHTML += "<p>" + data.commentText + "</p>";
+      socket.on("sendComment", data => {
+        let commentObject = {
+          comment: {
+            commenterName: data.commenterName,
+            commentText: data.commentText,
+            commenter: data.commenterImage
+          }
+        };
+        this.$store.commit("postPage/addNewComment", commentObject);
       });
-      this.$store.dispatch(
-        "postPage/postPageAddedComments",
-        this.$route.params.postPageId
-      );
+      let commentTextObject = {
+        commentText: inputField.value
+      };
+      this.$store.dispatch("postPage/postPageAddedComments", {
+        postPageId: this.$route.params.postPageId,
+        comment: commentTextObject
+      });
+      inputField.value = "";
     }
   },
   created: function() {
@@ -754,7 +844,34 @@ export default {
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
   },
+  mounted() {
+    const heart = document.getElementById("heart-icon");
+    heart.style.color = "black";
+    setTimeout(() => {
+      console.log("this.reactThisPin", this.reactThisPin);
+      if (this.reactThisPin == "none") heart.style.color = "black";
+      else if (this.reactThisPin == "Haha") heart.style.color = "yellow";
+      else if (this.reactThisPin == "Wow") heart.style.color = "green";
+      else if (this.reactThisPin == "Love") heart.style.color = "red";
+      else if (this.reactThisPin == "Good Idea") heart.style.color = "blue";
+      else if (this.reactThisPin == "Thanks") heart.style.color = "pink";
+    }, 2000);
+    this.$store.dispatch(
+      "postPage/getPinComments",
+      this.$route.params.postPageId
+    );
+  },
   computed: {
+    ...mapState({
+      reactThisPin: state => state.homeCards.reactThisPin,
+      numReactHaha: state => state.homeCards.numReactHaha,
+      numReactWow: state => state.homeCards.numReactWow,
+      numReactLove: state => state.homeCards.numReactLove,
+      numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
+      numReactThanks: state => state.homeCards.numReactThanks,
+      pinComments: state => state.postPage.pinComments,
+      commentsIndex: state => state.postPage.commentsIndex
+    }),
     ...mapGetters({
       postImage: "homeCards/postImage",
       userImageId: "homeCards/userImageId",
@@ -765,12 +882,7 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId",
-      numReactHaha: "homeCards/numReactHaha",
-      numReactWow: "homeCards/numReactWow",
-      numReactLove: "homeCards/numReactLove",
-      numReactGoodIdea: "homeCards/numReactGoodIdea",
-      numReactThanks: "homeCards/numReactThanks"
+      pinId: "homeCards/pinId"
     })
   }
 };
