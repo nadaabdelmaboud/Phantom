@@ -10,7 +10,7 @@
             toChat({
               name: f.firstName + ' ' + f.lastName,
               id: f._id,
-              imageId: f.profileImage
+              imageId: f.profileImage,
             })
           "
         >
@@ -34,10 +34,12 @@
           :timeStamp="msg.date"
           class="ChatMsg"
         />
+        <div v-if="typing" class="typing-loader"></div>
       </div>
+
       <div id="msg" v-if="inchat">
-        <input type="text" v-model="currentMsg" @keydown.enter="sendMsg" />
-        <button type="submit" @click="sendMsg">
+        <input type="text" v-model="currentMsg" @keydown.enter="sendMsg" @input="isTyping" />
+        <button type="submit" @click="sendMsg" >
           <i class="fa fa-angle-double-right"></i>
         </button>
       </div>
@@ -60,10 +62,11 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: ""
+        id: "",
       },
       socket: "",
-      allowNotify: false
+      allowNotify: false,
+      typing:false
     };
   },
   mixins: [getImage],
@@ -76,13 +79,13 @@ export default {
         let msg = {
           owner: true,
           note: this.currentMsg,
-          time: Date.now()
+          time: Date.now(),
         };
         this.$store.commit("chat/addMsg", msg);
         let payload = {
           senderId: this.myData._id,
           recieverId: this.chatWith.id,
-          message: this.currentMsg
+          message: this.currentMsg,
         };
         this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
@@ -98,7 +101,7 @@ export default {
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
-          date: Date.now()
+          date: Date.now(),
         });
         this.currentMsg = "";
       }
@@ -106,7 +109,7 @@ export default {
     toChat(chatWith) {
       let payload = {
         senderId: this.myData._id,
-        recieverId: chatWith.id
+        recieverId: chatWith.id,
       };
       this.$store.dispatch("chat/getChat", payload);
       this.chatWith = chatWith;
@@ -119,66 +122,105 @@ export default {
         let msgBox = document.getElementsByClassName("msgBox")[0];
         msgBox.scrollTop = msgBox.scrollHeight;
       }, 3000);
-    }
+    },
+    messageListener() {
+      this.socket.on("sendMessage", (data) => {
+        this.typing = false;
+        let ping = new Audio();
+        ping.src = require("../../assets/Ping.mp3");
+        ping.play();
+        if (data.senderId == this.chatWith.id) {
+          let msg = {
+            owner: false,
+            note: data.message,
+            time: data.date,
+          };
+          this.$store.commit("chat/addMsg", msg);
+          this.$nextTick(() => {
+            let msgBox = document.getElementsByClassName("msgBox")[0];
+            msgBox.scrollTop = msgBox.scrollHeight;
+          });
+        }
+        let options = {
+          body: data.senderName + " has sent you a new msg \n" + data.message,
+          silent: true,
+        };
+
+        if (this.allowNotify) {
+          let notify = new Notification("phantom new message", options);
+          setTimeout(() => {
+            notify.close();
+          }, 5000);
+        } else {
+          console.log("notification disabled");
+        }
+        //alert server that the message has been delivered
+        this.socket.emit("delivered", {
+          recieverId: this.chatWith.id,
+          senderId: this.myData._id,
+          timeStamp: Date.now(),
+        });
+      });
+    },
+    typingLisener() {
+      this.socket.on("isTyping", (data) => {
+         if (data.senderId == this.chatWith.id) {
+              console.log("dd")
+          this.typing = true;
+         }
+         setTimeout(()=>{
+          this.typing = false;
+         },1000)
+      });
+    },
+    isTyping(){
+      console.log("bnm")
+       this.socket.emit("typing", {
+          recieverId: this.chatWith.id,
+          senderId: this.myData._id,
+        });
+    },
+    deliveredListener() {
+      this.socket.on("setDelivered", (data) => {
+        console.log(data);
+      });
+    },
   },
   computed: {
     ...mapGetters({
       following: "followers/userFollowing",
-      chat: "chat/currentChat"
+      chat: "chat/currentChat",
     }),
     ...mapState({
-      myData: state => state.user.userData
-    })
+      myData: (state) => state.user.userData,
+    }),
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
+    //starting socket connection
+    //send seen message to the other party
     this.socket = io.connect("http://localhost:3000");
     let token = localStorage.getItem("userToken");
     token = token.substring(7);
+    //personalise connection
     this.socket.emit("setUserId", {
-      token: token
+      token: token,
     });
-    this.socket.on("sendMessage", data => {
-      let ping = new Audio();
-      ping.src = require("../../assets/Ping.mp3");
-      ping.play();
-      if (data.senderId == this.chatWith.id) {
-        let msg = {
-          owner: false,
-          note: data.message,
-          time: data.date
-        };
-        this.$store.commit("chat/addMsg", msg);
-        this.$nextTick(() => {
-          let msgBox = document.getElementsByClassName("msgBox")[0];
-          msgBox.scrollTop = msgBox.scrollHeight;
-        });
-      }
-      let options = {
-        body: data.senderName + " has sent you a new msg \n" + data.message,
-        silent: true
-      };
-
-      if (this.allowNotify) {
-        let notify = new Notification("phantom new message", options);
-        setTimeout(() => {
-          notify.close();
-        }, 5000);
-      } else {
-        console.log("notification disabled");
-      }
-      console.log("got Message");
-      console.log(data);
-    });
-
-    Notification.requestPermission().then(permission => {
+    //ensure notification is enabled
+    Notification.requestPermission().then((permission) => {
       if (permission == "granted") {
         this.allowNotify = true;
       } else {
         console.log("notification disabled");
       }
     });
-  }
+    //messageListener
+    this.messageListener();
+    //typing
+    this.typingLisener();
+    //
+    this.deliveredListener();
+  },
 };
 </script>
 
@@ -282,6 +324,69 @@ input {
     width: 85%;
     display: inline-block;
     text-align: center;
+  }
+}
+
+//copied from codepen
+.typing-loader {
+  margin: 10px 0 10px 10px;
+  width: 6px;
+  height: 6px;
+  -webkit-animation: line 1s linear infinite alternate;
+  -moz-animation: line 1s linear infinite alternate;
+  animation: line 1s linear infinite alternate;
+}
+@-webkit-keyframes line {
+  0% {
+    background-color: rgba(0, 0, 0, 1);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 2),
+      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+  75% {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      24px 0px 0px 0px rgba(0, 0, 0, 2);
+  }
+}
+
+@-moz-keyframes line {
+  0% {
+    background-color: rgba(0, 0, 0, 1);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 2),
+      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+  75% {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      24px 0px 0px 0px rgba(0, 0, 0, 2);
+  }
+}
+
+@keyframes line {
+  0% {
+    background-color: rgba(0, 0, 0, 1);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 2),
+      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
+  }
+  75% {
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
+      24px 0px 0px 0px rgba(0, 0, 0, 2);
   }
 }
 </style>

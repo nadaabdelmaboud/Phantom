@@ -46,6 +46,7 @@ export class SharedGateway {
         date: Date.now(),
       });
     }
+
   }
   @SubscribeMessage('typing')
   async type(socket: Socket, data: any) {
@@ -54,7 +55,8 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     if (sender && reciever) {
-      socket.to(reciever.socketId).emit('is typing', {
+      console.log("sending")
+      socket.to(reciever.socketId).emit('isTyping', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
