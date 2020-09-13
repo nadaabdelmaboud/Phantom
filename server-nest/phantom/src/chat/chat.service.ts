@@ -1,7 +1,5 @@
 import {
   Injectable,
-  HttpException,
-  HttpStatus,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
@@ -9,10 +7,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { user } from '../types/user';
 import { chat } from '../types/chat';
-
 import { ValidationService } from '../shared/validation.service';
 import { message } from 'src/types/message';
-import { async } from 'rxjs';
 @Injectable()
 export class ChatService {
   constructor(
@@ -51,26 +47,41 @@ export class ChatService {
       throw new Error('not mongoose id');
     let ids = userIds.concat(senderId)
     let chat = await this.chatModel.findOne({ usersIds: ids }, '_id');
-    return await this.messageModel.find({ chatId: chat._id, senderId: senderId }, 'message date seenStatus deliverStatus', { sort: { date: -1 } })
+    return await this.messageModel.find({ chatId: chat._id }, 'message date seenStatus deliverStatus senderId', { sort: { date: -1 } })
   }
   //id userName imageId
   async getChats(userId: String) {
     if (!this.ValidationService.checkMongooseID([userId]))
       throw new Error('not mongoose id');
-    return await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { date: -1 } });
-    
+    let chat = await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { date: -1 } });
+    let arr = []
+    chat.map(conv => {
+      conv.usersIds.map(user => {
+        if (String(user) != String(userId))
+          arr.push(user)
+      })
+    })
+    let users = await this.userModel.find({ _id: { $in: arr } }, 'profileImage userName');
+    return users.map((x, index) => {
+      return {
+        _id: x._id, profileImage: x.profileImage, userName: x.userName,
+        lastMessage: chat[index].lastMessage
+      }
+    })
+
   }
+
   async seenDeliverMessage(userId: String, messageId: String, isSeen: boolean, isDelivered: boolean) {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
     if (isSeen)
-      await this.messageModel.findByIdAndUpdate(messageId, {
+      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId } }, {
         $push: {
           seenStatus: { userId: userId, time: new Date() }
         }
       });
     if (isDelivered)
-      await this.messageModel.findByIdAndUpdate(messageId, {
+      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId } }, {
         $push: {
           deliverStatus: { userId: userId, time: new Date() }
         }
