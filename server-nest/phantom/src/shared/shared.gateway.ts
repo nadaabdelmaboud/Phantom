@@ -18,9 +18,9 @@ export class SharedGateway {
     const token = data.token;
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let userId = decoded._id;
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, { socketId: 1 });
     if (user) {
-      console.log("user",socket.id)
+      console.log('user', socket.id);
       user.socketId = socket.id;
       await user.save();
     }
@@ -28,18 +28,18 @@ export class SharedGateway {
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
     let commentText = data.commentText;
-    let pinId = data.pinId;
-    let pin = await this.pinModel.findById(pinId);
     let token = data.token;
-    console.log(token);
     token = token.substring(7);
-    console.log(token);
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let commenterId = decoded._id;
-    let commenter = await this.userModel.findById(commenterId);
-    if (commenter && pin && commentText) {
+    let commenter = await this.userModel.findById(commenterId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    if (commenter && commentText) {
       socket.emit('sendComment', {
-        commentText: data.text,
+        commentText: data.commentText,
         commenterName: commenter.firstName + ' ' + commenter.lastName,
         commenterImage: commenter.profileImage,
         pinId: data.pinId,
@@ -78,7 +78,7 @@ export class SharedGateway {
         recieverName: reciever.firstName + ' ' + reciever.lastName,
         senderName: sender.firstName + ' ' + sender.lastName,
         senderId: data.senderId,
-        timeStamp: data.timeStamp
+        timeStamp: data.timeStamp,
       });
     }
   }
@@ -105,14 +105,16 @@ export class SharedGateway {
   @SubscribeMessage('reply')
   async reply(socket: Socket, data: any) {
     let replyText = data.replyText;
-    let pinId = data.pinId;
     let commentId = data.commentId;
-    let pin = await this.pinModel.findById(pinId);
     const token = data.token;
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let replierId = decoded._id;
-    let replier = await this.userModel.findById(replierId);
-    if (replier && pin && replyText) {
+    let replier = await this.userModel.findById(replierId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    if (replier && replyText) {
       socket.emit('sendReply', {
         replyText: replyText,
         replierName: replier.firstName + ' ' + replier.lastName,
@@ -129,18 +131,37 @@ export class SharedGateway {
     const token = data.token;
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let userId = decoded._id;
-    let user = await this.userModel.findById(userId);
-    let pin = await this.pinModel.findById(data.pinId);
+    let user = await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    let pin = await this.pinModel.findById(data.pinId, { counts: 1 });
     socket.emit('sendPinReact', {
       reactType: data.reactType,
       userName: user.firstName + ' ' + user.lastName,
       userImage: user.profileImage,
       pinId: data.pinId,
-      wowReacts: pin.counts.wowReacts,
-      loveReacts: pin.counts.loveReacts,
-      goodIdeaReacts: pin.counts.goodIdeaReacts,
-      hahaReacts: pin.counts.hahaReacts,
-      thanksReacts: pin.counts.thanksReacts,
+      wowReacts:
+        data.reactType == 'Wow'
+          ? pin.counts.wowReacts.valueOf() + 1
+          : pin.counts.wowReacts,
+      loveReacts:
+        data.reactType == 'Love'
+          ? pin.counts.loveReacts.valueOf() + 1
+          : pin.counts.loveReacts,
+      goodIdeaReacts:
+        data.reactType == 'Good idea'
+          ? pin.counts.goodIdeaReacts.valueOf() + 1
+          : pin.counts.goodIdeaReacts,
+      hahaReacts:
+        data.reactType == 'Haha'
+          ? pin.counts.hahaReacts.valueOf() + 1
+          : pin.counts.hahaReacts,
+      thanksReacts:
+        data.reactType == 'Thanks'
+          ? pin.counts.thanksReacts.valueOf() + 1
+          : pin.counts.thanksReacts,
     });
   }
 
@@ -149,8 +170,12 @@ export class SharedGateway {
     const token = data.token;
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let userId = decoded._id;
-    let user = await this.userModel.findById(userId);
-    let pin = await this.pinModel.findById(data.pinId);
+    let user = await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    let pin = await this.pinModel.findById(data.pinId, { comments: 1 });
     for (var i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(data.commentId)) {
         socket.emit('sendLikeComment', {
@@ -158,7 +183,7 @@ export class SharedGateway {
           userImage: user.profileImage,
           pinId: data.pinId,
           commentId: pin.comments[i]._id,
-          commentLikes: pin.comments[i].likes.counts,
+          commentLikes: pin.comments[i].likes.counts.valueOf() + 1,
         });
         break;
       }
@@ -170,8 +195,12 @@ export class SharedGateway {
     const token = data.token;
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let userId = decoded._id;
-    let user = await this.userModel.findById(userId);
-    let pin = await this.pinModel.findById(data.pinId);
+    let user = await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    let pin = await this.pinModel.findById(data.pinId, { comments: 1 });
     for (var i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(data.commentId)) {
         for (var j = 0; j < pin.comments[i].replies.length; j++) {
@@ -182,7 +211,7 @@ export class SharedGateway {
               pinId: data.pinId,
               commentId: pin.comments[i]._id,
               replyId: data.replyId,
-              replyLikes: pin.comments[i].replies[j].likes.counts,
+              replyLikes: pin.comments[i].replies[j].likes.counts.valueOf() + 1,
             });
             break;
           }
@@ -197,7 +226,7 @@ export class SharedGateway {
     const token = data.token;
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let userId = decoded._id;
-    let user = await this.userModel.findById(userId);
+    let user = await this.userModel.findById(userId, { socketId: 1 });
     if (user) {
       user.socketId = 'none';
       await user.save();
