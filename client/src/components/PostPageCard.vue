@@ -20,35 +20,35 @@
               <ul>
                 <li>
                   <img
-                    src="../assets/Haha.png"
+                    src="../assets/Haha.gif"
                     alt="reactHaha"
                     @click="reactHaha"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Wow.png"
+                    src="../assets/Wow.gif"
                     alt="reactWow"
                     @click="reactWow"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Love.jpg"
+                    src="../assets/Love.gif"
                     alt="reactLove"
                     @click="reactLove"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/GoodIdea.png"
+                    src="../assets/GoodIdea.gif"
                     alt="reactGoodIdea"
                     @click="reactGoodIdea"
                   />
                 </li>
                 <li>
                   <img
-                    src="../assets/Thanks.jpg"
+                    src="../assets/Thanks.gif"
                     alt="reactThanks"
                     @click="reactThanks"
                   />
@@ -141,7 +141,7 @@
               <div id="postComments"></div>
             </div>
             <div class="reactsSection">
-              <p>
+              <p v-if="this.numReactHaha != 0">
                 {{ this.numReactHaha }}
                 <img
                   src="../assets/Haha.png"
@@ -149,11 +149,11 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactWow != 0">
                 {{ this.numReactWow }}
                 <img src="../assets/Wow.png" alt="reactWow" id="reactImages" />
               </p>
-              <p>
+              <p v-if="this.numReactLove != 0">
                 {{ this.numReactLove }}
                 <img
                   src="../assets/Love.jpg"
@@ -161,7 +161,7 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactGoodIdea != 0">
                 {{ this.numReactGoodIdea }}
                 <img
                   src="../assets/GoodIdea.png"
@@ -169,7 +169,7 @@
                   id="reactImages"
                 />
               </p>
-              <p>
+              <p v-if="this.numReactThanks != 0">
                 {{ this.numReactThanks }}
                 <img
                   src="../assets/Thanks.jpg"
@@ -626,7 +626,7 @@ li button {
 </style>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
 import io from "socket.io-client";
 export default {
@@ -666,7 +666,40 @@ export default {
       this.show = !this.show;
     },
     showReactsList() {
-      this.showReacts = !this.showReacts;
+      const heart = document.getElementById("heart-icon");
+      console.log("heartColor", heart.style.color);
+      if (heart.style.color !== "black") {
+        if (heart.style.color === "yellow")
+          this.$store.commit(
+            "homeCards/setNumReactHaha",
+            this.numReactHaha - 1
+          );
+        else if (heart.style.color === "green")
+          this.$store.commit("homeCards/setNumReactWow", this.numReactWow - 1);
+        else if (heart.style.color === "red")
+          this.$store.commit(
+            "homeCards/setNumReactLove",
+            this.numReactLove - 1
+          );
+        else if (heart.style.color === "blue")
+          this.$store.commit(
+            "homeCards/setNumReactGoodIdea",
+            this.numReactGoodIdea - 1
+          );
+        else if (heart.style.color === "pink")
+          this.$store.commit(
+            "homeCards/setNumReactThanks",
+            this.numReactThanks - 1
+          );
+        heart.style.color = "black";
+        this.reactType = "none";
+        this.$store.dispatch("postPage/reactPin", {
+          pinId: this.pinId,
+          reactType: this.reactType
+        });
+      } else {
+        this.showReacts = !this.showReacts;
+      }
     },
     reactHaha() {
       this.reactType = "Haha";
@@ -676,6 +709,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "yellow";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactHaha", this.numReactHaha + 1);
     },
     reactWow() {
       this.reactType = "Wow";
@@ -685,6 +719,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "green";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactWow", this.numReactWow + 1);
     },
     reactLove() {
       this.reactType = "Love";
@@ -694,6 +729,7 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "red";
       this.showReacts = !this.showReacts;
+      this.$store.commit("homeCards/setNumReactLove", this.numReactLove + 1);
     },
     reactGoodIdea() {
       this.reactType = "Good idea";
@@ -703,6 +739,10 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "blue";
       this.showReacts = !this.showReacts;
+      this.$store.commit(
+        "homeCards/setNumReactGoodIdea",
+        this.numReactGoodIdea + 1
+      );
     },
     reactThanks() {
       this.reactType = "Thanks";
@@ -712,6 +752,10 @@ export default {
       });
       document.getElementById("heart-icon").style.color = "pink";
       this.showReacts = !this.showReacts;
+      this.$store.commit(
+        "homeCards/setNumReactThanks",
+        this.numReactThanks + 1
+      );
     },
     hideList(event) {
       if (event.target.id != ("list-icon" || "added-list")) {
@@ -754,7 +798,28 @@ export default {
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
   },
+  mounted() {
+    const heart = document.getElementById("heart-icon");
+    heart.style.color = "black";
+    setTimeout(() => {
+      console.log("this.reactThisPin", this.reactThisPin);
+      if (this.reactThisPin == "none") heart.style.color = "black";
+      else if (this.reactThisPin == "Haha") heart.style.color = "yellow";
+      else if (this.reactThisPin == "Wow") heart.style.color = "green";
+      else if (this.reactThisPin == "Love") heart.style.color = "red";
+      else if (this.reactThisPin == "Good Idea") heart.style.color = "blue";
+      else if (this.reactThisPin == "Thanks") heart.style.color = "pink";
+    }, 2000);
+  },
   computed: {
+    ...mapState({
+      reactThisPin: state => state.homeCards.reactThisPin,
+      numReactHaha: state => state.homeCards.numReactHaha,
+      numReactWow: state => state.homeCards.numReactWow,
+      numReactLove: state => state.homeCards.numReactLove,
+      numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
+      numReactThanks: state => state.homeCards.numReactThanks
+    }),
     ...mapGetters({
       postImage: "homeCards/postImage",
       userImageId: "homeCards/userImageId",
@@ -765,13 +830,23 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId",
-      numReactHaha: "homeCards/numReactHaha",
-      numReactWow: "homeCards/numReactWow",
-      numReactLove: "homeCards/numReactLove",
-      numReactGoodIdea: "homeCards/numReactGoodIdea",
-      numReactThanks: "homeCards/numReactThanks"
+      pinId: "homeCards/pinId"
     })
   }
+  // watch:{
+  //    reactType:{
+  //     handler: async function() {
+  //       console.log("inside watch")
+  //      await this.$store.dispatch(
+  //       "homeCards/Postpage",
+  //       this.$route.params.postPageId
+  //     );
+  //     console.log("Nihaaaaaaaalll" , this.numReactHaha)
+  //     // this.$forceUpdate();
+  //     },
+  //     deep: true,
+  //     immediate: true
+  //   }
+  // }
 };
 </script>
