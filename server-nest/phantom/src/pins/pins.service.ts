@@ -445,8 +445,10 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
       return false;
     }
+
     let pin = await this.pinModel.findById(pinId, { comments: 1 }).lean();
     if (!pin) return false;
+
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
       let commenter = await this.userModel
