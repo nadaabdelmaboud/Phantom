@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { board } from 'src/types/board';
-import { pin } from 'src/types/pin';
-import { topic } from 'src/types/topic';
+import { board } from '../types/board';
+import { pin } from '../types/pin';
+import { topic } from '../types/topic';
 import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
-import { user } from 'src/types/user';
-import { NotificationService } from 'src/notification/notification.service';
+import { user } from '../types/user';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class RecommendationService {

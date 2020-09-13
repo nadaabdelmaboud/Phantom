@@ -9,14 +9,14 @@ import { Model, Mongoose } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { board } from '../types/board';
-import { UserService } from 'src/shared/user.service';
-import { pin } from 'src/types/pin';
-import { ValidationService } from 'src/shared/validation.service';
+import { UserService } from '../shared/user.service';
+import { pin } from '../types/pin';
+import { ValidationService } from '../shared/validation.service';
 import { section } from '../types/board';
-import { topic } from 'src/types/topic';
+import { topic } from '../types/topic';
 import { EditBoardDto } from './dto/edit-board.dto';
 import { EditCollaboratoresPermissionsDto } from './dto/edit-collaboratores-permissions.dto';
-import { user } from 'src/types/user';
+import { user } from '../types/user';
 @Injectable()
 export class BoardService {
   constructor(

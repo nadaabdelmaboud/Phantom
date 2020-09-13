@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { RecommendationController } from './recommendation.controller';
 import { RecommendationService } from './recommendation.service';
 import { Board } from '../models/board.schema';
-import { Pin } from 'src/models/pin.schema';
-import { SharedModule } from 'src/shared/shared.module';
-import { Topic } from 'src/models/topic.schema';
+import { Pin } from '../models/pin.schema';
+import { SharedModule } from '../shared/shared.module';
+import { Topic } from '../models/topic.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User } from 'src/models/user.schema';
-import { BoardModule } from 'src/board/board.module';
-import { PinsModule } from 'src/pins/pins.module';
-import { NotificationService } from 'src/notification/notification.service';
+import { User } from '../models/user.schema';
+import { BoardModule } from '../board/board.module';
+import { PinsModule } from '../pins/pins.module';
+import { NotificationService } from '../notification/notification.service';
 
 @Module({
   imports: [

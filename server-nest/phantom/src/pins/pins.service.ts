@@ -8,7 +8,7 @@ import {
 import { NotificationService } from '../notification/notification.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserService } from 'src/shared/user.service';
+import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { Email } from '../shared/send-email.service';
 import { CreatePinDto } from './dto/create-pin.dto';
@@ -16,9 +16,9 @@ import { pin } from '../types/pin';
 import { comment } from '../types/pin';
 import { reply } from '../types/pin';
 import { BoardService } from '../board/board.service';
-import { board } from 'src/types/board';
-import { topic } from 'src/types/topic';
-import { user } from 'src/types/user';
+import { board } from '../types/board';
+import { topic } from '../types/topic';
+import { user } from '../types/user';
 @Injectable()
 export class PinsService {
   constructor(

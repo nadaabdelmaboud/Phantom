@@ -3,8 +3,8 @@ import { Socket } from 'socket.io';
 import { UserService } from './user.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { pin } from 'src/types/pin';
-import { user } from 'src/types/user';
+import { pin } from '../types/pin';
+import { user } from '../types/user';
 const jwt = require('jsonwebtoken');
 @WebSocketGateway()
 export class SharedGateway {
@@ -63,19 +63,20 @@ export class SharedGateway {
       });
     }
   }
-  @SubscribeMessage('connection')
+  @SubscribeMessage('delivered')
   async connect(socket: Socket, data: any) {
     let senderId = data.senderId;
     let sender = await this.userModel.findById(senderId);
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     if (sender && reciever) {
-      socket.to(reciever.socketId).emit('connected', {
+      socket.to(reciever.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
         senderName: sender.firstName + ' ' + sender.lastName,
         senderId: data.senderId,
+        timeStamp: data.timeStamp
       });
     }
   }

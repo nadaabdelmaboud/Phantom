@@ -5,13 +5,16 @@ import { User } from '../models/user.schema';
 import { Chat } from '../models/chat.schema';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import { SharedModule } from 'src/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
+import { Message } from 'src/models/message.schema';
 @Module({
   imports: [
     SharedModule,
     MongooseModule.forFeature([
       { name: 'User', schema: User },
       { name: 'Chat', schema: Chat },
+      { name: 'Message', schema: Message },
+
     ]),
   ],
   controllers: [ChatController],

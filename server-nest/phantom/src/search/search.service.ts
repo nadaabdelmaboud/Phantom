@@ -3,8 +3,8 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { board } from '../types/board';
 import { user } from '../types/user';
-import { ValidationService } from 'src/shared/validation.service';
-import { pin } from 'src/types/pin';
+import { ValidationService } from '../shared/validation.service';
+import { pin } from '../types/pin';
 import * as search from 'fuzzy-search';
 @Injectable()
 export class SearchService {
