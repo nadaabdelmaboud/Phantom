@@ -359,6 +359,9 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
       return false;
     }
+    if (!commentText || commentText == '' || commentText == ' ') {
+      throw new BadRequestException('comment is empty');
+    }
     let user = await this.userModel.findById(userId, {
       firstName: 1,
       lastName: 1,
@@ -414,7 +417,9 @@ export class PinsService {
       return false;
     }
     console.log('user');
-
+    if (!replyText || replyText == '' || replyText == ' ') {
+      throw new BadRequestException('reply is empty');
+    }
     let pin = await this.pinModel.findById(pinId, { comments: 1 });
 
     if (!pin) return false;
