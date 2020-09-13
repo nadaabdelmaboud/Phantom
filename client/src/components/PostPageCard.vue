@@ -119,16 +119,30 @@
             </div>
             <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
+              <!-- ////////////////////////////////////// -->
+              <ul id="commentsList" v-if="this.pinComments.length != 0">
+                <li class="displaycomments" v-for="pinComment in pinComments" :key="pinComment.comment.id">
+                <div class="userimage">
+                  <img :src="getImage(pinComment.comment.commenter)" alt="User Image" />
+                </div>
+                <div class="previousCommentsfield">
+                  <h6 class="commentCreatorName">{{pinComment.comment.commenterName}}</h6>
+                  <p>{{pinComment.comment.commentText}}</p>
+                </div>
+                </li>
+              </ul>
+              <!-- ////////////////////////////////////// -->
               <div class="displaycomments">
                 <div class="userimage">
                   <img :src="getImage(this.userImageId)" alt="User Image" />
                 </div>
                 <div class="commentsfield">
-                  <input
+                  <input 
                     type="text"
                     placeholder="Add a Comment"
                     id="inputfield-comments"
                     @click="inputFieldIsActive()"
+                    v-model="message"
                   />
                 </div>
               </div>
@@ -138,7 +152,6 @@
                   Cancel
                 </button>
               </div>
-              <div id="postComments"></div>
             </div>
             <div class="reactsSection">
               <p v-if="this.numReactHaha != 0">
@@ -498,9 +511,10 @@ li button {
 }
 .displaycomments {
   display: flex;
+  margin-top: 25px;
 }
-.commentsfield {
-  margin-left: 20px;
+.commentsfield,.previousCommentsfield {
+  margin-left: 15px;
   margin-top: 8px;
   width: 350px;
   height: 50px;
@@ -516,11 +530,26 @@ li button {
     line-height: 50px;
   }
 }
-
-#postComments {
-  color: red;
+#commentsList{
+  list-style: none;
+  margin:0;
+  padding: 0;
+  p{
+    margin: 0;
+    padding: 5px;
+    padding-left: 0;
+  }
+  h6{
+    margin: 0;
+  }
 }
-
+.previousCommentsfield{
+  min-height: 70px;
+  box-shadow: none;
+  border: 1px solid rgba(189, 186, 186 , 0.5);
+  border-radius: 15px;
+  padding: 10px;
+}
 .reactsSection {
   display: flex;
   position: absolute;
@@ -638,7 +667,8 @@ export default {
       show: false,
       typingComment: false,
       showReacts: false,
-      reactType: ""
+      reactType: "",
+      message:""
     };
   },
   mixins: [getImage],
@@ -773,7 +803,6 @@ export default {
     addComment() {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      var comments = document.getElementById("postComments");
       let token = localStorage.getItem("userToken");
       socket.emit("comment", {
         commentText: inputField.value,
@@ -781,15 +810,25 @@ export default {
         token: token,
         text: inputField.value
       });
+      
       console.log("NIHALLLLLLLLLLLLLLLLLLLLLLLLLLLL", token);
-      socket.on("sendComment", function(data) {
+      socket.on("sendComment", (data) => {
         console.log("NIHAAAAAAAAAAAAAAAAAL");
-        comments.innerHTML += "<p>" + data.commentText + "</p>";
+        let commentObject = {
+          commenterName:data.commenterName,
+          commentText:data.commentText,
+          commenter:data.commenterImage,
+        };
+        this.$store.commit("postPage/addNewComment" , commentObject);
       });
+      let commentTextObject = {
+        commentText:inputField.value
+      }
       this.$store.dispatch(
         "postPage/postPageAddedComments",
-        this.$route.params.postPageId
+        {postPageId:this.$route.params.postPageId , comment:commentTextObject}
       );
+      inputField.value = " ";
     }
   },
   created: function() {
@@ -810,6 +849,9 @@ export default {
       else if (this.reactThisPin == "Good Idea") heart.style.color = "blue";
       else if (this.reactThisPin == "Thanks") heart.style.color = "pink";
     }, 2000);
+    this.$store.dispatch("postPage/getPinComments",this.$route.params.postPageId);
+    console.log("comments Array" , this.pinComments);
+    console.log("condition" , this.pinComments.length)
   },
   computed: {
     ...mapState({
@@ -818,7 +860,8 @@ export default {
       numReactWow: state => state.homeCards.numReactWow,
       numReactLove: state => state.homeCards.numReactLove,
       numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
-      numReactThanks: state => state.homeCards.numReactThanks
+      numReactThanks: state => state.homeCards.numReactThanks,
+      pinComments: state => state.postPage.pinComments
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
@@ -833,20 +876,5 @@ export default {
       pinId: "homeCards/pinId"
     })
   }
-  // watch:{
-  //    reactType:{
-  //     handler: async function() {
-  //       console.log("inside watch")
-  //      await this.$store.dispatch(
-  //       "homeCards/Postpage",
-  //       this.$route.params.postPageId
-  //     );
-  //     console.log("Nihaaaaaaaalll" , this.numReactHaha)
-  //     // this.$forceUpdate();
-  //     },
-  //     deep: true,
-  //     immediate: true
-  //   }
-  // }
 };
 </script>
