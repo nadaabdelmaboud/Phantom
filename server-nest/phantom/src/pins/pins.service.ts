@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -528,12 +528,13 @@ export class PinsService {
       notificationCounter: 1,
       pinsNotification: 1,
     });
-
+    var lastReactType = 'none';
     if (!user || !pin) return false;
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
         console.log('asas');
+        lastReactType = String(pin.reacts[i].reactType);
         if (reactType != pin.reacts[i].reactType) {
           switch (pin.reacts[i].reactType) {
             case 'Wow':
@@ -619,6 +620,15 @@ export class PinsService {
         pin.title,
         pinId,
         String(reactType),
+        pin.imageId,
+      );
+    if (lastReactType != 'none')
+      await this.NotificationService.unreactPin(
+        pinOwner,
+        user,
+        pin.title,
+        pinId,
+        String(lastReactType),
         pin.imageId,
       );
     return true;
