@@ -272,6 +272,7 @@ export class BoardService {
         counts: 1,
         name: 1,
         pins: 1,
+        sections: 1,
       });
       board.coverImages = [];
       for (let c = 0; c < 3; c++) {
@@ -332,6 +333,7 @@ export class BoardService {
         creator: 1,
         name: 1,
         pins: 1,
+        sections: 1,
       });
       if (!board) continue;
       board.coverImages = [];

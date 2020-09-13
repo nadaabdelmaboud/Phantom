@@ -133,10 +133,12 @@ export class RecommendationService {
 
     var freq = {};
     for (let i = 0; i < topics.length; i++) {
-      if (!freq[topics[i]]) {
-        freq[topics[i]] = 0;
+      if (topics[i] && topics[i] != undefined) {
+        if (!freq[topics[i]]) {
+          freq[topics[i]] = 0;
+        }
+        freq[topics[i]]++;
       }
-      freq[topics[i]]++;
     }
 
     let allHome = 0;

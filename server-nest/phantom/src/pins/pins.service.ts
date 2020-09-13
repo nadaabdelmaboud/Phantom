@@ -237,6 +237,7 @@ export class PinsService {
         imageWidth: 1,
         imageHeight: 1,
         title: 1,
+        topic: 1,
       });
       console.log('2');
       if (pinFound) {
@@ -294,7 +295,22 @@ export class PinsService {
           sectionId,
         );
         if (checkSection) {
+          let board = await this.boardModel.findById(boardId, { sections: 1 });
+          for (let i = 0; i < board.sections.length; i++) {
+            for (let j = 0; j < board.sections[i].pins.length; j++) {
+              if (String(board.sections[i].pins[j].pinId) == String(pinId)) {
+                throw new BadRequestException('pin is already in this section');
+              }
+            }
+          }
           section = sectionId;
+        }
+      } else {
+        let board = await this.boardModel.findById(boardId, { pins: 1 });
+        for (let i = 0; i < board.pins.length; i++) {
+          if (String(board.pins[i].pinId) == String(pinId)) {
+            throw new BadRequestException('pin is already in this board');
+          }
         }
       }
 
@@ -330,6 +346,7 @@ export class PinsService {
           imageId: 1,
           imageHeight: 1,
           imageWidth: 1,
+          topic: 1,
         })
         .lean();
       if (pinFound) {
