@@ -92,13 +92,19 @@ const actions = {
         console.log(error);
       });
   },
-  likeComments({ commit }, { pinId, commentId }) {
+  likeComments({ commit }, { pinId, commentId, likeCondition }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .post("pins/" + pinId + "/comments/" + commentId + "/likes")
       .then(response => {
         commit("likeComment", response.data.success);
+        if (likeCondition == "like")
+          state.pinComments.find(x => x.comment.id === commentId).comment.likes
+            .counts++;
+        else if (likeCondition == "unLike")
+          state.pinComments.find(x => x.comment.id === commentId).comment.likes
+            .counts--;
       })
       .catch(error => {
         console.log(error);

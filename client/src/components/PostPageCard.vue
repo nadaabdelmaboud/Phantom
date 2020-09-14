@@ -145,7 +145,20 @@
                     </h6>
                     <p>{{ pinComment.comment.commentText }}</p>
                     <p>
-                      <i class="fa fa-thumbs-up" id="likeIcon"></i>
+                      <i
+                        class="fa fa-thumbs-up"
+                        style="color:blue"
+                        v-if="pinComment.comment.isLiked == true"
+                        v-bind:id="pinComment.comment.id"
+                        @click="userLikeComment(pinComment.comment.id)"
+                      ></i>
+                      <i
+                        class="fa fa-thumbs-up"
+                        style="color:grey"
+                        v-if="pinComment.comment.isLiked == false"
+                        v-bind:id="pinComment.comment.id"
+                        @click="userLikeComment(pinComment.comment.id)"
+                      ></i>
                       <i class="fa fa-reply" id="replyIcon"></i>
                       {{ pinComment.comment.likes.counts }} likes
                     </p>
@@ -577,13 +590,10 @@ li button {
 }
 #replyIcon,
 #likeIcon {
-  color: rgba(156, 151, 151, 0.5);
+  color: grey;
   font-size: 13px;
   padding: 7px;
   padding-top: 11px;
-  &:hover {
-    color: black;
-  }
 }
 .reactsSection {
   display: flex;
@@ -703,7 +713,8 @@ export default {
       typingComment: false,
       showReacts: false,
       reactType: "",
-      showcomments: false
+      showcomments: false,
+      index: 0
     };
   },
   mixins: [getImage],
@@ -870,8 +881,21 @@ export default {
     showCommentsList() {
       this.showcomments = !this.showcomments;
     },
-    userLikeComment() {
-      console.log("LikeComment");
+    userLikeComment(id) {
+      let likeCondition;
+      const like = document.getElementById(id);
+      if (like.style.color == "grey") {
+        like.style.color = "blue";
+        likeCondition = "like";
+      } else if (like.style.color == "blue") {
+        like.style.color = "grey";
+        likeCondition = "unLike";
+      }
+      this.$store.dispatch("postPage/likeComments", {
+        pinId: this.$route.params.postPageId,
+        commentId: id,
+        likeCondition: likeCondition
+      });
     }
   },
   created: function() {
