@@ -21,14 +21,19 @@
     >
       Following
     </router-link>
-    <input class="searchInput" v-if="isLoggedIn()" placeholder=" Search..." />
-    <div
+    <input
+      class="searchInput"
       v-if="isLoggedIn()"
-      class="icons"
-      id="alertIcon"
-    >
+      placeholder=" Search..."
+      @focus="searchFocused"
+      @input="searchInput"
+      v-model="search"
+    />
+    <div v-if="isLoggedIn()" class="icons" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
-      <div class="count" id="alertIcon">{{ notification.notificationCounter }}</div>
+      <div class="count" id="alertIcon">
+        {{ notification.notificationCounter }}
+      </div>
     </div>
     <NotificationDropDown v-if="showNotifications" />
     <router-link
@@ -112,6 +117,7 @@
 .searchInput:focus {
   background-color: $lightPinkHover;
   border: $lightBlue 4px solid;
+  outline: none;
 }
 .icons {
   @include horizontalDivs;
@@ -205,7 +211,8 @@ export default {
     return {
       inHome: true,
       inFollowing: false,
-      showList: false
+      showList: false,
+      search: ""
     };
   },
   components: {
@@ -225,6 +232,21 @@ export default {
     toTopicsPage() {
       this.showList = false;
       this.$router.push("/TopicsPage");
+    },
+    searchFocused() {
+      this.$store.commit("popUpsState/toggleSearchWindow");
+    },
+    searchInput() {
+      if (this.$store.state.popUpsState.searchWindow)
+        this.$store.commit("popUpsState/toggleSearchWindow");
+      if (!this.$store.state.popUpsState.searchSuggestions)
+        this.$store.commit("popUpsState/toggleSearchSuggestions");
+      this.$store.dispatch("search/searchPins", {
+        limit: 8,
+        offset: 0,
+        name: this.search,
+        recentSearch: false
+      });
     }
   },
   computed: {

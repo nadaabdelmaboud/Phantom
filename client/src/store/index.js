@@ -11,6 +11,7 @@ import postPage from "./modules/postPage.js";
 import topics from "./modules/topics.js";
 import chat from "./modules/chat";
 import notifications from "./modules/notifications";
+import search from "./modules/search";
 
 Vue.use(Vuex);
 
@@ -26,6 +27,7 @@ export default new Vuex.Store({
     postPage,
     topics,
     chat,
-    notifications
+    notifications,
+    search
   }
 });

@@ -37,7 +37,7 @@ export default {
       if (this.title == "your follower increase")
         this.$router.push("/User/" + this.followeId);
       else this.$router.push("/User/" + this.pinId);
-      this.$store.commit("notifications/alterShow",false)
+      this.$store.commit("notifications/alterShow", false);
     }
   }
 };
