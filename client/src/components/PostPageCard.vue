@@ -132,11 +132,17 @@
                       alt="User Image"
                     />
                   </div>
+                  <div class="commentsContent">
                   <div class="previousCommentsfield">
                     <h6 class="commentCreatorName">
                       {{ pinComment.comment.commenterName }}
                     </h6>
                     <p>{{ pinComment.comment.commentText }}</p>
+                  </div>
+                  <div class="commentsOptios">
+                    <p>Like</p>
+                    <p>reply</p>
+                  </div>
                   </div>
                 </li>
               </ul>
@@ -558,6 +564,23 @@ li button {
   border: 1px solid rgba(189, 186, 186, 0.5);
   border-radius: 15px;
   padding: 10px;
+}
+.commentsOptios{
+  display: flex;
+  margin-left: 25px;
+  p{
+    padding-right: 15px;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgb(163, 161, 161);
+    cursor: pointer;
+    &:hover{
+      color: rgb(104, 103, 103);
+    }
+  }
+}
+.commentsContent{
+  display: block;
 }
 .reactsSection {
   display: flex;
