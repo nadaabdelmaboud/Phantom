@@ -32,11 +32,11 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
   }
@@ -71,7 +71,7 @@ export class UserService {
     ]);
 
     if (!user)
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user[0].about) user[0].about = '';
 
     return user[0];
@@ -578,7 +578,7 @@ export class UserService {
   }
   async updateDataInUser(userId, data: {}) {
     if (!(await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1 })))
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     await this.userModel.updateOne({ _id: userId }, data);
     return 1;
   }
