@@ -24,7 +24,7 @@ export class ChatController {
     let ids = recieverIds.split(',');
     let messages = await this.ChatService.getMessage(ids, senderId);
     if (messages) return messages;
-    throw new NotFoundException();
+    throw new NotFoundException('there is no messages');
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/getChats/:userId')
