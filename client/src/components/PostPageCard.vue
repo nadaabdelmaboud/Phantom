@@ -112,15 +112,22 @@
             </div>
             <div class="actionsbox">
               <li>
-                <button class="underlineLink" id="commentbutton">
-                  Comments
+                <button
+                  class="underlineLink"
+                  id="commentbutton"
+                  @click="showCommentsList"
+                >
+                  {{ this.pinComments.length }} Comments
                 </button>
               </li>
             </div>
             <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
               <!-- ////////////////////////////////////// -->
-              <ul id="commentsList" v-if="this.pinComments.length != 0">
+              <ul
+                id="commentsList"
+                v-if="this.pinComments.length != 0 && this.showcomments == true"
+              >
                 <li
                   class="displaycomments"
                   v-for="pinComment in pinComments"
@@ -132,17 +139,16 @@
                       alt="User Image"
                     />
                   </div>
-                  <div class="commentsContent">
                   <div class="previousCommentsfield">
                     <h6 class="commentCreatorName">
                       {{ pinComment.comment.commenterName }}
                     </h6>
                     <p>{{ pinComment.comment.commentText }}</p>
-                  </div>
-                  <div class="commentsOptios">
-                    <p>Like</p>
-                    <p>reply</p>
-                  </div>
+                    <p>
+                      <i class="fa fa-thumbs-up" id="likeIcon"></i>
+                      <i class="fa fa-reply" id="replyIcon"></i>
+                      {{ pinComment.comment.likes.counts }} likes
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -564,23 +570,20 @@ li button {
   border: 1px solid rgba(189, 186, 186, 0.5);
   border-radius: 15px;
   padding: 10px;
-}
-.commentsOptios{
-  display: flex;
-  margin-left: 25px;
-  p{
-    padding-right: 15px;
-    font-size: 15px;
-    font-weight: 500;
-    color: rgb(163, 161, 161);
-    cursor: pointer;
-    &:hover{
-      color: rgb(104, 103, 103);
-    }
+  p {
+    color: rgb(156, 151, 151);
+    font-size: 13px;
   }
 }
-.commentsContent{
-  display: block;
+#replyIcon,
+#likeIcon {
+  color: rgba(156, 151, 151, 0.5);
+  font-size: 13px;
+  padding: 7px;
+  padding-top: 11px;
+  &:hover {
+    color: black;
+  }
 }
 .reactsSection {
   display: flex;
@@ -699,7 +702,8 @@ export default {
       show: false,
       typingComment: false,
       showReacts: false,
-      reactType: ""
+      reactType: "",
+      showcomments: false
     };
   },
   mixins: [getImage],
@@ -846,7 +850,10 @@ export default {
           comment: {
             commenterName: data.commenterName,
             commentText: data.commentText,
-            commenter: data.commenterImage
+            commenter: data.commenterImage,
+            likes: {
+              counts: 0
+            }
           }
         };
         this.$store.commit("postPage/addNewComment", commentObject);
@@ -859,6 +866,12 @@ export default {
         comment: commentTextObject
       });
       inputField.value = "";
+    },
+    showCommentsList() {
+      this.showcomments = !this.showcomments;
+    },
+    userLikeComment() {
+      console.log("LikeComment");
     }
   },
   created: function() {
@@ -893,7 +906,7 @@ export default {
       numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
       numReactThanks: state => state.homeCards.numReactThanks,
       pinComments: state => state.postPage.pinComments,
-      commentsIndex: state => state.postPage.commentsIndex
+      likeComment: state => state.postPage.likeComment
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",

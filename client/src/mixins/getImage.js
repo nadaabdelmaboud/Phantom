@@ -8,6 +8,6 @@ export default {
         return "http://localhost:3000/api/image/ ";
       }
       return "http://localhost:3000/api/image/" + imageId;
-    },
-  },
+    }
+  }
 };

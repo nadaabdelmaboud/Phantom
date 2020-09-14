@@ -25,7 +25,7 @@ const state = {
   numReactLove: 0,
   numReactGoodIdea: 0,
   numReactThanks: 0,
-  reactThisPin: "",
+  reactThisPin: ""
 };
 
 const mutations = {
@@ -104,7 +104,7 @@ const mutations = {
   setReactThisPin(state, react) {
     console.log("react", react);
     state.reactThisPin = react;
-  },
+  }
 };
 
 const actions = {
@@ -115,12 +115,12 @@ const actions = {
     state.totalCards = 0;
     axios
       .put("home/me")
-      .then((response) => {
+      .then(response => {
         console.log("totalllllllllllllllllllllllllllll", response.data.total);
         commit("homeGenerated", true);
         commit("totalNumCards", response.data.total);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -133,12 +133,12 @@ const actions = {
     console.log("state.requestFinished", state.requestFinished);
     await axios
       .get("me/home?limit=12&offset=" + num)
-      .then((response) => {
+      .then(response => {
         commit("sethomeCards", response.data);
         commit("setRequestFinished", true);
         console.log("state.requestFinished", state.requestFinished);
       })
-      .catch((error) => {
+      .catch(error => {
         // state.requestFinished = false;
         if (num == state.totalCards) state.finishCalling = true;
         setTimeout(() => {
@@ -153,7 +153,7 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     await axios
       .get("/pins/" + postPageID)
-      .then((response) => {
+      .then(response => {
         let res = response.data;
         commit("setpostImage", res.pin.imageId);
         commit("setpinCreatorId", res.pin.creator.id);
@@ -171,7 +171,7 @@ const actions = {
         commit("setNumReactGoodIdea", res.pin.counts.goodIdeaReacts);
         commit("setNumReactThanks", res.pin.counts.thanksReacts);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -183,7 +183,7 @@ const actions = {
       .then(() => {
         commit("deletePin", true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   },
@@ -196,24 +196,24 @@ const actions = {
       .then(() => {
         commit("reportPin", true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 const getters = {
-  userHomePage: (state) => state.homeCards,
-  postImage: (state) => state.postImage,
-  userImageId: (state) => state.userImage,
-  postTitle: (state) => state.postTitle,
-  postDescribtion: (state) => state.postDescribtion,
-  userFirstName: (state) => state.userFirstName,
-  userLastName: (state) => state.userLastName,
-  numberofFollowers: (state) => state.numberofFollowers,
-  pinCreatorId: (state) => state.pinCreatorId,
-  finishCalling: (state) => state.finishCalling,
-  pinId: (state) => state.pinId,
+  userHomePage: state => state.homeCards,
+  postImage: state => state.postImage,
+  userImageId: state => state.userImage,
+  postTitle: state => state.postTitle,
+  postDescribtion: state => state.postDescribtion,
+  userFirstName: state => state.userFirstName,
+  userLastName: state => state.userLastName,
+  numberofFollowers: state => state.numberofFollowers,
+  pinCreatorId: state => state.pinCreatorId,
+  finishCalling: state => state.finishCalling,
+  pinId: state => state.pinId
 };
 
 export default {
@@ -221,5 +221,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

@@ -68,19 +68,19 @@ export default {
   data: function() {
     return {
       clicked: false,
-      hover: false,
+      hover: false
     };
   },
   props: {
     topicId: {
-      type: String,
+      type: String
     },
     imageId: {
-      type: String,
+      type: String
     },
     topicName: {
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
     getImg() {
@@ -88,7 +88,7 @@ export default {
       if (this.imageId == "") img = "http://localhost:3000/api/image/ ";
       else img = "http://localhost:3000/api/image/" + this.imageId;
       return img;
-    },
-  },
+    }
+  }
 };
 </script>
