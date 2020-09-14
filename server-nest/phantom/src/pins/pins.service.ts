@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) { }
+  ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -441,7 +441,7 @@ export class PinsService {
     }
     return false;
   }
-  async getPinCommentsReplies(pinId) {
+  async getPinCommentsReplies(pinId, userId) {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
       return false;
     }
@@ -458,7 +458,14 @@ export class PinsService {
           profileImage: 1,
         })
         .lean();
+
       if (commenter) {
+        let isLiked = false;
+        for (let n = 0; n < pin.comments[i].likes.likers.length; n++) {
+          if (String(userId) == String(pin.comments[i].likes.likers[n])) {
+            isLiked = true;
+          }
+        }
         let comment = {
           id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
@@ -467,6 +474,7 @@ export class PinsService {
           commentText: pin.comments[i].comment,
           date: pin.comments[i].date,
           likes: pin.comments[i].likes,
+          isLiked: isLiked,
         };
         let replies = [];
         for (var j = 0; j < pin.comments[i].replies.length; j++) {
@@ -478,6 +486,19 @@ export class PinsService {
             })
             .lean();
           if (replier) {
+            let isLiked = false;
+            for (
+              let n = 0;
+              n < pin.comments[i].replies[j].likes.likers.length;
+              n++
+            ) {
+              if (
+                String(userId) ==
+                String(pin.comments[i].replies[j].likes.likers[n])
+              ) {
+                isLiked = true;
+              }
+            }
             let reply = {
               id: pin.comments[i].replies[j]._id,
               replier: pin.comments[i].replies[j].replier,
@@ -486,6 +507,7 @@ export class PinsService {
               replyText: pin.comments[i].replies[j].reply,
               date: pin.comments[i].replies[j].date,
               likes: pin.comments[i].replies[j].likes,
+              isLiked: isLiked,
             };
             replies.push(reply);
           }
@@ -641,10 +663,10 @@ export class PinsService {
         commentId,
       ])) == 0
     ) {
-      return false;
+      throw new BadRequestException('invalid id');
     }
     let pin = await this.pinModel.findById(pinId, { comments: 1 });
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException('invalid pin');
     for (let i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
         if (pin.comments[i].likes.likers.includes(userId)) {
@@ -657,6 +679,7 @@ export class PinsService {
             }
           }
         } else {
+          console.log('heere');
           pin.comments[i].likes.likers.push(userId);
           pin.comments[i].likes.counts =
             pin.comments[i].likes.counts.valueOf() + 1;

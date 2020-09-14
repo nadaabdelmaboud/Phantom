@@ -12,6 +12,7 @@ import {
   ForbiddenException,
   BadRequestException,
   Delete,
+  Query,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -70,22 +71,33 @@ export class ImagesController {
   }
 
   @Get('/image/:id')
-  async getFile(@Param('id') id: string, @Res() res) {
-    if (!id || id == ' ' || id == '') {
-      var filePath = './default.jpg';
+  async getFile(
+    @Param('id') id: string,
+    @Res() res,
+    @Query('topic') topic: string,
+  ) {
+    if (topic && topic != '') {
+      var filePath = './static/' + topic + '.jpg';
       var resolvedPath = await path.resolve(filePath);
+      console.log(resolvedPath);
+      return res.sendFile(resolvedPath);
+    }
+    if (!id || id == ' ' || id == '' || id == 'none') {
+      var filePath = './static/default.jpg';
+      var resolvedPath = await path.resolve(filePath);
+      console.log(resolvedPath);
       return res.sendFile(resolvedPath);
     }
     const checkImage = await this.ImagesService.checkImage(id);
     if (!checkImage) {
-      var filePath = './default.jpg';
+      var filePath = './static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
       return res.sendFile(resolvedPath);
     }
     const file = await this.ImagesService.findInfo(id);
     const fileStream = await this.ImagesService.readStream(id);
     if (!fileStream) {
-      var filePath = './default.jpg';
+      var filePath = './static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
       return res.sendFile(resolvedPath);
     }

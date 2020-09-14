@@ -41,8 +41,11 @@ export class AuthController {
 
   @nestCommon.Post('/sign_up')
   async sign_up(@nestCommon.Body() userDTO: RegisterDto) {
+    console.log('1');
     const user = await this.userService.checkCreateData(userDTO);
+    console.log('2');
     const token = await this.authService.signPayload(userDTO);
+    console.log(token);
     await this.email.sendEmail(
       userDTO.email,
       token,

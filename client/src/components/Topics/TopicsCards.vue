@@ -68,30 +68,25 @@ export default {
   data: function() {
     return {
       clicked: false,
-      hover: false
+      hover: false,
     };
   },
   props: {
     topicId: {
-      type: String
+      type: String,
     },
     imageId: {
-      type: String
+      type: String,
     },
     topicName: {
-      type: String
-    }
+      type: String,
+    },
   },
   computed: {
     getImg() {
-      let img;
-      if (this.imageId == "")
-        img =
-          "http://localhost:3000/api/image/5f3dcf45414a7552a0630962" +
-          this.imageId;
-      else img = "http://localhost:3000/api/image/" + this.imageId;
-      return img;
-    }
-  }
+      let name = this.topicName.replace(/ /g,"%20") 
+      return "http://localhost:3000/api/image/"+"%20"+"?topic=" + name;
+    },
+  },
 };
 </script>

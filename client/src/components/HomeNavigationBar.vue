@@ -119,10 +119,6 @@
     font-size: 20px;
   }
 }
-.icons:active,
-.icons:focus {
-  background-color: red;
-}
 .inRoute {
   background-color: $darkBlue;
   color: $lightPink;
