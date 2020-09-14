@@ -96,11 +96,13 @@ export class UserService {
   }
 
   async findByLogin(loginDto: LoginDto): Promise<any> {
-    // console.log(loginDto.password);
+    console.log(loginDto.password);
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
       { password: 1, profileImage: 1, email: 1, _id: 1 },
-    );
+    ).catch(err => {
+      console.log(err);
+    });
     if (!user)
       throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
     if (await bcrypt.compare(loginDto.password, user.password)) {
@@ -569,7 +571,9 @@ export class UserService {
     return 1;
   }
   async updateDataInUser(userId, data: {}) {
-    await this.userModel.update({ _id: userId }, data);
+    if (!(await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1 })))
+      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+    await this.userModel.updateOne({ _id: userId }, data);
     return 1;
   }
 
