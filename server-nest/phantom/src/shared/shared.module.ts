@@ -9,6 +9,7 @@ import { JwtStrategy } from '../shared/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from '../models/pin.schema';
+import { Board } from '../models/board.schema';
 import { Email } from './send-email.service';
 import { NotificationService } from '../notification/notification.service';
 import { Topic } from '../models/topic.schema';
@@ -18,6 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forFeature([
       { name: 'User', schema: User },
       { name: 'Pin', schema: Pin },
+      { name: 'Board', schema: Board },
       { name: 'Topic', schema: Topic },
     ]),
   ],
@@ -40,4 +42,4 @@ import { MongooseModule } from '@nestjs/mongoose';
   ],
   exports: [UserService, ValidationService, AuthService, Email],
 })
-export class SharedModule {}
+export class SharedModule { }

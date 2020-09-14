@@ -26,9 +26,9 @@ export class ValidationService {
     }
     else {
       limit = Number(process.env.LIMIT) ? Number(process.env.LIMIT) : 20;
-      if ((start + limit) > 0 && (start + limit) <= specificAlbums.length) {
+      if ((start + limit) > 0 && (start + limit) <= specificAlbums.length)
         end = start + limit;
-      }
+
     }
     return specificAlbums.slice(start, end);
   }

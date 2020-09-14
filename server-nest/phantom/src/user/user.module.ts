@@ -11,12 +11,6 @@ import { Pin } from '../models/pin.schema';
 import { Board } from '../models/board.schema';
 import { Topic } from '../models/topic.schema';
 @Module({
-    /* imports: [SharedModule, BoardService, TopicService, MongooseModule.forFeature([
-         { name: 'Topic', schema: Topic },
-         { name: 'Pin', schema: Pin },
-         { name: 'Board', schema: Board },
-     ]),],
-     */
     imports: [SharedModule],
     controllers: [UserController],
     providers: [AuthService, JwtStrategy, Email],
