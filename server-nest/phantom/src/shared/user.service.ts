@@ -203,7 +203,7 @@ export class UserService {
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
     let hash,
-      picture = '';
+      picture = null;
     if (registerDto.isGoogle) {
       hash = '';
       picture = registerDto.profileImage;
@@ -291,10 +291,9 @@ export class UserService {
     const validate = shcema.validate(body);
     if (validate.error != null)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData(
-      { email: email },
-      { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1, firstName: 1 },
-    );
+    const user = await this.userModel.findOne({ email: email },
+      { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1, firstName: 1 }).lean();
+
     return user;
   }
 
