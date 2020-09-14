@@ -3,7 +3,7 @@
     <div class="cardContent">
       <div class="cardView">
         <img
-          :src="getImage(imageId)"
+          :src="getImage(imageId, topicName)"
           class="card-img"
           alt="Card image"
           @click="toTopicsPage"
@@ -85,20 +85,20 @@ export default {
   mixins: [getImage],
   props: {
     topicId: {
-      type: String
+      type: String,
     },
     imageId: {
-      type: String
+      type: String,
     },
     topicName: {
-      type: String
-    }
+      type: String,
+    },
   },
   methods: {
     toTopicsPage() {
       //add router link
       //this.$router.push("/TopicsPage");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,10 +1,13 @@
 export default {
   methods: {
-    getImage(imageId) {
+    getImage(imageId, topic = "") {
+      if (topic != "") {
+        return "http://localhost:3000/api/image/ ?topic=" + topic;
+      }
       if (imageId == "") {
-        return "http://localhost:3000/api/image/99";
+        return "http://localhost:3000/api/image/ ";
       }
       return "http://localhost:3000/api/image/" + imageId;
-    }
-  }
+    },
+  },
 };
