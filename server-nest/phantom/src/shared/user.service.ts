@@ -19,11 +19,16 @@ import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 import { topic } from '../types/topic';
+import { pin } from '../types/pin';
+import { board } from '../types/board';
+
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('Pin') private readonly pinModel: Model<pin>,
+    @InjectModel('Board') private readonly boardModel: Model<board>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
