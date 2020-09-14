@@ -89,8 +89,9 @@ export class UserService {
   }
   async findUserAndGetData(findData: {}, data: {}) {
     const user = await this.userModel.findOne(findData, data).lean();
+    console.log(user);
     if (!user)
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
   }
