@@ -154,7 +154,8 @@ export class PinsController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/pins/:pinId/comments')
   async getPinCommentsReplies(@Request() req, @Param('pinId') pinId: string) {
-    let comments = await this.PinsService.getPinCommentsReplies(pinId);
+    let userId = req.user._id;
+    let comments = await this.PinsService.getPinCommentsReplies(pinId, userId);
     if (comments) {
       return { success: true, comments: comments };
     } else {

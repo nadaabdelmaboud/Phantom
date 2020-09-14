@@ -82,7 +82,7 @@ export class ImagesController {
       console.log(resolvedPath);
       return res.sendFile(resolvedPath);
     }
-    if (!id || id == ' ' || id == '') {
+    if (!id || id == ' ' || id == '' || id == 'none') {
       var filePath = './static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
       console.log(resolvedPath);
