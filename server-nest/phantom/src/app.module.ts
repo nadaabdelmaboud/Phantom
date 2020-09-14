@@ -12,6 +12,8 @@ import { UserModule } from './user/user.module';
 import { SearchModule } from './search/search.module';
 import { ChatModule } from './chat/chat.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -26,6 +28,9 @@ import { RecommendationModule } from './recommendation/recommendation.module';
     SearchModule,
     ChatModule,
     RecommendationModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'client/dist'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

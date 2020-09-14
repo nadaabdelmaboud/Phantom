@@ -9,6 +9,6 @@ async function bootstrap() {
   app.use(logger('dev', true));
   app.use(cors());
   app.setGlobalPrefix('api');
-  await app.listen(process.env.PORT);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
