@@ -84,10 +84,8 @@ export default {
   },
   computed: {
     getImg() {
-      let img;
-      if (this.imageId == "") img = "http://localhost:3000/api/image/ ";
-      else img = "http://localhost:3000/api/image/" + this.imageId;
-      return img;
+      let name = this.topicName.replace(/ /g,"%20") 
+      return "http://localhost:3000/api/image/"+"%20"+"?topic=" + name;
     },
   },
 };

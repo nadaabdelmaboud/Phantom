@@ -3,7 +3,7 @@
     <div class="scroll">
       <div v-for="n in notifications.notifications" :key="n.time" class="">
         <NotificationPinsCard
-          v-if="n.pins"
+          v-if="n.isPins"
           :imageIds="n.images"
           :title="n.title"
           :body="n.body"
