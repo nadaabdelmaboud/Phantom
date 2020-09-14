@@ -10,7 +10,7 @@
             toChat({
               name: f.firstName + ' ' + f.lastName,
               id: f._id,
-              imageId: f.profileImage,
+              imageId: f.profileImage
             })
           "
         >
@@ -38,8 +38,13 @@
       </div>
 
       <div id="msg" v-if="inchat">
-        <input type="text" v-model="currentMsg" @keydown.enter="sendMsg" @input="isTyping" />
-        <button type="submit" @click="sendMsg" >
+        <input
+          type="text"
+          v-model="currentMsg"
+          @keydown.enter="sendMsg"
+          @input="isTyping"
+        />
+        <button type="submit" @click="sendMsg">
           <i class="fa fa-angle-double-right"></i>
         </button>
       </div>
@@ -62,11 +67,11 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: "",
+        id: ""
       },
       socket: "",
       allowNotify: false,
-      typing:false
+      typing: false
     };
   },
   mixins: [getImage],
@@ -79,13 +84,13 @@ export default {
         let msg = {
           owner: true,
           note: this.currentMsg,
-          time: Date.now(),
+          time: Date.now()
         };
         this.$store.commit("chat/addMsg", msg);
         let payload = {
           senderId: this.myData._id,
           recieverId: this.chatWith.id,
-          message: this.currentMsg,
+          message: this.currentMsg
         };
         this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
@@ -101,7 +106,7 @@ export default {
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
-          date: Date.now(),
+          date: Date.now()
         });
         this.currentMsg = "";
       }
@@ -109,7 +114,7 @@ export default {
     toChat(chatWith) {
       let payload = {
         senderId: this.myData._id,
-        recieverId: chatWith.id,
+        recieverId: chatWith.id
       };
       this.$store.dispatch("chat/getChat", payload);
       this.chatWith = chatWith;
@@ -124,7 +129,7 @@ export default {
       }, 3000);
     },
     messageListener() {
-      this.socket.on("sendMessage", (data) => {
+      this.socket.on("sendMessage", data => {
         this.typing = false;
         let ping = new Audio();
         ping.src = require("../../assets/Ping.mp3");
@@ -133,7 +138,7 @@ export default {
           let msg = {
             owner: false,
             note: data.message,
-            time: data.date,
+            time: data.date
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
@@ -143,7 +148,7 @@ export default {
         }
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
-          silent: true,
+          silent: true
         };
 
         if (this.allowNotify) {
@@ -158,42 +163,42 @@ export default {
         this.socket.emit("delivered", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,
-          timeStamp: Date.now(),
+          timeStamp: Date.now()
         });
       });
     },
     typingLisener() {
-      this.socket.on("isTyping", (data) => {
-         if (data.senderId == this.chatWith.id) {
-              console.log("dd")
+      this.socket.on("isTyping", data => {
+        if (data.senderId == this.chatWith.id) {
+          console.log("dd");
           this.typing = true;
-         }
-         setTimeout(()=>{
+        }
+        setTimeout(() => {
           this.typing = false;
-         },5000)
+        }, 5000);
       });
     },
-    isTyping(){
-      console.log("bnm")
-       this.socket.emit("typing", {
-          recieverId: this.chatWith.id,
-          senderId: this.myData._id,
-        });
+    isTyping() {
+      console.log("bnm");
+      this.socket.emit("typing", {
+        recieverId: this.chatWith.id,
+        senderId: this.myData._id
+      });
     },
     deliveredListener() {
-      this.socket.on("setDelivered", (data) => {
+      this.socket.on("setDelivered", data => {
         console.log(data);
       });
-    },
+    }
   },
   computed: {
     ...mapGetters({
       following: "followers/userFollowing",
-      chat: "chat/currentChat",
+      chat: "chat/currentChat"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
+      myData: state => state.user.userData
+    })
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
@@ -204,10 +209,10 @@ export default {
     token = token.substring(7);
     //personalise connection
     this.socket.emit("setUserId", {
-      token: token,
+      token: token
     });
     //ensure notification is enabled
-    Notification.requestPermission().then((permission) => {
+    Notification.requestPermission().then(permission => {
       if (permission == "granted") {
         this.allowNotify = true;
       } else {
@@ -220,7 +225,7 @@ export default {
     this.typingLisener();
     //
     this.deliveredListener();
-  },
+  }
 };
 </script>
 
