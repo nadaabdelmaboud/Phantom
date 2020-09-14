@@ -3,11 +3,11 @@ import axios from "axios";
 const state = {
   notifications: {
     notifications: [],
-    notificationCounter: 0,
+    notificationCounter: 0
   },
-  pins:[],
-  boards:[],
-  show:false,
+  pins: [],
+  boards: [],
+  show: false
 };
 
 const mutations = {
@@ -25,17 +25,15 @@ const mutations = {
     state.notifications.notifications.reverse();
     state.notifications.notificationCounter = notifications.notificationCounter;
   },
-  setPins(state,pins){
-    state.pins = pins
+  setPins(state, pins) {
+    state.pins = pins;
   },
-  setBoards(state,boards){
-    state.boards = boards
+  setBoards(state, boards) {
+    state.boards = boards;
   },
-  alterShow(state , show){
-    if(show == false)
-      state.show = show
-    else
-      state.show = !state.show
+  alterShow(state, show) {
+    if (show == false) state.show = show;
+    else state.show = !state.show;
   }
 };
 

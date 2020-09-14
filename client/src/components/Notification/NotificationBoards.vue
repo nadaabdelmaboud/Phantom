@@ -23,13 +23,13 @@ export default {
     return {};
   },
   components: {
-    Board,
+    Board
   },
   computed: {
     ...mapGetters({
-      boards: "notifications/boards",
-    }),
-  },
+      boards: "notifications/boards"
+    })
+  }
 };
 </script>
 
@@ -37,28 +37,28 @@ export default {
 @import "../../scss/Colors";
 @import "../../scss/MasonryGrid";
 .wrapper {
- // padding: 10px 10%;
+  // padding: 10px 10%;
   display: flex;
   flex-wrap: wrap;
 }
 
-.board{
+.board {
   margin: 6px;
   width: 24%;
 }
-@media screen and (max-width: 850px){
- .board{
-  width: 30%;
+@media screen and (max-width: 850px) {
+  .board {
+    width: 30%;
+  }
 }
+@media screen and (max-width: 400px) {
+  .board {
+    width: 45%;
+  }
 }
-@media screen and (max-width: 400px){
- .board{
-  width: 45%;
-}
-}
-@media screen and (max-width: 270px){
- .board{
-  width: 95%;
-}
+@media screen and (max-width: 270px) {
+  .board {
+    width: 95%;
+  }
 }
 </style>

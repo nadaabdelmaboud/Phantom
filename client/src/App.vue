@@ -6,14 +6,13 @@
 
 <script>
 import { initializeFirebase } from "../src/messaging/init";
-import axios from "axios"
+import axios from "axios";
 export default {
   name: "App",
-  data: function() {
-  },
+  data: function() {},
   created() {
     let token = localStorage.getItem("userToken");
-    if(token){
+    if (token) {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
@@ -23,13 +22,12 @@ export default {
       if (window.scrollY == window.scrollHeight) console.log("scroloo");
     });
   },
-  methods:{
-    checkLists(event){
-      console.log(event.target.id)
-      if(event.target.id == "alertIcon")
-        this.$store.commit("notifications/alterShow",true)
-      else
-        this.$store.commit("notifications/alterShow",false)
+  methods: {
+    checkLists(event) {
+      console.log(event.target.id);
+      if (event.target.id == "alertIcon")
+        this.$store.commit("notifications/alterShow", true);
+      else this.$store.commit("notifications/alterShow", false);
     }
   }
 };

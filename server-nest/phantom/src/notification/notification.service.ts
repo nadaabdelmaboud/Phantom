@@ -85,11 +85,11 @@ export class NotificationService {
       ? followedUser.notificationCounter + 1
       : 1;
     if (!followedUser.notifications) followedUser.notifications = [];
-    followedUser.notifications.push(message);
+    followedUser.notifications = await this.addTolimitedArray(followedUser.notifications, 30, message);
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
-      followedUser.offlineNotifications.push(message);
+      followedUser.offlineNotifications = await this.addTolimitedArray(followedUser.offlineNotifications, 30, message);
     } else {
       message.tokens = [followedUser.fcmToken];
       let checkFailed = await this.sendNotification(
@@ -101,7 +101,11 @@ export class NotificationService {
         followedUser.offlineNotifications.push(message);
       }
     }
-    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
+    return {
+      offlineNotifications: followedUser.offlineNotifications,
+      notifications: followedUser.notifications,
+      notificationCounter: followedUser.notificationCounter,
+    };
   }
 
   async unfollowUser(followedUser, followerUser) {
@@ -124,38 +128,42 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
-        time: undefined
+        time: undefined,
       },
     };
     let notificationData = followedUser.offlineNotifications;
     if (!followedUser.offlineNotifications)
       followedUser.offlineNotifications = [];
-    // console.log(followedUser.offlineNotifications);
-    //console.log(100);
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+      if (
+        message.data.followerId == notificationData[i].data.followerId &&
+        notificationData[i].data.title == 'your follower increase '
+      ) {
         followedUser.offlineNotifications.splice(i, 1);
       }
     }
-    //console.log(followedUser.offlineNotifications);
-    //console.log(100);
-    if (!followedUser.notifications)
-      followedUser.notifications = [];
+
+    if (!followedUser.notifications) followedUser.notifications = [];
     notificationData = followedUser.notifications;
-    //console.log(followedUser.notifications);
+
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (message.data.followerId == notificationData[i].data.followerId && notificationData[i].data.title == 'your follower increase ') {
+      if (
+        message.data.followerId == notificationData[i].data.followerId &&
+        notificationData[i].data.title == 'your follower increase '
+      ) {
         followedUser.notifications.splice(i, 1);
       }
     }
-    // console.log(100);
 
-    //console.log(followedUser.notifications);
-    return { offlineNotifications: followedUser.offlineNotifications, notifications: followedUser.notifications, notificationCounter: followedUser.notificationCounter };
+    return {
+      offlineNotifications: followedUser.offlineNotifications,
+      notifications: followedUser.notifications,
+      notificationCounter: followedUser.notificationCounter,
+    };
   }
 
   async followBoard(ownerUser, followerUser, boardName, boardId) {
@@ -331,6 +339,77 @@ export class NotificationService {
     return 1;
   }
 
+
+  async unreactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
+    if (react == 'Love') react = '💖';
+    else if (react == 'Good idea') react = '👍';
+    else if (react == 'Thanks') react = '🙆‍♀️';
+    else if (react == 'Haha') react = '😄';
+    else if (react == 'Wow') react = '😮';
+
+    let message: {
+      data: {
+        time: string;
+        userImageId: string;
+        userId: string;
+        imageLink: string;
+        pinId: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } = {
+      data: {
+        time: Date.now().toString(),
+        userImageId: String(reactUser.profileImage),
+        userId: String(reactUser._id),
+        imageLink: 'http://localhost:3000/image/' + imageId,
+        pinId: pinId,
+        title: react + ' React on your pin',
+        body:
+          reactUser.firstName +
+          ' ' +
+          reactUser.lastName +
+          ' has react on your pin' +
+          '"' +
+          pinName +
+          '"',
+      },
+    };
+
+    let notificationData = ownerUser.offlineNotifications;
+    if (!ownerUser.offlineNotifications)
+      ownerUser.offlineNotifications = [];
+
+    for (let i = 0; i < notificationData.length; i++) {
+      notificationData[i].data.time = undefined;
+      if (
+        message.data.userId == notificationData[i].data.userId &&
+        message.data.pinId == notificationData[i].data.pinId &&
+        notificationData[i].data.title == react + ' React on your pin'
+      ) {
+        ownerUser.offlineNotifications.splice(i, 1);
+      }
+    }
+
+    if (!ownerUser.notifications) ownerUser.notifications = [];
+    notificationData = ownerUser.notifications;
+
+
+    for (let i = 0; i < notificationData.length; i++) {
+      notificationData[i].data.time = undefined;
+      if (
+        message.data.userId == notificationData[i].data.userId &&
+        message.data.pinId == notificationData[i].data.pinId &&
+        notificationData[i].data.title == react + ' React on your pin'
+      ) {
+        ownerUser.notifications.splice(i, 1);
+      }
+    }
+    await ownerUser.save();
+    return 1;
+  }
+
   async boardsForYou(user, boards, images) {
     let arrayMessage = {
       boards: boards,
@@ -343,9 +422,11 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+
+    await user.save();
+
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -385,9 +466,9 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+    await user.save();
     //console.log('aywa');
     //console.log(user.fcmToken);
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -432,9 +513,9 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+    await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -471,9 +552,10 @@ export class NotificationService {
     user.notificationCounter = user.notificationCounter
       ? user.notificationCounter + 1
       : 1;
-    await user.save();
     if (!user.notifications) user.notifications = [];
     user.notifications.push(arrayMessage);
+
+    await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -498,4 +580,13 @@ export class NotificationService {
     }
     return 1;
   }
+  async addTolimitedArray(notificationArray: Array<any>, limit: number, pushedData: {}) {
+    if (notificationArray.length >= limit) {
+      notificationArray = notificationArray.slice(0, limit - 1);
+    }
+    notificationArray.push(pushedData);
+    return notificationArray;
+  }
 }
+
+

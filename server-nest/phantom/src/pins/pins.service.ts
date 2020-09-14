@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -359,6 +359,9 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
       return false;
     }
+    if (!commentText || commentText == '' || commentText == ' ') {
+      throw new BadRequestException('comment is empty');
+    }
     let user = await this.userModel.findById(userId, {
       firstName: 1,
       lastName: 1,
@@ -414,7 +417,9 @@ export class PinsService {
       return false;
     }
     console.log('user');
-
+    if (!replyText || replyText == '' || replyText == ' ') {
+      throw new BadRequestException('reply is empty');
+    }
     let pin = await this.pinModel.findById(pinId, { comments: 1 });
 
     if (!pin) return false;
@@ -440,8 +445,10 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
       return false;
     }
+
     let pin = await this.pinModel.findById(pinId, { comments: 1 }).lean();
     if (!pin) return false;
+
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
       let commenter = await this.userModel
@@ -521,12 +528,13 @@ export class PinsService {
       notificationCounter: 1,
       pinsNotification: 1,
     });
-
+    var lastReactType = 'none';
     if (!user || !pin) return false;
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
         console.log('asas');
+        lastReactType = String(pin.reacts[i].reactType);
         if (reactType != pin.reacts[i].reactType) {
           switch (pin.reacts[i].reactType) {
             case 'Wow':
@@ -612,6 +620,15 @@ export class PinsService {
         pin.title,
         pinId,
         String(reactType),
+        pin.imageId,
+      );
+    if (lastReactType != 'none')
+      await this.NotificationService.unreactPin(
+        pinOwner,
+        user,
+        pin.title,
+        pinId,
+        String(lastReactType),
         pin.imageId,
       );
     return true;

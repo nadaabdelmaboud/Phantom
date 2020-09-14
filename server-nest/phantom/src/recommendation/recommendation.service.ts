@@ -869,9 +869,12 @@ export class RecommendationService {
       }
     }
     console.log('here');
+    for (let i = 0; i < allPins.length; i++) {
+      console.log(allPins[i].reacts.length);
+    }
     let res = await this.NotificationService.popularPins(user, allPins, images);
     console.log('here2');
-    return 1;
+    return allPins;
   }
   async pinsForYou(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)

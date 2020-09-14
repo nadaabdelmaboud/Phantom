@@ -20,20 +20,20 @@ export default {
     return {};
   },
   components: {
-    HomeCard,
+    HomeCard
   },
   computed: {
     ...mapGetters({
-      pins: "notifications/pins",
-    }),
-  },
+      pins: "notifications/pins"
+    })
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
 @import "../../scss/MasonryGrid";
-.masonry{
+.masonry {
   margin: 20px;
 }
 </style>
