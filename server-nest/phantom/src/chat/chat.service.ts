@@ -68,7 +68,6 @@ export class ChatService {
         lastMessage: chat[index].lastMessage
       }
     })
-
   }
 
   async seenDeliverMessage(userId: String, messageId: String, isSeen: boolean, isDelivered: boolean) {

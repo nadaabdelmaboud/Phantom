@@ -51,7 +51,12 @@ export class SearchService {
 
   }
   async getRecentSearch(userId) {
-    return await this.userModel.findById(userId, 'recentSearch').lean()
+    let user = await this.userModel.findById(userId, 'recentSearch')
+    if (!user.recentSearch) {
+      user.recentSearch = []
+    }
+    return { recentSearch: user.recentSearch }
+
   }
   async getBoards(name, limit, offset) {
     let board = await this.boardModel.aggregate([{ $match: {} }, { $project: { pins: { $size: '$pins' }, sections: { $size: '$sections' }, coverImages: 1, topic: 1, description: 1, name: 1 } }])
