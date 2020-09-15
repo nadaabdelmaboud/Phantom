@@ -63,6 +63,8 @@ export class RecommendationService {
     return false;
   }
   async homeFeed(userId): Promise<Object> {
+    //save last activity and send its pins first
+    //topics start with random number not constant i
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let pinExist = {};
@@ -874,7 +876,11 @@ export class RecommendationService {
     }
     let res = await this.NotificationService.popularPins(user, allPins, images);
     console.log('here2');
-    return allPins;
+    let random = Math.floor(Math.random() * 100 + 1);
+    if (random + 5 >= 100) {
+      random = random - 5;
+    }
+    return allPins.slice(random, random + 5);
   }
   async pinsForYou(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -949,7 +955,11 @@ export class RecommendationService {
       }
     }
     await this.NotificationService.pinsForYou(user, pins, images);
-    return pins;
+    let random = Math.floor(Math.random() * pins.length + 1);
+    if (random + 5 >= pins.length) {
+      random = random - 5;
+    }
+    return pins.slice(random, random + 5);
   }
   async pinsInspired(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -1013,6 +1023,10 @@ export class RecommendationService {
       }
     }
     await this.NotificationService.pinsInspired(user, pins, images);
-    return pins;
+    let random = Math.floor(Math.random() * pins.length + 1);
+    if (random + 5 >= pins.length) {
+      random = random - 5;
+    }
+    return pins.slice(random, random + 5);
   }
 }
