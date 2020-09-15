@@ -32,7 +32,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -217,6 +217,7 @@ export class UserService {
       location: '',
       notificationCounter: 0,
       profileImage: picture,
+      lastTopics: [],
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
@@ -291,8 +292,19 @@ export class UserService {
     const validate = shcema.validate(body);
     if (validate.error != null)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    const user = await this.userModel.findOne({ email: email },
-      { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1, firstName: 1 }).lean();
+    const user = await this.userModel
+      .findOne(
+        { email: email },
+        {
+          password: 1,
+          _id: 1,
+          email: 1,
+          fcmToken: 1,
+          location: 1,
+          firstName: 1,
+        },
+      )
+      .lean();
 
     return user;
   }

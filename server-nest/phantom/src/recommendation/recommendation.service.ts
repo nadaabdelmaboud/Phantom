@@ -13,6 +13,7 @@ import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
 import { NotificationService } from '../notification/notification.service';
+import { last } from 'rxjs/operators';
 
 @Injectable()
 export class RecommendationService {
@@ -38,12 +39,10 @@ export class RecommendationService {
     let user = await this.userModel.findById(userId, { homeFeed: 1 });
     if (!user) throw new Error('no such user');
     if (!user.homeFeed) user.homeFeed = [];
-    console.log(user.homeFeed.length);
-    console.log(offset + limit);
+
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-
     const part = await user.homeFeed.slice(
       Number(offset),
       Number(Number(offset) + Number(limit)),
@@ -53,8 +52,6 @@ export class RecommendationService {
   async checkDublicates(values) {
     for (let i = 0; i < values.length; i++) {
       for (let j = i + 1; j < values.length; j++) {
-        console.log('i = ', values[i]._id);
-        console.log('j = ', values[j]._id);
         if (String(values[i]._id) == String(values[j]._id)) {
           return true;
         }
@@ -63,26 +60,66 @@ export class RecommendationService {
     return false;
   }
   async homeFeed(userId): Promise<Object> {
-    //save last activity and send its pins first
-    //topics start with random number not constant i
+  
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let pinExist = {};
+    let isPinInHome = {};
     let topics = [];
     let user = await this.userModel.findById(userId, {
       history: 1,
       followingTopics: 1,
       homeFeed: 1,
       boards: 1,
+      lastTopics: 1,
     });
     if (!user) throw new Error('no such user');
     let homeFeedArr = [];
-    console.log('jojo');
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
       .catch(err => {
         console.log(err);
       });
+
+    if (user.lastTopics && user.lastTopics.length > 0) {
+      for (let i = user.lastTopics.length - 1; i >= 0; i--) {
+        let random = Math.floor(
+          Math.random() * Number(user.lastTopics[i].pinsLength) + 1,
+        );
+        if (random + 15 >= Number(user.lastTopics[i].pinsLength)) {
+          random = random - 15;
+        }
+        let topic = await this.topicModel
+          .findOne(
+            { name: user.lastTopics[i].topicName },
+            {
+              pins: {
+                $slice: [random, random + 15],
+              },
+            },
+          )
+          .lean();
+        if (topic) {
+          for (let i = 0; i < topic.pins.length; i++) {
+            let pin = await this.pinModel.findById(topic.pins[i], {
+              imageId: 1,
+            });
+            if (pin) {
+              if (isPinInHome[String(pin._id)] != true) {
+                homeFeedArr.push(pin);
+                isPinInHome[String(pin._id)] = true;
+              }
+            }
+          }
+
+          await this.userModel
+            .update({ _id: user._id }, { homeFeed: homeFeedArr })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      }
+    }
 
     if (!user.history) user.history = [];
     if (!user.followingTopics) user.followingTopics = [];
@@ -93,16 +130,13 @@ export class RecommendationService {
     }
 
     for (let i = user.followingTopics.length - 1; i >= 0; i--) {
-      let followTopic = await this.topicModel.findById(
-        user.followingTopics[i],
-        { name: 1 },
-      );
-      console.log(followTopic.name);
+      let followTopic = await this.topicModel
+        .findById(user.followingTopics[i], { name: 1 })
+        .lean();
       if (followTopic) {
         topics.push(followTopic.name);
       }
     }
-    console.log('here1');
     for (let i = 0; i < user.boards.length; i++) {
       let board = await this.boardModel
         .findById(user.boards[i].boardId, {
@@ -131,7 +165,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('here2');
 
     var freq = {};
     for (let i = 0; i < topics.length; i++) {
@@ -149,71 +182,71 @@ export class RecommendationService {
       sortedTopics.push([item, freq[item]]);
       allHome += freq[item];
     }
-    console.log(freq);
     sortedTopics.sort(function(a, b) {
       return b[1] - a[1];
     });
 
-    let pinsHome = [];
-    let count = 0;
-    let out = 0;
-    while (out < sortedTopics.length) {
-      for (let i = 0; i < sortedTopics.length; i++) {
-        let topic = await this.topicModel
-          .findOne({ name: sortedTopics[i][0] }, { pins: 1 })
-          .lean();
-        for (let k = count; k < count + 10; k++) {
-          if (k >= topic.pins.length) {
-            out++;
-            break;
-          }
-          if (pinExist[String(topic.pins[k])] == true) {
-            continue;
-          }
-          pinExist[String(topic.pins[k])] = true;
-          let pin = await this.pinModel
-            .findById(topic.pins[k], {
-              imageId: 1,
-              imageHeight: 1,
-              imageWidth: 1,
-            })
-            .lean();
-          homeFeedArr.push(pin);
-          homeFeedArr = [...new Set(homeFeedArr)];
-          await this.userModel
-            .update({ _id: userId }, { homeFeed: homeFeedArr })
-            .catch(err => {
-              console.log(err);
-            });
-          pinsHome.push(pin);
-        }
+    for (let i = 0; i < sortedTopics.length; i++) {
+      let topic = await this.topicModel
+        .findOne({ name: sortedTopics[i][0] }, { pins: 1 })
+        .lean();
+      let start = Math.floor(Math.random() * Number(topic.pins.length) + 1);
+      if (start + 10 >= Number(topic.pins.length)) {
+        start = start - 10;
       }
-      count += 10;
+      for (let i = start; i < start + 10; i++) {
+        if (
+          pinExist[String(topic.pins[i])] == true ||
+          isPinInHome[String(topic.pins[i])] == true
+        ) {
+          continue;
+        }
+        pinExist[String(topic.pins[i])] = true;
+        isPinInHome[String(topic.pins[i])] = true;
+        let pin = await this.pinModel
+          .findById(topic.pins[i], {
+            imageId: 1,
+          })
+          .lean();
+        homeFeedArr.push(pin);
+      }
+      await this.userModel
+        .update({ _id: userId }, { homeFeed: homeFeedArr })
+        .catch(err => {
+          console.log(err);
+        });
     }
-    if (pinsHome.length < 20) {
+
+    if (homeFeedArr.length < 20) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
-        for (let j = 0; j < 10; j++) {
-          if (pinExist[String(allTopics[i].pins[j])] == true) {
+        let start = Math.floor(
+          Math.random() * Number(allTopics[i].pins.length) + 1,
+        );
+        if (start + 10 >= Number(allTopics[i].pins.length)) {
+          start = start - 10;
+        }
+        for (let j = start; j < start + 10; j++) {
+          if (
+            pinExist[String(allTopics[i].pins[j])] == true ||
+            isPinInHome[String(allTopics[i].pins[j])] == true
+          ) {
             continue;
           }
           pinExist[String(allTopics[i].pins[j])] = true;
+          isPinInHome[String(allTopics[i].pins[j])] = true;
           let pin = await this.pinModel
             .findById(allTopics[i].pins[j], {
               imageId: 1,
-              imageHeight: 1,
-              imageWidth: 1,
             })
             .lean();
           homeFeedArr.push(pin);
-          homeFeedArr = [...new Set(homeFeedArr)];
-          await this.userModel
-            .update({ _id: userId }, { homeFeed: homeFeedArr })
-            .catch(err => {
-              console.log(err);
-            });
-          pinsHome.push(pin);
         }
+        await this.userModel
+          .update({ _id: userId }, { homeFeed: homeFeedArr })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
     return { total: homeFeedArr.length };

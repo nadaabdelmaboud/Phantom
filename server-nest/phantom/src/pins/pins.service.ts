@@ -25,6 +25,7 @@ export class PinsService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('User') private readonly userModel: Model<user>,
+    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
@@ -64,7 +65,9 @@ export class PinsService {
     let user = await this.userModel.findById(userId, {
       savedPins: 1,
       history: 1,
+      lastTopics: 1,
     });
+
     let creator = await this.userModel
       .findById(pin.creator.id, {
         profileImage: 1,
@@ -102,6 +105,22 @@ export class PinsService {
         topic: pin.topic,
         pinId: pin._id,
       });
+      user.lastTopics = [];
+      await user.save();
+      if (!user.lastTopics) user.lastTopics = [];
+      if (pin.topic && pin.topic != undefined && pin.topic != 'undefined') {
+        let topic = await this.topicModel
+          .aggregate()
+          .match({ name: pin.topic })
+          .project({ pins: { $size: '$pins' } });
+        user.lastTopics.push({
+          topicName: pin.topic,
+          pinsLength: topic[0].pins,
+        });
+        if (user.lastTopics.length > 5) {
+          user.lastTopics = user.lastTopics.slice(1, 5);
+        }
+      }
       await user.save();
       return {
         pin: pin,
