@@ -24,26 +24,10 @@ const actions = {
       );
       chat = chat.data;
       chat.forEach((msg) => {
-        msg.owner = true;
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    let received;
-    try {
-      received = await axios.get(
-        "/getMessagesSent/" + payload.recieverId + "/" + payload.senderId
-      );
-      received = received.data;
-      received.forEach((msg) => {
-        msg.owner = true;
-      });
-      received.forEach((msg) => {
-        msg.owner = false;
-      });
-      chat = chat.concat(received);
-      chat.sort(function(a, b) {
-        return new Date(a.time) - new Date(b.time);
+        if(msg.senderId == payload.senderId)
+          msg.owner = true;
+        else
+          msg.owner = false;
       });
     } catch (err) {
       console.log(err);

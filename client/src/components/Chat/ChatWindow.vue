@@ -29,7 +29,7 @@
           v-for="(msg, i) in chat"
           :key="i"
           :imageId="msg.senderImage"
-          :msgText="msg.note"
+          :msgText="msg.message"
           :owner="msg.owner"
           :timeStamp="msg.date"
           class="ChatMsg"
@@ -38,8 +38,13 @@
       </div>
 
       <div id="msg" v-if="inchat">
-        <input type="text" v-model="currentMsg" @keydown.enter="sendMsg" @input="isTyping" />
-        <button type="submit" @click="sendMsg" >
+        <input
+          type="text"
+          v-model="currentMsg"
+          @keydown.enter="sendMsg"
+          @input="isTyping"
+        />
+        <button type="submit" @click="sendMsg">
           <i class="fa fa-angle-double-right"></i>
         </button>
       </div>
@@ -66,20 +71,20 @@ export default {
       },
       socket: "",
       allowNotify: false,
-      typing:false
+      typing: false,
     };
   },
   mixins: [getImage],
   components: {
-    ChatMessage
+    ChatMessage,
   },
   methods: {
     sendMsg() {
       if (this.currentMsg != "") {
         let msg = {
           owner: true,
-          note: this.currentMsg,
-          time: Date.now(),
+          message: this.currentMsg,
+          date: Date.now(),
         };
         this.$store.commit("chat/addMsg", msg);
         let payload = {
@@ -132,8 +137,8 @@ export default {
         if (data.senderId == this.chatWith.id) {
           let msg = {
             owner: false,
-            note: data.message,
-            time: data.date,
+            message: data.message,
+            date: data.date,
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
@@ -164,21 +169,23 @@ export default {
     },
     typingLisener() {
       this.socket.on("isTyping", (data) => {
-         if (data.senderId == this.chatWith.id) {
-              console.log("dd")
+        if (data.senderId == this.chatWith.id) {
+          console.log("dd");
           this.typing = true;
-         }
-         setTimeout(()=>{
+        }
+        setTimeout(() => {
           this.typing = false;
-         },5000)
+        }, 5000);
       });
     },
-    isTyping(){
-      console.log("bnm")
-       this.socket.emit("typing", {
+    isTyping() {
+      console.log("bnm");
+      if (this.currentMsg.length == 0) {
+        this.socket.emit("typing", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,
         });
+      }
     },
     deliveredListener() {
       this.socket.on("setDelivered", (data) => {
