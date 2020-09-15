@@ -834,7 +834,7 @@ export class RecommendationService {
     let res = await this.NotificationService.boardsForYou(user, boards, images);
     return 1;
   }
-  async popularPins(userId) {
+  async popularPins(userId, isSearch) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let user = await this.userModel.findById(userId);
@@ -860,21 +860,24 @@ export class RecommendationService {
         }
       }
     }
-
-    let images = [];
-    let count: number = 0;
-    for (let i = 0; i < allPins.length; i++) {
-      if (count >= 5) break;
-      if (allPins[i].imageId) {
-        count++;
-        images.push(allPins[i].imageId);
+    if (!isSearch) {
+      let images = [];
+      let count: number = 0;
+      for (let i = 0; i < allPins.length; i++) {
+        if (count >= 5) break;
+        if (allPins[i].imageId) {
+          count++;
+          images.push(allPins[i].imageId);
+        }
       }
+
+      let res = await this.NotificationService.popularPins(
+        user,
+        allPins,
+        images,
+      );
+      return true;
     }
-    console.log('here');
-    for (let i = 0; i < allPins.length; i++) {
-      console.log(allPins[i].reacts.length);
-    }
-    let res = await this.NotificationService.popularPins(user, allPins, images);
     console.log('here2');
     let random = Math.floor(Math.random() * 100 + 1);
     if (random + 5 >= 100) {
@@ -882,7 +885,7 @@ export class RecommendationService {
     }
     return allPins.slice(random, random + 5);
   }
-  async pinsForYou(userId) {
+  async pinsForYou(userId, isSearch) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let user = await this.userModel.findById(userId);
@@ -944,24 +947,27 @@ export class RecommendationService {
         }
       }
     }
-    pins = await this.shuffle(pins);
-    let images = [];
-    let count: number = 0;
-    for (let i = 0; i < pins.length; i++) {
-      if (count >= 5) break;
-      if (pins[i].imageId) {
-        count++;
-        images.push(pins[i].imageId);
+    if (!isSearch) {
+      pins = await this.shuffle(pins);
+      let images = [];
+      let count: number = 0;
+      for (let i = 0; i < pins.length; i++) {
+        if (count >= 5) break;
+        if (pins[i].imageId) {
+          count++;
+          images.push(pins[i].imageId);
+        }
       }
+      await this.NotificationService.pinsForYou(user, pins, images);
+      return true;
     }
-    await this.NotificationService.pinsForYou(user, pins, images);
     let random = Math.floor(Math.random() * pins.length + 1);
     if (random + 5 >= pins.length) {
       random = random - 5;
     }
     return pins.slice(random, random + 5);
   }
-  async pinsInspired(userId) {
+  async pinsInspired(userId, isSearch) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let user = await this.userModel.findById(userId);
@@ -1012,17 +1018,19 @@ export class RecommendationService {
         }
       }
     }
-
-    let images = [];
-    let count: number = 0;
-    for (let i = 0; i < pins.length; i++) {
-      if (count >= 5) break;
-      if (pins[i].imageId) {
-        count++;
-        images.push(pins[i].imageId);
+    if (!isSearch) {
+      let images = [];
+      let count: number = 0;
+      for (let i = 0; i < pins.length; i++) {
+        if (count >= 5) break;
+        if (pins[i].imageId) {
+          count++;
+          images.push(pins[i].imageId);
+        }
       }
+      await this.NotificationService.pinsInspired(user, pins, images);
+      return true;
     }
-    await this.NotificationService.pinsInspired(user, pins, images);
     let random = Math.floor(Math.random() * pins.length + 1);
     if (random + 5 >= pins.length) {
       random = random - 5;
