@@ -112,15 +112,22 @@
             </div>
             <div class="actionsbox">
               <li>
-                <button class="underlineLink" id="commentbutton">
-                  Comments
+                <button
+                  class="underlineLink"
+                  id="commentbutton"
+                  @click="showCommentsList"
+                >
+                  {{ this.pinComments.length }} Comments
                 </button>
               </li>
             </div>
             <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
               <!-- ////////////////////////////////////// -->
-              <ul id="commentsList" v-if="this.pinComments.length != 0">
+              <ul
+                id="commentsList"
+                v-if="this.pinComments.length != 0 && this.showcomments == true"
+              >
                 <li
                   class="displaycomments"
                   v-for="pinComment in pinComments"
@@ -137,6 +144,24 @@
                       {{ pinComment.comment.commenterName }}
                     </h6>
                     <p>{{ pinComment.comment.commentText }}</p>
+                    <p>
+                      <i
+                        class="fa fa-thumbs-up"
+                        style="color:blue"
+                        v-if="pinComment.comment.isLiked == true"
+                        v-bind:id="pinComment.comment.id"
+                        @click="userLikeComment(pinComment.comment.id)"
+                      ></i>
+                      <i
+                        class="fa fa-thumbs-up"
+                        style="color:grey"
+                        v-if="pinComment.comment.isLiked == false"
+                        v-bind:id="pinComment.comment.id"
+                        @click="userLikeComment(pinComment.comment.id)"
+                      ></i>
+                      <i class="fa fa-reply" id="replyIcon"></i>
+                      {{ pinComment.comment.likes.counts }} likes
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -558,6 +583,17 @@ li button {
   border: 1px solid rgba(189, 186, 186, 0.5);
   border-radius: 15px;
   padding: 10px;
+  p {
+    color: rgb(156, 151, 151);
+    font-size: 13px;
+  }
+}
+#replyIcon,
+#likeIcon {
+  color: grey;
+  font-size: 13px;
+  padding: 7px;
+  padding-top: 11px;
 }
 .reactsSection {
   display: flex;
@@ -677,6 +713,8 @@ export default {
       typingComment: false,
       showReacts: false,
       reactType: "",
+      showcomments: false,
+      index: 0,
     };
   },
   mixins: [getImage],
@@ -824,6 +862,9 @@ export default {
             commenterName: data.commenterName,
             commentText: data.commentText,
             commenter: data.commenterImage,
+            likes: {
+              counts: 0,
+            },
           },
         };
         this.$store.commit("postPage/addNewComment", commentObject);
@@ -836,6 +877,25 @@ export default {
         comment: commentTextObject,
       });
       inputField.value = "";
+    },
+    showCommentsList() {
+      this.showcomments = !this.showcomments;
+    },
+    userLikeComment(id) {
+      let likeCondition;
+      const like = document.getElementById(id);
+      if (like.style.color == "grey") {
+        like.style.color = "blue";
+        likeCondition = "like";
+      } else if (like.style.color == "blue") {
+        like.style.color = "grey";
+        likeCondition = "unLike";
+      }
+      this.$store.dispatch("postPage/likeComments", {
+        pinId: this.$route.params.postPageId,
+        commentId: id,
+        likeCondition: likeCondition,
+      });
     },
   },
   created: function() {
@@ -870,7 +930,7 @@ export default {
       numReactGoodIdea: (state) => state.homeCards.numReactGoodIdea,
       numReactThanks: (state) => state.homeCards.numReactThanks,
       pinComments: (state) => state.postPage.pinComments,
-      commentsIndex: (state) => state.postPage.commentsIndex,
+      likeComment: (state) => state.postPage.likeComment,
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",

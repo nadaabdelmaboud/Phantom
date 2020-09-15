@@ -13,10 +13,10 @@ export class AuthController {
     private userService: UserService,
     private authService: AuthService,
     private email: Email,
-  ) {}
+  ) { }
   @nestCommon.Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {}
+  async googleAuth(@Req() req) { }
 
   @nestCommon.Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -41,9 +41,7 @@ export class AuthController {
 
   @nestCommon.Post('/sign_up')
   async sign_up(@nestCommon.Body() userDTO: RegisterDto) {
-    console.log('1');
     const user = await this.userService.checkCreateData(userDTO);
-    console.log('2');
     const token = await this.authService.signPayload(userDTO);
     console.log(token);
     await this.email.sendEmail(

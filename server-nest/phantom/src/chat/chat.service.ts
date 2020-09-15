@@ -46,14 +46,16 @@ export class ChatService {
     if (!this.ValidationService.checkMongooseID(userIds))
       throw new Error('not mongoose id');
     let ids = userIds.concat(senderId)
-    let chat = await this.chatModel.findOne({ usersIds: ids }, '_id');
+    let chat = await this.chatModel.findOne({ usersIds: { $all: ids } }, '_id');
+
+    if (!chat) return 0;
     return await this.messageModel.find({ chatId: chat._id }, 'message date seenStatus deliverStatus senderId', { sort: { date: -1 } })
   }
   //id userName imageId
   async getChats(userId: String) {
     if (!this.ValidationService.checkMongooseID([userId]))
       throw new Error('not mongoose id');
-    let chat = await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { date: -1 } });
+    let chat = await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { 'lastMessage.date': -1 } });
     let arr = []
     chat.map(conv => {
       conv.usersIds.map(user => {
@@ -68,7 +70,6 @@ export class ChatService {
         lastMessage: chat[index].lastMessage
       }
     })
-
   }
 
   async seenDeliverMessage(userId: String, messageId: String, isSeen: boolean, isDelivered: boolean) {

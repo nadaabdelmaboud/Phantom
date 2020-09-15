@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const state = {
-  currentChat: [],
+  currentChat: []
 };
 
 const mutations = {
@@ -10,7 +10,7 @@ const mutations = {
   },
   addMsg(state, msg) {
     state.currentChat.push(msg);
-  },
+  }
 };
 
 const actions = {
@@ -23,7 +23,7 @@ const actions = {
         "/getMessagesSent/" + payload.senderId + "/" + payload.recieverId
       );
       chat = chat.data;
-      chat.forEach((msg) => {
+      chat.forEach(msg => {
         msg.owner = true;
       });
     } catch (err) {
@@ -35,10 +35,10 @@ const actions = {
         "/getMessagesSent/" + payload.recieverId + "/" + payload.senderId
       );
       received = received.data;
-      received.forEach((msg) => {
+      received.forEach(msg => {
         msg.owner = true;
       });
-      received.forEach((msg) => {
+      received.forEach(msg => {
         msg.owner = false;
       });
       chat = chat.concat(received);
@@ -52,14 +52,14 @@ const actions = {
   },
   sendMsg({ commit }, msg) {
     if (msg.note == "") console.log(commit);
-    axios.post("/sentMessage", msg).catch((error) => {
+    axios.post("/sentMessage", msg).catch(error => {
       console.log(error);
     });
-  },
+  }
 };
 
 const getters = {
-  currentChat: (state) => state.currentChat,
+  currentChat: state => state.currentChat
 };
 
 export default {
@@ -67,5 +67,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };
