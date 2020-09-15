@@ -84,8 +84,8 @@ export default {
   },
   computed: {
     getImg() {
-      let name = this.topicName.replace(/ /g,"%20") 
-      return "http://localhost:3000/api/image/"+"%20"+"?topic=" + name;
+      let name = this.topicName.replace(/ /g, "%20");
+      return "http://localhost:3000/api/image/" + "%20" + "?topic=" + name;
     },
   },
 };

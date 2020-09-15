@@ -19,7 +19,7 @@
           class="imageInput doubleBorder"
           :class="{
             dragging: dragover,
-            noImage: validate && !imageFile
+            noImage: validate && !imageFile,
           }"
           v-if="!imageFile"
           @click="$refs.fileInput.click()"
@@ -109,7 +109,7 @@
 
 <style scoped lang="scss">
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
 
 .addPin {
   background-color: white;
@@ -333,7 +333,7 @@ export default {
       validate: false,
       // To store the classification
       label: "",
-      showSections: []
+      showSections: [],
     };
   },
   methods: {
@@ -414,7 +414,7 @@ export default {
         this.$store.commit("boards/chooseBoard", {
           boardName,
           boardId,
-          sectionId
+          sectionId,
         });
       }
     },
@@ -424,7 +424,7 @@ export default {
       this.$store.commit("boards/chooseBoard", {
         boardName,
         boardId,
-        sectionId
+        sectionId,
       });
     },
     showSection(i) {
@@ -444,7 +444,7 @@ export default {
             board: this.chosenBoardId,
             imageWidth: this.width,
             imageHeight: this.height,
-            imageId: this.imageFile
+            imageId: this.imageFile,
           };
           if (this.chosenSectionId != "") {
             pin.section = this.chosenSectionId;
@@ -453,18 +453,18 @@ export default {
           this.$store.dispatch("pins/createPin", { pin, label: this.label });
         }
       }
-    }
+    },
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards",
       chosenBoardName: "boards/chosenBoardName",
       chosenBoardId: "boards/chosenBoardId",
-      chosenSectionId: "boards/chosenSectionId"
+      chosenSectionId: "boards/chosenSectionId",
     }),
     ...mapState({
-      user: state => state.user.userData
-    })
-  }
+      user: (state) => state.user.userData,
+    }),
+  },
 };
 </script>

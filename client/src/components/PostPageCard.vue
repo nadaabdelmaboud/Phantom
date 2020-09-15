@@ -676,7 +676,7 @@ export default {
       show: false,
       typingComment: false,
       showReacts: false,
-      reactType: ""
+      reactType: "",
     };
   },
   mixins: [getImage],
@@ -733,7 +733,7 @@ export default {
         this.reactType = "none";
         this.$store.dispatch("postPage/reactPin", {
           pinId: this.pinId,
-          reactType: this.reactType
+          reactType: this.reactType,
         });
       } else {
         this.showReacts = !this.showReacts;
@@ -743,7 +743,7 @@ export default {
       this.reactType = "Haha";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "yellow";
       this.showReacts = !this.showReacts;
@@ -753,7 +753,7 @@ export default {
       this.reactType = "Wow";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "green";
       this.showReacts = !this.showReacts;
@@ -763,7 +763,7 @@ export default {
       this.reactType = "Love";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "red";
       this.showReacts = !this.showReacts;
@@ -773,7 +773,7 @@ export default {
       this.reactType = "Good idea";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "blue";
       this.showReacts = !this.showReacts;
@@ -786,7 +786,7 @@ export default {
       this.reactType = "Thanks";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "pink";
       this.showReacts = !this.showReacts;
@@ -816,27 +816,27 @@ export default {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
         token: token,
-        text: inputField.value
+        text: inputField.value,
       });
-      socket.on("sendComment", data => {
+      socket.on("sendComment", (data) => {
         let commentObject = {
           comment: {
             commenterName: data.commenterName,
             commentText: data.commentText,
-            commenter: data.commenterImage
-          }
+            commenter: data.commenterImage,
+          },
         };
         this.$store.commit("postPage/addNewComment", commentObject);
       });
       let commentTextObject = {
-        commentText: inputField.value
+        commentText: inputField.value,
       };
       this.$store.dispatch("postPage/postPageAddedComments", {
         postPageId: this.$route.params.postPageId,
-        comment: commentTextObject
+        comment: commentTextObject,
       });
       inputField.value = "";
-    }
+    },
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -863,14 +863,14 @@ export default {
   },
   computed: {
     ...mapState({
-      reactThisPin: state => state.homeCards.reactThisPin,
-      numReactHaha: state => state.homeCards.numReactHaha,
-      numReactWow: state => state.homeCards.numReactWow,
-      numReactLove: state => state.homeCards.numReactLove,
-      numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
-      numReactThanks: state => state.homeCards.numReactThanks,
-      pinComments: state => state.postPage.pinComments,
-      commentsIndex: state => state.postPage.commentsIndex
+      reactThisPin: (state) => state.homeCards.reactThisPin,
+      numReactHaha: (state) => state.homeCards.numReactHaha,
+      numReactWow: (state) => state.homeCards.numReactWow,
+      numReactLove: (state) => state.homeCards.numReactLove,
+      numReactGoodIdea: (state) => state.homeCards.numReactGoodIdea,
+      numReactThanks: (state) => state.homeCards.numReactThanks,
+      pinComments: (state) => state.postPage.pinComments,
+      commentsIndex: (state) => state.postPage.commentsIndex,
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
@@ -882,8 +882,8 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId"
-    })
-  }
+      pinId: "homeCards/pinId",
+    }),
+  },
 };
 </script>

@@ -66,7 +66,7 @@ export default {
       inMore: false,
       showCreate: false,
       showViewOptions: false,
-      boardId: ""
+      boardId: "",
     };
   },
   mixins: [getUserImage],
@@ -100,12 +100,12 @@ export default {
       this.$router.push("/Board/" + this.boardId + "/More");
       this.inPins = false;
       this.inMore = true;
-    }
+    },
   },
   computed: {
     ...mapGetters({
-      board: "boards/currentBoard"
-    })
+      board: "boards/currentBoard",
+    }),
   },
   mounted() {
     if (this.$route.path.includes("/Pins")) {
@@ -119,13 +119,13 @@ export default {
   created() {
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/getBoard", this.$route.params.boardId);
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
 .boardInfo {
   margin-bottom: 40px;
   img {
