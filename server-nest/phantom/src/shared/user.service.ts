@@ -19,11 +19,16 @@ import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../notification/notification.service';
 import { ValidationService } from './validation.service';
 import { topic } from '../types/topic';
+import { pin } from '../types/pin';
+import { board } from '../types/board';
+
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('Pin') private readonly pinModel: Model<pin>,
+    @InjectModel('Board') private readonly boardModel: Model<board>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
@@ -31,7 +36,7 @@ export class UserService {
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
   }
@@ -66,7 +71,7 @@ export class UserService {
     ]);
 
     if (!user)
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user[0].about) user[0].about = '';
 
     return user[0];
@@ -89,8 +94,9 @@ export class UserService {
   }
   async findUserAndGetData(findData: {}, data: {}) {
     const user = await this.userModel.findOne(findData, data).lean();
+    console.log(user);
     if (!user)
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
   }
@@ -197,7 +203,7 @@ export class UserService {
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
     let hash,
-      picture = '';
+      picture = null;
     if (registerDto.isGoogle) {
       hash = '';
       picture = registerDto.profileImage;
@@ -211,6 +217,7 @@ export class UserService {
       location: '',
       notificationCounter: 0,
       profileImage: picture,
+      lastTopics: [],
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
@@ -285,10 +292,20 @@ export class UserService {
     const validate = shcema.validate(body);
     if (validate.error != null)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData(
-      { email: email },
-      { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1, firstName: 1 },
-    );
+    const user = await this.userModel
+      .findOne(
+        { email: email },
+        {
+          password: 1,
+          _id: 1,
+          email: 1,
+          fcmToken: 1,
+          location: 1,
+          firstName: 1,
+        },
+      )
+      .lean();
+
     return user;
   }
 
@@ -572,7 +589,7 @@ export class UserService {
   }
   async updateDataInUser(userId, data: {}) {
     if (!(await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1 })))
-      new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
+      throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     await this.userModel.updateOne({ _id: userId }, data);
     return 1;
   }

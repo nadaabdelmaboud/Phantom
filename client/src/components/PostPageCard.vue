@@ -112,15 +112,22 @@
             </div>
             <div class="actionsbox">
               <li>
-                <button class="underlineLink" id="commentbutton">
-                  Comments
+                <button
+                  class="underlineLink"
+                  id="commentbutton"
+                  @click="showCommentsList"
+                >
+                  {{ this.pinComments.length }} Comments
                 </button>
               </li>
             </div>
             <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
               <!-- ////////////////////////////////////// -->
-              <ul id="commentsList" v-if="this.pinComments.length != 0">
+              <ul
+                id="commentsList"
+                v-if="this.pinComments.length != 0 && this.showcomments == true"
+              >
                 <li
                   class="displaycomments"
                   v-for="pinComment in pinComments"
@@ -137,6 +144,24 @@
                       {{ pinComment.comment.commenterName }}
                     </h6>
                     <p>{{ pinComment.comment.commentText }}</p>
+                    <p>
+                      <i
+                        class="fa fa-thumbs-up"
+                        style="color:blue"
+                        v-if="pinComment.comment.isLiked == true"
+                        v-bind:id="pinComment.comment.id"
+                        @click="userLikeComment(pinComment.comment.id)"
+                      ></i>
+                      <i
+                        class="fa fa-thumbs-up"
+                        style="color:grey"
+                        v-if="pinComment.comment.isLiked == false"
+                        v-bind:id="pinComment.comment.id"
+                        @click="userLikeComment(pinComment.comment.id)"
+                      ></i>
+                      <i class="fa fa-reply" id="replyIcon"></i>
+                      {{ pinComment.comment.likes.counts }} likes
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -558,6 +583,17 @@ li button {
   border: 1px solid rgba(189, 186, 186, 0.5);
   border-radius: 15px;
   padding: 10px;
+  p {
+    color: rgb(156, 151, 151);
+    font-size: 13px;
+  }
+}
+#replyIcon,
+#likeIcon {
+  color: grey;
+  font-size: 13px;
+  padding: 7px;
+  padding-top: 11px;
 }
 .reactsSection {
   display: flex;
@@ -676,7 +712,9 @@ export default {
       show: false,
       typingComment: false,
       showReacts: false,
-      reactType: ""
+      reactType: "",
+      showcomments: false,
+      index: 0,
     };
   },
   mixins: [getImage],
@@ -733,7 +771,7 @@ export default {
         this.reactType = "none";
         this.$store.dispatch("postPage/reactPin", {
           pinId: this.pinId,
-          reactType: this.reactType
+          reactType: this.reactType,
         });
       } else {
         this.showReacts = !this.showReacts;
@@ -743,7 +781,7 @@ export default {
       this.reactType = "Haha";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "yellow";
       this.showReacts = !this.showReacts;
@@ -753,7 +791,7 @@ export default {
       this.reactType = "Wow";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "green";
       this.showReacts = !this.showReacts;
@@ -763,7 +801,7 @@ export default {
       this.reactType = "Love";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "red";
       this.showReacts = !this.showReacts;
@@ -773,7 +811,7 @@ export default {
       this.reactType = "Good idea";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "blue";
       this.showReacts = !this.showReacts;
@@ -786,7 +824,7 @@ export default {
       this.reactType = "Thanks";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType
+        reactType: this.reactType,
       });
       document.getElementById("heart-icon").style.color = "pink";
       this.showReacts = !this.showReacts;
@@ -816,27 +854,49 @@ export default {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
         token: token,
-        text: inputField.value
+        text: inputField.value,
       });
-      socket.on("sendComment", data => {
+      socket.on("sendComment", (data) => {
         let commentObject = {
           comment: {
             commenterName: data.commenterName,
             commentText: data.commentText,
-            commenter: data.commenterImage
-          }
+            commenter: data.commenterImage,
+            likes: {
+              counts: 0,
+            },
+          },
         };
         this.$store.commit("postPage/addNewComment", commentObject);
       });
       let commentTextObject = {
-        commentText: inputField.value
+        commentText: inputField.value,
       };
       this.$store.dispatch("postPage/postPageAddedComments", {
         postPageId: this.$route.params.postPageId,
-        comment: commentTextObject
+        comment: commentTextObject,
       });
       inputField.value = "";
-    }
+    },
+    showCommentsList() {
+      this.showcomments = !this.showcomments;
+    },
+    userLikeComment(id) {
+      let likeCondition;
+      const like = document.getElementById(id);
+      if (like.style.color == "grey") {
+        like.style.color = "blue";
+        likeCondition = "like";
+      } else if (like.style.color == "blue") {
+        like.style.color = "grey";
+        likeCondition = "unLike";
+      }
+      this.$store.dispatch("postPage/likeComments", {
+        pinId: this.$route.params.postPageId,
+        commentId: id,
+        likeCondition: likeCondition,
+      });
+    },
   },
   created: function() {
     window.addEventListener("click", this.hideList);
@@ -863,14 +923,14 @@ export default {
   },
   computed: {
     ...mapState({
-      reactThisPin: state => state.homeCards.reactThisPin,
-      numReactHaha: state => state.homeCards.numReactHaha,
-      numReactWow: state => state.homeCards.numReactWow,
-      numReactLove: state => state.homeCards.numReactLove,
-      numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
-      numReactThanks: state => state.homeCards.numReactThanks,
-      pinComments: state => state.postPage.pinComments,
-      commentsIndex: state => state.postPage.commentsIndex
+      reactThisPin: (state) => state.homeCards.reactThisPin,
+      numReactHaha: (state) => state.homeCards.numReactHaha,
+      numReactWow: (state) => state.homeCards.numReactWow,
+      numReactLove: (state) => state.homeCards.numReactLove,
+      numReactGoodIdea: (state) => state.homeCards.numReactGoodIdea,
+      numReactThanks: (state) => state.homeCards.numReactThanks,
+      pinComments: (state) => state.postPage.pinComments,
+      likeComment: (state) => state.postPage.likeComment,
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
@@ -882,8 +942,8 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId"
-    })
-  }
+      pinId: "homeCards/pinId",
+    }),
+  },
 };
 </script>

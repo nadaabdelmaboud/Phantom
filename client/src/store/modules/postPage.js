@@ -4,7 +4,8 @@ const state = {
   comments: false,
   followUser: false,
   react: false,
-  pinComments: []
+  pinComments: [],
+  likeComment: false
 };
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   },
   addNewComment(state, comment) {
     state.pinComments.push(comment);
+  },
+  likeComment(state, like) {
+    state.likeComment = like;
   }
 };
 
@@ -83,6 +87,24 @@ const actions = {
       .get("pins/" + pinId + "/comments")
       .then(response => {
         commit("setPinComments", response.data.comments);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  likeComments({ commit }, { pinId, commentId, likeCondition }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .post("pins/" + pinId + "/comments/" + commentId + "/likes")
+      .then(response => {
+        commit("likeComment", response.data.success);
+        if (likeCondition == "like")
+          state.pinComments.find(x => x.comment.id === commentId).comment.likes
+            .counts++;
+        else if (likeCondition == "unLike")
+          state.pinComments.find(x => x.comment.id === commentId).comment.likes
+            .counts--;
       })
       .catch(error => {
         console.log(error);

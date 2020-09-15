@@ -27,16 +27,16 @@ export default {
   data: function() {
     return {
       sectonId: "",
-      boardId: ""
+      boardId: "",
     };
   },
   components: {
-    HomeCard
+    HomeCard,
   },
   computed: {
     ...mapGetters({
-      section: "boards/section"
-    })
+      section: "boards/section",
+    }),
   },
   created() {
     console.log("sss", this.$route.params);
@@ -44,15 +44,15 @@ export default {
     this.sectionId = this.$route.params.sectionId;
     this.$store.dispatch("boards/getFullSection", {
       boardId: this.boardId,
-      sectionId: this.sectionId
+      sectionId: this.sectionId,
     });
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
 @import "../scss/MasonryGrid";
 
 .flexWrap {

@@ -180,7 +180,7 @@ export default {
     },
     isTyping() {
       console.log("bnm");
-      if (this.currentMsg.length == 0) {
+      if (this.currentMsg.length == 1) {
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,

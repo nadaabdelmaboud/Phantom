@@ -130,7 +130,7 @@ export default {
       userName: "",
       imageId: "",
       followers: "",
-      userId: ""
+      userId: "",
     };
   },
   mixins: [getImage],
@@ -155,7 +155,7 @@ export default {
     reorder() {
       this.$store.dispatch("boards/reorderBoards", {
         from: 0,
-        to: 1
+        to: 1,
       });
     },
     alterFollow() {
@@ -179,17 +179,17 @@ export default {
     },
     alterView(view) {
       this.$store.dispatch("boards/setViewState", view);
-    }
+    },
   },
   computed: {
     ...mapGetters({
       user: "phantomUser/user",
       isFollowed: "phantomUser/isFollowed",
-      viewState: "boards/viewState"
+      viewState: "boards/viewState",
     }),
     ...mapState({
-      meUser: state => state.user.userData
-    })
+      meUser: (state) => state.user.userData,
+    }),
   },
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
@@ -219,13 +219,14 @@ export default {
       this.inBoards = true;
       this.inPins = false;
     }
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
+
 .profileInfo {
   margin-bottom: 40px;
   img {

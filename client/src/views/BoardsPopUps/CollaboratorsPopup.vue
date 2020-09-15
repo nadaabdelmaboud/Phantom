@@ -25,7 +25,7 @@
       </div>
       <div style="margin-top:10px">
         <input
-          :value="'http://localhost:8080' + $route.path"
+          :value="'https://phantomclient.herokuapp.com' + $route.path"
           id="boardLink"
           readonly
         />
@@ -40,7 +40,7 @@
       >
         <div
           v-if="
-            !collaborators.some(c => c.id === follower._id) &&
+            !collaborators.some((c) => c.id === follower._id) &&
               !(board.board.creator.id === follower._id)
           "
         >
@@ -56,8 +56,8 @@
       <div class="followerInfo" v-for="f in following" :key="f._id">
         <div
           v-if="
-            !collaborators.some(c => c.id === f._id) &&
-              !followers.some(follower => follower._id === f._id) &&
+            !collaborators.some((c) => c.id === f._id) &&
+              !followers.some((follower) => follower._id === f._id) &&
               !(board.board.creator.id === f._id)
           "
         >
@@ -83,11 +83,11 @@ export default {
   mixins: [getImage],
   data: function() {
     return {
-      copied: false
+      copied: false,
     };
   },
   components: {
-    CallaboratorsCard
+    CallaboratorsCard,
   },
   methods: {
     editPopup(event) {
@@ -107,22 +107,22 @@ export default {
     },
     addCollaborator(id) {
       this.$store.dispatch("boards/editBoard", { collaboratores: id });
-    }
+    },
   },
   computed: {
     ...mapGetters({
       collaborators: "boards/collaborators",
       followers: "followers/userFollowers",
       following: "followers/userFollowing",
-      board: "boards/currentBoard"
-    })
+      board: "boards/currentBoard",
+    }),
   },
   mounted() {
     this.$store.dispatch("boards/getCollaborators");
     this.$store.dispatch("followers/getFollowers");
     this.$store.dispatch("followers/getFollowing");
   },
-  created() {}
+  created() {},
 };
 </script>
 

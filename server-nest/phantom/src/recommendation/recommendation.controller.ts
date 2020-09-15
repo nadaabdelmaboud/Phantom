@@ -226,10 +226,10 @@ export class RecommendationController {
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/popularPins')
-  async getPopularPins(@Request() req) {
+  async getPopularPins(@Request() req, @Query('isSearch') isSearch: Boolean) {
     let userId = req.user._id;
     req.setTimeout(0);
-    let pins = await this.RecommendationService.popularPins(userId);
+    let pins = await this.RecommendationService.popularPins(userId, isSearch);
     if (pins) {
       return pins;
     } else {
@@ -238,10 +238,10 @@ export class RecommendationController {
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/pinsForYou')
-  async getPinsForYou(@Request() req) {
+  async getPinsForYou(@Request() req, @Query('isSearch') isSearch: Boolean) {
     let userId = req.user._id;
     req.setTimeout(0);
-    let pins = await this.RecommendationService.pinsForYou(userId);
+    let pins = await this.RecommendationService.pinsForYou(userId, isSearch);
     if (pins) {
       return pins;
     } else {
@@ -250,10 +250,13 @@ export class RecommendationController {
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/pinsRecentActivity')
-  async getPinsRecentActivity(@Request() req) {
+  async getPinsRecentActivity(
+    @Request() req,
+    @Query('isSearch') isSearch: Boolean,
+  ) {
     let userId = req.user._id;
     req.setTimeout(0);
-    let pins = await this.RecommendationService.pinsInspired(userId);
+    let pins = await this.RecommendationService.pinsInspired(userId, isSearch);
     if (pins) {
       return pins;
     } else {
