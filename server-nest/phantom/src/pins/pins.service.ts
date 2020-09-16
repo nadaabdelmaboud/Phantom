@@ -420,7 +420,7 @@ export class PinsService {
       notificationCounter: 1,
       pinsNotification: 1,
     });
-    var cs = <comment>(<unknown>{
+    let cs = <comment>(<unknown>{
       commenter: userId,
       comment: commentText,
       date: new Date(Date.now()),
@@ -443,7 +443,38 @@ export class PinsService {
         pinId,
         pin.imageId,
       );
-    return true;
+    let newComment = pin.comments[pin.comments.length - 1];
+    if (
+      String(newComment.commenter) == String(userId) &&
+      String(commentText) == String(newComment.comment)
+    ) {
+      return {
+        _id: newComment._id,
+        commenter: newComment.commenter,
+        commentText: newComment.comment,
+        date: newComment.date,
+        commenterName: user.firstName + ' ' + user.lastName,
+        commenterImage: userId.profileImage,
+        pinId: pinId,
+      };
+    }
+    for (let i = pin.comments.length - 1; i >= 0; i--) {
+      if (
+        String(pin.comments[i].commenter) == String(userId) &&
+        String(commentText) == String(pin.comments[i].comment)
+      ) {
+        return {
+          _id: pin.comments[i]._id,
+          commenter: pin.comments[i].commenter,
+          commentText: pin.comments[i].comment,
+          date: pin.comments[i].date,
+          commenterName: user.firstName + ' ' + user.lastName,
+          commenterImage: userId.profileImage,
+          pinId: pinId,
+        };
+      }
+    }
+    throw new Error();
   }
   async createReply(pinId, replyText, userId, commentId) {
     if (
@@ -456,6 +487,9 @@ export class PinsService {
       return false;
     }
     console.log('user');
+    let user = await this.userModel
+      .findById(userId, { firstName: 1, lastName: 1, profileImage: 1 })
+      .lean();
     if (!replyText || replyText == '' || replyText == ' ') {
       throw new BadRequestException('reply is empty');
     }
@@ -475,10 +509,45 @@ export class PinsService {
         });
         pin.comments[i].replies.push(rp);
         await pin.save();
-        return true;
+        let newReply =
+          pin.comments[i].replies[pin.comments[i].replies.length - 1];
+        if (
+          String(newReply.replier) == String(userId) &&
+          String(replyText) == String(newReply.reply)
+        ) {
+          let j = pin.comments[i].replies.length - 1;
+          return {
+            _id: pin.comments[i].replies[j]._id,
+            replier: pin.comments[i].replies[j].replier,
+            replyText: pin.comments[i].replies[j].reply,
+            date: pin.comments[i].replies[j].date,
+            commentId: commentId,
+            pinId: pinId,
+            replierName: user.firstName + ' ' + user.lastName,
+            replierImage: userId.profileImage,
+          };
+        }
+        for (let j = pin.comments[i].replies.length - 1; j >= 0; j--) {
+          if (
+            String(pin.comments[i].replies[j].replier) == String(userId) &&
+            String(replyText) == String(pin.comments[i].replies[j].reply)
+          ) {
+            return {
+              _id: pin.comments[i].replies[j]._id,
+              replier: pin.comments[i].replies[j].replier,
+              replyText: pin.comments[i].replies[j].reply,
+              date: pin.comments[i].replies[j].date,
+              commentId: commentId,
+              pinId: pinId,
+              replierName: user.firstName + ' ' + user.lastName,
+              replierImage: userId.profileImage,
+            };
+          }
+        }
+        throw new Error();
       }
     }
-    return false;
+    throw new Error();
   }
   async getPinCommentsReplies(pinId, userId) {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
