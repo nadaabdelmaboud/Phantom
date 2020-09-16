@@ -25,6 +25,7 @@ export class PinsService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('User') private readonly userModel: Model<user>,
+    @InjectModel('Topic') private readonly topicModel: Model<topic>,
     private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
@@ -64,7 +65,9 @@ export class PinsService {
     let user = await this.userModel.findById(userId, {
       savedPins: 1,
       history: 1,
+      lastTopics: 1,
     });
+
     let creator = await this.userModel
       .findById(pin.creator.id, {
         profileImage: 1,
@@ -102,6 +105,35 @@ export class PinsService {
         topic: pin.topic,
         pinId: pin._id,
       });
+      user.lastTopics = [];
+      await user.save();
+      if (!user.lastTopics) user.lastTopics = [];
+      if (pin.topic && pin.topic != undefined && pin.topic != 'undefined') {
+        let topic = await this.topicModel
+          .aggregate()
+          .match({ name: pin.topic })
+          .project({ pins: { $size: '$pins' } });
+        if (user.lastTopics.length > 0) {
+          if (
+            user.lastTopics[user.lastTopics.length - 1].topicName == pin.topic
+          ) {
+            await user.save();
+            return {
+              pin: pin,
+              type: pinType,
+              creatorInfo: creatorInfo,
+              react: react,
+            };
+          }
+        }
+        user.lastTopics.push({
+          topicName: pin.topic,
+          pinsLength: topic[0].pins,
+        });
+        if (user.lastTopics.length > 5) {
+          user.lastTopics = user.lastTopics.slice(1, 5);
+        }
+      }
       await user.save();
       return {
         pin: pin,
@@ -113,7 +145,7 @@ export class PinsService {
 
     return { success: false };
   }
-  async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
+  async createPin(userId: String, createPinDto: CreatePinDto) {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -136,8 +168,7 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    console.log(board);
-    console.log(user);
+
     let isCreator = await this.BoardService.isCreator(board, userId);
     let isCollaborator = await this.BoardService.isCollaborator(board, userId);
     if (!isCreator && !(isCollaborator && isCollaborator.createPin)) {
@@ -189,15 +220,18 @@ export class PinsService {
       createPinDto.board,
       createPinDto.section,
     );
-    console.log('asas1');
     await this.addPintoUser(
       userId,
       pin._id,
       createPinDto.board,
       createPinDto.section,
     );
-    console.log('asas2');
-    return pin;
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
   }
   async addPintoUser(userId, pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
@@ -331,7 +365,12 @@ export class PinsService {
       }
     }
     await user.save();
-    return true;
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
   }
   async getCurrentUserSavedPins(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
@@ -472,7 +511,7 @@ export class PinsService {
           commenterName: commenter.firstName + ' ' + commenter.lastName,
           commenterImage: commenter.profileImage,
           commentText: pin.comments[i].comment,
-          date: pin.comments[i].date,
+          date: await this.calcDate(pin.comments[i].date),
           likes: pin.comments[i].likes,
           isLiked: isLiked,
         };
@@ -505,7 +544,7 @@ export class PinsService {
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
               replyText: pin.comments[i].replies[j].reply,
-              date: pin.comments[i].replies[j].date,
+              date: await this.calcDate(pin.comments[i].replies[j].date),
               likes: pin.comments[i].replies[j].likes,
               isLiked: isLiked,
             };
@@ -516,6 +555,40 @@ export class PinsService {
       }
     }
     return retComments;
+  }
+  async calcDate(d) {
+    d = new Date(d);
+    let date = d.getDate();
+    let month = d.getMonth() + 1;
+    let year = d.getFullYear();
+    let now = new Date();
+    let dateNow = now.getDate();
+    let monthNow = now.getMonth() + 1;
+    let yearNow = now.getFullYear();
+    let s = '';
+    if (yearNow - year != 0) {
+      if (yearNow - year > 1) s = 's';
+      return `${yearNow - year} year${s} ago`;
+    }
+    if (monthNow - month != 0) {
+      if (monthNow - month > 1) s = 's';
+      return `${monthNow - month} month${s} ago`;
+    }
+    if (dateNow - date != 0) {
+      if (dateNow - date > 1) s = 's';
+      return `${dateNow - date} day${s} ago`;
+    }
+
+    let diff = (now.getTime() - d.getTime()) / 1000;
+    diff /= 60;
+    if (diff > 60) {
+      diff = Math.floor(diff / 60);
+      if (diff > 1) s = 's';
+      return `${diff} hour${s} ago`;
+    }
+    diff = Math.abs(Math.round(diff));
+    if (diff > 1) s = 's';
+    return `${diff} minute${s} ago`;
   }
   async createReact(pinId, reactType, userId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {

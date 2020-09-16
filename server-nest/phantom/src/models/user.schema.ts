@@ -14,6 +14,10 @@ export const User = new Schema({
   activateaccount: Boolean,
   notificationCounter: Number,
   activity: Boolean,
+  lastTopics: Array({
+    topicName: String,
+    pinsLength: Number,
+  }),
   invitation: Boolean,
   boardUpdate: Boolean,
   followNotification: Boolean,
