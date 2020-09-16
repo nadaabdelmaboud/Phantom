@@ -128,44 +128,106 @@
                 id="commentsList"
                 v-if="this.pinComments.length != 0 && this.showcomments == true"
               >
+                <!-- //////////keep in mind tha displaycomments was inside li////// -->
                 <li
-                  class="displaycomments"
                   v-for="pinComment in pinComments"
                   :key="pinComment.comment.id"
                 >
-                  <div class="userimage">
-                    <img
-                      :src="getImage(pinComment.comment.commenter)"
-                      alt="User Image"
-                    />
-                  </div>
-                  <div class="previousCommentsfield">
-                    <h6 class="commentCreatorName">
-                      {{ pinComment.comment.commenterName }}
-                    </h6>
-                    <p>{{ pinComment.comment.commentText }}</p>
-                    <p>
-                      <i
-                        class="fa fa-thumbs-up"
-                        style="color:blue"
-                        v-if="pinComment.comment.isLiked == true"
-                        v-bind:id="pinComment.comment.id"
-                        @click="userLikeComment(pinComment.comment.id)"
-                      ></i>
-                      <i
-                        class="fa fa-thumbs-up"
-                        style="color:grey"
-                        v-if="pinComment.comment.isLiked == false"
-                        v-bind:id="pinComment.comment.id"
-                        @click="userLikeComment(pinComment.comment.id)"
-                      ></i>
-                      <i class="fa fa-reply" id="replyIcon"></i>
-                      {{ pinComment.comment.likes.counts }} likes
-                    </p>
+                  <div class="liDiv">
+                    <div class="displaycomments">
+                      <div class="userimage">
+                        <img
+                          :src="getImage(pinComment.comment.commenter)"
+                          alt="User Image"
+                        />
+                      </div>
+                      <div class="previousCommentsfield">
+                        <h6 class="commentCreatorName">
+                          {{ pinComment.comment.commenterName }}
+                        </h6>
+                        <span id="commentTextStyle">{{
+                          pinComment.comment.commentText
+                        }}</span>
+                        <hr id="commentsSeparator" />
+                        <p>
+                          <i
+                            class="fa fa-thumbs-up"
+                            style="color:blue"
+                            v-if="pinComment.comment.isLiked == true"
+                            v-bind:id="pinComment.comment.id"
+                            @click="userLikeComment(pinComment.comment.id)"
+                          ></i>
+                          <i
+                            class="fa fa-thumbs-up"
+                            style="color:grey"
+                            v-if="pinComment.comment.isLiked == false"
+                            v-bind:id="pinComment.comment.id"
+                            @click="userLikeComment(pinComment.comment.id)"
+                          ></i>
+                          <i
+                            class="fa fa-reply"
+                            id="replyIcon"
+                            @click="showCommentReplies"
+                          ></i>
+                          {{ pinComment.comment.likes.counts }} likes
+                        </p>
+                      </div>
+                    </div>
+                    <!-- /////////////////////////////////Replies//////////////// -->
+                    <div
+                      class="displayreplies"
+                      v-for="replies in pinComment.replies"
+                      :key="replies.id"
+                    >
+                      <div class="userimage">
+                        <img
+                          :src="getImage(replies.replierImage)"
+                          alt="User Image"
+                        />
+                      </div>
+                      <div class="previousrepliesfield">
+                        <h6 class="commentCreatorName">
+                          {{ replies.replierName }}
+                        </h6>
+                        <span id="replyTextStyle">{{ replies.replyText }}</span>
+                      </div>
+                    </div>
+                    <div class="createReply">
+                      <div class="userimage">
+                        <img :src="getImage(userImageId)" alt="User Image" />
+                      </div>
+                      <div class="repliesField">
+                        <input
+                          type="text"
+                          placeholder="Add a Reply..."
+                          v-bind:id="pinComment.comment.id + 1"
+                          @click="inputFieldReplyIsActive()"
+                        />
+                      </div>
+                    </div>
+                    <div class="finishReply" v-if="typingReply == true">
+                      <button
+                        class="save-reply"
+                        @click="
+                          addReply(
+                            pinComment.comment.id,
+                            pinComment.comment.id + 1
+                          )
+                        "
+                      >
+                        Done
+                      </button>
+                      <button
+                        class="cancel-reply"
+                        @click="cancelReply(pinComment.comment.id + 1)"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <!-- ////////////////////////////////////// -->
                   </div>
                 </li>
               </ul>
-              <!-- ////////////////////////////////////// -->
               <div class="displaycomments">
                 <div class="userimage">
                   <img :src="getImage(this.userImageId)" alt="User Image" />
@@ -173,7 +235,7 @@
                 <div class="commentsfield">
                   <input
                     type="text"
-                    placeholder="Add a Comment"
+                    placeholder="Add a Comment..."
                     id="inputfield-comments"
                     @click="inputFieldIsActive()"
                   />
@@ -283,7 +345,9 @@ img {
 }
 .save-post,
 .save-comment,
-.cancel-comment {
+.save-reply,
+.cancel-comment,
+.cancel-reply {
   letter-spacing: 1px;
   background-color: $lightBlue;
   float: right;
@@ -301,16 +365,29 @@ button:focus {
   outline: 0 !important;
 }
 
-.cancel-comment {
+.cancel-comment,
+.cancel-reply {
   background-color: grey;
   width: 70px;
 }
 
 .cancel-comment,
-.save-comment {
+.save-comment,
+.save-reply,
+.cancel-reply {
   margin: 15px 5px 5px 5px;
 }
-
+.save-reply,
+.cancel-reply {
+  font-size: 16px;
+  font-weight: 400;
+  &:hover {
+    color: white;
+  }
+  &:focus {
+    color: white;
+  }
+}
 .heart-icon {
   @include circleButtons;
   background: transparent;
@@ -546,8 +623,21 @@ li button {
   display: flex;
   margin-top: 25px;
 }
+.createReply {
+  display: flex;
+  margin-left: 20%;
+}
+.finishReply {
+  margin-bottom: 70px;
+}
+.displayreplies {
+  display: flex;
+  margin-left: 20%;
+}
 .commentsfield,
-.previousCommentsfield {
+.repliesField,
+.previousCommentsfield,
+.previousrepliesfield {
   margin-left: 15px;
   margin-top: 8px;
   width: 350px;
@@ -564,7 +654,14 @@ li button {
     line-height: 50px;
   }
 }
-#commentsList {
+.repliesField {
+  width: 260px;
+  input {
+    width: 220px;
+  }
+}
+#commentsList,
+#repliesList {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -578,15 +675,46 @@ li button {
   }
 }
 .previousCommentsfield {
-  min-height: 70px;
+  height: auto;
   box-shadow: none;
   border: 1px solid rgba(189, 186, 186, 0.5);
   border-radius: 15px;
   padding: 10px;
-  p {
-    color: rgb(156, 151, 151);
+  span {
+    color: rgb(85, 84, 84);
     font-size: 13px;
   }
+}
+.previousrepliesfield {
+  width: 280px;
+  height: auto;
+  box-shadow: none;
+  border: 1px solid rgba(189, 186, 186, 0.5);
+  border-radius: 15px;
+  padding: 10px;
+  span {
+    color: rgb(85, 84, 84);
+    font-size: 13px;
+  }
+}
+#commentsSeparator {
+  color: rgba(156, 151, 151, 0.5);
+  margin: 0;
+  margin-top: 10px;
+  padding: 0;
+}
+#commentTextStyle,
+#replyTextStyle {
+  font-size: 13px;
+  color: black;
+  display: block;
+  word-wrap: break-word;
+}
+#replyTextStyle {
+  width: 250px;
+}
+.liDiv {
+  display: block;
 }
 #replyIcon,
 #likeIcon {
@@ -714,7 +842,9 @@ export default {
       showReacts: false,
       reactType: "",
       showcomments: false,
-      index: 0
+      index: 0,
+      showReplies: false,
+      typingReply: false
     };
   },
   mixins: [getImage],
@@ -841,9 +971,17 @@ export default {
     inputFieldIsActive() {
       this.typingComment = true;
     },
+    inputFieldReplyIsActive() {
+      this.typingReply = true;
+    },
     cancelComment() {
       this.typingComment = false;
       var inputField = document.getElementById("inputfield-comments");
+      inputField.value = "";
+    },
+    cancelReply(id) {
+      this.typingReply = false;
+      var inputField = document.getElementById(id);
       inputField.value = "";
     },
     addComment() {
@@ -864,7 +1002,8 @@ export default {
             commenter: data.commenterImage,
             likes: {
               counts: 0
-            }
+            },
+            isLiked: false
           }
         };
         this.$store.commit("postPage/addNewComment", commentObject);
@@ -875,6 +1014,41 @@ export default {
       this.$store.dispatch("postPage/postPageAddedComments", {
         postPageId: this.$route.params.postPageId,
         comment: commentTextObject
+      });
+      inputField.value = "";
+      this.showcomments = true;
+    },
+    addReply(commentId, inputId) {
+      const socket = io.connect("http://localhost:3000");
+      var inputField = document.getElementById(inputId);
+      let token = localStorage.getItem("userToken");
+      socket.emit("reply", {
+        replyText: inputField.value,
+        commentId: commentId,
+        token: token
+      });
+      socket.on("sendReply", data => {
+        let replyObject = {
+          replierName: data.replierName,
+          replyText: data.replyText,
+          replierImage: data.replierImage,
+          likes: {
+            counts: 0
+          },
+          isLiked: false
+        };
+        this.$store.commit("postPage/addNewReply", {
+          reply: replyObject,
+          commentId: commentId
+        });
+      });
+      let replyTextObject = {
+        replyText: inputField.value
+      };
+      this.$store.dispatch("postPage/postPageAddedReplies", {
+        postPageId: this.$route.params.postPageId,
+        commentId: commentId,
+        reply: replyTextObject
       });
       inputField.value = "";
     },
@@ -896,6 +1070,10 @@ export default {
         commentId: id,
         likeCondition: likeCondition
       });
+    },
+    showCommentReplies() {
+      this.showReplies = !this.showReplies;
+      console.log("showReplies", this.showReplies);
     }
   },
   created: function() {

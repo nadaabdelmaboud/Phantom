@@ -2,6 +2,7 @@ import axios from "axios";
 
 const state = {
   comments: false,
+  replies: false,
   followUser: false,
   react: false,
   pinComments: [],
@@ -11,6 +12,9 @@ const state = {
 const mutations = {
   commentIsAdded(state, comment) {
     state.comments = comment;
+  },
+  replyIsAdded(state, reply) {
+    state.replies = reply;
   },
   followUser(state, followUser) {
     state.followUser = followUser;
@@ -27,6 +31,9 @@ const mutations = {
   },
   likeComment(state, like) {
     state.likeComment = like;
+  },
+  addNewReply(state, { reply, commentId }) {
+    state.pinComments.find(x => x.comment.id === commentId).replies.push(reply);
   }
 };
 
@@ -39,6 +46,18 @@ const actions = {
       .then(response => {
         commit("commentIsAdded", response.data.success);
         console.log("Comments", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  postPageAddedReplies({ commit }, { postPageId, commentId, reply }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .post("pins/" + postPageId + "/comments/" + commentId + "/replies", reply)
+      .then(response => {
+        commit("replyIsAdded", response.data.success);
       })
       .catch(error => {
         console.log(error);

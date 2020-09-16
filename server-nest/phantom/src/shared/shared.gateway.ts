@@ -106,7 +106,8 @@ export class SharedGateway {
   async reply(socket: Socket, data: any) {
     let replyText = data.replyText;
     let commentId = data.commentId;
-    const token = data.token;
+    let token = data.token;
+    token = token.substring(7);
     const decoded = await jwt.verify(token, process.env.jwtsecret);
     let replierId = decoded._id;
     let replier = await this.userModel.findById(replierId, {
