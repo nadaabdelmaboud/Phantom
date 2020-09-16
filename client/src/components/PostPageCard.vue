@@ -207,6 +207,28 @@
                           <span id="replyTextStyle">{{
                             replies.replyText
                           }}</span>
+                          <hr id="commentsSeparator" />
+                          <p>
+                            <i
+                              class="fa fa-thumbs-up"
+                              style="color:blue"
+                              v-if="replies.isLiked == true"
+                              v-bind:id="replies.id"
+                              @click="
+                                userLikeReply(replies.id, pinComment.comment.id)
+                              "
+                            ></i>
+                            <i
+                              class="fa fa-thumbs-up"
+                              style="color:grey"
+                              v-if="replies.isLiked == false"
+                              v-bind:id="replies.id"
+                              @click="
+                                userLikeReply(replies.id, pinComment.comment.id)
+                              "
+                            ></i>
+                            {{ replies.likes.counts }} likes
+                          </p>
                         </div>
                       </div>
                       <div class="createReply">
@@ -1125,6 +1147,23 @@ export default {
       this.$store.dispatch("postPage/likeComments", {
         pinId: this.$route.params.postPageId,
         commentId: id,
+        likeCondition: likeCondition
+      });
+    },
+    userLikeReply(replyid, commentid) {
+      let likeCondition;
+      const likeReply = document.getElementById(replyid);
+      if (likeReply.style.color == "grey") {
+        likeReply.style.color = "blue";
+        likeCondition = "like";
+      } else if (likeReply.style.color == "blue") {
+        likeReply.style.color = "grey";
+        likeCondition = "unLike";
+      }
+      this.$store.dispatch("postPage/likeReplies", {
+        pinId: this.$route.params.postPageId,
+        commentId: commentid,
+        replyId: replyid,
         likeCondition: likeCondition
       });
     },
