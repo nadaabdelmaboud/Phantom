@@ -511,7 +511,7 @@ export class PinsService {
           commenterName: commenter.firstName + ' ' + commenter.lastName,
           commenterImage: commenter.profileImage,
           commentText: pin.comments[i].comment,
-          date: pin.comments[i].date,
+          date: await this.calcDate(pin.comments[i].date),
           likes: pin.comments[i].likes,
           isLiked: isLiked,
         };
@@ -544,7 +544,7 @@ export class PinsService {
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
               replyText: pin.comments[i].replies[j].reply,
-              date: pin.comments[i].replies[j].date,
+              date: await this.calcDate(pin.comments[i].replies[j].date),
               likes: pin.comments[i].replies[j].likes,
               isLiked: isLiked,
             };
@@ -555,6 +555,40 @@ export class PinsService {
       }
     }
     return retComments;
+  }
+  async calcDate(d) {
+    d = new Date(d);
+    let date = d.getDate();
+    let month = d.getMonth() + 1;
+    let year = d.getFullYear();
+    let now = new Date();
+    let dateNow = now.getDate();
+    let monthNow = now.getMonth() + 1;
+    let yearNow = now.getFullYear();
+    let s = '';
+    if (yearNow - year != 0) {
+      if (yearNow - year > 1) s = 's';
+      return `${yearNow - year} year${s} ago`;
+    }
+    if (monthNow - month != 0) {
+      if (monthNow - month > 1) s = 's';
+      return `${monthNow - month} month${s} ago`;
+    }
+    if (dateNow - date != 0) {
+      if (dateNow - date > 1) s = 's';
+      return `${dateNow - date} day${s} ago`;
+    }
+
+    let diff = (now.getTime() - d.getTime()) / 1000;
+    diff /= 60;
+    if (diff > 60) {
+      diff = Math.floor(diff / 60);
+      if (diff > 1) s = 's';
+      return `${diff} hour${s} ago`;
+    }
+    diff = Math.abs(Math.round(diff));
+    if (diff > 1) s = 's';
+    return `${diff} minute${s} ago`;
   }
   async createReact(pinId, reactType, userId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
