@@ -113,6 +113,19 @@ export class PinsService {
           .aggregate()
           .match({ name: pin.topic })
           .project({ pins: { $size: '$pins' } });
+        if (user.lastTopics.length > 0) {
+          if (
+            user.lastTopics[user.lastTopics.length - 1].topicName == pin.topic
+          ) {
+            await user.save();
+            return {
+              pin: pin,
+              type: pinType,
+              creatorInfo: creatorInfo,
+              react: react,
+            };
+          }
+        }
         user.lastTopics.push({
           topicName: pin.topic,
           pinsLength: topic[0].pins,
@@ -132,7 +145,7 @@ export class PinsService {
 
     return { success: false };
   }
-  async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
+  async createPin(userId: String, createPinDto: CreatePinDto) {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -155,8 +168,7 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    console.log(board);
-    console.log(user);
+
     let isCreator = await this.BoardService.isCreator(board, userId);
     let isCollaborator = await this.BoardService.isCollaborator(board, userId);
     if (!isCreator && !(isCollaborator && isCollaborator.createPin)) {
@@ -208,15 +220,18 @@ export class PinsService {
       createPinDto.board,
       createPinDto.section,
     );
-    console.log('asas1');
     await this.addPintoUser(
       userId,
       pin._id,
       createPinDto.board,
       createPinDto.section,
     );
-    console.log('asas2');
-    return pin;
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
   }
   async addPintoUser(userId, pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
@@ -350,7 +365,12 @@ export class PinsService {
       }
     }
     await user.save();
-    return true;
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
   }
   async getCurrentUserSavedPins(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {

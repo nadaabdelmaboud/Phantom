@@ -58,15 +58,7 @@ export class RecommendationController {
   async generatePinMore(@Request() req, @Param('pinId') pinId: string) {
     let userId = req.user._id;
     req.setTimeout(0);
-    let pins = await this.RecommendationService.pinMoreLike(
-      userId,
-      pinId,
-      false,
-      null,
-      null,
-      null,
-      null,
-    );
+    let pins = await this.RecommendationService.pinMoreLike(userId, pinId);
     if (pins) {
       return pins;
     } else {
