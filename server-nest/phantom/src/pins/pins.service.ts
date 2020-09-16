@@ -584,11 +584,11 @@ export class PinsService {
     if (diff > 60) {
       diff = Math.floor(diff / 60);
       if (diff > 1) s = 's';
-      return `${diff} hour${s} ago`;
+      return `${diff} hr${s} ago`;
     }
     diff = Math.abs(Math.round(diff));
     if (diff > 1) s = 's';
-    return `${diff} minute${s} ago`;
+    return `${diff} min${s} ago`;
   }
   async createReact(pinId, reactType, userId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
