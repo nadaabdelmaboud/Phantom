@@ -167,7 +167,12 @@
                           <i
                             class="fa fa-reply"
                             id="replyIcon"
-                            @click="showCommentReplies"
+                            @click="
+                              showCommentReplies(
+                                pinComment.comment.id + 0,
+                                pinComment.comment.id + 2
+                              )
+                            "
                           ></i>
                           {{ pinComment.comment.likes.counts }} likes
                         </p>
@@ -175,37 +180,49 @@
                     </div>
                     <!-- /////////////////////////////////Replies//////////////// -->
                     <div
-                      class="displayreplies"
-                      v-for="replies in pinComment.replies"
-                      :key="replies.id"
+                      class="containReplies"
+                      v-bind:id="pinComment.comment.id + 0"
                     >
-                      <div class="userimage">
-                        <img
-                          :src="getImage(replies.replierImage)"
-                          alt="User Image"
-                        />
+                      <div
+                        class="displayreplies"
+                        v-for="replies in pinComment.replies"
+                        :key="replies.id"
+                      >
+                        <div class="userimage">
+                          <img
+                            :src="getImage(replies.replierImage)"
+                            alt="User Image"
+                          />
+                        </div>
+                        <div class="previousrepliesfield">
+                          <h6 class="commentCreatorName">
+                            {{ replies.replierName }}
+                          </h6>
+                          <span id="replyTextStyle">{{
+                            replies.replyText
+                          }}</span>
+                        </div>
                       </div>
-                      <div class="previousrepliesfield">
-                        <h6 class="commentCreatorName">
-                          {{ replies.replierName }}
-                        </h6>
-                        <span id="replyTextStyle">{{ replies.replyText }}</span>
+                      <div class="createReply">
+                        <div class="userimage">
+                          <img :src="getImage(userImageId)" alt="User Image" />
+                        </div>
+                        <div class="repliesField">
+                          <input
+                            type="text"
+                            placeholder="Add a Reply..."
+                            v-bind:id="pinComment.comment.id + 1"
+                            @click="
+                              inputFieldReplyIsActive(pinComment.comment.id + 2)
+                            "
+                          />
+                        </div>
                       </div>
                     </div>
-                    <div class="createReply">
-                      <div class="userimage">
-                        <img :src="getImage(userImageId)" alt="User Image" />
-                      </div>
-                      <div class="repliesField">
-                        <input
-                          type="text"
-                          placeholder="Add a Reply..."
-                          v-bind:id="pinComment.comment.id + 1"
-                          @click="inputFieldReplyIsActive()"
-                        />
-                      </div>
-                    </div>
-                    <div class="finishReply" v-if="typingReply == true">
+                    <div
+                      class="finishReply"
+                      v-bind:id="pinComment.comment.id + 2"
+                    >
                       <button
                         class="save-reply"
                         @click="
@@ -219,7 +236,12 @@
                       </button>
                       <button
                         class="cancel-reply"
-                        @click="cancelReply(pinComment.comment.id + 1)"
+                        @click="
+                          cancelReply(
+                            pinComment.comment.id + 1,
+                            pinComment.comment.id + 2
+                          )
+                        "
                       >
                         Cancel
                       </button>
@@ -629,6 +651,10 @@ li button {
 }
 .finishReply {
   margin-bottom: 70px;
+  display: none;
+}
+.containReplies {
+  display: none;
 }
 .displayreplies {
   display: flex;
@@ -780,10 +806,18 @@ li button {
       width: 210px;
     }
   }
+  .displayreplies,
+  .createReply {
+    margin-left: 10%;
+  }
 }
 @media screen and (max-width: 580px) {
   .toast {
     left: 20%;
+  }
+  .displayreplies,
+  .createReply {
+    margin-left: 8%;
   }
 }
 @media screen and (max-width: 510px) {
@@ -808,7 +842,7 @@ li button {
     left: 7%;
   }
   .AddComments {
-    width: 290px;
+    width: 270px;
   }
   .commentsfield {
     width: 200px;
@@ -823,6 +857,21 @@ li button {
       width: 30px;
       height: 30px;
     }
+  }
+  .previousrepliesfield {
+    width: 240px;
+  }
+  #replyTextStyle {
+    width: 180px;
+  }
+  .repliesField {
+    width: 220px;
+    input {
+      width: 180px;
+    }
+  }
+  .createReply {
+    margin-left: 6%;
   }
 }
 </style>
@@ -842,9 +891,7 @@ export default {
       showReacts: false,
       reactType: "",
       showcomments: false,
-      index: 0,
-      showReplies: false,
-      typingReply: false
+      index: 0
     };
   },
   mixins: [getImage],
@@ -971,17 +1018,19 @@ export default {
     inputFieldIsActive() {
       this.typingComment = true;
     },
-    inputFieldReplyIsActive() {
-      this.typingReply = true;
+    inputFieldReplyIsActive(id) {
+      const typingReply = document.getElementById(id);
+      typingReply.style.display = "block";
     },
     cancelComment() {
       this.typingComment = false;
       var inputField = document.getElementById("inputfield-comments");
       inputField.value = "";
     },
-    cancelReply(id) {
-      this.typingReply = false;
-      var inputField = document.getElementById(id);
+    cancelReply(inputfieldid, divid) {
+      const typingReply = document.getElementById(divid);
+      typingReply.style.display = "none";
+      var inputField = document.getElementById(inputfieldid);
       inputField.value = "";
     },
     addComment() {
@@ -1071,9 +1120,18 @@ export default {
         likeCondition: likeCondition
       });
     },
-    showCommentReplies() {
-      this.showReplies = !this.showReplies;
-      console.log("showReplies", this.showReplies);
+    showCommentReplies(id, divid) {
+      const showReplies = document.getElementById(id);
+      const typingReply = document.getElementById(divid);
+      if (
+        showReplies.style.display == "none" ||
+        showReplies.style.display == ""
+      ) {
+        showReplies.style.display = "block";
+      } else {
+        showReplies.style.display = "none";
+        typingReply.style.display = "none";
+      }
     }
   },
   created: function() {
