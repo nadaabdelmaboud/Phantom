@@ -144,6 +144,9 @@
                       <div class="previousCommentsfield">
                         <h6 class="commentCreatorName">
                           {{ pinComment.comment.commenterName }}
+                          <span>
+                            {{ pinComment.comment.date }}
+                          </span>
                         </h6>
                         <span id="commentTextStyle">{{
                           pinComment.comment.commentText
@@ -197,6 +200,9 @@
                         <div class="previousrepliesfield">
                           <h6 class="commentCreatorName">
                             {{ replies.replierName }}
+                            <span>
+                              {{ replies.date }}
+                            </span>
                           </h6>
                           <span id="replyTextStyle">{{
                             replies.replyText
@@ -891,7 +897,7 @@ export default {
       showReacts: false,
       reactType: "",
       showcomments: false,
-      index: 0,
+      index: 0
     };
   },
   mixins: [getImage],
@@ -948,7 +954,7 @@ export default {
         this.reactType = "none";
         this.$store.dispatch("postPage/reactPin", {
           pinId: this.pinId,
-          reactType: this.reactType,
+          reactType: this.reactType
         });
       } else {
         this.showReacts = !this.showReacts;
@@ -958,7 +964,7 @@ export default {
       this.reactType = "Haha";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType,
+        reactType: this.reactType
       });
       document.getElementById("heart-icon").style.color = "yellow";
       this.showReacts = !this.showReacts;
@@ -968,7 +974,7 @@ export default {
       this.reactType = "Wow";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType,
+        reactType: this.reactType
       });
       document.getElementById("heart-icon").style.color = "green";
       this.showReacts = !this.showReacts;
@@ -978,7 +984,7 @@ export default {
       this.reactType = "Love";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType,
+        reactType: this.reactType
       });
       document.getElementById("heart-icon").style.color = "red";
       this.showReacts = !this.showReacts;
@@ -988,7 +994,7 @@ export default {
       this.reactType = "Good idea";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType,
+        reactType: this.reactType
       });
       document.getElementById("heart-icon").style.color = "blue";
       this.showReacts = !this.showReacts;
@@ -1001,7 +1007,7 @@ export default {
       this.reactType = "Thanks";
       this.$store.dispatch("postPage/reactPin", {
         pinId: this.pinId,
-        reactType: this.reactType,
+        reactType: this.reactType
       });
       document.getElementById("heart-icon").style.color = "pink";
       this.showReacts = !this.showReacts;
@@ -1041,9 +1047,9 @@ export default {
         commentText: inputField.value,
         pinId: this.$route.params.postPageId,
         token: token,
-        text: inputField.value,
+        text: inputField.value
       });
-      socket.on("sendComment", (data) => {
+      socket.on("sendComment", data => {
         let commentObject = {
           comment: {
             commenterName: data.commenterName,
@@ -1052,17 +1058,18 @@ export default {
             likes: {
               counts: 0
             },
-            isLiked: false
+            isLiked: false,
+            date: "just now"
           }
         };
         this.$store.commit("postPage/addNewComment", commentObject);
       });
       let commentTextObject = {
-        commentText: inputField.value,
+        commentText: inputField.value
       };
       this.$store.dispatch("postPage/postPageAddedComments", {
         postPageId: this.$route.params.postPageId,
-        comment: commentTextObject,
+        comment: commentTextObject
       });
       inputField.value = "";
       this.showcomments = true;
@@ -1084,7 +1091,8 @@ export default {
           likes: {
             counts: 0
           },
-          isLiked: false
+          isLiked: false,
+          date: "just now"
         };
         this.$store.commit("postPage/addNewReply", {
           reply: replyObject,
@@ -1117,7 +1125,7 @@ export default {
       this.$store.dispatch("postPage/likeComments", {
         pinId: this.$route.params.postPageId,
         commentId: id,
-        likeCondition: likeCondition,
+        likeCondition: likeCondition
       });
     },
     showCommentReplies(id, divid) {
@@ -1159,14 +1167,14 @@ export default {
   },
   computed: {
     ...mapState({
-      reactThisPin: (state) => state.homeCards.reactThisPin,
-      numReactHaha: (state) => state.homeCards.numReactHaha,
-      numReactWow: (state) => state.homeCards.numReactWow,
-      numReactLove: (state) => state.homeCards.numReactLove,
-      numReactGoodIdea: (state) => state.homeCards.numReactGoodIdea,
-      numReactThanks: (state) => state.homeCards.numReactThanks,
-      pinComments: (state) => state.postPage.pinComments,
-      likeComment: (state) => state.postPage.likeComment,
+      reactThisPin: state => state.homeCards.reactThisPin,
+      numReactHaha: state => state.homeCards.numReactHaha,
+      numReactWow: state => state.homeCards.numReactWow,
+      numReactLove: state => state.homeCards.numReactLove,
+      numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
+      numReactThanks: state => state.homeCards.numReactThanks,
+      pinComments: state => state.postPage.pinComments,
+      likeComment: state => state.postPage.likeComment
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
@@ -1178,8 +1186,8 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId",
-    }),
-  },
+      pinId: "homeCards/pinId"
+    })
+  }
 };
 </script>
