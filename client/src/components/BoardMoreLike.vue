@@ -15,6 +15,7 @@
 <script>
 import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
+import imagesLoaded from "imagesloaded"
 export default {
   name: "BoardMoreLike",
   data: function() {
@@ -40,20 +41,20 @@ export default {
        * each list-item (i.e. each masonry item)
        */
       for (var i = 0; i < allItems.length; i++) {
-        resizeMasonryItem(allItems[i]);
+        this.resizeMasonryItem(allItems[i]);
       }
     },
     resizeMasonryItem(item) {
       /* Get the grid object, its row-gap, and the size of its implicit rows */
-      var grid = document.getElementsByClassName("masonry")[0],
+      var grid = document.getElementsByClassName("masonryGrid")[0],
         rowGap = parseInt(
           window.getComputedStyle(grid).getPropertyValue("grid-row-gap")
         ),
         rowHeight = parseInt(
           window.getComputedStyle(grid).getPropertyValue("grid-auto-rows")
         );
-
       /*
+
        * Spanning for any brick = S
        * Grid's row-gap = G
        * Size of grid's implicitly create row-track = R
@@ -62,22 +63,24 @@ export default {
        * Net height of the implicit row-track = T = G + R
        * S = H1 / T
        */
-      var rowSpan = Math.ceil(
-        (item.querySelector(".masonry-content").getBoundingClientRect().height +
-          rowGap) /
-          (rowHeight + rowGap)
-      );
+        console.log(rowGap ,rowHeight,item)
+
+      // var rowSpan = Math.ceil(
+      //   (item.querySelector(".masonryGridItem").getBoundingClientRect().height +
+      //     rowGap) /
+      //     (rowHeight + rowGap)
+      // );
 
       /* Set the spanning as calculated above (S) */
-      item.style.gridRowEnd = "span " + rowSpan;
+     // item.style.gridRowEnd = "span " + rowSpan;
     },
     waitForImages() {
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-       // imagesLoaded(allItems[i], function(instance) {
-          var item = allItems[i].elements[0];
+        imagesLoaded(allItems[i], (instance) =>{
+          var item = instance.elements[0];
           this.resizeMasonryItem(item);
-     //   });
+        });
       }
     },
   },
@@ -110,6 +113,6 @@ export default {
   ); /* [2] Make columns adjust according to the available viewport */
   grid-auto-rows: 200px; /* [3] Set the height for implicitly-created row track */
 }
-.masonryGridItem {
-}
+// .masonryGridItem {
+// }
 </style>
