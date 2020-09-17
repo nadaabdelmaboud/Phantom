@@ -191,6 +191,7 @@ export class PinsService {
       imageWidth: createPinDto.imageWidth,
       imageHeight: createPinDto.imageHeight,
       destLink: createPinDto.link,
+      topic: createPinDto.topicName,
       section: section,
       title: createPinDto.title,
       creator: {
