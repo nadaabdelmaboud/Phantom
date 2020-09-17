@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const state = {
-  comments: false,
-  replies: false,
+  addCommentObject: {},
+  addReplyObject: {},
   followUser: false,
   react: false,
   pinComments: [],
@@ -12,10 +12,10 @@ const state = {
 
 const mutations = {
   commentIsAdded(state, comment) {
-    state.comments = comment;
+    state.addCommentObject = comment;
   },
   replyIsAdded(state, reply) {
-    state.replies = reply;
+    state.addReplyObject = reply;
   },
   followUser(state, followUser) {
     state.followUser = followUser;
@@ -42,26 +42,25 @@ const mutations = {
 };
 
 const actions = {
-  postPageAddedComments({ commit }, { postPageId, comment }) {
+  async postPageAddedComments({ commit }, { postPageId, comment }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .post("pins/" + postPageId + "/comments", comment)
       .then(response => {
-        commit("commentIsAdded", response.data.success);
-        console.log("Comments", response.data);
+        commit("commentIsAdded", response.data);
       })
       .catch(error => {
         console.log(error);
       });
   },
-  postPageAddedReplies({ commit }, { postPageId, commentId, reply }) {
+  async postPageAddedReplies({ commit }, { postPageId, commentId, reply }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .post("pins/" + postPageId + "/comments/" + commentId + "/replies", reply)
       .then(response => {
-        commit("replyIsAdded", response.data.success);
+        commit("replyIsAdded", response.data);
       })
       .catch(error => {
         console.log(error);
