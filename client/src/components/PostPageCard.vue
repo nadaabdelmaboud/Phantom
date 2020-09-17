@@ -1061,38 +1061,44 @@ export default {
       var inputField = document.getElementById(inputfieldid);
       inputField.value = "";
     },
-    addComment() {
+    async addComment() {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      let token = localStorage.getItem("userToken");
-      socket.emit("comment", {
-        commentText: inputField.value,
-        pinId: this.$route.params.postPageId,
-        token: token,
-        text: inputField.value
-      });
-      socket.on("sendComment", data => {
-        let commentObject = {
-          comment: {
-            commenterName: data.commenterName,
-            commentText: data.commentText,
-            commenter: data.commenterImage,
-            likes: {
-              counts: 0
-            },
-            isLiked: false,
-            date: "just now"
-          }
-        };
-        this.$store.commit("postPage/addNewComment", commentObject);
-      });
+      // let token = localStorage.getItem("userToken");
+      console.log("before request" , this.addCommentObject)
       let commentTextObject = {
         commentText: inputField.value
       };
-      this.$store.dispatch("postPage/postPageAddedComments", {
+      await this.$store.dispatch("postPage/postPageAddedComments", {
         postPageId: this.$route.params.postPageId,
         comment: commentTextObject
       });
+      console.log("after request" , this.addCommentObject)
+      // socket.emit("comment", {
+      //   commentText: inputField.value,
+      //   pinId: this.$route.params.postPageId,
+      //   token: token,
+      //   text: inputField.value
+      // });
+      socket.emit("comment",this.addCommentObject);
+      // socket.on("sendComment", data => {
+      //   let commentObject = {
+      //     comment: {
+      //       commenterName: data.commenterName,
+      //       commentText: data.commentText,
+      //       commenter: data.commenterImage,
+      //       likes: {
+      //         counts: 0
+      //       },
+      //       isLiked: false,
+      //       date: "just now"
+      //     }
+      //   };
+      //   this.$store.commit("postPage/addNewComment", commentObject);
+      // });
+      socket.on("sendComment", data => {
+        this.$store.commit("postPage/addNewComment", data);
+      })
       inputField.value = "";
       this.showcomments = true;
     },
@@ -1213,7 +1219,8 @@ export default {
       numReactGoodIdea: state => state.homeCards.numReactGoodIdea,
       numReactThanks: state => state.homeCards.numReactThanks,
       pinComments: state => state.postPage.pinComments,
-      likeComment: state => state.postPage.likeComment
+      likeComment: state => state.postPage.likeComment,
+      addCommentObject: state=> state.postPage.addCommentObject
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
