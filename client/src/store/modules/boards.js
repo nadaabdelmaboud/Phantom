@@ -66,6 +66,7 @@ const actions = {
         commit("setBoards", response.data);
       })
       .catch(error => {
+        commit("setBoards", []);
         console.log(error);
       });
   },
@@ -84,6 +85,7 @@ const actions = {
         });
       })
       .catch(error => {
+       
         console.log(error);
       });
   },
@@ -97,6 +99,7 @@ const actions = {
         commit("setBoards", response.data);
       })
       .catch(error => {
+        commit("setBoards", []);
         console.log(error);
       });
   },
