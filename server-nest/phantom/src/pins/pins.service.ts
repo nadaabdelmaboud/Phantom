@@ -459,6 +459,7 @@ export class PinsService {
           pinId: pinId,
           likes: newComment.likes,
           isLiked: false,
+          replies: newComment.replies,
         },
       };
     }
@@ -478,6 +479,7 @@ export class PinsService {
             pinId: pinId,
             likes: pin.comments[i].likes,
             isLiked: false,
+            replies: pin.comments[i].replies,
           },
         };
       }
