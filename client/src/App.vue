@@ -18,7 +18,7 @@ export default {
     }
     initializeFirebase();
     window.addEventListener("scroll", () => {
-   //   console.log(document.body.clientHeight, "   ", window.scrollY);
+      // console.log(document.body.clientHeight, "   ", window.scrollY);
       if (window.scrollY == window.scrollHeight) console.log("scroloo");
     });
   },

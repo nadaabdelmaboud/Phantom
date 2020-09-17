@@ -1,16 +1,21 @@
 import axios from "axios";
 
 const state = {
-  comments: false,
+  addCommentObject: {},
+  addReplyObject: {},
   followUser: false,
   react: false,
   pinComments: [],
-  likeComment: false
+  likeComment: false,
+  likeReply: false
 };
 
 const mutations = {
   commentIsAdded(state, comment) {
-    state.comments = comment;
+    state.addCommentObject = comment;
+  },
+  replyIsAdded(state, reply) {
+    state.addReplyObject = reply;
   },
   followUser(state, followUser) {
     state.followUser = followUser;
@@ -27,18 +32,35 @@ const mutations = {
   },
   likeComment(state, like) {
     state.likeComment = like;
+  },
+  likeReply(state, like) {
+    state.likeReply = like;
+  },
+  addNewReply(state, { reply, commentId }) {
+    state.pinComments.find(x => x.comment.id === commentId).replies.push(reply);
   }
 };
 
 const actions = {
-  postPageAddedComments({ commit }, { postPageId, comment }) {
+  async postPageAddedComments({ commit }, { postPageId, comment }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .post("pins/" + postPageId + "/comments", comment)
       .then(response => {
-        commit("commentIsAdded", response.data.success);
-        console.log("Comments", response.data);
+        commit("commentIsAdded", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async postPageAddedReplies({ commit }, { postPageId, commentId, reply }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    await axios
+      .post("pins/" + postPageId + "/comments/" + commentId + "/replies", reply)
+      .then(response => {
+        commit("replyIsAdded", response.data);
       })
       .catch(error => {
         console.log(error);
@@ -105,6 +127,34 @@ const actions = {
         else if (likeCondition == "unLike")
           state.pinComments.find(x => x.comment.id === commentId).comment.likes
             .counts--;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  likeReplies({ commit }, { pinId, commentId, replyId, likeCondition }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .post(
+        "pins/" +
+          pinId +
+          "/comments/" +
+          commentId +
+          "/replies/" +
+          replyId +
+          "/likes"
+      )
+      .then(response => {
+        commit("likeReply", response.data.success);
+        if (likeCondition == "like")
+          state.pinComments
+            .find(x => x.comment.id === commentId)
+            .replies.find(y => y.id === replyId).likes.counts++;
+        else if (likeCondition == "unLike")
+          state.pinComments
+            .find(x => x.comment.id === commentId)
+            .replies.find(y => y.id === replyId).likes.counts--;
       })
       .catch(error => {
         console.log(error);

@@ -113,6 +113,19 @@ export class PinsService {
           .aggregate()
           .match({ name: pin.topic })
           .project({ pins: { $size: '$pins' } });
+        if (user.lastTopics.length > 0) {
+          if (
+            user.lastTopics[user.lastTopics.length - 1].topicName == pin.topic
+          ) {
+            await user.save();
+            return {
+              pin: pin,
+              type: pinType,
+              creatorInfo: creatorInfo,
+              react: react,
+            };
+          }
+        }
         user.lastTopics.push({
           topicName: pin.topic,
           pinsLength: topic[0].pins,
@@ -132,7 +145,7 @@ export class PinsService {
 
     return { success: false };
   }
-  async createPin(userId: String, createPinDto: CreatePinDto): Promise<pin> {
+  async createPin(userId: String, createPinDto: CreatePinDto) {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -155,8 +168,7 @@ export class PinsService {
     if (!board) {
       throw new NotFoundException({ message: 'board not found' });
     }
-    console.log(board);
-    console.log(user);
+
     let isCreator = await this.BoardService.isCreator(board, userId);
     let isCollaborator = await this.BoardService.isCollaborator(board, userId);
     if (!isCreator && !(isCollaborator && isCollaborator.createPin)) {
@@ -208,15 +220,18 @@ export class PinsService {
       createPinDto.board,
       createPinDto.section,
     );
-    console.log('asas1');
     await this.addPintoUser(
       userId,
       pin._id,
       createPinDto.board,
       createPinDto.section,
     );
-    console.log('asas2');
-    return pin;
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
   }
   async addPintoUser(userId, pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
@@ -350,7 +365,12 @@ export class PinsService {
       }
     }
     await user.save();
-    return true;
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
   }
   async getCurrentUserSavedPins(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
@@ -400,7 +420,7 @@ export class PinsService {
       notificationCounter: 1,
       pinsNotification: 1,
     });
-    var cs = <comment>(<unknown>{
+    let cs = <comment>(<unknown>{
       commenter: userId,
       comment: commentText,
       date: new Date(Date.now()),
@@ -423,7 +443,48 @@ export class PinsService {
         pinId,
         pin.imageId,
       );
-    return true;
+    let newComment = pin.comments[pin.comments.length - 1];
+    if (
+      String(newComment.commenter) == String(userId) &&
+      String(commentText) == String(newComment.comment)
+    ) {
+      return {
+        comment: {
+          id: newComment._id,
+          commenter: newComment.commenter,
+          commentText: newComment.comment,
+          date: 'just now',
+          commenterName: user.firstName + ' ' + user.lastName,
+          commenterImage: userId.profileImage,
+          pinId: pinId,
+          likes: newComment.likes,
+          isLiked: false,
+        },
+        replies: newComment.replies,
+      };
+    }
+    for (let i = pin.comments.length - 1; i >= 0; i--) {
+      if (
+        String(pin.comments[i].commenter) == String(userId) &&
+        String(commentText) == String(pin.comments[i].comment)
+      ) {
+        return {
+          comment: {
+            id: pin.comments[i]._id,
+            commenter: pin.comments[i].commenter,
+            commentText: pin.comments[i].comment,
+            date: 'just now',
+            commenterName: user.firstName + ' ' + user.lastName,
+            commenterImage: userId.profileImage,
+            pinId: pinId,
+            likes: pin.comments[i].likes,
+            isLiked: false,
+          },
+          replies: pin.comments[i].replies,
+        };
+      }
+    }
+    throw new Error();
   }
   async createReply(pinId, replyText, userId, commentId) {
     if (
@@ -436,6 +497,9 @@ export class PinsService {
       return false;
     }
     console.log('user');
+    let user = await this.userModel
+      .findById(userId, { firstName: 1, lastName: 1, profileImage: 1 })
+      .lean();
     if (!replyText || replyText == '' || replyText == ' ') {
       throw new BadRequestException('reply is empty');
     }
@@ -455,10 +519,49 @@ export class PinsService {
         });
         pin.comments[i].replies.push(rp);
         await pin.save();
-        return true;
+        let newReply =
+          pin.comments[i].replies[pin.comments[i].replies.length - 1];
+        if (
+          String(newReply.replier) == String(userId) &&
+          String(replyText) == String(newReply.reply)
+        ) {
+          let j = pin.comments[i].replies.length - 1;
+          return {
+            id: pin.comments[i].replies[j]._id,
+            replier: pin.comments[i].replies[j].replier,
+            replyText: pin.comments[i].replies[j].reply,
+            date: 'just now',
+            commentId: commentId,
+            pinId: pinId,
+            replierName: user.firstName + ' ' + user.lastName,
+            replierImage: userId.profileImage,
+            likes: pin.comments[i].replies[j].likes,
+            isLiked: false,
+          };
+        }
+        for (let j = pin.comments[i].replies.length - 1; j >= 0; j--) {
+          if (
+            String(pin.comments[i].replies[j].replier) == String(userId) &&
+            String(replyText) == String(pin.comments[i].replies[j].reply)
+          ) {
+            return {
+              id: pin.comments[i].replies[j]._id,
+              replier: pin.comments[i].replies[j].replier,
+              replyText: pin.comments[i].replies[j].reply,
+              date: 'just now',
+              commentId: commentId,
+              pinId: pinId,
+              replierName: user.firstName + ' ' + user.lastName,
+              replierImage: userId.profileImage,
+              likes: pin.comments[i].replies[j].likes,
+              isLiked: false,
+            };
+          }
+        }
+        throw new Error();
       }
     }
-    return false;
+    throw new Error();
   }
   async getPinCommentsReplies(pinId, userId) {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
@@ -491,7 +594,7 @@ export class PinsService {
           commenterName: commenter.firstName + ' ' + commenter.lastName,
           commenterImage: commenter.profileImage,
           commentText: pin.comments[i].comment,
-          date: pin.comments[i].date,
+          date: await this.calcDate(pin.comments[i].date),
           likes: pin.comments[i].likes,
           isLiked: isLiked,
         };
@@ -524,7 +627,7 @@ export class PinsService {
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
               replyText: pin.comments[i].replies[j].reply,
-              date: pin.comments[i].replies[j].date,
+              date: await this.calcDate(pin.comments[i].replies[j].date),
               likes: pin.comments[i].replies[j].likes,
               isLiked: isLiked,
             };
@@ -535,6 +638,40 @@ export class PinsService {
       }
     }
     return retComments;
+  }
+  async calcDate(d) {
+    d = new Date(d);
+    let date = d.getDate();
+    let month = d.getMonth() + 1;
+    let year = d.getFullYear();
+    let now = new Date();
+    let dateNow = now.getDate();
+    let monthNow = now.getMonth() + 1;
+    let yearNow = now.getFullYear();
+    let s = '';
+    if (yearNow - year != 0) {
+      if (yearNow - year > 1) s = 's';
+      return `${yearNow - year} year${s} ago`;
+    }
+    if (monthNow - month != 0) {
+      if (monthNow - month > 1) s = 's';
+      return `${monthNow - month} month${s} ago`;
+    }
+    if (dateNow - date != 0) {
+      if (dateNow - date > 1) s = 's';
+      return `${dateNow - date} day${s} ago`;
+    }
+
+    let diff = (now.getTime() - d.getTime()) / 1000;
+    diff /= 60;
+    if (diff > 60) {
+      diff = Math.floor(diff / 60);
+      if (diff > 1) s = 's';
+      return `${diff} hr${s} ago`;
+    }
+    diff = Math.abs(Math.round(diff));
+    if (diff > 1) s = 's';
+    return `${diff} min${s} ago`;
   }
   async createReact(pinId, reactType, userId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
@@ -672,6 +809,7 @@ export class PinsService {
         String(lastReactType),
         pin.imageId,
       );
+    console.log('here');
     return true;
   }
   async likeComment(pinId, commentId, userId) {

@@ -123,7 +123,7 @@ export class PinsController {
       userId,
     );
     if (comment) {
-      return { success: true };
+      return comment;
     } else {
       throw new NotAcceptableException({ message: 'comment is not created' });
     }
@@ -145,7 +145,7 @@ export class PinsController {
       commentId,
     );
     if (reply) {
-      return { success: true };
+      return reply;
     } else {
       throw new NotAcceptableException({ message: 'reply is not created' });
     }

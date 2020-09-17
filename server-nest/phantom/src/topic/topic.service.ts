@@ -166,6 +166,12 @@ export class TopicService {
     if (!user.followingTopics) user.followingTopics = [];
     user.followingTopics.push(topicId);
     if (!user.lastTopics) user.lastTopics = [];
+    if (user.lastTopics.length > 0) {
+      if (user.lastTopics[user.lastTopics.length - 1].topicName == topic.name) {
+        await user.save();
+        return 1;
+      }
+    }
     user.lastTopics.push({
       topicName: topic.name,
       pinsLength: topic.pins.length,
