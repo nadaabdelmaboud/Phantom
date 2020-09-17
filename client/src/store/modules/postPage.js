@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   addCommentObject: {},
-  replies: false,
+  addReplyObject: {},
   followUser: false,
   react: false,
   pinComments: [],
@@ -15,7 +15,7 @@ const mutations = {
     state.addCommentObject = comment;
   },
   replyIsAdded(state, reply) {
-    state.replies = reply;
+    state.addReplyObject = reply;
   },
   followUser(state, followUser) {
     state.followUser = followUser;
@@ -55,13 +55,13 @@ const actions = {
         console.log(error);
       });
   },
-  postPageAddedReplies({ commit }, { postPageId, commentId, reply }) {
+  async postPageAddedReplies({ commit }, { postPageId, commentId, reply }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
+    await axios
       .post("pins/" + postPageId + "/comments/" + commentId + "/replies", reply)
       .then(response => {
-        commit("replyIsAdded", response.data.success);
+        commit("replyIsAdded", response.data);
       })
       .catch(error => {
         console.log(error);

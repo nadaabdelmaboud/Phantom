@@ -1064,7 +1064,6 @@ export default {
     async addComment() {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      // let token = localStorage.getItem("userToken");
       console.log("before request" , this.addCommentObject)
       let commentTextObject = {
         commentText: inputField.value
@@ -1074,67 +1073,33 @@ export default {
         comment: commentTextObject
       });
       console.log("after request" , this.addCommentObject)
-      // socket.emit("comment", {
-      //   commentText: inputField.value,
-      //   pinId: this.$route.params.postPageId,
-      //   token: token,
-      //   text: inputField.value
-      // });
       socket.emit("comment",this.addCommentObject);
-      // socket.on("sendComment", data => {
-      //   let commentObject = {
-      //     comment: {
-      //       commenterName: data.commenterName,
-      //       commentText: data.commentText,
-      //       commenter: data.commenterImage,
-      //       likes: {
-      //         counts: 0
-      //       },
-      //       isLiked: false,
-      //       date: "just now"
-      //     }
-      //   };
-      //   this.$store.commit("postPage/addNewComment", commentObject);
-      // });
       socket.on("sendComment", data => {
         this.$store.commit("postPage/addNewComment", data);
       })
       inputField.value = "";
       this.showcomments = true;
     },
-    addReply(commentId, inputId) {
+    async addReply(commentId, inputId) {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById(inputId);
-      let token = localStorage.getItem("userToken");
-      socket.emit("reply", {
-        replyText: inputField.value,
-        commentId: commentId,
-        token: token
-      });
-      socket.on("sendReply", data => {
-        let replyObject = {
-          replierName: data.replierName,
-          replyText: data.replyText,
-          replierImage: data.replierImage,
-          likes: {
-            counts: 0
-          },
-          isLiked: false,
-          date: "just now"
-        };
-        this.$store.commit("postPage/addNewReply", {
-          reply: replyObject,
-          commentId: commentId
-        });
-      });
+      console.log("before reply request" , this.addReplyObject);
       let replyTextObject = {
         replyText: inputField.value
       };
-      this.$store.dispatch("postPage/postPageAddedReplies", {
+      await this.$store.dispatch("postPage/postPageAddedReplies", {
         postPageId: this.$route.params.postPageId,
         commentId: commentId,
         reply: replyTextObject
       });
+      console.log("after reply request" , this.addReplyObject);
+      socket.emit("reply" , this.addReplyObject);
+      socket.on("sendReply" , data => {
+          this.$store.commit("postPage/addNewReply", {
+          reply: data,
+          commentId: commentId
+        });
+      })
       inputField.value = "";
     },
     showCommentsList() {
@@ -1220,7 +1185,8 @@ export default {
       numReactThanks: state => state.homeCards.numReactThanks,
       pinComments: state => state.postPage.pinComments,
       likeComment: state => state.postPage.likeComment,
-      addCommentObject: state=> state.postPage.addCommentObject
+      addCommentObject: state=> state.postPage.addCommentObject,
+      addReplyObject: state => state.postPage.addReplyObject
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
