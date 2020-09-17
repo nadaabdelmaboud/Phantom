@@ -460,6 +460,7 @@ export class PinsService {
           likes: newComment.likes,
           isLiked: false,
         },
+        replies: newComment.replies,
       };
     }
     for (let i = pin.comments.length - 1; i >= 0; i--) {
@@ -479,6 +480,7 @@ export class PinsService {
             likes: pin.comments[i].likes,
             isLiked: false,
           },
+          replies: pin.comments[i].replies,
         };
       }
     }
