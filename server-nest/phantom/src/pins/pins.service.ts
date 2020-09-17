@@ -449,13 +449,15 @@ export class PinsService {
       String(commentText) == String(newComment.comment)
     ) {
       return {
-        id: newComment._id,
-        commenter: newComment.commenter,
-        commentText: newComment.comment,
-        date: newComment.date,
-        commenterName: user.firstName + ' ' + user.lastName,
-        commenterImage: userId.profileImage,
-        pinId: pinId,
+        comment: {
+          id: newComment._id,
+          commenter: newComment.commenter,
+          commentText: newComment.comment,
+          date: newComment.date,
+          commenterName: user.firstName + ' ' + user.lastName,
+          commenterImage: userId.profileImage,
+          pinId: pinId,
+        },
       };
     }
     for (let i = pin.comments.length - 1; i >= 0; i--) {
@@ -464,13 +466,15 @@ export class PinsService {
         String(commentText) == String(pin.comments[i].comment)
       ) {
         return {
-          id: pin.comments[i]._id,
-          commenter: pin.comments[i].commenter,
-          commentText: pin.comments[i].comment,
-          date: pin.comments[i].date,
-          commenterName: user.firstName + ' ' + user.lastName,
-          commenterImage: userId.profileImage,
-          pinId: pinId,
+          comment: {
+            id: pin.comments[i]._id,
+            commenter: pin.comments[i].commenter,
+            commentText: pin.comments[i].comment,
+            date: pin.comments[i].date,
+            commenterName: user.firstName + ' ' + user.lastName,
+            commenterImage: userId.profileImage,
+            pinId: pinId,
+          },
         };
       }
     }
