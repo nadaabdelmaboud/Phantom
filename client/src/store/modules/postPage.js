@@ -49,7 +49,6 @@ const actions = {
       .post("pins/" + postPageId + "/comments", comment)
       .then(response => {
         commit("commentIsAdded", response.data);
-        console.log("comment" , response.data)
       })
       .catch(error => {
         console.log(error);

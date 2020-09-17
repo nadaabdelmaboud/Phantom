@@ -1064,7 +1064,7 @@ export default {
     async addComment() {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      console.log("before request" , this.addCommentObject)
+      console.log("before request", this.addCommentObject);
       let commentTextObject = {
         commentText: inputField.value
       };
@@ -1072,18 +1072,18 @@ export default {
         postPageId: this.$route.params.postPageId,
         comment: commentTextObject
       });
-      console.log("after request" , this.addCommentObject)
-      socket.emit("comment",this.addCommentObject);
+      console.log("after request", this.addCommentObject);
+      socket.emit("comment", this.addCommentObject);
       socket.on("sendComment", data => {
         this.$store.commit("postPage/addNewComment", data);
-      })
+      });
       inputField.value = "";
       this.showcomments = true;
     },
     async addReply(commentId, inputId) {
       const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById(inputId);
-      console.log("before reply request" , this.addReplyObject);
+      console.log("before reply request", this.addReplyObject);
       let replyTextObject = {
         replyText: inputField.value
       };
@@ -1092,14 +1092,14 @@ export default {
         commentId: commentId,
         reply: replyTextObject
       });
-      console.log("after reply request" , this.addReplyObject);
-      socket.emit("reply" , this.addReplyObject);
-      socket.on("sendReply" , data => {
-          this.$store.commit("postPage/addNewReply", {
+      console.log("after reply request", this.addReplyObject);
+      socket.emit("reply", this.addReplyObject);
+      socket.on("sendReply", data => {
+        this.$store.commit("postPage/addNewReply", {
           reply: data,
           commentId: commentId
         });
-      })
+      });
       inputField.value = "";
     },
     showCommentsList() {
@@ -1185,7 +1185,7 @@ export default {
       numReactThanks: state => state.homeCards.numReactThanks,
       pinComments: state => state.postPage.pinComments,
       likeComment: state => state.postPage.likeComment,
-      addCommentObject: state=> state.postPage.addCommentObject,
+      addCommentObject: state => state.postPage.addCommentObject,
       addReplyObject: state => state.postPage.addReplyObject
     }),
     ...mapGetters({
