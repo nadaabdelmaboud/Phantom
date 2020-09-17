@@ -518,7 +518,7 @@ export class RecommendationService {
     let counter = start;
     console.log(board.pins.length);
     let f = 0;
-    while (true) {
+    while (true && counter < board.pins.length) {
       console.log(f);
       console.log(board.pins[counter].topic);
       if (!topics.includes(board.pins[counter].topic)) {
@@ -660,7 +660,7 @@ export class RecommendationService {
     }
     let counter = start;
     console.log(board.sections[sectionIndex].pins.length);
-    while (true) {
+    while (true && counter < board.sections[sectionIndex].pins.length) {
       if (!topics.includes(board.sections[sectionIndex].pins[counter].topic)) {
         topics.push(board.sections[sectionIndex].pins[counter].topic);
       }
