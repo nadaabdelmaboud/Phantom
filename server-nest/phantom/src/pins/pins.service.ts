@@ -809,6 +809,7 @@ export class PinsService {
         String(lastReactType),
         pin.imageId,
       );
+    console.log('here');
     return true;
   }
   async likeComment(pinId, commentId, userId) {
