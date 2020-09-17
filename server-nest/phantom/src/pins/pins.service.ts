@@ -453,10 +453,12 @@ export class PinsService {
           id: newComment._id,
           commenter: newComment.commenter,
           commentText: newComment.comment,
-          date: newComment.date,
+          date: 'just now',
           commenterName: user.firstName + ' ' + user.lastName,
           commenterImage: userId.profileImage,
           pinId: pinId,
+          likes: newComment.likes,
+          isLiked: false,
         },
       };
     }
@@ -470,10 +472,12 @@ export class PinsService {
             id: pin.comments[i]._id,
             commenter: pin.comments[i].commenter,
             commentText: pin.comments[i].comment,
-            date: pin.comments[i].date,
+            date: 'just now',
             commenterName: user.firstName + ' ' + user.lastName,
             commenterImage: userId.profileImage,
             pinId: pinId,
+            likes: pin.comments[i].likes,
+            isLiked: false,
           },
         };
       }
@@ -524,11 +528,13 @@ export class PinsService {
             id: pin.comments[i].replies[j]._id,
             replier: pin.comments[i].replies[j].replier,
             replyText: pin.comments[i].replies[j].reply,
-            date: pin.comments[i].replies[j].date,
+            date: 'just now',
             commentId: commentId,
             pinId: pinId,
             replierName: user.firstName + ' ' + user.lastName,
             replierImage: userId.profileImage,
+            likes: pin.comments[i].replies[j].likes,
+            isLiked: false,
           };
         }
         for (let j = pin.comments[i].replies.length - 1; j >= 0; j--) {
@@ -540,11 +546,13 @@ export class PinsService {
               id: pin.comments[i].replies[j]._id,
               replier: pin.comments[i].replies[j].replier,
               replyText: pin.comments[i].replies[j].reply,
-              date: pin.comments[i].replies[j].date,
+              date: 'just now',
               commentId: commentId,
               pinId: pinId,
               replierName: user.firstName + ' ' + user.lastName,
               replierImage: userId.profileImage,
+              likes: pin.comments[i].replies[j].likes,
+              isLiked: false,
             };
           }
         }
