@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const state = {
-  currentChat: []
+  currentChat: [],
+  recentChats:[]
 };
 
 const mutations = {
@@ -10,7 +11,11 @@ const mutations = {
   },
   addMsg(state, msg) {
     state.currentChat.push(msg);
+  },
+  setRecentChats(state, chats){
+    state.recentChats =chats;
   }
+
 };
 
 const actions = {
@@ -23,11 +28,9 @@ const actions = {
         "/getMessagesSent/" + payload.senderId + "/" + payload.recieverId
       );
       chat = chat.data;
-      chat.forEach((msg) => {
-        if(msg.senderId == payload.senderId)
-          msg.owner = true;
-        else
-          msg.owner = false;
+      chat.forEach(msg => {
+        if (msg.senderId == payload.senderId) msg.owner = true;
+        else msg.owner = false;
       });
     } catch (err) {
       console.log(err);
@@ -39,11 +42,22 @@ const actions = {
     axios.post("/sentMessage", msg).catch(error => {
       console.log(error);
     });
-  }
+  },
+  getRecentChats({ commit },userId){
+    axios.get("getChats/"+userId)
+    .then((response)=>{
+      commit("setRecentChats",response.data)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },
+  
 };
 
 const getters = {
-  currentChat: state => state.currentChat
+  currentChat: state => state.currentChat,
+  recentChats: state => state.recentChats
 };
 
 export default {

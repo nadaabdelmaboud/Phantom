@@ -207,9 +207,11 @@ const actions = {
         console.log(error);
       });
   },
-  moreLike({ commit }, boardId) {
+  async moreLike({ commit }, {boardId,generate}) {
+    if(generate)
+    await axios.put("more/boards/" + boardId);
     axios
-      .get("more/boards/" + boardId)
+      .get("more/boards/" + boardId +"?limit=20&offset=0")
       .then(response => {
         commit("setMoreLike", response.data);
       })
