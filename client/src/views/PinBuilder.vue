@@ -444,7 +444,8 @@ export default {
             board: this.chosenBoardId,
             imageWidth: this.width,
             imageHeight: this.height,
-            imageId: this.imageFile
+            imageId: this.imageFile,
+            topicName:this.label
           };
           if (this.chosenSectionId != "") {
             pin.section = this.chosenSectionId;
