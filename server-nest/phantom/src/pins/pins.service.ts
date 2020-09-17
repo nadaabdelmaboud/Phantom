@@ -459,8 +459,8 @@ export class PinsService {
           pinId: pinId,
           likes: newComment.likes,
           isLiked: false,
-          replies: newComment.replies,
         },
+        replies: newComment.replies,
       };
     }
     for (let i = pin.comments.length - 1; i >= 0; i--) {
@@ -479,8 +479,8 @@ export class PinsService {
             pinId: pinId,
             likes: pin.comments[i].likes,
             isLiked: false,
-            replies: pin.comments[i].replies,
           },
+          replies: pin.comments[i].replies,
         };
       }
     }
