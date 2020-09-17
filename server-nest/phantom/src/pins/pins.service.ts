@@ -449,7 +449,7 @@ export class PinsService {
       String(commentText) == String(newComment.comment)
     ) {
       return {
-        _id: newComment._id,
+        id: newComment._id,
         commenter: newComment.commenter,
         commentText: newComment.comment,
         date: newComment.date,
@@ -464,7 +464,7 @@ export class PinsService {
         String(commentText) == String(pin.comments[i].comment)
       ) {
         return {
-          _id: pin.comments[i]._id,
+          id: pin.comments[i]._id,
           commenter: pin.comments[i].commenter,
           commentText: pin.comments[i].comment,
           date: pin.comments[i].date,
@@ -517,7 +517,7 @@ export class PinsService {
         ) {
           let j = pin.comments[i].replies.length - 1;
           return {
-            _id: pin.comments[i].replies[j]._id,
+            id: pin.comments[i].replies[j]._id,
             replier: pin.comments[i].replies[j].replier,
             replyText: pin.comments[i].replies[j].reply,
             date: pin.comments[i].replies[j].date,
@@ -533,7 +533,7 @@ export class PinsService {
             String(replyText) == String(pin.comments[i].replies[j].reply)
           ) {
             return {
-              _id: pin.comments[i].replies[j]._id,
+              id: pin.comments[i].replies[j]._id,
               replier: pin.comments[i].replies[j].replier,
               replyText: pin.comments[i].replies[j].reply,
               date: pin.comments[i].replies[j].date,
