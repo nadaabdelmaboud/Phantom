@@ -29,7 +29,7 @@
           v-for="(msg, i) in chat"
           :key="i"
           :imageId="msg.senderImage"
-          :msgText="msg.note"
+          :msgText="msg.message"
           :owner="msg.owner"
           :timeStamp="msg.date"
           class="ChatMsg"
@@ -83,8 +83,8 @@ export default {
       if (this.currentMsg != "") {
         let msg = {
           owner: true,
-          note: this.currentMsg,
-          time: Date.now()
+          message: this.currentMsg,
+          date: Date.now()
         };
         this.$store.commit("chat/addMsg", msg);
         let payload = {
@@ -137,8 +137,8 @@ export default {
         if (data.senderId == this.chatWith.id) {
           let msg = {
             owner: false,
-            note: data.message,
-            time: data.date
+            message: data.message,
+            date: data.date
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
@@ -180,10 +180,12 @@ export default {
     },
     isTyping() {
       console.log("bnm");
-      this.socket.emit("typing", {
-        recieverId: this.chatWith.id,
-        senderId: this.myData._id
-      });
+      if (this.currentMsg.length == 1) {
+        this.socket.emit("typing", {
+          recieverId: this.chatWith.id,
+          senderId: this.myData._id
+        });
+      }
     },
     deliveredListener() {
       this.socket.on("setDelivered", data => {
