@@ -9,16 +9,9 @@ import { Email } from '../shared/send-email.service';
 import { UpdateDto } from './dto/update-user.dto';
 import { NotAcceptableException } from '@nestjs/common';
 import { json } from 'express';
-console.log(134678)
 @nestCommon.Controller()
 export class UserController {
-  constructor(
-    private userService: UserService,
-    /*  private authService: AuthService,
-    private TopicService: TopicService,
-    private BoardService: BoardService,
-    */ private email: Email,
-  ) { }
+  constructor(private userService: UserService, private email: Email) {}
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('users/me')
@@ -33,11 +26,10 @@ export class UserController {
     const user = await this.userService.getUserNotifications(req.user._id);
     return user;
   }
-  @nestCommon.Get('/user/:user_id')
+  @nestCommon.Get('/user/:id')
   async getUser(@nestCommon.Param() params) {
-    const user = await this.userService.getUserById(params.user_id);
-    user.password = undefined;
-    return { user };
+    const user = await this.userService.getUserMe(params.id);
+    return user;
   }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
@@ -106,7 +98,9 @@ export class UserController {
     }*/
 
     if (updateData.notificationCounter)
-      return await this.userService.updateDataInUser(req.user._id, { notificationCounter: 0 })
+      return await this.userService.updateDataInUser(req.user._id, {
+        notificationCounter: 0,
+      });
     await this.userService.updateSettings(req.user._id, updateData);
     const user = await this.userService.getUserById(req.user._id);
     user.password = undefined;
@@ -255,7 +249,6 @@ export class UserController {
     return await this.userService.userFollowers(params.user_id, limit, offset);
   }
 
-
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('/:user_id/following')
   async getUserFollowings(
@@ -266,6 +259,4 @@ export class UserController {
   ) {
     return await this.userService.userFollowings(params.user_id, limit, offset);
   }
-
-
 }
