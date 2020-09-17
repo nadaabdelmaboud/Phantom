@@ -517,7 +517,10 @@ export class RecommendationService {
     }
     let counter = start;
     console.log(board.pins.length);
+    let f = 0;
     while (true) {
+      console.log(f);
+      console.log(board.pins[counter].topic);
       if (!topics.includes(board.pins[counter].topic)) {
         topics.push(board.pins[counter].topic);
       }
@@ -528,11 +531,13 @@ export class RecommendationService {
       if (counter == start) {
         break;
       }
+      f++;
     }
     if (board.topic && board.topic != '') {
       topics.push(board.topic);
     }
     let limit = 50;
+    console.log(topics.length);
     for (let i = 0; i < topics.length; i++) {
       let topic = await this.topicModel.findOne(
         { name: topics[i] },
@@ -587,6 +592,7 @@ export class RecommendationService {
         pinExist[String(allpins[i]._id)] = true;
       }
     }
+    console.log(pins.length);
     console.log('ohayo');
     if (pins.length < 10) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
