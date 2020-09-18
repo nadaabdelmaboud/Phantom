@@ -18,12 +18,6 @@ export default {
     }
     initializeFirebase();
     window.addEventListener("scroll", () => {
-      console.log(document.body.scrollHeight, "   ", window.scrollY, " ");
-      console.log(
-        window.innerHeight + window.scrollY,
-        "   ",
-        document.body.offsetHeight
-      );
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
