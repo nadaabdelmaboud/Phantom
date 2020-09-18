@@ -93,7 +93,7 @@ const actions = {
         } else commit("setErrorMessage", error.response.data.message);
       });
   },
-  confirmEmail({ commit }, token) {
+  confirmEmail({ commit, dispatch }, token) {
     axios
       .post(
         "sign_up/confirm",
@@ -108,6 +108,7 @@ const actions = {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
         commit("setEmailConfirm", true);
+        dispatch("getUserProfile");
       })
       .catch(error => {
         commit("setEmailConfirm", false);

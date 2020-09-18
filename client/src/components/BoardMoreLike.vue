@@ -15,21 +15,21 @@
 <script>
 import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
-import imagesLoaded from "imagesloaded"
+import imagesLoaded from "imagesloaded";
 export default {
   name: "BoardMoreLike",
   data: function() {
     return {
-      boardId: "",
+      boardId: ""
     };
   },
   components: {
-    HomeCard,
+    HomeCard
   },
   computed: {
     ...mapGetters({
-      morePins: "boards/moreLike",
-    }),
+      morePins: "boards/moreLike"
+    })
   },
   methods: {
     resizeAllMasonryItems() {
@@ -63,7 +63,7 @@ export default {
        * Net height of the implicit row-track = T = G + R
        * S = H1 / T
        */
-        console.log(rowGap ,rowHeight,item)
+      console.log(rowGap, rowHeight, item);
 
       // var rowSpan = Math.ceil(
       //   (item.querySelector(".masonryGridItem").getBoundingClientRect().height +
@@ -72,29 +72,29 @@ export default {
       // );
 
       /* Set the spanning as calculated above (S) */
-     // item.style.gridRowEnd = "span " + rowSpan;
+      // item.style.gridRowEnd = "span " + rowSpan;
     },
     waitForImages() {
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], (instance) =>{
+        imagesLoaded(allItems[i], instance => {
           var item = instance.elements[0];
           this.resizeMasonryItem(item);
         });
       }
-    },
+    }
   },
   created: function() {
     console.log(this.$route);
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/moreLike", {
       boardId: this.boardId,
-      generate: true,
+      generate: true
     });
     setTimeout(() => {
       this.waitForImages();
     }, 1000);
-  },
+  }
 };
 </script>
 

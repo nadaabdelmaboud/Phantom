@@ -2,7 +2,8 @@ import axios from "axios";
 
 const state = {
   recentSearch: null,
-  suggestions: null
+  suggestions: null,
+  people: null
 };
 
 const mutations = {
@@ -11,6 +12,9 @@ const mutations = {
   },
   setSearchSuggestions(state, payload) {
     state.suggestions = payload;
+  },
+  setSearchPeople(state, payload) {
+    state.people = payload;
   }
 };
 
@@ -52,6 +56,30 @@ const actions = {
       )
       .then(response => {
         commit("setSearchSuggestions", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  searchPeople({ commit }, payload) {
+    axios
+      .get(
+        "/search/people?limit=" +
+          payload.limit +
+          "&offset=" +
+          payload.offset +
+          "&name=" +
+          payload.name +
+          "&recentSearch=" +
+          payload.recentSearch,
+        {
+          headers: {
+            Authorization: localStorage.getItem("userToken")
+          }
+        }
+      )
+      .then(response => {
+        commit("setSearchPeople", response.data);
       })
       .catch(error => {
         console.log(error);

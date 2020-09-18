@@ -238,7 +238,13 @@ export default {
       if (!this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
       this.$store.dispatch("search/searchPins", {
-        limit: 8,
+        limit: 5,
+        offset: 0,
+        name: this.search,
+        recentSearch: false
+      });
+      this.$store.dispatch("search/searchPeople", {
+        limit: 3,
         offset: 0,
         name: this.search,
         recentSearch: false

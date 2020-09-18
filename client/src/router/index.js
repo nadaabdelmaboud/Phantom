@@ -25,6 +25,7 @@ import TopicsPage from "../views/TopicsPage.vue";
 import SectionView from "../views/SectionView";
 import NotidicationBoards from "../components/Notification/NotificationBoards";
 import NotidicationPins from "../components/Notification/NotificationPins";
+import Search from "../views/Search.vue";
 
 Vue.use(VueRouter);
 
@@ -148,6 +149,11 @@ const routes = [
         path: "PinsForYou",
         name: "PinsForYou",
         component: NotidicationPins
+      },
+      {
+        path: "search",
+        name: "Search",
+        component: Search
       }
     ]
   },
