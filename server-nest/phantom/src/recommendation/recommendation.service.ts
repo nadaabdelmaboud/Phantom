@@ -771,8 +771,6 @@ export class RecommendationService {
     let board = await this.boardModel.findById(boardId, { more: 1 }).lean();
     if (!board) throw new Error('no such board');
     if (!board.more) board.more = [];
-    console.log(board.more.length);
-    console.log(offset + limit);
     if (Number(Number(offset) + Number(limit)) > board.more.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
