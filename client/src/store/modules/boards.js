@@ -9,7 +9,10 @@ const state = {
   collaborators: [],
   moreLike: [],
   section: {},
-  viewState: "Default"
+  viewState: "Default",
+  generating:false,
+  generatedCount:0,
+  offset:0
 };
 
 const mutations = {
@@ -31,7 +34,9 @@ const mutations = {
     state.collaborators = collaborators;
   },
   setMoreLike(state, more) {
-    state.moreLike = more;
+    more.forEach(m => {
+      state.moreLike.push(m);
+    });
   },
   setCurrentSection(state, section) {
     state.section = section;
@@ -210,17 +215,32 @@ const actions = {
         console.log(error);
       });
   },
-  async moreLike({ commit }, {boardId,generate}) {
-    if(generate)
-    await axios.put("more/boards/" + boardId);
+  async moreLike({ state, commit },{ boardId,generate }) {
+    if(generate || !state.generating){
+      state.generating = true;
+      state.offset =0;
+      if(state.offset+8 > state.generatedCount)
+      {
+        axios.put("more/boards/" + boardId)
+        .then((reponse)=>{
+          state.generating =false;
+          state.generatedCount = reponse.data.total
+        })
+        .catch(error=>{
+          console.log(error)
+        })
+      }
+    }
     axios
-      .get("more/boards/" + boardId +"?limit=20&offset=0")
+      .get("more/boards/" + boardId +"?limit=8&offset="+ state.offset)
       .then(response => {
         commit("setMoreLike", response.data);
       })
       .catch(error => {
         console.log(error);
       });
+
+      state.offset +=8;
   },
   getFullSection({ commit }, { boardId, sectionId }) {
     let token = localStorage.getItem("userToken");
