@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const state = {
-  currentChat: []
+  currentChat: [],
+  recentChats:[]
 };
 
 const mutations = {
@@ -10,7 +11,11 @@ const mutations = {
   },
   addMsg(state, msg) {
     state.currentChat.push(msg);
+  },
+  setRecentChats(state, chats){
+    state.recentChats =chats;
   }
+
 };
 
 const actions = {
@@ -24,26 +29,8 @@ const actions = {
       );
       chat = chat.data;
       chat.forEach(msg => {
-        msg.owner = true;
-      });
-    } catch (err) {
-      console.log(err);
-    }
-    let received;
-    try {
-      received = await axios.get(
-        "/getMessagesSent/" + payload.recieverId + "/" + payload.senderId
-      );
-      received = received.data;
-      received.forEach(msg => {
-        msg.owner = true;
-      });
-      received.forEach(msg => {
-        msg.owner = false;
-      });
-      chat = chat.concat(received);
-      chat.sort(function(a, b) {
-        return new Date(a.time) - new Date(b.time);
+        if (msg.senderId == payload.senderId) msg.owner = true;
+        else msg.owner = false;
       });
     } catch (err) {
       console.log(err);
@@ -55,11 +42,22 @@ const actions = {
     axios.post("/sentMessage", msg).catch(error => {
       console.log(error);
     });
-  }
+  },
+  getRecentChats({ commit },userId){
+    axios.get("getChats/"+userId)
+    .then((response)=>{
+      commit("setRecentChats",response.data)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  },
+  
 };
 
 const getters = {
-  currentChat: state => state.currentChat
+  currentChat: state => state.currentChat,
+  recentChats: state => state.recentChats
 };
 
 export default {

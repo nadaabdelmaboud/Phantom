@@ -492,7 +492,7 @@ export class RecommendationService {
         pinExist[String(allpins[i]._id)] = true;
       }
     }
-    return pins;
+    return { total: pins.length };
   }
   async boardMoreLike(userId, boardId) {
     if ((await this.ValidationService.checkMongooseID([userId, boardId])) == 0)
@@ -517,7 +517,10 @@ export class RecommendationService {
     }
     let counter = start;
     console.log(board.pins.length);
-    while (true) {
+    let f = 0;
+    while (true && counter < board.pins.length) {
+      console.log(f);
+      console.log(board.pins[counter].topic);
       if (!topics.includes(board.pins[counter].topic)) {
         topics.push(board.pins[counter].topic);
       }
@@ -528,11 +531,13 @@ export class RecommendationService {
       if (counter == start) {
         break;
       }
+      f++;
     }
     if (board.topic && board.topic != '') {
       topics.push(board.topic);
     }
     let limit = 50;
+    console.log(topics.length);
     for (let i = 0; i < topics.length; i++) {
       let topic = await this.topicModel.findOne(
         { name: topics[i] },
@@ -587,16 +592,18 @@ export class RecommendationService {
         pinExist[String(allpins[i]._id)] = true;
       }
     }
+    console.log(pins.length);
+    console.log('ohayo');
     if (pins.length < 10) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
         let start = Math.floor(
           Math.random() * Number(allTopics[i].pins.length) + 1,
         );
-        if (start + 10 >= Number(allTopics[i].pins.length)) {
-          start = start - 10;
+        if (start + 3 >= Number(allTopics[i].pins.length)) {
+          start = start - 3;
         }
-        for (let j = start; j < start + 10; j++) {
+        for (let j = start; j < start + 3; j++) {
           if (pinExist[String(allTopics[i].pins[j])] == true) {
             continue;
           }
@@ -615,7 +622,7 @@ export class RecommendationService {
           });
       }
     }
-    return true;
+    return { total: pins.length };
   }
   async sectionMoreLike(userId, boardId, sectionId) {
     if (
@@ -653,7 +660,7 @@ export class RecommendationService {
     }
     let counter = start;
     console.log(board.sections[sectionIndex].pins.length);
-    while (true) {
+    while (true && counter < board.sections[sectionIndex].pins.length) {
       if (!topics.includes(board.sections[sectionIndex].pins[counter].topic)) {
         topics.push(board.sections[sectionIndex].pins[counter].topic);
       }
@@ -721,10 +728,10 @@ export class RecommendationService {
         let start = Math.floor(
           Math.random() * Number(allTopics[i].pins.length) + 1,
         );
-        if (start + 10 >= Number(allTopics[i].pins.length)) {
-          start = start - 10;
+        if (start + 3 >= Number(allTopics[i].pins.length)) {
+          start = start - 3;
         }
-        for (let j = start; j < start + 10; j++) {
+        for (let j = start; j < start + 3; j++) {
           if (pinExist[String(allTopics[i].pins[j])] == true) {
             continue;
           }
@@ -740,7 +747,7 @@ export class RecommendationService {
         }
       }
     }
-    return true;
+    return { total: pins.length };
   }
   async getPinMoreLike(pinId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -753,7 +760,10 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > pin.more.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    return pin.more.slice(offset, offset + limit);
+    return pin.more.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
   }
   async getBoardMoreLike(boardId, offset, limit) {
     if ((await this.ValidationService.checkMongooseID([boardId])) == 0)
@@ -761,12 +771,14 @@ export class RecommendationService {
     let board = await this.boardModel.findById(boardId, { more: 1 }).lean();
     if (!board) throw new Error('no such board');
     if (!board.more) board.more = [];
-    console.log(board.more.length);
-    console.log(offset + limit);
     if (Number(Number(offset) + Number(limit)) > board.more.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    return board.more.slice(offset, offset + limit);
+
+    return board.more.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
   }
   async getSectionMoreLike(boardId, sectionId, offset, limit) {
     if (
@@ -787,7 +799,10 @@ export class RecommendationService {
             'invalid offset limit || not enough data',
           );
         }
-        return board.sections[i].more.slice(offset, offset + limit);
+        return board.sections[i].more.slice(
+          Number(offset),
+          Number(Number(offset) + Number(limit)),
+        );
       }
     }
   }

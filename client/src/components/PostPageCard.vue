@@ -414,13 +414,11 @@ img {
 button:focus {
   outline: 0 !important;
 }
-
 .cancel-comment,
 .cancel-reply {
   background-color: grey;
   width: 70px;
 }
-
 .cancel-comment,
 .save-comment,
 .save-reply,
@@ -660,7 +658,6 @@ li button {
   width: 100%;
   transition: width 0.3s;
 }
-
 .AddComments {
   margin: 12px;
   margin-bottom: 35px;
@@ -793,13 +790,11 @@ li button {
   height: 20px;
   border-radius: 50%;
 }
-
 @media screen and (max-width: 1540px) {
   .container {
     width: 1000px;
   }
 }
-
 @media screen and (max-width: 993px) {
   .container {
     flex-flow: wrap;
@@ -816,7 +811,6 @@ li button {
     margin-bottom: 55px;
   }
 }
-
 @media screen and (max-width: 950px) {
   .toast {
     left: 30%;

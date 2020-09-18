@@ -98,7 +98,7 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        followedUser.offlineNotifications.push(message);
+        followedUser.offlineNotifications = await this.addTolimitedArray(followedUser.offlineNotifications, 30, message);
       }
     }
     return {
@@ -199,10 +199,10 @@ export class NotificationService {
       : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
-    ownerUser.notifications.push(message);
+    ownerUser.notifications = await this.addTolimitedArray(ownerUser.notifications, 30, message);
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
       if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
-      ownerUser.offlineNotifications.push(message);
+      ownerUser.offlineNotifications = await this.addTolimitedArray(ownerUser.offlineNotifications, 30, message);
       await ownerUser.save();
     } else {
       message.tokens = [ownerUser.fcmToken];
@@ -212,7 +212,7 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        ownerUser.offlineNotifications.push(message);
+        ownerUser.offlineNotifications = await this.addTolimitedArray(ownerUser.offlineNotifications, 30, message);
       }
     }
     await ownerUser.save();
@@ -256,10 +256,11 @@ export class NotificationService {
       : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
-    ownerUser.notifications.push(message);
+    ownerUser.notifications = await this.addTolimitedArray(ownerUser.notifications, 30, message);
+
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
       if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
-      ownerUser.offlineNotifications.push(message);
+      ownerUser.offlineNotifications = await this.addTolimitedArray(ownerUser.offlineNotifications, 30, message);
       await ownerUser.save();
     } else {
       message.tokens = [ownerUser.fcmToken];
@@ -269,7 +270,7 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        ownerUser.offlineNotifications.push(message);
+        ownerUser.offlineNotifications = await this.addTolimitedArray(ownerUser.offlineNotifications, 30, message);
       }
       await ownerUser.save();
     }
@@ -318,10 +319,11 @@ export class NotificationService {
       : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
-    ownerUser.notifications.push(message);
+    ownerUser.notifications = await this.addTolimitedArray(ownerUser.notifications, 30, message);
+
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
       if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
-      ownerUser.offlineNotifications.push(message);
+      ownerUser.offlineNotifications = await this.addTolimitedArray(ownerUser.offlineNotifications, 30, message);
       await ownerUser.save();
     } else {
       message.tokens = [ownerUser.fcmToken];
@@ -331,10 +333,11 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        ownerUser.offlineNotifications.push(message);
+        ownerUser.offlineNotifications = await this.addTolimitedArray(ownerUser.offlineNotifications, 30, message);
       }
       await ownerUser.save();
     }
+    //  console.log(ownerUser.notifications);
     await ownerUser.save();
     return 1;
   }
@@ -347,36 +350,6 @@ export class NotificationService {
     else if (react == 'Haha') react = '😄';
     else if (react == 'Wow') react = '😮';
 
-    let message: {
-      data: {
-        time: string;
-        userImageId: string;
-        userId: string;
-        imageLink: string;
-        pinId: string;
-        title: string;
-        body: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        time: Date.now().toString(),
-        userImageId: String(reactUser.profileImage),
-        userId: String(reactUser._id),
-        imageLink: 'http://localhost:3000/image/' + imageId,
-        pinId: pinId,
-        title: react + ' React on your pin',
-        body:
-          reactUser.firstName +
-          ' ' +
-          reactUser.lastName +
-          ' has react on your pin' +
-          '"' +
-          pinName +
-          '"',
-      },
-    };
-
     let notificationData = ownerUser.offlineNotifications;
     if (!ownerUser.offlineNotifications)
       ownerUser.offlineNotifications = [];
@@ -384,28 +357,38 @@ export class NotificationService {
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
       if (
-        message.data.userId == notificationData[i].data.userId &&
-        message.data.pinId == notificationData[i].data.pinId &&
+        notificationData[i].data.userId == reactUser._id &&
+        notificationData[i].data.pinId == pinId &&
         notificationData[i].data.title == react + ' React on your pin'
       ) {
         ownerUser.offlineNotifications.splice(i, 1);
+        // console.log(550);
       }
     }
-
+    // console.log("hay now delete one");
     if (!ownerUser.notifications) ownerUser.notifications = [];
+    //  console.log("hay now delete one and do check");
+
     notificationData = ownerUser.notifications;
+    // console.log("before for loop ");
 
-
+    //  console.log(notificationData.length)
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
+      // console.log('in for now');
+
       if (
-        message.data.userId == notificationData[i].data.userId &&
-        message.data.pinId == notificationData[i].data.pinId &&
+        notificationData[i].data.userId == reactUser._id &&
+        notificationData[i].data.pinId == pinId &&
         notificationData[i].data.title == react + ' React on your pin'
       ) {
         ownerUser.notifications.splice(i, 1);
+        // console.log(550);
       }
+      //     console.log('after if ');
+
     }
+    // console.log(ownerUser.notifications);
     await ownerUser.save();
     return 1;
   }
@@ -423,8 +406,7 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(arrayMessage);
-
+    user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
     await user.save();
 
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -443,7 +425,7 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications.push(arrayMessage);
+          user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
         }
         await user.save();
         return 0;
@@ -467,7 +449,7 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(arrayMessage);
+    user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
     await user.save();
     //console.log('aywa');
     //console.log(user.fcmToken);
@@ -475,7 +457,7 @@ export class NotificationService {
       return 0;
     } else {
       await user.save().catch(err => {
-        console.log(err);
+        //  console.log(err);
       });
       message = {
         data: {
@@ -490,10 +472,10 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications.push(arrayMessage);
+          user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
         }
         await user.save().catch(err => {
-          console.log(err);
+          // console.log(err);
         });
 
         return 0;
@@ -514,7 +496,7 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(arrayMessage);
+    user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
     await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
@@ -532,7 +514,7 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications.push(arrayMessage);
+          user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
         }
         await user.save();
         return 0;
@@ -553,7 +535,8 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications.push(arrayMessage);
+    user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
+
 
     await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
@@ -572,7 +555,8 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop(message);
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications.push(arrayMessage);
+          user.notifications = await this.addTolimitedArray(user.notifications, 30, arrayMessage);
+
         }
         await user.save();
         return 0;
@@ -582,7 +566,7 @@ export class NotificationService {
   }
   async addTolimitedArray(notificationArray: Array<any>, limit: number, pushedData: {}) {
     if (notificationArray.length >= limit) {
-      notificationArray = notificationArray.slice(0, limit - 1);
+      notificationArray.splice(0, 1);
     }
     notificationArray.push(pushedData);
     return notificationArray;

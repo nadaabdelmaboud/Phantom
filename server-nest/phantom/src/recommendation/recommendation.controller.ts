@@ -91,6 +91,7 @@ export class RecommendationController {
     @Param('boardId') boardId: string,
   ) {
     let userId = req.user._id;
+    req.setTimeout(0);
     let pins = await this.RecommendationService.boardMoreLike(userId, boardId);
     if (pins) {
       return pins;
@@ -106,6 +107,7 @@ export class RecommendationController {
     @Param('sectionId') sectionId: string,
   ) {
     let userId = req.user._id;
+    req.setTimeout(0);
     let pins = await this.RecommendationService.sectionMoreLike(
       userId,
       boardId,

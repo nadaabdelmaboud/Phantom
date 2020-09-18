@@ -18,8 +18,20 @@ export default {
     }
     initializeFirebase();
     window.addEventListener("scroll", () => {
-      // console.log(document.body.clientHeight, "   ", window.scrollY);
-      if (window.scrollY == window.scrollHeight) console.log("scroloo");
+      if (
+        Math.abs(
+          window.innerHeight + window.scrollY - document.body.offsetHeight
+        ) <= 1
+      ) {
+        if (this.$route.path.includes("/More")) {
+          console.log("scroloo");
+          let boardId = this.$route.params.boardId;
+          this.$store.dispatch("boards/moreLike", {
+          boardId: boardId,
+          generate: false,
+         });
+        }
+      }
     });
   },
   methods: {
@@ -28,8 +40,8 @@ export default {
       if (event.target.id == "alertIcon")
         this.$store.commit("notifications/alterShow", true);
       else this.$store.commit("notifications/alterShow", false);
-    }
-  }
+    },
+  },
 };
 </script>
 

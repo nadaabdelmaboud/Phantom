@@ -263,6 +263,7 @@ export class BoardService {
     });
     console.log(user);
     if (!user) return false;
+
     let retBoards = [];
     let permissions = {};
     for (let i = 0; i < user.boards.length; i++) {
@@ -283,7 +284,6 @@ export class BoardService {
           board.coverImages.push(coverPin.imageId);
         }
       }
-      console.log(board);
       let createdOrjoined = 'created';
       if (user.boards[i].createdOrjoined == 'joined') {
         createdOrjoined = 'joined';

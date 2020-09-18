@@ -191,6 +191,7 @@ export class PinsService {
       imageWidth: createPinDto.imageWidth,
       imageHeight: createPinDto.imageHeight,
       destLink: createPinDto.link,
+      topic: createPinDto.topicName,
       section: section,
       title: createPinDto.title,
       creator: {
@@ -232,6 +233,47 @@ export class PinsService {
       _id: pin._id,
       imageId: pin.imageId,
     };
+  }
+  async checkPinStatus(pinId, userId) {
+    let pinType = 'none';
+    let boardName = 'none';
+    let pin = await this.pinModel
+      .findById(pinId, {
+        creator: 1,
+        board: 1,
+      })
+      .lean();
+
+    let user = await this.userModel
+      .findById(userId, {
+        savedPins: 1,
+      })
+      .lean();
+    let boardId = 'none';
+    if (!user) throw new NotFoundException({ message: 'user not found' });
+    if (String(pin.creator.id) == String(userId)) {
+      pinType = 'creator';
+      let board = await this.boardModel.findById(pin.board, { name: 1 }).lean();
+      if (board) {
+        boardName = String(board.name);
+        boardId = board._id;
+      }
+    } else {
+      for (let k = 0; k < user.savedPins.length; k++) {
+        if (String(user.savedPins[k].pinId) == String(pin._id)) {
+          pinType = 'saved';
+          let board = await this.boardModel
+            .findById(user.savedPins[k].boardId, { name: 1 })
+            .lean();
+          if (board) {
+            boardName = String(board.name);
+            boardId = board._id;
+          }
+          break;
+        }
+      }
+    }
+    return { board: boardName, type: pinType, boardId: boardId };
   }
   async addPintoUser(userId, pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
@@ -809,6 +851,7 @@ export class PinsService {
         String(lastReactType),
         pin.imageId,
       );
+    console.log('here');
     return true;
   }
   async likeComment(pinId, commentId, userId) {
