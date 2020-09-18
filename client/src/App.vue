@@ -27,9 +27,9 @@ export default {
           console.log("scroloo");
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {
-          boardId: boardId,
-          limit: 8,
-         });
+            boardId: boardId,
+            limit: 8
+          });
         }
       }
     });
@@ -40,8 +40,8 @@ export default {
       if (event.target.id == "alertIcon")
         this.$store.commit("notifications/alterShow", true);
       else this.$store.commit("notifications/alterShow", false);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -37,7 +37,7 @@
 import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
 import Board from "../components/Board";
-import imagesLoaded from "imagesloaded"
+import imagesLoaded from "imagesloaded";
 
 export default {
   name: "BoardPins",
@@ -55,7 +55,7 @@ export default {
       board: "boards/currentBoard"
     })
   },
-    methods: {
+  methods: {
     resizeMasonryItem(item) {
       /* Get the grid object, its row-gap, and the size of its implicit rows */
       var grid = document.getElementsByClassName("masonryGrid")[0],
@@ -87,29 +87,28 @@ export default {
       item.style.gridRowEnd = "span " + rowSpan;
     },
     waitForImages() {
-     // var Items = document.getElementsByClassName("masonryGridItem");
-     // console.log(Items)
+      // var Items = document.getElementsByClassName("masonryGridItem");
+      // console.log(Items)
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], (instance) =>{
-         // console.log("hi",Date.now(),instance)
-           var item = instance.elements[0];
-           this.resizeMasonryItem(item);
+        imagesLoaded(allItems[i], instance => {
+          // console.log("hi",Date.now(),instance)
+          var item = instance.elements[0];
+          this.resizeMasonryItem(item);
         });
       }
-    },
+    }
   },
   created: function() {
     this.boardId = this.$route.params.boardId;
-      setInterval(() => {
+    setInterval(() => {
       this.waitForImages();
-    },1000);
+    }, 1000);
   }
 };
 </script>
 
 <style lang="scss" scoped>
-
 @import "../scss/MasonryGrid";
 .flexWrap {
   margin: auto;

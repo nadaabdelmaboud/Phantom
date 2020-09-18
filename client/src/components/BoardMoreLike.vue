@@ -20,16 +20,16 @@ export default {
   name: "BoardMoreLike",
   data: function() {
     return {
-      boardId: "",
+      boardId: ""
     };
   },
   components: {
-    HomeCard,
+    HomeCard
   },
   computed: {
     ...mapGetters({
-      morePins: "boards/moreLike",
-    }),
+      morePins: "boards/moreLike"
+    })
   },
   methods: {
     resizeMasonryItem(item) {
@@ -67,13 +67,13 @@ export default {
       // console.log(Items)
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], (instance) => {
+        imagesLoaded(allItems[i], instance => {
           // console.log("hi",Date.now(),instance)
           var item = instance.elements[0];
           this.resizeMasonryItem(item);
         });
       }
-    },
+    }
   },
   created: function() {
     // console.log(this.$route);
@@ -82,14 +82,14 @@ export default {
     setTimeout(() => {
       this.$store.dispatch("boards/moreLike", {
         boardId: this.boardId,
-        limit: 8,
+        limit: 8
       });
     }, 3000);
 
     setInterval(() => {
       this.waitForImages();
     }, 1000);
-  },
+  }
 };
 </script>
 

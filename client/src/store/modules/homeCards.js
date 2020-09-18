@@ -25,7 +25,10 @@ const state = {
   numReactLove: 0,
   numReactGoodIdea: 0,
   numReactThanks: 0,
-  reactThisPin: ""
+  reactThisPin: "",
+  ChoosenBoardName: "",
+  showToastState: false,
+  pinType: ""
 };
 
 const mutations = {
@@ -104,6 +107,15 @@ const mutations = {
   setReactThisPin(state, react) {
     console.log("react", react);
     state.reactThisPin = react;
+  },
+  setChoosenBoardName(state, name) {
+    state.ChoosenBoardName = name;
+  },
+  setShowToastState(state, toast) {
+    state.showToastState = toast;
+  },
+  setPinType(state, type) {
+    state.pinType = type;
   }
 };
 
@@ -170,6 +182,7 @@ const actions = {
         commit("setNumReactLove", res.pin.counts.loveReacts);
         commit("setNumReactGoodIdea", res.pin.counts.goodIdeaReacts);
         commit("setNumReactThanks", res.pin.counts.thanksReacts);
+        commit("setPinType", res.type);
       })
       .catch(error => {
         console.log(error);
@@ -195,6 +208,19 @@ const actions = {
       .post("pins/" + pinId + "/report", reportReason)
       .then(() => {
         commit("reportPin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async getPinType({ commit }, pinId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    await axios
+      .get("pins/status/" + pinId)
+      .then(res => {
+        commit("setPinType", res.data.type);
+        commit("setChoosenBoardName", res.data.board);
       })
       .catch(error => {
         console.log(error);
