@@ -7,18 +7,17 @@
           <img :src="getImage(cardImage)" class="cardImg" alt="Card image" />
         </div>
         <div class="chooseBoardDiv">
-          <!-- <div class="boardName">
-          {{ chosenBoardName }}
-        </div> -->
           <div class="boards">
             <input
               type="text"
               v-model="searchBoard"
               placeholder="Search board..."
+              id="inputField"
             />
+            <p id="noBoardChoosen">choose board or section first</p>
             <p id="boardTitle">All Boards</p>
             <div class="boardsList">
-              <div v-for="(b, i) in boards" :key="i">
+              <div v-for="(b, i) in userBoards" :key="i">
                 <ul>
                   <li
                     v-if="
@@ -78,7 +77,7 @@
 }
 .title {
   @include popUpTitle;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .content {
   @include popUpContent;
@@ -103,7 +102,7 @@
   }
 }
 #boardTitle {
-  margin-top: 10px;
+  margin-top: 7px;
   font-weight: 700;
   font-size: 15px;
 }
@@ -116,11 +115,12 @@
   text-align: center;
   padding-top: 12px;
   margin-bottom: 15px;
+  margin-top: 5px;
   transition: transform 0.5s;
   cursor: pointer;
   &:hover {
     background-color: $darkBlue;
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
   i {
     padding-right: 7px;
@@ -129,7 +129,12 @@
 .boardsList {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 330px;
+  max-height: 300px;
+}
+#noBoardChoosen {
+  display: none;
+  color: red;
+  margin: 0;
 }
 ul {
   margin: 0;
@@ -154,6 +159,9 @@ ul {
     right: 10px;
     top: 15px;
     font-size: 13px;
+  }
+  .rotate {
+    transform: rotateZ(90deg);
   }
 }
 .showSectionDiv {
@@ -270,46 +278,96 @@ input:focus {
 
 <script>
 import { default as getImage } from "../mixins/getImage";
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 export default {
   name: "SavePin",
   data: function() {
     return {
       searchBoard: "",
-      showSections: []
+      showSections: [],
+      chosenBoardName: ""
     };
   },
   mixins: [getImage],
   computed: {
     ...mapState({
       cardImage: state => state.homeCards.cardImageId,
-      CardId: state => state.homeCards.CardId
-    }),
-    ...mapGetters({
-      boards: "boards/userBoards",
-      chosenBoardName: "boards/chosenBoardName",
-      chosenBoardId: "boards/chosenBoardId",
-      chosenSectionId: "boards/chosenSectionId"
+      CardId: state => state.homeCards.CardId,
+      chosenBoardId: state => state.boards.chosenBoardId,
+      chosenSectionId: state => state.boards.chosenSectionId,
+      userBoards: state => state.boards.userBoards
     })
+  },
+  mounted() {
+    this.$store.dispatch("boards/userBoards");
   },
   methods: {
     closePopUp() {
       this.$store.commit("popUpsState/toggleSavePinPopUp");
     },
     savePin() {
-      this.$store.dispatch("pins/savePost", this.CardId);
-      this.$store.commit("popUpsState/toggleSavePinPopUp");
+      if (this.chosenSectionId == "" && this.chosenBoardId == "") {
+        const redMsg = document.getElementById("noBoardChoosen");
+        const input = document.getElementById("inputField");
+        redMsg.style.display = "block";
+        input.style.borderBottom = "1px solid red";
+      } else if (this.chosenSectionId == "") {
+        const input = document.getElementById("inputField");
+        this.chosenBoardName = input.value;
+        this.$store.commit(
+          "homeCards/setChoosenBoardName",
+          this.chosenBoardName
+        );
+        this.$store.dispatch("pins/savePostInBoard", {
+          pinId: this.CardId,
+          boardId: this.chosenBoardId
+        });
+        let boardid = "";
+        let sectionid = "";
+        let boardname = "";
+        this.$store.commit("boards/chooseBoard", {
+          boardname,
+          boardid,
+          sectionid
+        });
+        this.$store.commit("popUpsState/toggleSavePinPopUp");
+        setTimeout(() => {
+          this.$store.commit("homeCards/setShowToastState", true);
+        }, 1000);
+      } else {
+        const input = document.getElementById("inputField");
+        this.chosenBoardName = input.value;
+        this.$store.commit(
+          "homeCards/setChoosenBoardName",
+          this.chosenBoardName
+        );
+        this.$store.dispatch("pins/savePostInSection", {
+          pinId: this.CardId,
+          boardId: this.chosenBoardId,
+          sectionId: this.chosenSectionId
+        });
+        let boardid = "";
+        let sectionid = "";
+        let boardname = "";
+        this.$store.commit("boards/chooseBoard", {
+          boardname,
+          boardid,
+          sectionid
+        });
+        this.$store.commit("popUpsState/toggleSavePinPopUp");
+        setTimeout(() => {
+          this.$store.commit("homeCards/setShowToastState", true);
+        }, 1000);
+      }
     },
     createBoardPopup() {
-      this.$store.commit("popUpsState/toggleSavePinPopUp");
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
-      this.showBoard = false;
     },
     chooseBoard(boardName, boardId, event) {
-      console.log("event", event.target.id);
+      const input = document.getElementById("inputField");
+      input.value = boardName;
       let sectionId = "";
       if (event.target.id != "openArrow") {
-        this.showBoard = false;
         this.$store.commit("boards/chooseBoard", {
           boardName,
           boardId,
@@ -318,8 +376,8 @@ export default {
       }
     },
     chooseSection(boardName, sectionId, boardId) {
-      this.showBoard = false;
-      //choosing section Name and setting it as display boardName and also choosing section id
+      const input = document.getElementById("inputField");
+      input.value = boardName;
       this.$store.commit("boards/chooseBoard", {
         boardName,
         boardId,
@@ -330,28 +388,6 @@ export default {
       let index = this.showSections.indexOf(i);
       if (index == -1) this.showSections.push(i);
       else this.showSections.splice(index, 1);
-    },
-    createPin() {
-      if (this.chosenBoardName == "Select") {
-        this.showBoard = true;
-      } else {
-        if (this.title == "" || !this.imageFile) this.validate = true;
-        else {
-          console.log("nnn", this.width, "   ", this.height);
-          let pin = {
-            title: this.title,
-            board: this.chosenBoardId,
-            imageWidth: this.width,
-            imageHeight: this.height,
-            imageId: this.imageFile
-          };
-          if (this.chosenSectionId != "") {
-            pin.section = this.chosenSectionId;
-          }
-          if (this.note != "") pin.note = this.note;
-          this.$store.dispatch("pins/createPin", { pin, label: this.label });
-        }
-      }
     }
   }
 };

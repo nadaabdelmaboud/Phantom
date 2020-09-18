@@ -25,7 +25,10 @@ const state = {
   numReactLove: 0,
   numReactGoodIdea: 0,
   numReactThanks: 0,
-  reactThisPin: ""
+  reactThisPin: "",
+  ChoosenBoardName: "",
+  showToastState: false,
+  pinType: ""
 };
 
 const mutations = {
@@ -104,6 +107,16 @@ const mutations = {
   setReactThisPin(state, react) {
     console.log("react", react);
     state.reactThisPin = react;
+  },
+  setChoosenBoardName(state, name) {
+    console.log("board Name Nihal is here", name);
+    state.ChoosenBoardName = name;
+  },
+  setShowToastState(state, toast) {
+    state.showToastState = toast;
+  },
+  setPinType(state, type) {
+    state.pinType = type;
   }
 };
 
@@ -170,6 +183,7 @@ const actions = {
         commit("setNumReactLove", res.pin.counts.loveReacts);
         commit("setNumReactGoodIdea", res.pin.counts.goodIdeaReacts);
         commit("setNumReactThanks", res.pin.counts.thanksReacts);
+        commit("setPinType", res.type);
       })
       .catch(error => {
         console.log(error);

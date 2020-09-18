@@ -127,6 +127,7 @@ button:focus {
 }
 </style>
 <script>
+import { mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
 export default {
   data: function() {
@@ -135,6 +136,11 @@ export default {
     };
   },
   mixins: [getImage],
+  computed: {
+    ...mapState({
+      pinType: state => state.homeCards.pinType
+    })
+  },
   props: {
     cardImage: {
       type: String
@@ -171,7 +177,10 @@ export default {
       event.preventDefault();
       this.$store.commit("homeCards/setCardImageId", this.cardImage);
       this.$store.commit("homeCards/setCardId", this.postPageId);
-      this.$store.commit("popUpsState/toggleSavePinPopUp");
+      //call request get type of pin
+      if (this.pinType == "saved" || this.pinType == "creator")
+        this.$store.commit("homeCards/setShowToastState", true);
+      else this.$store.commit("popUpsState/toggleSavePinPopUp");
     },
     defaultStyle() {
       var listIcon = document.getElementById("added-list");
