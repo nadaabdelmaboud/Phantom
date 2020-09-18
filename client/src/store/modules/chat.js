@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   currentChat: [],
-  recentChats:[]
+  recentChats: []
 };
 
 const mutations = {
@@ -12,10 +12,9 @@ const mutations = {
   addMsg(state, msg) {
     state.currentChat.push(msg);
   },
-  setRecentChats(state, chats){
-    state.recentChats =chats;
+  setRecentChats(state, chats) {
+    state.recentChats = chats;
   }
-
 };
 
 const actions = {
@@ -43,16 +42,16 @@ const actions = {
       console.log(error);
     });
   },
-  getRecentChats({ commit },userId){
-    axios.get("getChats/"+userId)
-    .then((response)=>{
-      commit("setRecentChats",response.data)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-  },
-  
+  getRecentChats({ commit }, userId) {
+    axios
+      .get("getChats/" + userId)
+      .then(response => {
+        commit("setRecentChats", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 };
 
 const getters = {

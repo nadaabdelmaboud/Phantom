@@ -109,7 +109,6 @@ const mutations = {
     state.reactThisPin = react;
   },
   setChoosenBoardName(state, name) {
-    console.log("board Name Nihal is here", name);
     state.ChoosenBoardName = name;
   },
   setShowToastState(state, toast) {
@@ -209,6 +208,19 @@ const actions = {
       .post("pins/" + pinId + "/report", reportReason)
       .then(() => {
         commit("reportPin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async getPinType({ commit }, pinId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    await axios
+      .get("pins/status/" + pinId)
+      .then(res => {
+        commit("setPinType", res.data.type);
+        commit("setChoosenBoardName", res.data.board);
       })
       .catch(error => {
         console.log(error);

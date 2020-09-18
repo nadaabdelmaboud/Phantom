@@ -15,24 +15,24 @@
 <script>
 import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
-import imagesLoaded from "imagesloaded"
+import imagesLoaded from "imagesloaded";
 export default {
   name: "BoardMoreLike",
   data: function() {
     return {
-      boardId: "",
+      boardId: ""
     };
   },
   components: {
-    HomeCard,
+    HomeCard
   },
   computed: {
     ...mapGetters({
-      morePins: "boards/moreLike",
-    }),
+      morePins: "boards/moreLike"
+    })
   },
   methods: {
-       resizeMasonryItem(item) {
+    resizeMasonryItem(item) {
       /* Get the grid object, its row-gap, and the size of its implicit rows */
       var grid = document.getElementsByClassName("masonryGrid")[0],
         rowGap = parseInt(
@@ -63,29 +63,29 @@ export default {
       item.style.gridRowEnd = "span " + rowSpan;
     },
     waitForImages() {
-     // var Items = document.getElementsByClassName("masonryGridItem");
-     // console.log(Items)
+      // var Items = document.getElementsByClassName("masonryGridItem");
+      // console.log(Items)
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], (instance) =>{
-         // console.log("hi",Date.now(),instance)
-           var item = instance.elements[0];
-           this.resizeMasonryItem(item);
+        imagesLoaded(allItems[i], instance => {
+          // console.log("hi",Date.now(),instance)
+          var item = instance.elements[0];
+          this.resizeMasonryItem(item);
         });
       }
-    },
+    }
   },
   created: function() {
     // console.log(this.$route);
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/moreLike", {
       boardId: this.boardId,
-      generate: true,
+      generate: true
     });
-         setInterval(() => {
+    setInterval(() => {
       this.waitForImages();
-    },1000);
-  },
+    }, 1000);
+  }
 };
 </script>
 

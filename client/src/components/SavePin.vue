@@ -306,7 +306,10 @@ export default {
       this.$store.commit("popUpsState/toggleSavePinPopUp");
     },
     savePin() {
-      if (this.chosenSectionId == "" && this.chosenBoardId == "") {
+      if (
+        (this.chosenSectionId == "" && this.chosenBoardId == "") ||
+        (this.chosenSectionId == null && this.chosenBoardId == null)
+      ) {
         const redMsg = document.getElementById("noBoardChoosen");
         const input = document.getElementById("inputField");
         redMsg.style.display = "block";

@@ -42,7 +42,7 @@
 @import "../scss/Mixins";
 .card {
   width: 252px;
- // min-height: 200px;
+  // min-height: 200px;
   background-color: $blue;
   border: transparent;
   border-radius: 25px;
@@ -173,11 +173,11 @@ export default {
       this.$store.commit("homeCards/setCardId", this.postPageId);
       this.$store.commit("popUpsState/toggleReportPinPopUp");
     },
-    showSavePin(event) {
+    async showSavePin(event) {
       event.preventDefault();
       this.$store.commit("homeCards/setCardImageId", this.cardImage);
       this.$store.commit("homeCards/setCardId", this.postPageId);
-      //call request get type of pin
+      await this.$store.dispatch("homeCards/getPinType", this.postPageId);
       if (this.pinType == "saved" || this.pinType == "creator")
         this.$store.commit("homeCards/setShowToastState", true);
       else this.$store.commit("popUpsState/toggleSavePinPopUp");

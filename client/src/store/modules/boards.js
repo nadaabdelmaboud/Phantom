@@ -10,9 +10,9 @@ const state = {
   moreLike: [],
   section: {},
   viewState: "Default",
-  generating:false,
-  generatedCount:0,
-  offset:0
+  generating: false,
+  generatedCount: 0,
+  offset: 0
 };
 
 const mutations = {
@@ -90,7 +90,6 @@ const actions = {
         });
       })
       .catch(error => {
-       
         console.log(error);
       });
   },
@@ -215,38 +214,37 @@ const actions = {
         console.log(error);
       });
   },
-  async moreLike({ state, commit ,dispatch},{ boardId,generate }) {
-    if(generate || !state.generating){
+  async moreLike({ state, commit, dispatch }, { boardId, generate }) {
+    if (generate || !state.generating) {
       state.generating = true;
-      state.offset =0;
-      if(state.offset+8 > state.generatedCount)
-      {
-        axios.put("more/boards/" + boardId)
-        .then((reponse)=>{
-          state.generating =false;
-          state.generatedCount = reponse.data.total
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      state.offset = 0;
+      if (state.offset + 8 > state.generatedCount) {
+        axios
+          .put("more/boards/" + boardId)
+          .then(reponse => {
+            state.generating = false;
+            state.generatedCount = reponse.data.total;
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     }
-    let fail =false;
+    let fail = false;
     axios
-      .get("more/boards/" + boardId +"?limit=8&offset="+ state.offset)
+      .get("more/boards/" + boardId + "?limit=8&offset=" + state.offset)
       .then(response => {
         commit("setMoreLike", response.data);
       })
       .catch(error => {
         fail = true;
-        if(state.generating){
+        if (state.generating) {
           state.offset = 0;
-          dispatch("moreLike",{boardId:boardId,generate:false})
+          dispatch("moreLike", { boardId: boardId, generate: false });
         }
         console.log(error);
       });
-      if(!fail)
-      state.offset +=8;
+    if (!fail) state.offset += 8;
   },
   getFullSection({ commit }, { boardId, sectionId }) {
     let token = localStorage.getItem("userToken");
