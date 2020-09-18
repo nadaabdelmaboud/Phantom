@@ -28,7 +28,7 @@ export default {
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {
           boardId: boardId,
-          generate: false,
+          limit: 8,
          });
         }
       }

@@ -15,7 +15,7 @@
 <script>
 import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
-import imagesLoaded from "imagesloaded"
+import imagesLoaded from "imagesloaded";
 export default {
   name: "BoardMoreLike",
   data: function() {
@@ -32,7 +32,7 @@ export default {
     }),
   },
   methods: {
-       resizeMasonryItem(item) {
+    resizeMasonryItem(item) {
       /* Get the grid object, its row-gap, and the size of its implicit rows */
       var grid = document.getElementsByClassName("masonryGrid")[0],
         rowGap = parseInt(
@@ -63,14 +63,14 @@ export default {
       item.style.gridRowEnd = "span " + rowSpan;
     },
     waitForImages() {
-     // var Items = document.getElementsByClassName("masonryGridItem");
-     // console.log(Items)
+      // var Items = document.getElementsByClassName("masonryGridItem");
+      // console.log(Items)
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], (instance) =>{
-         // console.log("hi",Date.now(),instance)
-           var item = instance.elements[0];
-           this.resizeMasonryItem(item);
+        imagesLoaded(allItems[i], (instance) => {
+          // console.log("hi",Date.now(),instance)
+          var item = instance.elements[0];
+          this.resizeMasonryItem(item);
         });
       }
     },
@@ -78,13 +78,17 @@ export default {
   created: function() {
     // console.log(this.$route);
     this.boardId = this.$route.params.boardId;
-    this.$store.dispatch("boards/moreLike", {
-      boardId: this.boardId,
-      generate: true,
-    });
-         setInterval(() => {
+    this.$store.dispatch("boards/generateMoreLike", this.boardId);
+    setTimeout(() => {
+      this.$store.dispatch("boards/moreLike", {
+        boardId: this.boardId,
+        limit: 8,
+      });
+    }, 3000);
+
+    setInterval(() => {
       this.waitForImages();
-    },1000);
+    }, 1000);
   },
 };
 </script>
@@ -103,7 +107,7 @@ export default {
     auto-fill,
     minmax(252px, 1fr)
   ); /* [2] Make columns adjust according to the available viewport */
-  grid-auto-rows: 0.00000000000000001pt; /* [3] Set the height for implicitly-created row track */
+  grid-auto-rows: 0.00000000000000001px; /* [3] Set the height for implicitly-created row track */
 }
 // .masonryGridItem {
 // }
