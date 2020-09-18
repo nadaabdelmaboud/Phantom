@@ -760,7 +760,10 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > pin.more.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    return pin.more.slice(offset, offset + limit);
+    return pin.more.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
   }
   async getBoardMoreLike(boardId, offset, limit) {
     if ((await this.ValidationService.checkMongooseID([boardId])) == 0)
@@ -773,7 +776,11 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > board.more.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    return board.more.slice(offset, offset + limit);
+
+    return board.more.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
   }
   async getSectionMoreLike(boardId, sectionId, offset, limit) {
     if (
@@ -794,7 +801,10 @@ export class RecommendationService {
             'invalid offset limit || not enough data',
           );
         }
-        return board.sections[i].more.slice(offset, offset + limit);
+        return board.sections[i].more.slice(
+          Number(offset),
+          Number(Number(offset) + Number(limit)),
+        );
       }
     }
   }
