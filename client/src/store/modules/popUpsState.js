@@ -14,7 +14,7 @@ const state = {
   leavingPopUp: false,
   accountClosingPopup: false,
   reportPinPopUp: false,
-  savePinPopUp: false,
+  savePinPopUp: true,
   searchWindow: false,
   searchSuggestions: false
 };
