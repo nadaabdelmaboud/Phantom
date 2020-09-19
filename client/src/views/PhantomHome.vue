@@ -26,7 +26,6 @@
     <ChangePhotoPopUp v-if="changePhotoPopUp" />
     <LeavingResaonPopUp v-if="leavingPopUp" />
     <CloseAccountPopUp v-if="accountClosingPopup" />
-    <SearchWindow v-if="searchWindow" />
     <SearchSuggestions v-if="searchSuggestions" />
   </div>
 </template>
@@ -98,7 +97,6 @@ import CountryPopUp from "../views/SignUpPopUps/CountryPopUp";
 import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
 import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
-import SearchWindow from "../components/Search/SearchWindow";
 import SearchSuggestions from "../components/Search/SearchSuggestions";
 
 import { mapState } from "vuex";
@@ -127,7 +125,6 @@ export default {
     ChangePhotoPopUp,
     LeavingResaonPopUp,
     CloseAccountPopUp,
-    SearchWindow,
     SearchSuggestions
   },
   methods: {
@@ -159,7 +156,6 @@ export default {
       changePhotoPopUp: state => state.popUpsState.changePhotoPopUp,
       accountClosingPopup: state => state.popUpsState.accountClosingPopup,
       leavingPopUp: state => state.popUpsState.leavingPopUp,
-      searchWindow: state => state.popUpsState.searchWindow,
       searchSuggestions: state => state.popUpsState.searchSuggestions
     })
   },

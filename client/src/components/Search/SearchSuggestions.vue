@@ -54,7 +54,7 @@ export default {
         recentSearch: true
       });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
-      this.$router.push("/search");
+      this.$router.replace("/search");
     }
   },
   mixins: [getImage]
@@ -98,7 +98,8 @@ export default {
 
 .username {
   display: inline;
-  margin-left: 4px;
+  margin: 4px 0 0 4px;
+  padding-top: 2px;
 }
 
 img {
@@ -106,5 +107,6 @@ img {
   width: 30px;
   height: 30px;
   margin: 0px 4px 5px 4px;
+  padding-top: 2px;
 }
 </style>

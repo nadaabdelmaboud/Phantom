@@ -151,7 +151,7 @@ const routes = [
         component: NotidicationPins
       },
       {
-        path: "search",
+        path: "/search",
         name: "Search",
         component: Search
       }

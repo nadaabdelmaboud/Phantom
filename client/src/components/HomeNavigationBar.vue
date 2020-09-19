@@ -25,10 +25,18 @@
       class="searchInput"
       v-if="isLoggedIn()"
       placeholder=" Search..."
-      @focus="searchFocused"
       @input="searchInput"
       v-model="search"
     />
+    <i
+      class="fa fa-close clear-icon"
+      v-if="search"
+      @click="clearSearch"
+      :class="{ lefted_icon: this.showFilter }"
+    ></i>
+    <div class="bar" v-if="showFilter"></div>
+    <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>
+    <i class="fa fa-angle-down expand-menu-icon" v-if="showFilter"></i>
     <div v-if="isLoggedIn()" class="icons" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
       <div class="count" id="alertIcon">
@@ -105,7 +113,7 @@
   background-color: $lightPink;
   height: 48px;
   margin-top: 4px;
-  width: calc(100vw - 430px);
+  width: calc(100vw - 448px);
   border: none;
   padding: 10px;
   border-radius: 40px;
@@ -195,6 +203,56 @@
     transform: rotateZ(0deg);
   }
 }
+
+.clear-icon {
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  top: -2px;
+  left: -44px;
+}
+
+.bar {
+  width: 2px;
+  height: 20px;
+  background-color: $queenBlue;
+  background-position: center center;
+  border: none;
+  position: relative;
+  top: 3px;
+  left: -110px;
+  display: inline-block;
+}
+
+.filter {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 12px;
+  position: relative;
+  top: -1px;
+  left: -100px;
+}
+
+.expand-menu-icon {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+  left: -95px;
+}
+
+@media screen and (max-width: 950px) {
+  .clear-icon {
+    left: -44px;
+  }
+}
+.lefted_icon {
+  left: -120px;
+}
 </style>
 <script>
 import NotificationDropDown from "./Notification/NotificationDropdown";
@@ -208,7 +266,9 @@ export default {
       inHome: true,
       inFollowing: false,
       showList: false,
-      search: ""
+      showFilter: false,
+      search: "",
+      selectedFilter: "All Pins"
     };
   },
   components: {
@@ -229,26 +289,28 @@ export default {
       this.showList = false;
       this.$router.push("/TopicsPage");
     },
-    searchFocused() {
-      this.$store.commit("popUpsState/toggleSearchWindow");
-    },
     searchInput() {
-      if (this.$store.state.popUpsState.searchWindow)
-        this.$store.commit("popUpsState/toggleSearchWindow");
       if (!this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
-      this.$store.dispatch("search/searchPins", {
-        limit: 5,
-        offset: 0,
-        name: this.search,
-        recentSearch: false
-      });
-      this.$store.dispatch("search/searchPeople", {
-        limit: 3,
-        offset: 0,
-        name: this.search,
-        recentSearch: false
-      });
+      if (this.search) {
+        this.$store.dispatch("search/searchPins", {
+          limit: 5,
+          offset: 0,
+          name: this.search,
+          recentSearch: false
+        });
+        this.$store.dispatch("search/searchPeople", {
+          limit: 3,
+          offset: 0,
+          name: this.search,
+          recentSearch: false
+        });
+      }
+    },
+    clearSearch() {
+      this.search = "";
+      if (this.$store.state.popUpsState.searchSuggestions)
+        this.$store.commit("popUpsState/toggleSearchSuggestions");
     }
   },
   computed: {
@@ -265,9 +327,12 @@ export default {
       } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
+      } else if (this.$route.path == "/search" && this.isLoggedIn()) {
+        this.showFilter = true;
       } else {
         this.inHome = false;
         this.inFollowing = false;
+        this.showFilter = false;
       }
     }
   }
