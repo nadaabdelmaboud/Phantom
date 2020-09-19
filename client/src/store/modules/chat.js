@@ -27,6 +27,7 @@ const actions = {
         "/getMessagesSent/" + payload.senderId + "/" + payload.recieverId
       );
       chat = chat.data;
+      chat = chat.reverse();
       chat.forEach(msg => {
         if (msg.senderId == payload.senderId) msg.owner = true;
         else msg.owner = false;
@@ -50,9 +51,10 @@ const actions = {
       })
       .catch(error => {
         console.log(error);
+        commit("setRecentChats", []);
       });
   },
-  setAsSeen({ disatch }, payload) {
+  setAsSeen({ dispatch }, payload) {
     axios
       .post("seenDeliver", {
         senderId: payload.senderId,
@@ -61,10 +63,12 @@ const actions = {
         isSeen: true
       })
       .then(() => {
-        disatch("getChat", payload);
+        dispatch("getChat", payload);
       })
       .catch(error => {
         console.log(error);
+        dispatch("getChat", payload);
+
       });
   }
 };

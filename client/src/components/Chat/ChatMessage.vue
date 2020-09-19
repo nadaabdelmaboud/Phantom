@@ -2,7 +2,10 @@
   <div class="msg" :class="{ mymsg: owner }">
     <img :src="getImage(imageId)" v-if="owner" />
     <img :src="getUserImage()" v-else />
-    <p>{{ msgText }}</p>
+    <p>{{ msgText }} 
+     <i class="fa fa-check"></i>
+     <i class="fa fa-check"></i>
+    </p>
   </div>
 </template>
 
@@ -53,5 +56,12 @@ p {
   border-radius: 32px;
   max-width: 70%;
   word-break: break-all;
+}
+.fa-check{
+  display: absolute;
+  right: 0;
+}
+.fa-check:nth-child(2){
+  right: 5px;
 }
 </style>
