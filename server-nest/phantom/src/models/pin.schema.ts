@@ -6,7 +6,7 @@ export const Pin = new Schema({
   imageWidth: Number,
   imageHeight: Number,
   url: String,
-  title: String,
+  title: { type: String, index: true },
   creator: {
     firstName: String,
     lastName: String,
