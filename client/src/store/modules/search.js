@@ -3,7 +3,8 @@ import axios from "axios";
 const state = {
   recentSearch: null,
   suggestions: null,
-  people: null
+  people: null,
+  keys: null
 };
 
 const mutations = {
@@ -15,6 +16,9 @@ const mutations = {
   },
   setSearchPeople(state, payload) {
     state.people = payload;
+  },
+  setKeys(state, payload) {
+    state.keys = payload;
   }
 };
 
@@ -84,6 +88,20 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  searchKeywords({commit},payload) {
+    axios
+    .get("/search/getkeys?name="+payload,
+    {
+      headers: {
+        Authorization: localStorage.getItem("userToken")
+      }
+    }).then(response => {
+      commit("setKeys",response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 };
 

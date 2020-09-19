@@ -31,7 +31,7 @@ import getImage from "../../mixins/getImage";
 export default {
   computed: {
     suggestions() {
-      return this.$store.state.search.suggestions;
+      return this.$store.state.search.keys;
     },
     pepoleSuggestions() {
       return this.$store.state.search.people;
