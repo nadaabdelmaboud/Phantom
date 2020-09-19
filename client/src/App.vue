@@ -10,7 +10,6 @@ import axios from "axios";
 import { default as masonryGrid } from "./mixins/masonryGrid";
 export default {
   name: "App",
-  data: function() {},
   mixins: [masonryGrid],
   created() {
     let token = localStorage.getItem("userToken");
@@ -31,6 +30,11 @@ export default {
           this.$store.dispatch("boards/moreLike", {
             boardId: boardId,
             limit: 8
+          });
+        } else if (this.$route.path.includes("allpins")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchPins", {
+            name: name
           });
         }
       }

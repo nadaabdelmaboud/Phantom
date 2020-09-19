@@ -25,10 +25,31 @@
       class="searchInput"
       v-if="isLoggedIn()"
       placeholder=" Search..."
-      @focus="searchFocused"
       @input="searchInput"
       v-model="search"
+      v-on:keyup.enter="searchEnter"
     />
+    <i
+      class="fa fa-close clear-icon"
+      v-if="search"
+      @click="clearSearch"
+      :class="{ lefted_icon: this.showFilter }"
+    ></i>
+    <div class="bar" v-if="showFilter"></div>
+    <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>
+    <i
+      class="fa fa-angle-down expand-menu-icon"
+      v-if="showFilter"
+      @click="expandMenu = !expandMenu"
+    ></i>
+    <div class="menu" v-if="expandMenu && showFilter">
+      <ul>
+        <li @click="searchPins">All Pins</li>
+        <li @click="searchMyPins">My Pins</li>
+        <li @click="searchPeople">People</li>
+        <li @click="searchBoards">Boards</li>
+      </ul>
+    </div>
     <div v-if="isLoggedIn()" class="icons" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
       <div class="count" id="alertIcon">
@@ -105,7 +126,7 @@
   background-color: $lightPink;
   height: 48px;
   margin-top: 4px;
-  width: calc(100vw - 430px);
+  width: calc(100vw - 448px);
   border: none;
   padding: 10px;
   border-radius: 40px;
@@ -195,6 +216,72 @@
     transform: rotateZ(0deg);
   }
 }
+
+.clear-icon {
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  top: -2px;
+  left: -44px;
+}
+
+.bar {
+  width: 2px;
+  height: 20px;
+  background-color: $queenBlue;
+  background-position: center center;
+  border: none;
+  position: relative;
+  top: 3px;
+  left: -110px;
+  display: inline-block;
+}
+
+.filter {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 12px;
+  position: relative;
+  top: -1px;
+  left: -100px;
+}
+
+.expand-menu-icon {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  top: 0px;
+  left: -95px;
+}
+
+.menu {
+  @include optionsList;
+  padding: 10px;
+  width: 120px;
+  right: calc(100vw - 85vw);
+  font-size: 12px;
+}
+@media screen and (max-width: 1700px) {
+  .lefted_icon {
+    left: -120px;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .lefted_icon {
+    left: -44px;
+  }
+
+  .bar,
+  .filter,
+  .expand-menu-icon {
+    display: none;
+  }
+}
 </style>
 <script>
 import NotificationDropDown from "./Notification/NotificationDropdown";
@@ -208,7 +295,10 @@ export default {
       inHome: true,
       inFollowing: false,
       showList: false,
-      search: ""
+      showFilter: false,
+      search: "",
+      selectedFilter: "All Pins",
+      expandMenu: false
     };
   },
   components: {
@@ -229,19 +319,67 @@ export default {
       this.showList = false;
       this.$router.push("/TopicsPage");
     },
-    searchFocused() {
-      this.$store.commit("popUpsState/toggleSearchWindow");
-    },
     searchInput() {
-      if (this.$store.state.popUpsState.searchWindow)
-        this.$store.commit("popUpsState/toggleSearchWindow");
       if (!this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
+      if (this.search) {
+        this.$store.dispatch("search/searchKeywords", this.search);
+        this.$store.dispatch("search/searchPeople", {
+          limit: 3,
+          offset: 0,
+          name: this.search,
+          recentSearch: false
+        });
+      }
+    },
+    clearSearch() {
+      this.search = "";
+      if (this.$store.state.popUpsState.searchSuggestions)
+        this.$store.commit("popUpsState/toggleSearchSuggestions");
+    },
+    searchEnter() {
+      if (this.search) {
+        this.$store.commit("search/resetOffset");
+        this.$store.dispatch("search/searchPins", {
+          limit: 20,
+          offset: 0,
+          name: this.search
+        });
+        this.$router.replace(`/search/allpins/${this.search}`);
+        if (this.$store.state.popUpsState.searchSuggestions)
+          this.$store.commit("popUpsState/toggleSearchSuggestions");
+      }
+    },
+    searchPins() {
+      this.$router.replace(`/search/allpins/${this.search}`);
       this.$store.dispatch("search/searchPins", {
-        limit: 8,
+        limit: 20,
         offset: 0,
-        name: this.search,
-        recentSearch: false
+        name: this.search
+      });
+    },
+    searchMyPins() {
+      this.$router.replace(`/search/mypins/${this.search}`);
+      this.$store.dispatch("search/searchMyPins", {
+        limit: 20,
+        offset: 0,
+        name: this.search
+      });
+    },
+    searchPeople() {
+      this.$router.replace(`/search/people/${this.search}`);
+      this.$store.dispatch("search/searchPeople", {
+        limit: 20,
+        offset: 0,
+        name: this.search
+      });
+    },
+    searchBoards() {
+      this.$router.replace(`/search/boards/${this.search}`);
+      this.$store.dispatch("search/searchBoards", {
+        limit: 20,
+        offset: 0,
+        name: this.search
       });
     }
   },
@@ -259,9 +397,22 @@ export default {
       } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
+      } else if (this.$route.name == "SearchPins" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "All Pins";
+      } else if (this.$route.name == "SearchMyPins" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "My Pins";
+      } else if (this.$route.name == "SearchPeople" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "People";
+      } else if (this.$route.name == "SearchBoards" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "Boards";
       } else {
         this.inHome = false;
         this.inFollowing = false;
+        this.showFilter = false;
       }
     }
   }

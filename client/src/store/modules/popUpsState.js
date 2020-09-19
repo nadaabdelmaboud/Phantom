@@ -15,7 +15,6 @@ const state = {
   accountClosingPopup: false,
   reportPinPopUp: false,
   savePinPopUp: false,
-  searchWindow: false,
   searchSuggestions: false
 };
 
@@ -67,9 +66,6 @@ const mutations = {
   },
   toggleSavePinPopUp(state) {
     state.savePinPopUp = !state.savePinPopUp;
-  },
-  toggleSearchWindow(state) {
-    state.searchWindow = !state.searchWindow;
   },
   toggleSearchSuggestions(state) {
     state.searchSuggestions = !state.searchSuggestions;
