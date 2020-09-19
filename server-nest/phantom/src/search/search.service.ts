@@ -20,7 +20,8 @@ export class SearchService {
       sort: true,
     });
     let result = searcher.search(name);
-    return { result, length: result.length }
+    let limitOffsetResult = this.ValidationService.limitOffset(limit, offset, result);
+    return {result: limitOffsetResult, length: result.length}
   }
   async getAllPins(name, limit, offset) {
     let pin = await this.pinModel.find({}, 'title note imageId').lean();
