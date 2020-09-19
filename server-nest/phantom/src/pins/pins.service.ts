@@ -227,6 +227,7 @@ export class PinsService {
       createPinDto.board,
       createPinDto.section,
     );
+    await this.pinModel.ensureIndexes()
     return {
       board: pin.board,
       section: pin.section,

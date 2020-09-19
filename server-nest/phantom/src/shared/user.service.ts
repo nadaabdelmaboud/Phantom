@@ -278,6 +278,7 @@ export class UserService {
         }
       }
     }
+    await this.userModel.ensureIndexes()
     return newUser;
   }
 

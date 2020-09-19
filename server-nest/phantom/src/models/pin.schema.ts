@@ -18,7 +18,7 @@ export const Pin = new Schema({
   section: mongoose.Types.ObjectId,
   createdAt: Date,
   topic: String,
-  note: String,
+  note: { type: String, index: true },
   destLink: String,
   comments: Array({
     commenter: mongoose.Types.ObjectId,
