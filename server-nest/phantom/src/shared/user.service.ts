@@ -550,7 +550,10 @@ export class UserService {
       throw new HttpException('You can not follow yourself ', HttpStatus.FORBIDDEN);
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
-      { _id: 1, followers: 1, following: 1 },
+      {
+        _id: 1, followers: 1, following: 1, firstName: 1,
+        lastName: 1,
+      },
     );
     let followedUser = await this.findUserAndGetData(
       { _id: followingId },
@@ -617,7 +620,10 @@ export class UserService {
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
-      { _id: 1, followers: 1, following: 1 },
+      {
+        _id: 1, followers: 1, following: 1, firstName: 1,
+        lastName: 1,
+      },
     );
     let followedUser = await this.findUserAndGetData(
       { _id: followingId },

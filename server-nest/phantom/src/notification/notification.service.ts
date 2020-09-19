@@ -137,12 +137,14 @@ export class NotificationService {
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (
-        message.data.followerId == notificationData[i].data.followerId &&
-        notificationData[i].data.title == 'your follower increase '
-      ) {
-        followedUser.offlineNotifications.splice(i, 1);
-      }
+      if (notificationData[i].data)
+        if (
+          notificationData[i].data.title == 'your follower increase' &&
+          message.data.followerId == notificationData[i].data.followerId
+        ) {
+          followedUser.offlineNotifications.splice(i, 1);
+          break;
+        }
     }
 
     if (!followedUser.notifications) followedUser.notifications = [];
@@ -151,12 +153,14 @@ export class NotificationService {
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (
-        message.data.followerId == notificationData[i].data.followerId &&
-        notificationData[i].data.title == 'your follower increase '
-      ) {
-        followedUser.notifications.splice(i, 1);
-      }
+      if (notificationData[i].data)
+        if (
+          notificationData[i].data.title == 'your follower increase' &&
+          message.data.followerId == notificationData[i].data.followerId
+        ) {
+          followedUser.offlineNotifications.splice(i, 1);
+          break;
+        }
     }
 
     return {
@@ -356,14 +360,16 @@ export class NotificationService {
 
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
-      if (
-        notificationData[i].data.userId == reactUser._id &&
-        notificationData[i].data.pinId == pinId &&
-        notificationData[i].data.title == react + ' React on your pin'
-      ) {
-        ownerUser.offlineNotifications.splice(i, 1);
-        // console.log(550);
-      }
+      if (notificationData[i].data)
+        if (
+          notificationData[i].data.userId == reactUser._id &&
+          notificationData[i].data.pinId == pinId &&
+          notificationData[i].data.title == react + ' React on your pin'
+        ) {
+          ownerUser.offlineNotifications.splice(i, 1);
+          break;
+          // console.log(550);
+        }
     }
     // console.log("hay now delete one");
     if (!ownerUser.notifications) ownerUser.notifications = [];
@@ -376,15 +382,16 @@ export class NotificationService {
     for (let i = 0; i < notificationData.length; i++) {
       notificationData[i].data.time = undefined;
       // console.log('in for now');
-
-      if (
-        notificationData[i].data.userId == reactUser._id &&
-        notificationData[i].data.pinId == pinId &&
-        notificationData[i].data.title == react + ' React on your pin'
-      ) {
-        ownerUser.notifications.splice(i, 1);
-        // console.log(550);
-      }
+      if (notificationData[i].data)
+        if (
+          notificationData[i].data.userId == reactUser._id &&
+          notificationData[i].data.pinId == pinId &&
+          notificationData[i].data.title == react + ' React on your pin'
+        ) {
+          ownerUser.notifications.splice(i, 1);
+          break;
+          // console.log(550);
+        }
       //     console.log('after if ');
 
     }
