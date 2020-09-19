@@ -90,4 +90,3 @@ export const User = new Schema({
   createdAt: Date,
 });
 
-User.index({ firstName: String, lastName: String });
