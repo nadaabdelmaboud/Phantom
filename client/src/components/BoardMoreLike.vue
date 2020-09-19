@@ -57,18 +57,13 @@ export default {
           (rowHeight + rowGap)
       );
 
-      //item.style.backgroundColor="#f1f1f1"
-
       /* Set the spanning as calculated above (S) */
       item.style.gridRowEnd = "span " + rowSpan;
     },
     waitForImages() {
-      // var Items = document.getElementsByClassName("masonryGridItem");
-      // console.log(Items)
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
         imagesLoaded(allItems[i], instance => {
-          // console.log("hi",Date.now(),instance)
           var item = instance.elements[0];
           this.resizeMasonryItem(item);
         });
@@ -76,7 +71,6 @@ export default {
     }
   },
   created: function() {
-    // console.log(this.$route);
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/generateMoreLike", this.boardId);
     setTimeout(() => {
