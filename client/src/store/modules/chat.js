@@ -51,6 +51,21 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  setAsSeen({ disatch }, payload) {
+    axios
+      .post("seenDeliver", {
+        senderId: payload.senderId,
+        recieverId: payload.recieverId,
+        time: Date.now(),
+        isSeen: true
+      })
+      .then(() => {
+        disatch("getChat", payload);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 
