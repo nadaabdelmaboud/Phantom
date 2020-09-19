@@ -4,8 +4,26 @@
       <div v-if="!inchat">
         <div
           class="userInfo"
-          v-for="f in following"
-          :key="f._id"
+          v-for="r in recentChats"
+          :key="r._id"
+          @click="
+            toChat({
+              name: r.firstName + ' ' + r.lastName,
+              id: r._id,
+              imageId: r.profileImage
+            })
+          "
+        >
+          <img :src="getImage(r.profileImage)" />
+          <span>{{ r.firstName }}</span>
+          <span> {{ r.lastName }}</span>
+        </div>
+      </div>
+
+      <div v-for="f in following" :key="f._id">
+        <div
+          class="userInfo"
+          v-if="!recentChats.some(r => r._id === f._id)"
           @click="
             toChat({
               name: f.firstName + ' ' + f.lastName,
@@ -116,7 +134,7 @@ export default {
         senderId: this.myData._id,
         recieverId: chatWith.id
       };
-      this.$store.dispatch("chat/getChat", payload);
+      this.$store.dispatch("chat/setAsSeen", payload);
       this.chatWith = chatWith;
       this.inchat = !this.inchat;
       this.$nextTick(() => {
@@ -196,6 +214,7 @@ export default {
   computed: {
     ...mapGetters({
       following: "followers/userFollowing",
+      recentChats: "chat/recentChats",
       chat: "chat/currentChat"
     }),
     ...mapState({
@@ -204,6 +223,7 @@ export default {
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
+    this.$store.dispatch("chat/getRecentChats");
     //starting socket connection
     //send seen message to the other party
     this.socket = io.connect("http://localhost:3000");

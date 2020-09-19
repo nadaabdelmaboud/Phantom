@@ -36,7 +36,7 @@ export class SearchService {
   async addToRecentSearch(userId, name) {
     let user = await this.userModel.findByIdAndUpdate(userId, { $pull: { recentSearch: name } });
     if (user.recentSearch.length >= 5) {
-      user.recentSearch.slice(0, 4);
+      user.recentSearch = user.recentSearch.slice(0, 4);
       await user.save()
     }
     return await this.userModel.findByIdAndUpdate(userId, { $push: { recentSearch: name } }).lean();
