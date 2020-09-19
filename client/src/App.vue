@@ -23,7 +23,7 @@ export default {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
-        ) <= 1
+        ) <= 2
       ) {
         if (this.$route.path.includes("/More")) {
           console.log("scroloo");

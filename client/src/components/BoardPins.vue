@@ -54,8 +54,7 @@ export default {
       board: "boards/currentBoard"
     })
   },
-  methods: {
-  },
+  methods: {},
   created: function() {
     this.boardId = this.$route.params.boardId;
   }

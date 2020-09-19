@@ -32,11 +32,11 @@ export default {
     waitForImages() {
       var allItems = document.getElementsByClassName("masonryGridItem");
       for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], (instance) => {
+        imagesLoaded(allItems[i], instance => {
           var item = instance.elements[0];
           this.resizeMasonryItem(item);
         });
       }
-    },
-  },
+    }
+  }
 };

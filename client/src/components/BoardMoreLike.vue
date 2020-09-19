@@ -30,8 +30,7 @@ export default {
       morePins: "boards/moreLike"
     })
   },
-  methods: {
-  },
+  methods: {},
   created: function() {
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/generateMoreLike", this.boardId);
@@ -46,5 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- @import "../scss/MasonryGrid";
+@import "../scss/MasonryGrid";
 </style>
