@@ -5,14 +5,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { pin } from '../types/pin';
 import { user } from '../types/user';
+import { ChatService } from 'src/chat/chat.service';
+import { time } from 'console';
 const jwt = require('jsonwebtoken');
 @WebSocketGateway()
 export class SharedGateway {
   constructor(
-    private UserService: UserService,
+    private ChatService: ChatService,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
-  ) {}
+  ) { }
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
     const token = data.token;
@@ -66,11 +68,12 @@ export class SharedGateway {
     }
   }
   @SubscribeMessage('delivered')
-  async connect(socket: Socket, data: any) {
+  async deliver(socket: Socket, data: any) {
     let senderId = data.senderId;
     let sender = await this.userModel.findById(senderId);
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
+    let messageId = data.messageId;
     if (sender && reciever) {
       socket.to(reciever.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
@@ -78,8 +81,30 @@ export class SharedGateway {
         recieverName: reciever.firstName + ' ' + reciever.lastName,
         senderName: sender.firstName + ' ' + sender.lastName,
         senderId: data.senderId,
-        timeStamp: data.timeStamp,
+        messageId: data.messageId,
       });
+    await this.ChatService.deliver(recieverId, messageId, true);
+
+    }
+  }
+  @SubscribeMessage('seen')
+  async seenMessage(socket: Socket, data: any) {
+    let senderId = data.senderId;
+    let sender = await this.userModel.findById(senderId);
+    let recieverId = data.recieverId;
+    let reciever = await this.userModel.findById(recieverId);
+    let messageId = data.messageId;
+    if (sender && reciever) {
+      socket.to(reciever.socketId).emit('setSeen', {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + ' ' + reciever.lastName,
+        senderName: sender.firstName + ' ' + sender.lastName,
+        senderId: data.senderId,
+        messageId: data.messageId,
+      });
+    await this.ChatService.seen(recieverId, messageId, true);
+
     }
   }
   @SubscribeMessage('message')

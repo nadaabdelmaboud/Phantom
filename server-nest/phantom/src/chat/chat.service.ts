@@ -71,23 +71,46 @@ export class ChatService {
       }
     })
   }
+  async deliver(userId: String, messageId: string, isDelivered: boolean) {
 
-  async seenDeliverMessage(userId: String, messageId: String, isSeen: boolean, isDelivered: boolean) {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
-    if (isSeen)
-      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId } }, {
-        $push: {
-          seenStatus: { userId: userId, time: new Date() }
-        }
-      });
+
     if (isDelivered)
-      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId } }, {
+      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId }, deliverStatus: { $not: { $elemMatch: { userId: userId } } } }, {
         $push: {
           deliverStatus: { userId: userId, time: new Date() }
         }
       });
     return 1;
+
+
+  }
+  async seen(userId: String, messageId: string, isSeen: boolean) {
+
+    if (!this.ValidationService.checkMongooseID([userId, messageId]))
+      throw new Error('not mongoose id');
+
+    if (isSeen)
+      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId }, deliverStatus: { $not: { $elemMatch: { userId: userId } } } }, {
+        $push: {
+          seenStatus: { userId: userId, time: new Date() }
+        }
+      });
+    return 1;
+  }
+  async seenMessage(senderId: String, recieverId: String, time: string, isSeen: boolean) {
+    if (!this.ValidationService.checkMongooseID([senderId, recieverId]))
+      throw new Error('not mongoose id');
+    let chat = await this.chatModel.findOne({ usersIds: { $all: [senderId, recieverId] } }, '_id');
+
+    if (isSeen)
+      return await this.messageModel.updateMany({ chatId: chat._id, date: { $lt: new Date(time) }, senderId: { $ne: recieverId }, seenStatus: { $not: { $elemMatch: { userId: recieverId } } } }, {
+        $push: {
+          seenStatus: { userId: recieverId, time: new Date() }
+        }
+      });
+
 
   }
 

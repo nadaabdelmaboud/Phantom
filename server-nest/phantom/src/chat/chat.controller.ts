@@ -37,12 +37,12 @@ export class ChatController {
   @UseGuards(AuthGuard('jwt'))
   @Post('/seenDeliver')
   async seenDeliver(
-    @Body('userId') userId: string,
-    @Body('messageId') messageId: string,
+    @Body('senderId') senderId: string,
+    @Body('recieverId') recieverId: string,
+    @Body('time') time: string,
     @Body('isSeen') isSeen: boolean,
-    @Body('isDeliver') isDeliver: boolean
   ) {
-    let messages = await this.ChatService.seenDeliverMessage(userId, messageId, isSeen, isDeliver);
+    let messages = await this.ChatService.seenMessage(senderId, recieverId, time, isSeen);
     if (messages) return messages;
     throw new NotFoundException();
   }
