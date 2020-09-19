@@ -36,7 +36,19 @@
     ></i>
     <div class="bar" v-if="showFilter"></div>
     <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>
-    <i class="fa fa-angle-down expand-menu-icon" v-if="showFilter"></i>
+    <i
+      class="fa fa-angle-down expand-menu-icon"
+      v-if="showFilter"
+      @click="expandMenu = !expandMenu"
+    ></i>
+    <div class="menu" v-if="expandMenu && showFilter">
+      <ul>
+        <li>All Pins</li>
+        <li>My Pins</li>
+        <li>People</li>
+        <li>Boards</li>
+      </ul>
+    </div>
     <div v-if="isLoggedIn()" class="icons" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
       <div class="count" id="alertIcon">
@@ -245,13 +257,29 @@
   left: -95px;
 }
 
-@media screen and (max-width: 950px) {
-  .clear-icon {
-    left: -44px;
+.menu {
+  @include optionsList;
+  padding: 10px;
+  width: 120px;
+  right: calc(100vw - 85vw);
+  font-size: 12px;
+}
+@media screen and (max-width: 1700px) {
+  .lefted_icon {
+    left: -120px;
   }
 }
-.lefted_icon {
-  left: -120px;
+
+@media screen and (max-width: 950px) {
+  .lefted_icon {
+    left: -44px;
+  }
+
+  .bar,
+  .filter,
+  .expand-menu-icon {
+    display: none;
+  }
 }
 </style>
 <script>
@@ -268,7 +296,8 @@ export default {
       showList: false,
       showFilter: false,
       search: "",
-      selectedFilter: "All Pins"
+      selectedFilter: "All Pins",
+      expandMenu: false
     };
   },
   components: {
