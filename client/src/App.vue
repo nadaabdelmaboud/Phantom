@@ -7,9 +7,11 @@
 <script>
 import { initializeFirebase } from "../src/messaging/init";
 import axios from "axios";
+import { default as masonryGrid } from "./mixins/masonryGrid";
 export default {
   name: "App",
   data: function() {},
+  mixins: [masonryGrid],
   created() {
     let token = localStorage.getItem("userToken");
     if (token) {
@@ -33,6 +35,9 @@ export default {
         }
       }
     });
+    setInterval(() => {
+      this.waitForImages();
+    }, 1000);
   },
   methods: {
     checkLists(event) {
