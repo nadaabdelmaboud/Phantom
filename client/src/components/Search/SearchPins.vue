@@ -1,0 +1,31 @@
+<template>
+  <div class="flexWrap">
+    <div class="masonryGrid">
+      <HomeCard
+        v-for="pin in pins"
+        :key="pin._id"
+        :cardImage="pin.imageId"
+        :postPageId="pin._id"
+        class="masonryGridItem"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import HomeCard from "../HomeCard";
+export default {
+  components: {
+    HomeCard
+  },
+  computed: {
+    pins() {
+      return this.$store.state.search.pins;
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../../scss/MasonryGrid";
+</style>
