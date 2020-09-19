@@ -90,13 +90,12 @@ export class SearchController {
     return new NotFoundException();
 
   }
-  @UseGuards(AuthGuard('jwt'))
   @Get('/getKeys')
   async getKeys(
     @Request() req,
+    @Query('name') name
   ) {
-    let userId = req.user._id;
-    let recentSearch = await this.SearchService.getKeys(userId);
+    let recentSearch = await this.SearchService.getKeys(name);
     if (recentSearch) return recentSearch;
     return new NotFoundException();
 
