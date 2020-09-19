@@ -28,6 +28,10 @@ export interface user extends Document {
   socketId: string;
   notificationCounter: Number;
   profileImage: mongoose.Types.ObjectId;
+  lastTopics: Array<{
+    topicName: String;
+    pinsLength: Number;
+  }>;
   history: Array<{
     topic: String;
     pinId: mongoose.Types.ObjectId;
@@ -50,7 +54,7 @@ export interface user extends Document {
     }>;
     userId: mongoose.Types.ObjectId;
   }>;
-  recentSearch: Array<String>,
+  recentSearch: Array<String>;
   recievedMessages: Array<{
     message: Array<{
       note: String;

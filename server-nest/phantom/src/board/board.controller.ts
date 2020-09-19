@@ -53,6 +53,7 @@ export class BoardController {
   @Get('/me/boards')
   async getCurrentUserBoards(@Request() req) {
     let userId = req.user._id;
+    req.setTimeout(0);
     let boards = await this.BoardService.getCurrentUserBoards(userId, true);
     if (boards && boards.length != 0) {
       return boards;

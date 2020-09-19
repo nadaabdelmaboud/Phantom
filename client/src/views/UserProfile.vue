@@ -225,7 +225,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
+
 .profileInfo {
   margin-bottom: 40px;
   img {

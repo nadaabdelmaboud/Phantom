@@ -109,7 +109,7 @@
 
 <style scoped lang="scss">
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
 
 .addPin {
   background-color: white;
@@ -444,7 +444,8 @@ export default {
             board: this.chosenBoardId,
             imageWidth: this.width,
             imageHeight: this.height,
-            imageId: this.imageFile
+            imageId: this.imageFile,
+            topicName: this.label
           };
           if (this.chosenSectionId != "") {
             pin.section = this.chosenSectionId;

@@ -31,6 +31,7 @@
     "@nestjs/passport": "^7.1.0",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/platform-socket.io": "^7.3.2",
+    "@nestjs/serve-static": "^2.1.3",
     "@nestjs/swagger": "^4.5.12",
     "@nestjs/websockets": "^7.3.2",
     "@types/fuzzy-search": "^2.1.0",

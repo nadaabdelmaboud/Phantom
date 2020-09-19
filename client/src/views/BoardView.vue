@@ -125,7 +125,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
 .boardInfo {
   margin-bottom: 40px;
   img {

@@ -29,26 +29,7 @@ export class SharedGateway {
   }
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
-    let commentText = data.commentText;
-    let token = data.token;
-    token = token.substring(7);
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
-    let commenterId = decoded._id;
-    let commenter = await this.userModel.findById(commenterId, {
-      firstName: 1,
-      lastName: 1,
-      profileImage: 1,
-    });
-    if (commenter && commentText) {
-      socket.emit('sendComment', {
-        commentText: data.commentText,
-        commenterName: commenter.firstName + ' ' + commenter.lastName,
-        commenterImage: commenter.profileImage,
-        pinId: data.pinId,
-        date: Date.now(),
-      });
-    }
-
+    socket.emit('sendComment', data);
   }
   @SubscribeMessage('typing')
   async type(socket: Socket, data: any) {
@@ -57,7 +38,7 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     if (sender && reciever) {
-      console.log("sending")
+      console.log('sending');
       socket.to(reciever.socketId).emit('isTyping', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
@@ -129,26 +110,7 @@ export class SharedGateway {
 
   @SubscribeMessage('reply')
   async reply(socket: Socket, data: any) {
-    let replyText = data.replyText;
-    let commentId = data.commentId;
-    const token = data.token;
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
-    let replierId = decoded._id;
-    let replier = await this.userModel.findById(replierId, {
-      firstName: 1,
-      lastName: 1,
-      profileImage: 1,
-    });
-    if (replier && replyText) {
-      socket.emit('sendReply', {
-        replyText: replyText,
-        replierName: replier.firstName + ' ' + replier.lastName,
-        replierImage: replier.profileImage,
-        pinId: data.pinId,
-        commentId: commentId,
-        date: Date.now(),
-      });
-    }
+    socket.emit('sendReply', data);
   }
 
   @SubscribeMessage('reactPin')

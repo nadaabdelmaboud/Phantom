@@ -7,4 +7,5 @@ export class CreatePinDto {
   readonly board: String;
   readonly section: String;
   readonly link: String;
+  readonly topicName: string;
 }

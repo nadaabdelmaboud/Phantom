@@ -25,7 +25,7 @@
       </div>
       <div style="margin-top:10px">
         <input
-          :value="'http://localhost:8080' + $route.path"
+          :value="'https://phantomclient.herokuapp.com' + $route.path"
           id="boardLink"
           readonly
         />

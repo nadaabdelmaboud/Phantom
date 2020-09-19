@@ -52,7 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/Colors";
-@import "../scss/mixins";
+@import "../scss/Mixins";
 @import "../scss/MasonryGrid";
 
 .flexWrap {

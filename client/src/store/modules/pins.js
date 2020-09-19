@@ -96,11 +96,30 @@ const actions = {
         console.log(error);
       });
   },
-  savePost({ commit }, pinId) {
+  savePostInBoard({ commit }, { pinId, boardId }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .post("me/savedPins/" + pinId)
+      .post("me/savedPins/" + pinId + "?boardId=" + boardId)
+      .then(() => {
+        commit("savePin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  savePostInSection({ commit }, { pinId, boardId, sectionId }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .post(
+        "me/savedPins/" +
+          pinId +
+          "?boardId=" +
+          boardId +
+          "&sectionId=" +
+          sectionId
+      )
       .then(() => {
         commit("savePin", true);
       })

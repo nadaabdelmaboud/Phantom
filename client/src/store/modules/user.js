@@ -117,7 +117,7 @@ const actions = {
   },
   login({ commit, dispatch }, data) {
     axios
-      .post("login", data)
+      .post("login/", data)
       .then(response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
@@ -126,6 +126,7 @@ const actions = {
       })
       .catch(error => {
         commit("setLogin", false);
+        console.log(error);
         if (error.response.data.message == "password is not correct")
           commit("setErrorMessage", "Password is not correct");
         else commit("setErrorMessage", "Email is not correct");

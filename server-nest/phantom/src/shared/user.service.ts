@@ -203,7 +203,7 @@ export class UserService {
   async createUser(registerDto: RegisterDto): Promise<any> {
     await this.checkCreateData(registerDto);
     let hash,
-      picture = '';
+      picture = null;
     if (registerDto.isGoogle) {
       hash = '';
       picture = registerDto.profileImage;
@@ -217,6 +217,7 @@ export class UserService {
       location: '',
       notificationCounter: 0,
       profileImage: picture,
+      lastTopics: [],
       userName: registerDto.firstName + ' ' + registerDto.lastName,
       email: registerDto.email,
       password: hash,
@@ -291,10 +292,20 @@ export class UserService {
     const validate = shcema.validate(body);
     if (validate.error != null)
       throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData(
-      { email: email },
-      { password: 1, _id: 1, email: 1, fcmToken: 1, location: 1, firstName: 1 },
-    );
+    const user = await this.userModel
+      .findOne(
+        { email: email },
+        {
+          password: 1,
+          _id: 1,
+          email: 1,
+          fcmToken: 1,
+          location: 1,
+          firstName: 1,
+        },
+      )
+      .lean();
+
     return user;
   }
 
@@ -533,6 +544,9 @@ export class UserService {
       ])) === 0
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    //   console.log(await this.pinModel.find({}, { _id: 1 }));
+    if (String(followerId) == String(followingId))
+      throw new HttpException('You can not follow yourself ', HttpStatus.FORBIDDEN);
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
       { _id: 1, followers: 1, following: 1 },
@@ -543,6 +557,8 @@ export class UserService {
         _id: 1,
         followers: 1,
         following: 1,
+        firstName: 1,
+        lastName: 1,
         notifications: 1,
         notificationCounter: 1,
         offlineNotifications: 1,
@@ -609,6 +625,8 @@ export class UserService {
         followers: 1,
         following: 1,
         notifications: 1,
+        firstName: 1,
+        lastName: 1,
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
