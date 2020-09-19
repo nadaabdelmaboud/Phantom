@@ -14,6 +14,10 @@ import { Email } from './send-email.service';
 import { NotificationService } from '../notification/notification.service';
 import { Topic } from '../models/topic.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Message } from 'src/models/message.schema';
+import { Chat } from 'src/models/chat.schema';
+import { ChatService } from 'src/chat/chat.service';
+
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -21,6 +25,9 @@ import { MongooseModule } from '@nestjs/mongoose';
       { name: 'Pin', schema: Pin },
       { name: 'Board', schema: Board },
       { name: 'Topic', schema: Topic },
+      { name: 'Message', schema: Message },
+      { name: 'Chat', schema: Chat },
+
     ]),
   ],
   providers: [
@@ -31,6 +38,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     JwtStrategy,
     Email,
     NotificationService,
+    ChatService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

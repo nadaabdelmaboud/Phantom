@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 
 export const Board = new Schema({
   url: String,
-  name: String,
+  name: { type: String, index: true },
   startDate: String,
   endDate: String,
   status: String,
-  topic: String,
-  description: String,
+  topic: { type: String, index: true },
+  description: { type: String, index: true },
   personalization: Boolean,
   creator: {
     firstName: String,

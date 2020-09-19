@@ -3,8 +3,8 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 export const User = new Schema({
   recentSearch: Array(String),
-  firstName: String,
-  lastName: String,
+  firstName: { type: String, index: true },
+  lastName: { type: String, index: true },
   email: String,
   password: String,
   country: String,
@@ -25,7 +25,7 @@ export const User = new Schema({
   facebook: Boolean,
   google: Boolean,
   notificationOfPinsActivity: Boolean,
-  userName: String,
+  userName: { type: String, index: true },
   boardsForYou: Boolean,
   pinsForYou: Boolean,
   pinsInspired: Boolean,
@@ -90,4 +90,3 @@ export const User = new Schema({
   createdAt: Date,
 });
 
-User.index({ firstName: String, lastName: String });

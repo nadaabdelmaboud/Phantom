@@ -6,7 +6,7 @@ export const Pin = new Schema({
   imageWidth: Number,
   imageHeight: Number,
   url: String,
-  title: String,
+  title: { type: String, index: true },
   creator: {
     firstName: String,
     lastName: String,
@@ -18,7 +18,7 @@ export const Pin = new Schema({
   section: mongoose.Types.ObjectId,
   createdAt: Date,
   topic: String,
-  note: String,
+  note: { type: String, index: true },
   destLink: String,
   comments: Array({
     commenter: mongoose.Types.ObjectId,
