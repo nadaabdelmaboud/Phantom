@@ -27,6 +27,7 @@
       placeholder=" Search..."
       @input="searchInput"
       v-model="search"
+      v-on:keyup.enter="searchEnter"
     />
     <i
       class="fa fa-close clear-icon"
@@ -43,10 +44,10 @@
     ></i>
     <div class="menu" v-if="expandMenu && showFilter">
       <ul>
-        <li>All Pins</li>
-        <li>My Pins</li>
-        <li>People</li>
-        <li>Boards</li>
+        <li @click="searchPins">All Pins</li>
+        <li @click="searchMyPins">My Pins</li>
+        <li @click="searchPeople">People</li>
+        <li @click="searchBoards">Boards</li>
       </ul>
     </div>
     <div v-if="isLoggedIn()" class="icons" id="alertIcon">
@@ -322,8 +323,7 @@ export default {
       if (!this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
       if (this.search) {
-        this.$store.dispatch("search/searchKeywords", this.search
-        );
+        this.$store.dispatch("search/searchKeywords", this.search);
         this.$store.dispatch("search/searchPeople", {
           limit: 3,
           offset: 0,
@@ -336,6 +336,50 @@ export default {
       this.search = "";
       if (this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
+    },
+    searchEnter() {
+      if (this.search) {
+        this.$store.dispatch("search/searchPins", {
+          limit: 20,
+          offset: 0,
+          name: this.search
+        });
+        this.$router.replace(`/search/allpins/${this.search}`);
+        if (this.$store.state.popUpsState.searchSuggestions)
+          this.$store.commit("popUpsState/toggleSearchSuggestions");
+      }
+    },
+    searchPins() {
+      this.$router.replace(`/search/allpins/${this.search}`);
+      this.$store.dispatch("search/searchPins", {
+        limit: 20,
+        offset: 0,
+        name: this.search
+      });
+    },
+    searchMyPins() {
+      this.$router.replace(`/search/mypins/${this.search}`);
+      this.$store.dispatch("search/searchMyPins", {
+        limit: 20,
+        offset: 0,
+        name: this.search
+      });
+    },
+    searchPeople() {
+      this.$router.replace(`/search/people/${this.search}`);
+      this.$store.dispatch("search/searchPeople", {
+        limit: 20,
+        offset: 0,
+        name: this.search
+      });
+    },
+    searchBoards() {
+      this.$router.replace(`/search/boards/${this.search}`);
+      this.$store.dispatch("search/searchBoards", {
+        limit: 20,
+        offset: 0,
+        name: this.search
+      });
     }
   },
   computed: {
@@ -352,8 +396,18 @@ export default {
       } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
-      } else if (this.$route.path == "/search" && this.isLoggedIn()) {
+      } else if (this.$route.name == "SearchPins" && this.isLoggedIn()) {
         this.showFilter = true;
+        this.selectedFilter = "All Pins";
+      } else if (this.$route.name == "SearchMyPins" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "My Pins";
+      } else if (this.$route.name == "SearchPeople" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "People";
+      } else if (this.$route.name == "SearchBoards" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "Boards";
       } else {
         this.inHome = false;
         this.inFollowing = false;

@@ -4,10 +4,10 @@
       <div class="titles">
         <p
           v-for="suggestion in suggestions"
-          :key="suggestion.title"
-          @click="searchFor(suggestion.title)"
+          :key="suggestion.name"
+          @click="searchFor(suggestion.name)"
         >
-          {{ suggestion.title }}
+          {{ suggestion.name }}
         </p>
       </div>
       <div class="user">
@@ -54,7 +54,7 @@ export default {
         recentSearch: true
       });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
-      this.$router.replace("/search");
+      this.$router.replace("/search/allpins");
     }
   },
   mixins: [getImage]

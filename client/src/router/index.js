@@ -26,6 +26,10 @@ import SectionView from "../views/SectionView";
 import NotidicationBoards from "../components/Notification/NotificationBoards";
 import NotidicationPins from "../components/Notification/NotificationPins";
 import Search from "../views/Search.vue";
+import SearchPins from "../components/Search/SearchPins";
+import SearchMyPins from "../components/Search/SearchMyPins";
+import SearchPeople from "../components/Search/SearchPeople";
+import SearchBoards from "../components/Search/SearchBoards";
 
 Vue.use(VueRouter);
 
@@ -153,7 +157,30 @@ const routes = [
       {
         path: "/search",
         name: "Search",
-        component: Search
+        component: Search,
+        redirect: "/search/allpins/:name",
+        children: [
+          {
+            path: "/search/allpins/:name",
+            name: "SearchPins",
+            component: SearchPins
+          },
+          {
+            path: "/search/mypins/:name",
+            name: "SearchMyPins",
+            component: SearchMyPins
+          },
+          {
+            path: "/search/people/:name",
+            name: "SearchPeople",
+            component: SearchPeople
+          },
+          {
+            path: "/search/boards/:name",
+            name: "SearchBoards",
+            component: SearchBoards
+          }
+        ]
       }
     ]
   },
