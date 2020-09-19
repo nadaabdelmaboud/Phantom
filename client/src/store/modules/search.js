@@ -1,16 +1,22 @@
 import axios from "axios";
 
 const state = {
-  pins: null,
-  people: null,
-  keys: null,
-  myPins: null,
-  boards: null
+  pins: [],
+  people: [],
+  keys: [],
+  myPins: [],
+  boards: [],
+  offset: 0,
+  inProgress: false,
+  totalResult: 50,
+  endResult: false
 };
 
 const mutations = {
-  setSearchPins(state, payload) {
-    state.pins = payload;
+  setSearchPins(state, pins) {
+    pins.forEach(pin => {
+      state.pins.push(pin);
+    });
   },
   setSearchPeople(state, payload) {
     state.people = payload;
@@ -23,31 +29,49 @@ const mutations = {
   },
   setSearchBoards(state, payload) {
     state.boards = payload;
+  },
+  resetOffset(state) {
+    state.offset = 0;
+    state.pins = [];
+    state.people = [];
+    state.myPins = [];
+    state.boards = [];
   }
 };
 
 const actions = {
-  searchPins({ commit }, payload) {
-    axios
-      .get(
-        "/search/allPins?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
+  async searchPins({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let pins = await axios.get(
+          "/search/allPins?limit=" +
+            10 +
+            "&offset=" +
+            state.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
           }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchPins", pins.data);
+        console.log(pins.data);
+        console.log(state.pins);
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchPins", { name: payload.name });
+        } else {
+          state.endReuslt = true;
         }
-      )
-      .then(response => {
-        commit("setSearchPins", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    }
   },
   searchMyPins({ commit }, payload) {
     axios

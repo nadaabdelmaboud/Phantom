@@ -339,6 +339,7 @@ export default {
     },
     searchEnter() {
       if (this.search) {
+        this.$store.commit("search/resetOffset");
         this.$store.dispatch("search/searchPins", {
           limit: 20,
           offset: 0,
