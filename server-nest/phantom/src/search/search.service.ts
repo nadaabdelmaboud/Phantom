@@ -34,9 +34,12 @@ export class SearchService {
 
   }
   async addToRecentSearch(userId, name) {
-    if (!await this.userModel.findOne({ recentSearch: name, _id: userId }, '_id').lean())
-      return await this.userModel.findByIdAndUpdate(userId, { $push: { recentSearch: name } }).lean();
-    return 0;
+    let user = await this.userModel.findByIdAndUpdate(userId, { $pull: { recentSearch: name } });
+    if (user.recentSearch.length >= 5) {
+      user.recentSearch.slice(0,4);
+      await user.save()
+    }
+    return await this.userModel.findByIdAndUpdate(userId, { $push: { recentSearch: name } }).lean();
   }
   async getPeople(name, limit, offset) {
 
@@ -48,6 +51,27 @@ export class SearchService {
       limit,
       offset,
     );
+
+  }
+  async getKeys(name: string) {
+    await this.pinModel.createIndexes();
+    let keysPin = await this.pinModel.find(
+      {
+        $text: { $search: name },
+      },
+      'title',
+    ).limit(5);
+    if (keysPin.length < 5) {
+      await this.boardModel.createIndexes();
+      let keysBoard = await this.boardModel.find(
+        {
+          $text: { $search: name },
+        },
+        'name',
+      ).limit(5);
+      return keysBoard;
+    }
+    return keysPin;
 
   }
   async getRecentSearch(userId) {

@@ -18,18 +18,20 @@ export default {
     }
     initializeFirebase();
     window.addEventListener("scroll", () => {
-      console.log(document.body.scrollHeight, "   ", window.scrollY, " ");
-      console.log(
-        window.innerHeight + window.scrollY,
-        "   ",
-        document.body.offsetHeight
-      );
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
         ) <= 1
-      )
-        console.log("scroloo");
+      ) {
+        if (this.$route.path.includes("/More")) {
+          console.log("scroloo");
+          let boardId = this.$route.params.boardId;
+          this.$store.dispatch("boards/moreLike", {
+            boardId: boardId,
+            limit: 8
+          });
+        }
+      }
     });
   },
   methods: {

@@ -122,7 +122,7 @@ export default {
     auto-fill,
     minmax(252px, 1fr)
   ); /* [2] Make columns adjust according to the available viewport */
-  grid-auto-rows: 0.00000000000000001pt; /* [3] Set the height for implicitly-created row track */
+  grid-auto-rows: 0.00000000000000001px; /* [3] Set the height for implicitly-created row track */
 }
 // .masonryGridItem {
 // }

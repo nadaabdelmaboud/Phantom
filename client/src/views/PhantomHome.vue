@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <ReportPin v-if="showReportPin" />
+    <SavePin v-if="showSavePin" />
     <CreateBoardPopup v-if="createBoard" />
     <NewPinPopup v-if="newPin" />
     <EditBoardPopup v-if="editBoard" />
@@ -27,6 +29,15 @@
     <LeavingResaonPopUp v-if="leavingPopUp" />
     <CloseAccountPopUp v-if="accountClosingPopup" />
     <SearchSuggestions v-if="searchSuggestions" />
+    <div class="toast" id="toastId">
+      <img :src="getImage(cardImage)" alt="User Image" class="toastimage" />
+      <div class="userinfo">
+        <div id="toastmessage">Saved to</div>
+        <div class="toastusername">
+          {{ ChoosenBoardName }}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -79,8 +90,83 @@
     opacity: 0;
   }
 }
+.toastimage {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+#toastmessage {
+  font-size: 14px;
+  font-weight: 700px;
+}
+.toastusername {
+  float: left;
+  font-size: 14px;
+  font-weight: 700;
+}
+.toast {
+  display: flex;
+  align-content: center;
+  left: 40%;
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  bottom: 18px;
+  margin: auto;
+  min-width: 320px;
+  height: 90px;
+  background-color: rgb(19, 20, 20);
+  padding: 10px;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  z-index: 1500;
+  box-shadow: 0 0 10 rgb(19, 20, 20);
+  transition: 0.5s ease-in-out;
+  font-size: 15px;
+  .userinfo {
+    margin-top: 13px;
+    margin-left: 8px;
+  }
+}
+.toast--visible {
+  visibility: visible;
+  opacity: 1;
+}
+@media screen and (max-width: 950px) {
+  .toast {
+    left: 30%;
+  }
+}
+@media screen and (max-width: 720px) {
+  .toast {
+    left: 25%;
+  }
+}
+@media screen and (max-width: 580px) {
+  .toast {
+    left: 20%;
+  }
+}
+@media screen and (max-width: 510px) {
+  .toast {
+    left: 17%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .toast {
+    left: 10%;
+  }
+}
+@media screen and (max-width: 360px) {
+  .toast {
+    left: 7%;
+  }
+}
 </style>
 <script>
+import { default as getImage } from "../mixins/getImage";
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/BoardsPopUps/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
@@ -98,6 +184,8 @@ import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
 import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
 import SearchSuggestions from "../components/Search/SearchSuggestions";
+import SavePin from "../components/SavePin";
+import ReportPin from "../components/ReportPin";
 
 import { mapState } from "vuex";
 export default {
@@ -108,6 +196,7 @@ export default {
       componentKey: 0
     };
   },
+  mixins: [getImage],
   components: {
     HomeNavigationBar,
     CreateBoardPopup,
@@ -125,7 +214,9 @@ export default {
     ChangePhotoPopUp,
     LeavingResaonPopUp,
     CloseAccountPopUp,
-    SearchSuggestions
+    SearchSuggestions,
+    SavePin,
+    ReportPin
   },
   methods: {
     toggleChat() {
@@ -138,6 +229,14 @@ export default {
       } else {
         this.chat = true;
       }
+    },
+    showToast() {
+      var mytoast = document.getElementById("toastId");
+      clearTimeout(mytoast.hideTimeout);
+      mytoast.className = "toast toast--visible";
+      mytoast.hideTimeout = setTimeout(() => {
+        mytoast.classList.remove("toast--visible");
+      }, 2000);
     }
   },
   computed: {
@@ -156,12 +255,24 @@ export default {
       changePhotoPopUp: state => state.popUpsState.changePhotoPopUp,
       accountClosingPopup: state => state.popUpsState.accountClosingPopup,
       leavingPopUp: state => state.popUpsState.leavingPopUp,
-      searchSuggestions: state => state.popUpsState.searchSuggestions
+      searchSuggestions: state => state.popUpsState.searchSuggestions,
+      showSavePin: state => state.popUpsState.savePinPopUp,
+      showReportPin: state => state.popUpsState.reportPinPopUp,
+      showToastState: state => state.homeCards.showToastState,
+      cardImage: state => state.homeCards.cardImageId,
+      ChoosenBoardName: state => state.homeCards.ChoosenBoardName
     })
   },
   watch: {
     $route() {
       this.componentKey = (this.componentKey + 1) % 4;
+    },
+    showToastState() {
+      if (this.showToastState == true) {
+        console.log("phantom home boardname", this.ChoosenBoardName);
+        this.showToast();
+        this.$store.commit("homeCards/setShowToastState", false);
+      }
     }
   }
 };

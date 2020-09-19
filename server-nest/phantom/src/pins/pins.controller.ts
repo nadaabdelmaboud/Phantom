@@ -174,7 +174,17 @@ export class PinsController {
       throw new NotFoundException({ message: 'pin not found' });
     }
   }
-
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/pins/status/:pinId')
+  async getPinStatus(@Request() req, @Param('pinId') pinId: string) {
+    let userId = req.user._id;
+    let pin = await this.PinsService.checkPinStatus(pinId, userId);
+    if (pin) {
+      return pin;
+    } else {
+      throw new NotFoundException({ message: 'pin not found' });
+    }
+  }
   @UseGuards(AuthGuard('jwt'))
   @Post('/pins/:pinId/reacts')
   async createReact(

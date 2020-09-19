@@ -234,6 +234,77 @@ export class PinsService {
       imageId: pin.imageId,
     };
   }
+  async checkPinStatus(pinId, userId) {
+    let pinType = 'none';
+    let boardName = 'none';
+    let pin = await this.pinModel
+      .findById(pinId, {
+        creator: 1,
+        board: 1,
+      })
+      .lean();
+
+    let user = await this.userModel
+      .findById(userId, {
+        savedPins: 1,
+      })
+      .lean();
+    let boardId = 'none';
+    let sectionId = 'none';
+    let sectionName = 'none';
+
+    if (!user) throw new NotFoundException({ message: 'user not found' });
+    if (String(pin.creator.id) == String(userId)) {
+      pinType = 'creator';
+      let board = await this.boardModel.findById(pin.board, { name: 1 }).lean();
+      if (board) {
+        boardName = String(board.name);
+        boardId = board._id;
+      }
+      if (pin.section) {
+        for (let i = 0; i < board.sections.length; i++) {
+          if (String(board.sections[i]._id) == String(pin.section)) {
+            sectionId = String(pin.section);
+            sectionName = String(board.sections[i].sectionName);
+            break;
+          }
+        }
+      }
+    } else {
+      for (let k = 0; k < user.savedPins.length; k++) {
+        if (String(user.savedPins[k].pinId) == String(pin._id)) {
+          pinType = 'saved';
+          let board = await this.boardModel
+            .findById(user.savedPins[k].boardId, { name: 1 })
+            .lean();
+          if (board) {
+            boardName = String(board.name);
+            boardId = board._id;
+          }
+          if (user.savedPins[k].sectionId) {
+            for (let i = 0; i < board.sections.length; i++) {
+              if (
+                String(board.sections[i]._id) ==
+                String(user.savedPins[k].sectionId)
+              ) {
+                sectionId = String(user.savedPins[k].sectionId);
+                sectionName = String(board.sections[i].sectionName);
+                break;
+              }
+            }
+          }
+          break;
+        }
+      }
+    }
+    return {
+      board: boardName,
+      type: pinType,
+      boardId: boardId,
+      sectionId: sectionId,
+      section: sectionName,
+    };
+  }
   async addPintoUser(userId, pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
       throw new BadRequestException('not valid id');

@@ -9,7 +9,12 @@ const state = {
   collaborators: [],
   moreLike: [],
   section: {},
-  viewState: "Default"
+  viewState: "Default",
+  generating: false,
+  generatedCount: 0,
+  offset: 0,
+  maxMore: false,
+  inProgress: false
 };
 
 const mutations = {
@@ -31,7 +36,9 @@ const mutations = {
     state.collaborators = collaborators;
   },
   setMoreLike(state, more) {
-    state.moreLike = more;
+    more.forEach(m => {
+      state.moreLike.push(m);
+    });
   },
   setCurrentSection(state, section) {
     state.section = section;
@@ -209,16 +216,52 @@ const actions = {
         console.log(error);
       });
   },
-  async moreLike({ commit }, { boardId, generate }) {
-    if (generate) await axios.put("more/boards/" + boardId);
+  generateMoreLike({ state }, boardId) {
+    state.moreLike = [];
+    state.offset = 0;
+    state.generating = true;
+    state.maxMore = false;
     axios
-      .get("more/boards/" + boardId + "?limit=20&offset=0")
-      .then(response => {
-        commit("setMoreLike", response.data);
+      .put("more/boards/" + boardId)
+      .then(reponse => {
+        state.generating = false;
+        state.generatedCount = reponse.data.total;
       })
       .catch(error => {
         console.log(error);
       });
+  },
+  async moreLike({ state, commit, dispatch }, { boardId, limit }) {
+    if (!state.maxMore && !state.inProgress) {
+      state.inProgress = true;
+      try {
+        let more = await axios.get(
+          "more/boards/" +
+            boardId +
+            "?limit=" +
+            limit +
+            "&offset=" +
+            state.offset
+        );
+        state.inProgress = false;
+        state.offset += 8;
+        commit("setMoreLike", more.data);
+      } catch (error) {
+        let remaining = state.generatedCount - state.offset;
+        state.inProgress = false;
+        if (state.generating) {
+          setTimeout(() => {
+            dispatch("moreLike", { boardId: boardId, limit: 8 });
+          }, 1000);
+        } else if (remaining > 0) {
+          console.log("remaining ", remaining);
+          dispatch("moreLike", { boardId: boardId, limit: remaining });
+        } else {
+          state.maxMore = true;
+        }
+        console.log(error);
+      }
+    }
   },
   getFullSection({ commit }, { boardId, sectionId }) {
     let token = localStorage.getItem("userToken");
