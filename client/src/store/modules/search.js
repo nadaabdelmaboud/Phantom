@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   pins: [],
-  people: [],
+  people: null,
   keys: [],
   myPins: [],
   boards: [],
@@ -60,8 +60,6 @@ const actions = {
         state.inProgress = false;
         state.offset += 10;
         commit("setSearchPins", pins.data);
-        console.log(pins.data);
-        console.log(state.pins);
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
