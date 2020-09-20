@@ -1,25 +1,87 @@
 import axios from "axios";
 
 const state = {
-  recentSearch: null,
-  suggestions: null
+  pins: [],
+  people: [],
+  keys: [],
+  myPins: [],
+  boards: [],
+  offset: 0,
+  inProgress: false,
+  totalResult: 50,
+  endResult: false
 };
 
 const mutations = {
-  setRecentSearch(state, payload) {
-    state.recentSearch = payload;
+  setSearchPins(state, pins) {
+    pins.forEach(pin => {
+      state.pins.push(pin);
+    });
   },
-  setSearchSuggestions(state, payload) {
-    state.suggestions = payload;
+  setSearchPeople(state, payload) {
+    state.people = payload;
+  },
+  setKeys(state, payload) {
+    state.keys = payload;
+  },
+  setSearchMyPins(state, payload) {
+    state.myPins = payload;
+  },
+  setSearchBoards(state, payload) {
+    state.boards = payload;
+  },
+  resetOffset(state) {
+    state.offset = 0;
+    state.pins = [];
+    state.people = [];
+    state.myPins = [];
+    state.boards = [];
   }
 };
 
 const actions = {
-  getRecentSearch({ commit }) {
+  async searchPins({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let pins = await axios.get(
+          "/search/allPins?limit=" +
+            10 +
+            "&offset=" +
+            state.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
+          }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchPins", pins.data);
+        console.log(pins.data);
+        console.log(state.pins);
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchPins", { name: payload.name });
+        } else {
+          state.endReuslt = true;
+        }
+      }
+    }
+  },
+  searchMyPins({ commit }, payload) {
     axios
       .get(
-        "/search/recentSearch",
-        {},
+        "/search/myPins?limit=" +
+          payload.limit +
+          "&offset=" +
+          payload.offset +
+          "&name=" +
+          payload.name,
         {
           headers: {
             Authorization: localStorage.getItem("userToken")
@@ -27,23 +89,21 @@ const actions = {
         }
       )
       .then(response => {
-        commit("setRecentSearch", response.data.recentSearch);
+        commit("setSearchMyPins", response.data);
       })
       .catch(error => {
         console.log(error);
       });
   },
-  searchPins({ commit }, payload) {
+  searchPeople({ commit }, payload) {
     axios
       .get(
-        "/search/allPins?limit=" +
+        "/search/people?limit=" +
           payload.limit +
           "&offset=" +
           payload.offset +
           "&name=" +
-          payload.name +
-          "&recentSearch=" +
-          payload.recentSearch,
+          payload.name,
         {
           headers: {
             Authorization: localStorage.getItem("userToken")
@@ -51,7 +111,43 @@ const actions = {
         }
       )
       .then(response => {
-        commit("setSearchSuggestions", response.data);
+        commit("setSearchPeople", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  searchBoards({ commit }, payload) {
+    axios
+      .get(
+        "/search/board?limit=" +
+          payload.limit +
+          "&offset=" +
+          payload.offset +
+          "&name=" +
+          payload.name,
+        {
+          headers: {
+            Authorization: localStorage.getItem("userToken")
+          }
+        }
+      )
+      .then(response => {
+        commit("setSearchBoards", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  searchKeywords({ commit }, payload) {
+    axios
+      .get("/search/getkeys?name=" + payload, {
+        headers: {
+          Authorization: localStorage.getItem("userToken")
+        }
+      })
+      .then(response => {
+        commit("setKeys", response.data);
       })
       .catch(error => {
         console.log(error);

@@ -69,9 +69,6 @@ const mutations = {
   toggleSavePinPopUp(state) {
     state.savePinPopUp = !state.savePinPopUp;
   },
-  toggleSearchWindow(state) {
-    state.searchWindow = !state.searchWindow;
-  },
   toggleSearchSuggestions(state) {
     state.searchSuggestions = !state.searchSuggestions;
   },

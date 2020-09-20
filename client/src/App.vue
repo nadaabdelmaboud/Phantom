@@ -7,9 +7,10 @@
 <script>
 import { initializeFirebase } from "../src/messaging/init";
 import axios from "axios";
+import { default as masonryGrid } from "./mixins/masonryGrid";
 export default {
   name: "App",
-  data: function() {},
+  mixins: [masonryGrid],
   created() {
     let token = localStorage.getItem("userToken");
     if (token) {
@@ -21,7 +22,7 @@ export default {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
-        ) <= 1
+        ) <= 2
       ) {
         if (this.$route.path.includes("/More")) {
           console.log("scroloo");
@@ -30,9 +31,17 @@ export default {
             boardId: boardId,
             limit: 8
           });
+        } else if (this.$route.path.includes("allpins")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchPins", {
+            name: name
+          });
         }
       }
     });
+    setInterval(() => {
+      this.waitForImages();
+    }, 1000);
   },
   methods: {
     checkLists(event) {

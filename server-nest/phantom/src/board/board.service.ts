@@ -151,6 +151,7 @@ export class BoardService {
         }
       }
     }
+    await this.boardModel.ensureIndexes()
     return true;
   }
   async sortBoardsAtoZ(userId) {

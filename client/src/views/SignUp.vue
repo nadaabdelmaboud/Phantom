@@ -111,7 +111,7 @@ export default {
           password: this.password,
           birthday: this.birthDate,
           lastName: this.lname,
-          bio: this.about,
+          bio: this.about ? this.about : undefined,
           email: this.email
         });
       }

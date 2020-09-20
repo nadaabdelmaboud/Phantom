@@ -17,8 +17,6 @@ import { last } from 'rxjs/operators';
 
 @Injectable()
 export class RecommendationService {
-  followExist: Object;
-  offsetArr: Array<number>;
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
@@ -28,10 +26,7 @@ export class RecommendationService {
     private NotificationService: NotificationService,
 
     private ValidationService: ValidationService,
-  ) {
-    this.followExist = {};
-    this.offsetArr = [];
-  }
+  ) {}
 
   async getHomeFeed(userId, limit: number, offset: number) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
@@ -260,11 +255,22 @@ export class RecommendationService {
   }
   async topicRecommendation(topicName, userId) {
     let followers = [];
-    let topic = await this.topicModel.findOne({ name: topicName });
+    let topic = await this.topicModel
+      .findOne({ name: topicName }, { recommendedUsers: 1 })
+      .lean();
+
     for (let i = 0; i < topic.recommendedUsers.length; i++) {
       if (String(topic.recommendedUsers[i]) != String(userId)) {
-        let user = await this.userModel.findById(topic.recommendedUsers[i]);
-        followers.push(user);
+        let recomUser = await this.userModel
+          .aggregate()
+          .match({ _id: topic.recommendedUsers[i] })
+          .project({
+            followers: { $size: '$followers' },
+            profileImage: 1,
+            firstName: 1,
+            lastName: 1,
+          });
+        followers.push(recomUser[0]);
       }
     }
     followers = followers.sort(function(a, b) {
@@ -281,9 +287,17 @@ export class RecommendationService {
   async trendingRecommendation(userId) {
     let followers = [];
     let topUsers = await this.userModel
-      .find({})
+      .aggregate()
+      .match({})
+      .project({
+        followers: { $size: '$followers' },
+        profileImage: 1,
+        firstName: 1,
+        lastName: 1,
+      })
       .sort({ followers: -1 })
       .limit(100);
+
     for (let i = 0; i < topUsers.length; i++) {
       if (String(topUsers[i]._id) != String(userId)) {
         followers.push({
@@ -296,128 +310,204 @@ export class RecommendationService {
   }
   async followAllRecommendation(userId) {
     let followers = [];
-    let user = await this.UserService.getUserById(userId);
+    let user = await this.userModel.findById(userId, {
+      history: 1,
+      followingTopics: 1,
+      following: 1,
+    });
     if (!user) throw new Error('no such user');
-    this.followExist = {};
+    let followExist = {};
+    let historyTopics = [];
+    let followTopics = [];
+    let topicTopics = [];
     let topics = [];
-    let historyLimit: number = -1;
-    let followTopicsLimit: number;
-    let followUsersLimit: number;
+
     console.log('here 1');
     for (let i = user.history.length - 1; i >= 0; i--) {
       if (!topics.includes(user.history[i].topic)) {
+        historyTopics.push(user.history[i].topic);
         topics.push(user.history[i].topic);
-        historyLimit++;
       }
     }
     console.log('here 2');
-    followTopicsLimit = historyLimit;
-    for (let i = 0; i < user.followingTopics.length; i++) {
-      let topic = await this.topicModel.findById(user.followingTopics[i]);
+    for (let i = user.followingTopics.length - 1; i >= 0; i--) {
+      let topic = await this.topicModel.findById(user.followingTopics[i], {
+        name: 1,
+      });
       if (!topics.includes(topic.name)) {
         topics.push(topic.name);
-        followTopicsLimit++;
+        topicTopics.push(topic.name);
       }
     }
     console.log('here 3');
-    followUsersLimit = followTopicsLimit;
-    for (let i = 0; i < user.following.length; i++) {
-      let follower = await this.userModel.findById(user.following[i]);
+    for (let i = user.following.length - 1; i >= 0; i--) {
+      let follower = await this.userModel.findById(user.following[i], {
+        followingTopics: 1,
+      });
       for (let j = 0; j < follower.followingTopics.length; j++) {
-        let topic = await this.topicModel.findById(follower.followingTopics[j]);
+        let topic = await this.topicModel.findById(
+          follower.followingTopics[j],
+          { name: 1 },
+        );
         if (!topics.includes(topic.name)) {
           topics.push(topic.name);
-          followUsersLimit++;
+          followTopics.push(topic.name);
         }
       }
     }
     console.log('here 4');
-    for (let i = 0; i <= historyLimit; i++) {
-      let topic = await this.topicModel.findOne({ name: String(topics[i]) });
-      let count: number = 0;
-      for (let j = 0; j < topic.recommendedUsers.length; j++) {
+    let limit: number = topics.length < 5 ? 20 : 10;
+    for (let i = 0; i < historyTopics.length; i++) {
+      let topic = await this.topicModel.findOne(
+        {
+          name: String(historyTopics[i]),
+        },
+        { recommendedUsers: 1 },
+      );
+      let start = Math.floor(
+        Math.random() * Number(topic.recommendedUsers.length) + 1,
+      );
+      if (start + limit >= Number(topic.recommendedUsers.length)) {
+        start = start - limit;
+        if (start < 0) {
+          start = 0;
+          if (start + limit >= Number(topic.recommendedUsers.length)) {
+            limit = topic.recommendedUsers.length;
+          }
+        }
+      }
+      for (let j = start; j < start + limit; j++) {
         if (
-          String(topic.recommendedUsers[j] != userId) &&
-          this.followExist[String(topic.recommendedUsers[j])] != true
+          String(topic.recommendedUsers[j]) != String(userId) &&
+          followExist[String(topic.recommendedUsers[j])] != true
         ) {
-          let recomUser = await this.userModel.findById(
-            topic.recommendedUsers[j],
-          );
+          let recomUser = await this.userModel
+            .aggregate()
+            .match({ _id: topic.recommendedUsers[j] })
+            .project({
+              followers: { $size: '$followers' },
+              profileImage: 1,
+              firstName: 1,
+              lastName: 1,
+            });
           followers.push({
-            user: recomUser,
+            user: recomUser[0],
             recommendType: 'based on your recent activity',
           });
-          count++;
-          this.followExist[String(topic.recommendedUsers[j])] = true;
-          if (count >= 20) {
-            break;
-          }
+          followExist[String(topic.recommendedUsers[j])] = true;
         }
       }
     }
     console.log('here 5');
-    for (let i = historyLimit + 1; i <= followTopicsLimit; i++) {
-      let topic = await this.topicModel.findOne({ name: String(topics[i]) });
-      let count: number = 0;
-      for (let j = 0; j < topic.recommendedUsers.length; j++) {
+    for (let i = 0; i < topicTopics.length; i++) {
+      let topic = await this.topicModel.findOne(
+        {
+          name: String(topicTopics[i]),
+        },
+        { recommendedUsers: 1 },
+      );
+      let start = Math.floor(
+        Math.random() * Number(topic.recommendedUsers.length) + 1,
+      );
+      if (start + limit >= Number(topic.recommendedUsers.length)) {
+        start = start - limit;
+        if (start < 0) {
+          start = 0;
+          if (start + limit >= Number(topic.recommendedUsers.length)) {
+            limit = topic.recommendedUsers.length;
+          }
+        }
+      }
+      for (let j = start; j < start + limit; j++) {
         if (
-          String(topic.recommendedUsers[j] != userId) &&
-          this.followExist[String(topic.recommendedUsers[j])] != true
+          String(topic.recommendedUsers[j]) != String(userId) &&
+          followExist[String(topic.recommendedUsers[j])] != true
         ) {
-          let recomUser = await this.userModel.findById(
-            topic.recommendedUsers[j],
-          );
+          let recomUser = await this.userModel
+            .aggregate()
+            .match({ _id: topic.recommendedUsers[j] })
+            .project({
+              followers: { $size: '$followers' },
+              profileImage: 1,
+              firstName: 1,
+              lastName: 1,
+            });
           followers.push({
-            user: recomUser,
+            user: recomUser[0],
             recommendType: 'based on your interest',
           });
-          count++;
-          this.followExist[String(topic.recommendedUsers[j])] = true;
-          if (count >= 20) {
-            break;
-          }
+          followExist[String(topic.recommendedUsers[j])] = true;
         }
       }
     }
     console.log('here 6');
-    for (let i = followTopicsLimit + 1; i <= followUsersLimit; i++) {
-      let topic = await this.topicModel.findOne({ name: String(topics[i]) });
-      let count: number = 0;
-      for (let j = 0; j < topic.recommendedUsers.length; j++) {
+    for (let i = 0; i <= followTopics.length; i++) {
+      let topic = await this.topicModel.findOne(
+        {
+          name: String(followTopics[i]),
+        },
+        { recommendedUsers: 1 },
+      );
+      let start = Math.floor(
+        Math.random() * Number(topic.recommendedUsers.length) + 1,
+      );
+      if (start + limit >= Number(topic.recommendedUsers.length)) {
+        start = start - limit;
+        if (start < 0) {
+          start = 0;
+          if (start + limit >= Number(topic.recommendedUsers.length)) {
+            limit = topic.recommendedUsers.length;
+          }
+        }
+      }
+      for (let j = start; j < start + limit; j++) {
         if (
-          String(topic.recommendedUsers[j] != userId) &&
-          this.followExist[String(topic.recommendedUsers[j])] != true
+          String(topic.recommendedUsers[j]) != String(userId) &&
+          followExist[String(topic.recommendedUsers[j])] != true
         ) {
-          let recomUser = await this.userModel.findById(
-            topic.recommendedUsers[j],
-          );
+          let recomUser = await this.userModel
+            .aggregate()
+            .match({ _id: topic.recommendedUsers[j] })
+            .project({
+              followers: { $size: '$followers' },
+              profileImage: 1,
+              firstName: 1,
+              lastName: 1,
+            });
           followers.push({
-            user: recomUser,
+            user: recomUser[0],
             recommendType: 'based on people you follow',
           });
-          count++;
 
-          this.followExist[String(topic.recommendedUsers[j])] = true;
-          if (count >= 20) {
-            break;
-          }
+          followExist[String(topic.recommendedUsers[j])] = true;
         }
       }
     }
     let topUsers = await this.userModel
-      .find({})
+      .aggregate()
+      .match({})
+      .project({
+        followers: { $size: '$followers' },
+        profileImage: 1,
+        firstName: 1,
+        lastName: 1,
+      })
       .sort({ followers: -1 })
       .limit(20);
+
     for (let i = 0; i < topUsers.length; i++) {
-      if (this.followExist[String(topUsers[i]._id)] != true) {
+      if (
+        String(topUsers[i]._id) != String(userId) &&
+        followExist[String(topUsers[i]._id)] != true
+      ) {
         followers.push({
           user: topUsers[i],
           recommendType: 'popular on phantom',
         });
-        this.followExist[String(topUsers[i]._id)] = true;
+        followExist[String(topUsers[i]._id)] = true;
       }
     }
-    followers = await this.shuffle(followers);
+
     return followers;
   }
   async pinMoreLike(userId, pinId) {

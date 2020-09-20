@@ -29,7 +29,6 @@
     <ChangePhotoPopUp v-if="changePhotoPopUp" />
     <LeavingResaonPopUp v-if="leavingPopUp" />
     <CloseAccountPopUp v-if="accountClosingPopup" />
-    <SearchWindow v-if="searchWindow" />
     <SearchSuggestions v-if="searchSuggestions" />
     <div class="toast" id="toastId">
       <img :src="getImage(cardImage)" alt="User Image" class="toastimage" />
@@ -185,7 +184,6 @@ import CountryPopUp from "../views/SignUpPopUps/CountryPopUp";
 import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
 import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
-import SearchWindow from "../components/Search/SearchWindow";
 import SearchSuggestions from "../components/Search/SearchSuggestions";
 import SavePin from "../components/SavePin";
 import ReportPin from "../components/ReportPin";
@@ -218,7 +216,6 @@ export default {
     ChangePhotoPopUp,
     LeavingResaonPopUp,
     CloseAccountPopUp,
-    SearchWindow,
     SearchSuggestions,
     SavePin,
     ReportPin,
@@ -261,7 +258,6 @@ export default {
       changePhotoPopUp: state => state.popUpsState.changePhotoPopUp,
       accountClosingPopup: state => state.popUpsState.accountClosingPopup,
       leavingPopUp: state => state.popUpsState.leavingPopUp,
-      searchWindow: state => state.popUpsState.searchWindow,
       searchSuggestions: state => state.popUpsState.searchSuggestions,
       showSavePin: state => state.popUpsState.savePinPopUp,
       showReportPin: state => state.popUpsState.reportPinPopUp,
