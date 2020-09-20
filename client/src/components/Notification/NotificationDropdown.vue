@@ -42,7 +42,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch("notifications/getNotifications");
+    this.$store.dispatch("notifications/getNotifications",false);
     this.$store.dispatch("user/updateUserSettings",{
       notificationCounter:0
     });

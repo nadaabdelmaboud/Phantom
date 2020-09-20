@@ -22,6 +22,9 @@ export default {
     imageId: {
       type: String
     },
+    pinId: {
+      type: String
+    },
     title: {
       type: String
     },
@@ -36,7 +39,7 @@ export default {
     toPage() {
       if (this.title == "your follower increase")
         this.$router.push("/User/" + this.followeId);
-      else this.$router.push("/User/" + this.pinId);
+      else this.$router.push("/PostPage/" + this.pinId);
       this.$store.commit("notifications/alterShow", false);
     }
   }

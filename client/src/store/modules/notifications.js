@@ -5,8 +5,6 @@ const state = {
     notifications: [],
     notificationCounter: 0
   },
-  pins: [],
-  boards: [],
   show: false
 };
 
@@ -25,30 +23,31 @@ const mutations = {
     state.notifications.notifications.reverse();
     state.notifications.notificationCounter = notifications.notificationCounter;
   },
-  setPins(state, pins) {
-    state.pins = pins;
-  },
-  setBoards(state, boards) {
-    state.boards = boards;
-  },
   alterShow(state, show) {
     if (show == false) state.show = show;
     else state.show = !state.show;
   },
   setCounter(state,add){
     if(!add)
-    state.notificationCounter=0;
+    state.notifications.notificationCounter=0;
     else
-    state.notificationCounter+=1;
+    {
+      console.log("nnn")
+      state.notifications.notificationCounter+=1;
+    }
   }
 };
 
 const actions = {
-  getNotifications({ commit }) {
+  getNotifications({ commit },inLogin) {
     axios
       .get("notifications/me")
       .then(response => {
-        commit("setNotifications", response.data);
+        let notifications= response.data
+        if(!inLogin){
+          notifications.notificationCounter=0;
+        }
+        commit("setNotifications", notifications);
       })
       .catch(error => {
         console.log(error);
@@ -61,14 +60,12 @@ const actions = {
     axios.get("me/pinsForYou");
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");
-    dispatch("getNotifications");
+    dispatch("getNotifications",true);
   }
 };
 
 const getters = {
   notifications: state => state.notifications,
-  pins: state => state.pins,
-  boards: state => state.boards,
   show: state => state.show
 };
 

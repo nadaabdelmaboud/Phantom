@@ -14,21 +14,21 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import Board from "../Board";
 
 export default {
   name: "NotificationPins",
   data: function() {
-    return {};
+    return {
+      boards:[]
+    };
   },
   components: {
     Board
   },
-  computed: {
-    ...mapGetters({
-      boards: "notifications/boards"
-    })
+  created(){
+    this.boards = localStorage.getItem("notificationBoards")
+    this.boards =JSON.parse(this.boards);
   }
 };
 </script>
