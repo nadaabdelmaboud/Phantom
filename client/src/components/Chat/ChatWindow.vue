@@ -164,12 +164,22 @@ export default {
             owner: false,
             message: data.message,
             date: data.date,
+            seen:false,
+            deliver:false,
+            last:true
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
             let msgBox = document.getElementsByClassName("msgBox")[0];
             msgBox.scrollTop = msgBox.scrollHeight;
           });
+
+          //if in same chat set as seen
+          this.socket.emit("seen", {
+          recieverId: this.chatWith.id,
+          senderId: this.myData._id,
+          messageId: data.messageId
+        });
         }
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
@@ -188,7 +198,7 @@ export default {
         this.socket.emit("delivered", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,
-          timeStamp: Date.now(),
+          messageId: data.messageId
         });
       });
     },
@@ -205,7 +215,7 @@ export default {
     },
     isTyping() {
       console.log("bnm");
-      if (this.currentMsg.length == 1) {
+      if (!this.typing) {
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,
@@ -214,7 +224,14 @@ export default {
     },
     deliveredListener() {
       this.socket.on("setDelivered", (data) => {
-        console.log(data);
+        if(data.senderId == this.chatWith.id)
+          this.$store.commit("setDeliver",data.messageId)
+      });
+    },
+    seenListener() {
+      this.socket.on("setSeen", (data) => {
+        if(data.senderId== this.chatWith.id)
+        this.$store.commit("setSeen",data.messageId)
       });
     },
   },
@@ -252,8 +269,10 @@ export default {
     this.messageListener();
     //typing
     this.typingLisener();
-    //
+    //delivered
     this.deliveredListener();
+    //seen
+    this.seenListener();
   },
   filters: {
     sliceMsg: function(value) {

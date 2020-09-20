@@ -3,7 +3,7 @@
     <img :src="getImage(imageId)" v-if="owner && last && seen" />
     <img :src="getUserImage()" v-if="!owner && last && seen" />
     <div class="status">
-      <i class="fa fa-check-circle" v-if="!seen"
+      <i class="fa fa-check-circle" v-if="owner && !seen"
       :class="{delivered:delivered}"></i>
     </div>
     <p class="msgText">
