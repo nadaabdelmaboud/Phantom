@@ -27,7 +27,7 @@
             <p class="title">This Pin is inspired by your recent activity</p>
             <hr />
             <ul>
-              <li>Download image</li>
+              <li @click="downloadImage">Download image</li>
               <li @click="showReportPin">Report Pin</li>
             </ul>
           </div>
@@ -172,6 +172,13 @@ export default {
     showReportPin() {
       this.$store.commit("homeCards/setCardId", this.postPageId);
       this.$store.commit("popUpsState/toggleReportPinPopUp");
+    },
+    downloadImage() {
+      this.$store.dispatch("homeCards/downloadImage", this.cardImage);
+      window.open(
+        "http://localhost:3000/api/download/" + this.cardImage,
+        "_blank"
+      );
     },
     async showSavePin(event) {
       event.preventDefault();
