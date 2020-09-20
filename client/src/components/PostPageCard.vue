@@ -79,9 +79,9 @@
             </div>
           </div>
           <div class="secondsection">
-            <div class="imageTitle">{{ this.postTitle }}</div>
+            <div class="imageTitle">{{ postTitle }}</div>
             <div class="imagedescription">
-              {{ this.postDescribtion }}
+              {{ postDescribtion }}
             </div>
             <div class="followuserbox">
               <div class="userimage">
@@ -1221,13 +1221,13 @@ export default {
       likeComment: state => state.postPage.likeComment,
       addCommentObject: state => state.postPage.addCommentObject,
       addReplyObject: state => state.postPage.addReplyObject,
-      pinType: state => state.homeCards.pinType
+      pinType: state => state.homeCards.pinType,
+      postTitle: state => state.homeCards.postTitle,
+      postDescribtion: state => state.homeCards.postDescribtion
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
       userImageId: "homeCards/userImageId",
-      postTitle: "homeCards/postTitle",
-      postDescribtion: "homeCards/postDescribtion",
       userFirstName: "homeCards/userFirstName",
       userLastName: "homeCards/userLastName",
       numberofFollowers: "homeCards/numberofFollowers",

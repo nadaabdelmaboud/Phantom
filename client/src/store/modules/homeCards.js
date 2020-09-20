@@ -33,9 +33,10 @@ const state = {
   showSavedPinInfo: false,
   showUnSaveBtn: false,
   showDeleteBtn: false,
-  boardId:"",
-  sectionId:"",
-  unsavePin:false
+  boardId: "",
+  sectionId: "",
+  unsavePin: false,
+  editpincase: false
 };
 
 const mutations = {
@@ -136,11 +137,17 @@ const mutations = {
   setshowDeleteBtn(state, value) {
     state.showDeleteBtn = value;
   },
-  setBoardId(state , id){
+  setBoardId(state, id) {
     state.boardId = id;
   },
-  setSectionId(state , id){
+  setSectionId(state, id) {
     state.sectionId = id;
+  },
+  unsavePin(state, value) {
+    state.unsavePin = value;
+  },
+  editPin(state, value) {
+    state.editpincase = value;
   }
 };
 
@@ -246,18 +253,25 @@ const actions = {
       .then(res => {
         commit("setPinType", res.data.type);
         commit("setChoosenBoardName", res.data.board);
-        commit("setBoardId",res.data.boardId);
-        commit("setSectionId",res.data.sectionId);
+        commit("setBoardId", res.data.boardId);
+        commit("setSectionId", res.data.sectionId);
       })
       .catch(error => {
         console.log(error);
       });
   },
-  unSavePinInSection({ commit }, {pinId,boardId,sectionId}) {
+  unSavePinInSection({ commit }, { pinId, boardId, sectionId }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
-      .delete("me/savedPins/" + pinId + "?sectionId=" + sectionId + "&boardId=" + boardId)
+      .delete(
+        "me/savedPins/" +
+          pinId +
+          "?sectionId=" +
+          sectionId +
+          "&boardId=" +
+          boardId
+      )
       .then(() => {
         commit("unsavePin", true);
       })
@@ -265,7 +279,7 @@ const actions = {
         console.log(error);
       });
   },
-  unSavePinInBoard({ commit }, {pinId,boardId}) {
+  unSavePinInBoard({ commit }, { pinId, boardId }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     axios
@@ -277,6 +291,30 @@ const actions = {
         console.log(error);
       });
   },
+  editSavedPin({ commit }, { pinId, info }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .put("me/savedPins/" + pinId, info)
+      .then(() => {
+        commit("editPin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  editCreatedPin({ commit }, { pinId, info }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .put("me/pins/" + pinId, info)
+      .then(() => {
+        commit("editPin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 };
 
 const getters = {

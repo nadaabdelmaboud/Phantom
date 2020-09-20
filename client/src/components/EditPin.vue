@@ -75,7 +75,7 @@
               <textarea
                 type="text"
                 placeholder="Tell us about this pin..."
-                id="inputFieldNote"
+                id="inputFieldDescription"
               ></textarea>
             </div>
           </div>
@@ -238,7 +238,8 @@ ul {
 .editDescribtion {
   margin-top: 10px;
 }
-#inputFieldNote {
+#inputFieldNote,
+#inputFieldDescription {
   resize: none;
   width: 80%;
   height: 20%;
@@ -377,14 +378,16 @@ export default {
       showUnSaveBtn: state => state.homeCards.showUnSaveBtn,
       showDeleteBtn: state => state.homeCards.showDeleteBtn,
       boardId: state => state.homeCards.boardId,
-      sectionId: state => state.homeCards.sectionId
+      sectionId: state => state.homeCards.sectionId,
+      chosenBoardId: state => state.boards.chosenBoardId,
+      chosenSectionId: state => state.boards.chosenSectionId
     })
   },
   async mounted() {
     this.$store.dispatch("boards/userBoards");
-    await this.$store.dispatch("homeCards/getPinType" , this.CardId);
-    console.log("this.boardId" , this.boardId);
-    console.log("this.sectionId" , this.sectionId)
+    await this.$store.dispatch("homeCards/getPinType", this.CardId);
+    console.log("this.boardId", this.boardId);
+    console.log("this.sectionId", this.sectionId);
   },
   methods: {
     closePopUp() {
@@ -393,22 +396,78 @@ export default {
     createBoardPopup() {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
-    editPin() {},
+    editPin() {
+      if (this.pinType == "saved") {
+        const noteField = document.getElementById("inputFieldNote");
+        let bId = null;
+        let sId = null;
+        let note = null;
+        if (noteField.value != "") note = noteField.value;
+        if (this.boardId != this.chosenBoardId) bId = this.chosenBoardId;
+        if (this.sectionId != this.chosenSectionId) sId = this.chosenSectionId;
+        let info = {
+          boardId: bId,
+          sectionId: sId,
+          note: note
+        };
+        this.$store.dispatch("homeCards/editSavedPin", {
+          pinId: this.CardId,
+          info: info
+        });
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+      } else if (this.pinType == "creator") {
+        const titleField = document.getElementById("inputFieldTitle");
+        const describtionField = document.getElementById(
+          "inputFieldDescription"
+        );
+        let bId = null;
+        let sId = null;
+        let titlePin = null;
+        let descriptionPin = null;
+        if (titleField.value != "") titlePin = titleField.value;
+        if (describtionField.value != "")
+          descriptionPin = describtionField.value;
+        if (this.boardId != this.chosenBoardId) bId = this.chosenBoardId;
+        if (this.sectionId != this.chosenSectionId) sId = this.chosenSectionId;
+        let info = {
+          boardId: bId,
+          sectionId: sId,
+          title: titlePin,
+          description: descriptionPin
+        };
+        if (titlePin != null)
+          this.$store.commit("homeCards/setpostTitle", titlePin);
+        if (descriptionPin != null)
+          this.$store.commit("homeCards/setpostDescribtion", descriptionPin);
+        this.$store.dispatch("homeCards/editCreatedPin", {
+          pinId: this.CardId,
+          info: info
+        });
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+      }
+    },
     deletePin() {
       this.$store.dispatch("homeCards/deletePin", this.CardId);
       this.$store.commit("popUpsState/toggleEditPinPopUp");
       this.$router.go(-1);
     },
     unSavePin() {
-     if(this.sectionId == "none"){
-       this.$store.dispatch("homeCards/unSavePinInBoard", {pinId:this.CardId,boardId:this.boardId});
-       this.$store.commit("popUpsState/toggleEditPinPopUp");
-       this.$router.go(-1);
-     }else{
-       this.$store.dispatch("homeCards/unSavePinInSection", {pinId:this.CardId,boardId:this.boardId,sectionId:this.sectionId});
-       this.$store.commit("popUpsState/toggleEditPinPopUp");
-       this.$router.go(-1);
-     }
+      if (this.sectionId == "none") {
+        this.$store.dispatch("homeCards/unSavePinInBoard", {
+          pinId: this.CardId,
+          boardId: this.boardId
+        });
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+        this.$router.go(-1);
+      } else {
+        this.$store.dispatch("homeCards/unSavePinInSection", {
+          pinId: this.CardId,
+          boardId: this.boardId,
+          sectionId: this.sectionId
+        });
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+        this.$router.go(-1);
+      }
     },
     chooseBoard(boardName, boardId, event) {
       const input = document.getElementById("inputField");
