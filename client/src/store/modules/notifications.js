@@ -34,6 +34,12 @@ const mutations = {
   alterShow(state, show) {
     if (show == false) state.show = show;
     else state.show = !state.show;
+  },
+  setCounter(state,add){
+    if(!add)
+    state.notificationCounter=0;
+    else
+    state.notificationCounter+=1;
   }
 };
 
@@ -56,16 +62,6 @@ const actions = {
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");
     dispatch("getNotifications");
-  },
-  resetCounter({ state }) {
-    axios
-      .put("me/update-notification-counter")
-      .then(() => {
-        state.notifications.notificationCounter = 0;
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }
 };
 

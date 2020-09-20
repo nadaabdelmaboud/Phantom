@@ -19,6 +19,7 @@ if (firebase.messaging.isSupported()) {
   const messaging = firebase.messaging();
   messaging.setBackgroundMessageHandler(function(payload) {
     console.log(' Received background message ', payload);
+   // this.$store.commit("notifications/setCounter",1);
     var notificationTitle = payload.data.title;
     var notificationOptions = {
       body: payload.data.body,

@@ -43,7 +43,10 @@ export default {
   },
   created() {
     this.$store.dispatch("notifications/getNotifications");
-    this.$store.dispatch("notifications/resetCounter");
+    this.$store.dispatch("user/updateUserSettings",{
+      notificationCounter:0
+    });
+    this.$store.commit("notifications/setCounter",0);
   }
 };
 </script>

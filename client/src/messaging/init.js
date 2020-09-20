@@ -25,14 +25,14 @@ export function initializeFirebase() {
     messaging = firebase.messaging();
     messaging.onMessage(payload => {
       console.log("Message received. ", payload);
-
+      this.$store.commit("notifications/setCounter",1);
       var notificationTitle = payload.data.title;
       var notificationOptions = {
         body: payload.data.body
       };
       new Notification(notificationTitle, notificationOptions);
     });
-    messaging
+    Notification
       .requestPermission()
       .then(() => {
         console.log("Permission granted");
