@@ -5,6 +5,9 @@
         Edit this Pin
       </h5>
       <div class="editContent">
+        <div class="pinImage">
+          <img :src="getImage(cardImage)" class="cardImg" alt="Card image" />
+        </div>
         <div class="box">
           <div class="chooseBoard">
             <div class="boards">
@@ -85,9 +88,6 @@
             ></textarea>
           </div>
         </div>
-        <div class="pinImage">
-          <img :src="getImage(cardImage)" class="cardImg" alt="Card image" />
-        </div>
       </div>
       <div class="buttonsDiv">
         <div class="deletePin">
@@ -150,6 +150,7 @@
 }
 .chooseBoard {
   border-bottom: 1px solid rgba(148, 146, 146, 0.5);
+  margin-right: 10px;
   input {
     width: 100%;
     padding: 5px;
@@ -182,6 +183,9 @@
   i {
     padding-right: 7px;
   }
+}
+.boards {
+  margin-right: 20px;
 }
 .boardsList {
   overflow-y: auto;
@@ -281,8 +285,11 @@ textarea:focus {
 }
 @media screen and (max-width: 900px) {
   .editContent {
-    flex-flow: wrap-reverse;
+    flex-flow: wrap;
     justify-content: center;
+  }
+  .box {
+    width: 80%;
   }
   #inputField {
     margin-top: 30px;
@@ -302,6 +309,31 @@ textarea:focus {
 @media screen and (max-width: 550px) {
   .content {
     width: 95%;
+  }
+  .editContent {
+    height: 400px;
+  }
+  .createBoard {
+    width: 250px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .editContent {
+    height: 330px;
+  }
+  .createBoard {
+    width: 220px;
+  }
+}
+@media screen and (max-width: 280px) {
+  .createBoard {
+    width: 190px;
+  }
+  .optionsDiv {
+    margin-right: 16px;
+  }
+  .deletePin {
+    margin-left: 10px;
   }
 }
 </style>
