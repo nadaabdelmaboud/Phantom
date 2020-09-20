@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   pins: [],
-  people: null,
+  people: [],
   keys: [],
   myPins: [],
   boards: [],
@@ -18,8 +18,10 @@ const mutations = {
       state.pins.push(pin);
     });
   },
-  setSearchPeople(state, payload) {
-    state.people = payload;
+  setSearchPeople(state, people) {
+    people.forEach(person => {
+      state.people.push(person);
+    });
   },
   setKeys(state, payload) {
     state.keys = payload;
@@ -93,27 +95,36 @@ const actions = {
         console.log(error);
       });
   },
-  searchPeople({ commit }, payload) {
-    axios
-      .get(
-        "/search/people?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
+  async searchPeople({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let people = await axios.get(
+          "/search/people?limit=" +
+            payload.limit +
+            "&offset=" +
+            payload.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
           }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchPeople", people.data);
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchPeople", { name: payload.name });
+        } else {
+          state.endReuslt = true;
         }
-      )
-      .then(response => {
-        commit("setSearchPeople", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    }
   },
   searchBoards({ commit }, payload) {
     axios

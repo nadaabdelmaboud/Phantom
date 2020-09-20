@@ -381,6 +381,36 @@ export default {
         offset: 0,
         name: this.search
       });
+    },
+    handleRoute() {
+      if (this.$route.path == "/") {
+        this.inFollowing = false;
+        this.inHome = true;
+        this.showFilter = false;
+      } else if (this.$route.path == "/following") {
+        this.inHome = false;
+        this.inFollowing = true;
+      } else if (this.$route.name == "SearchPins" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "All Pins";
+        this.search = this.$route.params.name;
+      } else if (this.$route.name == "SearchMyPins" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "My Pins";
+        this.search = this.$route.params.name;
+      } else if (this.$route.name == "SearchPeople" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "People";
+        this.search = this.$route.params.name;
+      } else if (this.$route.name == "SearchBoards" && this.isLoggedIn()) {
+        this.showFilter = true;
+        this.selectedFilter = "Boards";
+        this.search = this.$route.params.name;
+      } else {
+        this.inHome = false;
+        this.inFollowing = false;
+        this.showFilter = false;
+      }
     }
   },
   computed: {
@@ -391,30 +421,11 @@ export default {
   },
   watch: {
     $route: function() {
-      if (this.$route.path == "/") {
-        this.inFollowing = false;
-        this.inHome = true;
-      } else if (this.$route.path == "/following") {
-        this.inHome = false;
-        this.inFollowing = true;
-      } else if (this.$route.name == "SearchPins" && this.isLoggedIn()) {
-        this.showFilter = true;
-        this.selectedFilter = "All Pins";
-      } else if (this.$route.name == "SearchMyPins" && this.isLoggedIn()) {
-        this.showFilter = true;
-        this.selectedFilter = "My Pins";
-      } else if (this.$route.name == "SearchPeople" && this.isLoggedIn()) {
-        this.showFilter = true;
-        this.selectedFilter = "People";
-      } else if (this.$route.name == "SearchBoards" && this.isLoggedIn()) {
-        this.showFilter = true;
-        this.selectedFilter = "Boards";
-      } else {
-        this.inHome = false;
-        this.inFollowing = false;
-        this.showFilter = false;
-      }
+      this.handleRoute();
     }
+  },
+  mounted: function() {
+    this.handleRoute();
   }
 };
 </script>

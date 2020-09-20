@@ -1,10 +1,12 @@
 <template>
   <div class="user-card">
-    <img :src="getImage(imagId)" alt="User Photo" />
-    <p class="username">{{ name }}</p>
-    <p class="numbers">{{ boardsNum }} boards</p>
-    <p class="dot">.</p>
-    <p class="numbers">{{ followersNum }} followers</p>
+    <router-link :to="{ path: '/User/' + userID }">
+      <img :src="getImage(imagId)" alt="User Photo" />
+      <p class="username">{{ name }}</p>
+      <p class="numbers">{{ boardsNum }} boards</p>
+      <p class="dot">.</p>
+      <p class="numbers">{{ followersNum }} followers</p>
+    </router-link>
   </div>
 </template>
 
@@ -53,11 +55,18 @@ img {
   display: inline;
   font-weight: lighter;
   font-size: 12px;
+  padding: 3px;
 }
 
 .dot {
   font-weight: bold;
   display: inline;
-  font-size: 16px;
+  font-size: 18px;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  color: black;
 }
 </style>
