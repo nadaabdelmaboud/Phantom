@@ -32,7 +32,10 @@ const state = {
   showCreatedPinInfo: false,
   showSavedPinInfo: false,
   showUnSaveBtn: false,
-  showDeleteBtn: false
+  showDeleteBtn: false,
+  boardId:"",
+  sectionId:"",
+  unsavePin:false
 };
 
 const mutations = {
@@ -132,6 +135,12 @@ const mutations = {
   },
   setshowDeleteBtn(state, value) {
     state.showDeleteBtn = value;
+  },
+  setBoardId(state , id){
+    state.boardId = id;
+  },
+  setSectionId(state , id){
+    state.sectionId = id;
   }
 };
 
@@ -237,11 +246,37 @@ const actions = {
       .then(res => {
         commit("setPinType", res.data.type);
         commit("setChoosenBoardName", res.data.board);
+        commit("setBoardId",res.data.boardId);
+        commit("setSectionId",res.data.sectionId);
       })
       .catch(error => {
         console.log(error);
       });
-  }
+  },
+  unSavePinInSection({ commit }, {pinId,boardId,sectionId}) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .delete("me/savedPins/" + pinId + "?sectionId=" + sectionId + "&boardId=" + boardId)
+      .then(() => {
+        commit("unsavePin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  unSavePinInBoard({ commit }, {pinId,boardId}) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .delete("me/savedPins/" + pinId + "?boardId=" + boardId)
+      .then(() => {
+        commit("unsavePin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
 };
 
 const getters = {
