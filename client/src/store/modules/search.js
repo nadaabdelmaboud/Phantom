@@ -29,8 +29,10 @@ const mutations = {
   setSearchMyPins(state, payload) {
     state.myPins = payload;
   },
-  setSearchBoards(state, payload) {
-    state.boards = payload;
+  setSearchBoards(state, boards) {
+    boards.forEach(board => {
+      state.boards.push(board);
+    });
   },
   resetOffset(state) {
     state.offset = 0;
@@ -126,27 +128,36 @@ const actions = {
       }
     }
   },
-  searchBoards({ commit }, payload) {
-    axios
-      .get(
-        "/search/board?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
+  async searchBoards({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let boards = await axios.get(
+          "/search/board?limit=" +
+            payload.limit +
+            "&offset=" +
+            payload.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
           }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchBoards", boards.data);
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchBoards", { name: payload.name });
+        } else {
+          state.endReuslt = true;
         }
-      )
-      .then(response => {
-        commit("setSearchBoards", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    }
   },
   searchKeywords({ commit }, payload) {
     axios

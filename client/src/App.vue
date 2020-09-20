@@ -41,6 +41,11 @@ export default {
           this.$store.dispatch("search/searchPeople", {
             name: name
           });
+        } else if (this.$route.path.includes("boards")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchBoards", {
+            name: name
+          });
         }
       }
     });
