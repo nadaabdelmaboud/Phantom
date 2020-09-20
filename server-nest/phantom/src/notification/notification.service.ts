@@ -137,7 +137,7 @@ export class NotificationService {
 
 
     for (let i = 0; i < followedUser.offlineNotifications.length; i++) {
-      notificationData[i].data.time = undefined;
+      //  notificationData[i].data.time = undefined;
       if (followedUser.offlineNotifications[i].data)
         if (
           followedUser.offlineNotifications[i].data.title == 'your follower increase ' &&
@@ -152,7 +152,7 @@ export class NotificationService {
     notificationData = followedUser.notifications;
 
     for (let i = 0; i < followedUser.notifications.length; i++) {
-      notificationData[i].data.time = undefined;
+      // notificationData[i].data.time = undefined;
       if (followedUser.notifications[i].data)
         if (
           followedUser.notifications[i].data.title == 'your follower increase ' &&
@@ -359,7 +359,7 @@ export class NotificationService {
       ownerUser.offlineNotifications = [];
 
     for (let i = 0; i < notificationData.length; i++) {
-      notificationData[i].data.time = undefined;
+      //notificationData[i].data.time = undefined;
       if (notificationData[i].data)
         if (
           notificationData[i].data.userId == reactUser._id &&
@@ -367,7 +367,7 @@ export class NotificationService {
           notificationData[i].data.title == react + ' React on your pin'
         ) {
           ownerUser.offlineNotifications.splice(i, 1);
-          break;
+          i--;
           // console.log(550);
         }
     }
@@ -380,7 +380,7 @@ export class NotificationService {
 
     //  console.log(notificationData.length)
     for (let i = 0; i < notificationData.length; i++) {
-      notificationData[i].data.time = undefined;
+      //   notificationData[i].data.time = undefined;
       // console.log('in for now');
       if (notificationData[i].data)
         if (
@@ -389,7 +389,7 @@ export class NotificationService {
           notificationData[i].data.title == react + ' React on your pin'
         ) {
           ownerUser.notifications.splice(i, 1);
-          break;
+          i--;
           // console.log(550);
         }
       //     console.log('after if ');
