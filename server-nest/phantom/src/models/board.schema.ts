@@ -8,8 +8,8 @@ export const Board = new Schema({
   startDate: String,
   endDate: String,
   status: String,
-  topic: String,
-  description: String,
+  topic: { type: String, index: true },
+  description: { type: String, index: true },
   personalization: Boolean,
   creator: {
     firstName: String,

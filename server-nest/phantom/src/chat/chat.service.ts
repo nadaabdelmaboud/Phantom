@@ -57,19 +57,16 @@ export class ChatService {
       throw new Error('not mongoose id');
     let chat = await this.chatModel.find({ usersIds: userId }, 'usersIds lastMessage', { sort: { 'lastMessage.date': -1 } });
     let arr = []
+    let result = []
     chat.map(conv => {
       conv.usersIds.map(user => {
         if (String(user) != String(userId))
           arr.push(user)
       })
     })
-    let users = await this.userModel.find({ _id: { $in: arr } }, 'profileImage userName');
-    return users.map((x, index) => {
-      return {
-        _id: x._id, profileImage: x.profileImage, userName: x.userName,
-        lastMessage: chat[index].lastMessage
-      }
-    })
+    for (let i = 0; i < arr.length; i++)
+      result.push({ ...await this.userModel.findOne({ _id: arr[i] }, 'profileImage userName').lean(), lastMessage: chat[i].lastMessage })
+    return result
   }
   async deliver(userId: String, messageId: string, isDelivered: boolean) {
 

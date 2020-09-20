@@ -20,7 +20,8 @@ export class SearchService {
       sort: true,
     });
     let result = searcher.search(name);
-    return this.ValidationService.limitOffset(limit, offset, result);
+    let limitOffsetResult = this.ValidationService.limitOffset(limit, offset, result);
+    return {result: limitOffsetResult, length: result.length}
   }
   async getAllPins(name, limit, offset) {
     let pin = await this.pinModel.find({}, 'title note imageId').lean();
@@ -36,7 +37,7 @@ export class SearchService {
   async addToRecentSearch(userId, name) {
     let user = await this.userModel.findByIdAndUpdate(userId, { $pull: { recentSearch: name } });
     if (user.recentSearch.length >= 5) {
-      user.recentSearch.slice(0,4);
+      user.recentSearch = user.recentSearch.slice(0, 4);
       await user.save()
     }
     return await this.userModel.findByIdAndUpdate(userId, { $push: { recentSearch: name } }).lean();
@@ -54,25 +55,23 @@ export class SearchService {
 
   }
   async getKeys(name: string) {
-    await this.pinModel.createIndexes();
-    let keysPin = await this.pinModel.find(
+    await this.userModel.syncIndexes()
+    let keysPin = await this.pinModel.aggregate(
+      [{ $addFields: { results: { $regexMatch: { input: "$category", regex: /f/ } } } }]).limit(5)
+    if (keysPin.length > 0)
+      return keysPin.map(pin => {
+        return { name: pin.title }
+      });
+    let keysBoard = await this.boardModel.find(
       {
         $text: { $search: name },
       },
-      'title',
-    ).limit(5);
-    if (keysPin.length < 5) {
-      await this.boardModel.createIndexes();
-      let keysBoard = await this.boardModel.find(
-        {
-          $text: { $search: name },
-        },
-        'name',
-      ).limit(5);
+      { name: 1, _id: 0 },
+    ).limit(5).lean();
+    if (keysBoard.length > 0)
       return keysBoard;
-    }
-    return keysPin;
-
+    let KeysPeople = []
+    return KeysPeople
   }
   async getRecentSearch(userId) {
     let user = await this.userModel.findById(userId, 'recentSearch')
