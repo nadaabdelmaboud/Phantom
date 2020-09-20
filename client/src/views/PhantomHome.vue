@@ -30,7 +30,7 @@
     <LeavingResaonPopUp v-if="leavingPopUp" />
     <CloseAccountPopUp v-if="accountClosingPopup" />
     <SearchSuggestions v-if="searchSuggestions" />
-    <div class="toast" id="toastId">
+    <div class="toast" id="pinToastId">
       <img :src="getImage(cardImage)" alt="User Image" class="toastimage" />
       <div class="userinfo">
         <div id="toastmessage">Saved to</div>
@@ -233,8 +233,8 @@ export default {
         this.chat = true;
       }
     },
-    showToast() {
-      var mytoast = document.getElementById("toastId");
+    showPinToast() {
+      var mytoast = document.getElementById("pinToastId");
       clearTimeout(mytoast.hideTimeout);
       mytoast.className = "toast toast--visible";
       mytoast.hideTimeout = setTimeout(() => {
@@ -274,7 +274,7 @@ export default {
     showToastState() {
       if (this.showToastState == true) {
         console.log("phantom home boardname", this.ChoosenBoardName);
-        this.showToast();
+        this.showPinToast();
         this.$store.commit("homeCards/setShowToastState", false);
       }
     }

@@ -9,7 +9,7 @@
       <div class="box">
         <div class="contentbox">
           <div id="navbar">
-            <button class="save-post" id="saveImage">
+            <button class="save-post" id="saveImage" @click="savePin">
               Save
             </button>
             <button
@@ -1184,6 +1184,15 @@ export default {
         this.$store.commit("homeCards/setCardImageId", this.postImage);
         this.$store.commit("popUpsState/toggleEditPinPopUp");
       }
+    },
+    async savePin(event) {
+      event.preventDefault();
+      this.$store.commit("homeCards/setCardImageId", this.postImage);
+      this.$store.commit("homeCards/setCardId", this.pinId);
+      await this.$store.dispatch("homeCards/getPinType", this.pinId);
+      if (this.pinType == "saved" || this.pinType == "creator")
+        this.$store.commit("homeCards/setShowToastState", true);
+      else this.$store.commit("popUpsState/toggleSavePinPopUp");
     }
   },
   created: function() {
