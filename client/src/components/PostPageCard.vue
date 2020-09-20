@@ -12,6 +12,14 @@
             <button class="save-post" id="saveImage">
               Save
             </button>
+            <button
+              class="edit-icon"
+              id="editIcon"
+              v-if="pinType == 'saved' || pinType == 'creator'"
+              @click="editPin"
+            >
+              <i class="fa fa-pencil" id="edit-icon"></i>
+            </button>
             <button class="heart-icon" id="heartIcon" @click="showReactsList">
               <i class="fa fa-heart" id="heart-icon"></i>
             </button>
@@ -434,6 +442,19 @@ button:focus {
   }
   &:focus {
     color: white;
+  }
+}
+#edit-icon {
+  color: black;
+  font-size: 20px;
+}
+.edit-icon {
+  @include circleButtons;
+  background: transparent;
+  height: 40px;
+  width: 40px;
+  &:hover {
+    background-color: $lightgrey;
   }
 }
 .heart-icon {
@@ -1144,6 +1165,19 @@ export default {
         showReplies.style.display = "none";
         typingReply.style.display = "none";
       }
+    },
+    editPin() {
+      if (this.pinType == "saved") {
+        this.$store.commit("homeCards/setSavedPinInfo", true);
+        this.$store.commit("homeCards/setCreatedPinInfo", false);
+        this.$store.commit("homeCards/setCardImageId", this.postImage);
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+      } else if (this.pinType == "creator") {
+        this.$store.commit("homeCards/setCreatedPinInfo", true);
+        this.$store.commit("homeCards/setSavedPinInfo", false);
+        this.$store.commit("homeCards/setCardImageId", this.postImage);
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+      }
     }
   },
   created: function() {
@@ -1180,7 +1214,8 @@ export default {
       pinComments: state => state.postPage.pinComments,
       likeComment: state => state.postPage.likeComment,
       addCommentObject: state => state.postPage.addCommentObject,
-      addReplyObject: state => state.postPage.addReplyObject
+      addReplyObject: state => state.postPage.addReplyObject,
+      pinType: state => state.homeCards.pinType
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",

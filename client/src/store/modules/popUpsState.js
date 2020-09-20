@@ -17,7 +17,7 @@ const state = {
   savePinPopUp: false,
   searchWindow: false,
   searchSuggestions: false,
-  editPinPopUp: true
+  editPinPopUp: false
 };
 
 const mutations = {

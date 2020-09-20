@@ -29,7 +29,7 @@ const state = {
   ChoosenBoardName: "",
   showToastState: false,
   pinType: "",
-  showCreatedPinInfo: true,
+  showCreatedPinInfo: false,
   showSavedPinInfo: false
 };
 

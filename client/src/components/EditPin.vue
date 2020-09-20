@@ -355,7 +355,8 @@ export default {
       cardImage: state => state.homeCards.cardImageId,
       userBoards: state => state.boards.userBoards,
       showCreatedPinInfo: state => state.homeCards.showCreatedPinInfo,
-      showSavedPinInfo: state => state.homeCards.showSavedPinInfo
+      showSavedPinInfo: state => state.homeCards.showSavedPinInfo,
+      pinType: state => state.homeCards.pinType
     })
   },
   mounted() {
