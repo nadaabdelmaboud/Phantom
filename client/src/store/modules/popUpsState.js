@@ -16,7 +16,8 @@ const state = {
   reportPinPopUp: false,
   savePinPopUp: false,
   searchWindow: false,
-  searchSuggestions: false
+  searchSuggestions: false,
+  editPinPopUp: true
 };
 
 const mutations = {
@@ -73,6 +74,9 @@ const mutations = {
   },
   toggleSearchSuggestions(state) {
     state.searchSuggestions = !state.searchSuggestions;
+  },
+  toggleEditPinPopUp(state) {
+    state.editPinPopUp = !state.editPinPopUp;
   }
 };
 export default {

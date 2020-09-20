@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <EditPin v-if="editPinPopUp" />
     <ReportPin v-if="showReportPin" />
     <SavePin v-if="showSavePin" />
     <CreateBoardPopup v-if="createBoard" />
@@ -188,6 +189,7 @@ import SearchWindow from "../components/Search/SearchWindow";
 import SearchSuggestions from "../components/Search/SearchSuggestions";
 import SavePin from "../components/SavePin";
 import ReportPin from "../components/ReportPin";
+import EditPin from "../components/EditPin";
 
 import { mapState } from "vuex";
 export default {
@@ -219,7 +221,8 @@ export default {
     SearchWindow,
     SearchSuggestions,
     SavePin,
-    ReportPin
+    ReportPin,
+    EditPin
   },
   methods: {
     toggleChat() {
@@ -264,7 +267,8 @@ export default {
       showReportPin: state => state.popUpsState.reportPinPopUp,
       showToastState: state => state.homeCards.showToastState,
       cardImage: state => state.homeCards.cardImageId,
-      ChoosenBoardName: state => state.homeCards.ChoosenBoardName
+      ChoosenBoardName: state => state.homeCards.ChoosenBoardName,
+      editPinPopUp: state => state.popUpsState.editPinPopUp
     })
   },
   watch: {

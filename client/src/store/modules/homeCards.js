@@ -28,7 +28,9 @@ const state = {
   reactThisPin: "",
   ChoosenBoardName: "",
   showToastState: false,
-  pinType: ""
+  pinType: "",
+  showCreatedPinInfo: true,
+  showSavedPinInfo: false
 };
 
 const mutations = {
@@ -116,6 +118,12 @@ const mutations = {
   },
   setPinType(state, type) {
     state.pinType = type;
+  },
+  setSavedPinInfo(state, value) {
+    state.showSavedPinInfo = value;
+  },
+  setCreatedPinInfo(state, value) {
+    state.showCreatedPinInfo = value;
   }
 };
 
