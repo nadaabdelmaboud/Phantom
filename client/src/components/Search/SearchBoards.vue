@@ -6,7 +6,7 @@
       :boardName="board.name"
       :boardId="board._id"
       :isPrivate="false"
-      :pinsCount="board.pins"
+      :pinsCount="board.pins.length"
       :pinsImages="board.coverImages"
       :isBoard="true"
       class="col-sm-2"

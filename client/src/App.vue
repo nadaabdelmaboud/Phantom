@@ -46,6 +46,11 @@ export default {
           this.$store.dispatch("search/searchBoards", {
             name: name
           });
+        } else if (this.$route.path.includes("mypins")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchMyPins", {
+            name: name
+          });
         }
       }
     });

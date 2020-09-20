@@ -26,8 +26,10 @@ const mutations = {
   setKeys(state, payload) {
     state.keys = payload;
   },
-  setSearchMyPins(state, payload) {
-    state.myPins = payload;
+  setSearchMyPins(state, myPins) {
+    myPins.forEach(pin => {
+      state.myPins.push(pin);
+    });
   },
   setSearchBoards(state, boards) {
     boards.forEach(board => {
@@ -63,7 +65,8 @@ const actions = {
         );
         state.inProgress = false;
         state.offset += 10;
-        commit("setSearchPins", pins.data);
+        commit("setSearchPins", pins.data.result);
+        state.totalResult = pins.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
@@ -75,37 +78,14 @@ const actions = {
       }
     }
   },
-  searchMyPins({ commit }, payload) {
-    axios
-      .get(
-        "/search/myPins?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
-          }
-        }
-      )
-      .then(response => {
-        commit("setSearchMyPins", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  },
-  async searchPeople({ state, commit, dispatch }, payload) {
+  async searchMyPins({ state, commit, dispatch }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
       try {
-        let people = await axios.get(
-          "/search/people?limit=" +
-            payload.limit +
+        let pins = await axios.get(
+          "/search/myPins?limit=10" +
             "&offset=" +
-            payload.offset +
+            state.offset +
             "&name=" +
             payload.name,
           {
@@ -116,7 +96,39 @@ const actions = {
         );
         state.inProgress = false;
         state.offset += 10;
-        commit("setSearchPeople", people.data);
+        commit("setSearchMyPins", pins.data.result);
+        state.totalResult = pins.data.length;
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchMyPins", { name: payload.name });
+        } else {
+          state.endReuslt = true;
+        }
+      }
+    }
+  },
+  async searchPeople({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let people = await axios.get(
+          "/search/people?limit=10" +
+            "&offset=" +
+            state.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
+          }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchPeople", people.data.result);
+        state.totalResult = people.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
@@ -147,7 +159,8 @@ const actions = {
         );
         state.inProgress = false;
         state.offset += 10;
-        commit("setSearchBoards", boards.data);
+        commit("setSearchBoards", boards.data.result);
+        state.totalResult = boards.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;

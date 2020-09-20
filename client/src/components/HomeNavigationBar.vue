@@ -31,9 +31,9 @@
     />
     <i
       class="fa fa-close clear-icon"
-      v-if="search"
       @click="clearSearch"
       :class="{ lefted_icon: this.showFilter }"
+      v-if="!isLoggedIn() && search"
     ></i>
     <div class="bar" v-if="showFilter"></div>
     <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>
@@ -338,11 +338,10 @@ export default {
         this.$store.commit("popUpsState/toggleSearchSuggestions");
     },
     searchEnter() {
+      this.$store.commit("search/resetOffset");
       if (this.search) {
-        this.$store.commit("search/resetOffset");
         this.$store.dispatch("search/searchPins", {
-          limit: 20,
-          offset: 0,
+          limit: 10,
           name: this.search
         });
         this.$router.replace(`/search/allpins/${this.search}`);
@@ -351,30 +350,31 @@ export default {
       }
     },
     searchPins() {
+      this.expandMenu = false;
       this.$router.replace(`/search/allpins/${this.search}`);
       this.$store.dispatch("search/searchPins", {
-        limit: 20,
-        offset: 0,
+        limit: 10,
         name: this.search
       });
     },
     searchMyPins() {
+      this.expandMenu = false;
       this.$router.replace(`/search/mypins/${this.search}`);
       this.$store.dispatch("search/searchMyPins", {
-        limit: 20,
-        offset: 0,
+        limit: 10,
         name: this.search
       });
     },
     searchPeople() {
+      this.expandMenu = false;
       this.$router.replace(`/search/people/${this.search}`);
       this.$store.dispatch("search/searchPeople", {
-        limit: 20,
-        offset: 0,
+        limit: 10,
         name: this.search
       });
     },
     searchBoards() {
+      this.expandMenu = false;
       this.$router.replace(`/search/boards/${this.search}`);
       this.$store.dispatch("search/searchBoards", {
         limit: 20,
