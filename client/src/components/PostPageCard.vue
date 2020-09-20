@@ -73,7 +73,7 @@
             </button>
             <div class="dropdownlist" id="dropDownlist" v-if="show">
               <ul>
-                <li>Download image</li>
+                <li @click="downloadImage">Download image</li>
                 <li @click="showReportPin">Report Pin</li>
               </ul>
             </div>
@@ -98,8 +98,9 @@
               <div class="followbutton">
                 <button
                   v-if="
-                    (this.isFollowed == false && firstTime == true) ||
-                      (followPinCreatorBtn == false && firstTime == false)
+                    ((this.isFollowed == false && firstTime == true) ||
+                      (followPinCreatorBtn == false && firstTime == false)) &&
+                      pinType != 'creator'
                   "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
@@ -108,8 +109,9 @@
                 </button>
                 <button
                   v-if="
-                    (this.isFollowed == true && firstTime == true) ||
-                      (followPinCreatorBtn == true && firstTime == false)
+                    ((this.isFollowed == true && firstTime == true) ||
+                      (followPinCreatorBtn == true && firstTime == false)) &&
+                      pinType != 'creator'
                   "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
@@ -1198,6 +1200,13 @@ export default {
     showReportPin() {
       this.$store.commit("homeCards/setCardId", this.pinId);
       this.$store.commit("popUpsState/toggleReportPinPopUp");
+    },
+    downloadImage() {
+      this.$store.dispatch("homeCards/downloadImage", this.postImage);
+      window.open(
+        "http://localhost:3000/api/download/" + this.postImage,
+        "_blank"
+      );
     }
   },
   created: function() {

@@ -36,7 +36,8 @@ const state = {
   boardId: "",
   sectionId: "",
   unsavePin: false,
-  editpincase: false
+  editpincase: false,
+  imageDownloaded: false
 };
 
 const mutations = {
@@ -148,6 +149,9 @@ const mutations = {
   },
   editPin(state, value) {
     state.editpincase = value;
+  },
+  imageDownloaded(state, value) {
+    state.imageDownloaded = value;
   }
 };
 
@@ -310,6 +314,18 @@ const actions = {
       .put("me/pins/" + pinId, info)
       .then(() => {
         commit("editPin", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  downloadImage({ commit }, imageId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
+    axios
+      .get("download/" + imageId)
+      .then(() => {
+        commit("imageDownloaded", true);
       })
       .catch(error => {
         console.log(error);
