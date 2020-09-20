@@ -397,15 +397,17 @@ export default {
     deletePin() {
       this.$store.dispatch("homeCards/deletePin", this.CardId);
       this.$store.commit("popUpsState/toggleEditPinPopUp");
-      this.$router.push("/");
+      this.$router.go(-1);
     },
     unSavePin() {
      if(this.sectionId == "none"){
        this.$store.dispatch("homeCards/unSavePinInBoard", {pinId:this.CardId,boardId:this.boardId});
        this.$store.commit("popUpsState/toggleEditPinPopUp");
+       this.$router.go(-1);
      }else{
        this.$store.dispatch("homeCards/unSavePinInSection", {pinId:this.CardId,boardId:this.boardId,sectionId:this.sectionId});
        this.$store.commit("popUpsState/toggleEditPinPopUp");
+       this.$router.go(-1);
      }
     },
     chooseBoard(boardName, boardId, event) {
