@@ -74,7 +74,7 @@
             <div class="dropdownlist" id="dropDownlist" v-if="show">
               <ul>
                 <li>Download image</li>
-                <li>Report Pin</li>
+                <li @click="showReportPin">Report Pin</li>
               </ul>
             </div>
           </div>
@@ -539,6 +539,7 @@ button:focus {
       font-size: 12px;
       padding: 10px;
       width: 100%;
+      cursor: pointer;
       transition: transform 0.5s;
       &:hover {
         transform: scale(1.1);
@@ -1193,6 +1194,10 @@ export default {
       if (this.pinType == "saved" || this.pinType == "creator")
         this.$store.commit("homeCards/setShowToastState", true);
       else this.$store.commit("popUpsState/toggleSavePinPopUp");
+    },
+    showReportPin() {
+      this.$store.commit("homeCards/setCardId", this.pinId);
+      this.$store.commit("popUpsState/toggleReportPinPopUp");
     }
   },
   created: function() {
