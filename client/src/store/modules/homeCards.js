@@ -30,7 +30,9 @@ const state = {
   showToastState: false,
   pinType: "",
   showCreatedPinInfo: false,
-  showSavedPinInfo: false
+  showSavedPinInfo: false,
+  showUnSaveBtn: false,
+  showDeleteBtn: false
 };
 
 const mutations = {
@@ -124,6 +126,12 @@ const mutations = {
   },
   setCreatedPinInfo(state, value) {
     state.showCreatedPinInfo = value;
+  },
+  setshowUnSaveBtn(state, value) {
+    state.showUnSaveBtn = value;
+  },
+  setshowDeleteBtn(state, value) {
+    state.showDeleteBtn = value;
   }
 };
 

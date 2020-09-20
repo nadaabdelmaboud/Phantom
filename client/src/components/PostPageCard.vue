@@ -1170,11 +1170,17 @@ export default {
       if (this.pinType == "saved") {
         this.$store.commit("homeCards/setSavedPinInfo", true);
         this.$store.commit("homeCards/setCreatedPinInfo", false);
+        this.$store.commit("homeCards/setshowUnSaveBtn", true);
+        this.$store.commit("homeCards/setshowDeleteBtn", false);
+        this.$store.commit("homeCards/setCardId", this.pinId);
         this.$store.commit("homeCards/setCardImageId", this.postImage);
         this.$store.commit("popUpsState/toggleEditPinPopUp");
       } else if (this.pinType == "creator") {
         this.$store.commit("homeCards/setCreatedPinInfo", true);
         this.$store.commit("homeCards/setSavedPinInfo", false);
+        this.$store.commit("homeCards/setshowUnSaveBtn", false);
+        this.$store.commit("homeCards/setshowDeleteBtn", true);
+        this.$store.commit("homeCards/setCardId", this.pinId);
         this.$store.commit("homeCards/setCardImageId", this.postImage);
         this.$store.commit("popUpsState/toggleEditPinPopUp");
       }

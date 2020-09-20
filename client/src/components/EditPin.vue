@@ -91,7 +91,20 @@
       </div>
       <div class="buttonsDiv">
         <div class="deletePin">
-          <button class="optionBtns" id="cancelButton" @click="deletePin">
+          <button
+            class="optionBtns"
+            id="unSaveButton"
+            v-if="showUnSaveBtn"
+            @click="unSavePin"
+          >
+            Unsave
+          </button>
+          <button
+            class="optionBtns"
+            id="cancelButton"
+            v-if="showDeleteBtn"
+            @click="deletePin"
+          >
             Delete
           </button>
         </div>
@@ -278,6 +291,9 @@ input:focus,
 textarea:focus {
   outline: 0 !important;
 }
+#unSaveButton {
+  width: 75px;
+}
 @media screen and (max-width: 990px) {
   .content {
     width: 70%;
@@ -353,10 +369,13 @@ export default {
   computed: {
     ...mapState({
       cardImage: state => state.homeCards.cardImageId,
+      CardId: state => state.homeCards.CardId,
       userBoards: state => state.boards.userBoards,
       showCreatedPinInfo: state => state.homeCards.showCreatedPinInfo,
       showSavedPinInfo: state => state.homeCards.showSavedPinInfo,
-      pinType: state => state.homeCards.pinType
+      pinType: state => state.homeCards.pinType,
+      showUnSaveBtn: state => state.homeCards.showUnSaveBtn,
+      showDeleteBtn: state => state.homeCards.showDeleteBtn
     })
   },
   mounted() {
@@ -370,7 +389,12 @@ export default {
       this.$store.commit("popUpsState/toggleCreateBoardPopup");
     },
     editPin() {},
-    deletePin() {},
+    deletePin() {
+      this.$store.dispatch("homeCards/deletePin", this.CardId);
+      this.$store.commit("popUpsState/toggleEditPinPopUp");
+      this.$router.push("/");
+    },
+    unSavePin() {},
     chooseBoard(boardName, boardId, event) {
       const input = document.getElementById("inputField");
       input.value = boardName;
