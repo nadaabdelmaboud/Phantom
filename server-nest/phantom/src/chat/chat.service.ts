@@ -18,28 +18,21 @@ export class ChatService {
 
     private ValidationService: ValidationService,
   ) { }
-  async sendMessage(senderId: String, recieverIds: String[], text: String, name: String) {
-    if (!this.ValidationService.checkMongooseID([senderId]))
-      throw new Error('not mongoose id');
-    if (!this.ValidationService.checkMongooseID(recieverIds))
+  async sendMessage(senderId: String, recieverIds: String[], text: String) {
+    if (!this.ValidationService.checkMongooseID([senderId,recieverIds[0]]))
       throw new Error('not mongoose id');
     let mess = { userId: senderId, message: text, date: new Date() }
     let ids = recieverIds.concat(senderId)
-    var user;
-    if (!name) {
-      user = await this.userModel.findById(senderId, 'userName');
-      name = user.userName;
-    }
-    let chat = await this.chatModel.findOneAndUpdate({ usersIds: { $all: ids } }, { $set: { lastMessage: mess } });
+    let chat = await this.chatModel.findOneAndUpdate({ usersIds: { $all: ids, $size: ids.length } }, { $set: { lastMessage: mess } });
     if (!chat) {
       chat = new this.chatModel({
-        usersIds: ids, lastMessage: mess, date: new Date(), name: name
+        usersIds: ids, lastMessage: mess, date: new Date()
       })
       await chat.save()
     }
     let message = new this.messageModel({ chatId: chat._id, senderId: senderId, message: text, date: mess.date })
     await message.save()
-    return { message, chat };
+    return message._id;
 
   }
   async getMessage(userIds: String[], senderId: String) {

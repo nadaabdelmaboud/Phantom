@@ -55,7 +55,7 @@ export class ChatController {
     @Body('message') message: string,
     @Body('name') name: string
   ) {
-    let messages = await this.ChatService.sendMessage(senderId, recieverId, message, name);
+    let messages = await this.ChatService.sendMessage(senderId, recieverId, message);
     if (messages) return messages;
     throw new NotFoundException();
   }

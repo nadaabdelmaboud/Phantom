@@ -9,8 +9,16 @@
       <div class="box">
         <div class="contentbox">
           <div id="navbar">
-            <button class="save-post" id="saveImage">
+            <button class="save-post" id="saveImage" @click="savePin">
               Save
+            </button>
+            <button
+              class="edit-icon"
+              id="editIcon"
+              v-if="pinType == 'saved' || pinType == 'creator'"
+              @click="editPin"
+            >
+              <i class="fa fa-pencil" id="edit-icon"></i>
             </button>
             <button class="heart-icon" id="heartIcon" @click="showReactsList">
               <i class="fa fa-heart" id="heart-icon"></i>
@@ -65,15 +73,15 @@
             </button>
             <div class="dropdownlist" id="dropDownlist" v-if="show">
               <ul>
-                <li>Download image</li>
-                <li>Report Pin</li>
+                <li @click="downloadImage">Download image</li>
+                <li @click="showReportPin">Report Pin</li>
               </ul>
             </div>
           </div>
           <div class="secondsection">
-            <div class="imageTitle">{{ this.postTitle }}</div>
+            <div class="imageTitle">{{ postTitle }}</div>
             <div class="imagedescription">
-              {{ this.postDescribtion }}
+              {{ postDescribtion }}
             </div>
             <div class="followuserbox">
               <div class="userimage">
@@ -90,8 +98,9 @@
               <div class="followbutton">
                 <button
                   v-if="
-                    (this.isFollowed == false && firstTime == true) ||
-                      (followPinCreatorBtn == false && firstTime == false)
+                    ((this.isFollowed == false && firstTime == true) ||
+                      (followPinCreatorBtn == false && firstTime == false)) &&
+                      pinType != 'creator'
                   "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
@@ -100,8 +109,9 @@
                 </button>
                 <button
                   v-if="
-                    (this.isFollowed == true && firstTime == true) ||
-                      (followPinCreatorBtn == true && firstTime == false)
+                    ((this.isFollowed == true && firstTime == true) ||
+                      (followPinCreatorBtn == true && firstTime == false)) &&
+                      pinType != 'creator'
                   "
                   class="followUserbutton"
                   @click="followUnfollowUser()"
@@ -436,6 +446,19 @@ button:focus {
     color: white;
   }
 }
+#edit-icon {
+  color: black;
+  font-size: 20px;
+}
+.edit-icon {
+  @include circleButtons;
+  background: transparent;
+  height: 40px;
+  width: 40px;
+  &:hover {
+    background-color: $lightgrey;
+  }
+}
 .heart-icon {
   @include circleButtons;
   background: transparent;
@@ -518,6 +541,7 @@ button:focus {
       font-size: 12px;
       padding: 10px;
       width: 100%;
+      cursor: pointer;
       transition: transform 0.5s;
       &:hover {
         transform: scale(1.1);
@@ -1144,6 +1168,45 @@ export default {
         showReplies.style.display = "none";
         typingReply.style.display = "none";
       }
+    },
+    editPin() {
+      if (this.pinType == "saved") {
+        this.$store.commit("homeCards/setSavedPinInfo", true);
+        this.$store.commit("homeCards/setCreatedPinInfo", false);
+        this.$store.commit("homeCards/setshowUnSaveBtn", true);
+        this.$store.commit("homeCards/setshowDeleteBtn", false);
+        this.$store.commit("homeCards/setCardId", this.pinId);
+        this.$store.commit("homeCards/setCardImageId", this.postImage);
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+      } else if (this.pinType == "creator") {
+        this.$store.commit("homeCards/setCreatedPinInfo", true);
+        this.$store.commit("homeCards/setSavedPinInfo", false);
+        this.$store.commit("homeCards/setshowUnSaveBtn", false);
+        this.$store.commit("homeCards/setshowDeleteBtn", true);
+        this.$store.commit("homeCards/setCardId", this.pinId);
+        this.$store.commit("homeCards/setCardImageId", this.postImage);
+        this.$store.commit("popUpsState/toggleEditPinPopUp");
+      }
+    },
+    async savePin(event) {
+      event.preventDefault();
+      this.$store.commit("homeCards/setCardImageId", this.postImage);
+      this.$store.commit("homeCards/setCardId", this.pinId);
+      await this.$store.dispatch("homeCards/getPinType", this.pinId);
+      if (this.pinType == "saved" || this.pinType == "creator")
+        this.$store.commit("homeCards/setShowToastState", true);
+      else this.$store.commit("popUpsState/toggleSavePinPopUp");
+    },
+    showReportPin() {
+      this.$store.commit("homeCards/setCardId", this.pinId);
+      this.$store.commit("popUpsState/toggleReportPinPopUp");
+    },
+    downloadImage() {
+      this.$store.dispatch("homeCards/downloadImage", this.postImage);
+      window.open(
+        "http://localhost:3000/api/download/" + this.postImage,
+        "_blank"
+      );
     }
   },
   created: function() {
@@ -1180,13 +1243,14 @@ export default {
       pinComments: state => state.postPage.pinComments,
       likeComment: state => state.postPage.likeComment,
       addCommentObject: state => state.postPage.addCommentObject,
-      addReplyObject: state => state.postPage.addReplyObject
+      addReplyObject: state => state.postPage.addReplyObject,
+      pinType: state => state.homeCards.pinType,
+      postTitle: state => state.homeCards.postTitle,
+      postDescribtion: state => state.homeCards.postDescribtion
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
       userImageId: "homeCards/userImageId",
-      postTitle: "homeCards/postTitle",
-      postDescribtion: "homeCards/postDescribtion",
       userFirstName: "homeCards/userFirstName",
       userLastName: "homeCards/userLastName",
       numberofFollowers: "homeCards/numberofFollowers",

@@ -17,8 +17,8 @@ export class SearchController {
     @Request() req,
     @Query('name') name: string,
     @Query('recentSearch') recentSearch: Boolean,
-    @Query('limit') limit: Number,
-    @Query('offset') offset: Number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
     if (recentSearch)
@@ -34,8 +34,8 @@ export class SearchController {
     @Request() req,
     @Query('name') name: string,
     @Query('recentSearch') recentSearch: Boolean,
-    @Query('limit') limit: Number,
-    @Query('offset') offset: Number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
     if (recentSearch)
@@ -52,8 +52,8 @@ export class SearchController {
     @Request() req,
     @Query('name') name: string,
     @Query('recentSearch') recentSearch: Boolean,
-    @Query('limit') limit: Number,
-    @Query('offset') offset: Number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
     if (recentSearch)
@@ -69,8 +69,8 @@ export class SearchController {
     @Request() req,
     @Query('recentSearch') recentSearch: Boolean,
     @Query('name') name: string,
-    @Query('limit') limit: Number,
-    @Query('offset') offset: Number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
     if (recentSearch)

@@ -14,22 +14,18 @@ export class ValidationService {
     }
     return 1;
   }
-  limitOffset(limit, offset, specificAlbums): any[] {
+  limitOffset(limit: number, offset: number, specificAlbums: (string | object)[]): any[] {
     let start = 0;
     let end = specificAlbums.length;
-    if (offset != undefined)
+    if (offset)
       if (offset >= 0 && offset <= specificAlbums.length)
         start = offset;
-    if (limit != undefined) {
-      if ((start + limit) > 0 && (start + limit) <= specificAlbums.length)
-        end = start + limit;
-    }
-    else {
+    let num = Number(start) + Number(limit)
+    if (!limit)
       limit = Number(process.env.LIMIT) ? Number(process.env.LIMIT) : 20;
-      if ((start + limit) > 0 && (start + limit) <= specificAlbums.length)
-        end = start + limit;
 
-    }
+    if (num > 0 && num <= specificAlbums.length)
+      end = Number(start) + Number(limit);
     return specificAlbums.slice(start, end);
   }
 }

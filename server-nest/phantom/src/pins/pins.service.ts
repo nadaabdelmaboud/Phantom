@@ -227,7 +227,7 @@ export class PinsService {
       createPinDto.board,
       createPinDto.section,
     );
-    await this.pinModel.ensureIndexes()
+    await this.pinModel.ensureIndexes();
     return {
       board: pin.board,
       section: pin.section,
@@ -242,6 +242,7 @@ export class PinsService {
       .findById(pinId, {
         creator: 1,
         board: 1,
+        section: 1,
       })
       .lean();
 
@@ -257,7 +258,9 @@ export class PinsService {
     if (!user) throw new NotFoundException({ message: 'user not found' });
     if (String(pin.creator.id) == String(userId)) {
       pinType = 'creator';
-      let board = await this.boardModel.findById(pin.board, { name: 1 }).lean();
+      let board = await this.boardModel
+        .findById(pin.board, { name: 1, sections: 1 })
+        .lean();
       if (board) {
         boardName = String(board.name);
         boardId = board._id;
@@ -276,7 +279,7 @@ export class PinsService {
         if (String(user.savedPins[k].pinId) == String(pin._id)) {
           pinType = 'saved';
           let board = await this.boardModel
-            .findById(user.savedPins[k].boardId, { name: 1 })
+            .findById(user.savedPins[k].boardId, { name: 1, sections: 1 })
             .lean();
           if (board) {
             boardName = String(board.name);

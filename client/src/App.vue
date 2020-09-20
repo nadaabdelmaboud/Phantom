@@ -36,6 +36,21 @@ export default {
           this.$store.dispatch("search/searchPins", {
             name: name
           });
+        } else if (this.$route.path.includes("people")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchPeople", {
+            name: name
+          });
+        } else if (this.$route.path.includes("boards")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchBoards", {
+            name: name
+          });
+        } else if (this.$route.path.includes("mypins")) {
+          let name = this.$route.params.name;
+          this.$store.dispatch("search/searchMyPins", {
+            name: name
+          });
         }
       }
     });
@@ -53,5 +68,3 @@ export default {
   }
 };
 </script>
-
-<style scoped></style>
