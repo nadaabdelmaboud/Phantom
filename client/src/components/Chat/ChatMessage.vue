@@ -1,10 +1,13 @@
 <template>
   <div class="msg" :class="{ mymsg: owner }">
-    <img :src="getImage(imageId)" v-if="owner" />
-    <img :src="getUserImage()" v-else />
-    <p>{{ msgText }} 
-     <i class="fa fa-check"></i>
-     <i class="fa fa-check"></i>
+    <img :src="getImage(imageId)" v-if="owner && last && seen" />
+    <img :src="getUserImage()" v-if="!owner && last && seen" />
+    <div class="status">
+      <i class="fa fa-check-circle" v-if="!seen"
+      :class="{delivered:delivered}"></i>
+    </div>
+    <p class="msgText">
+      {{ msgText }}
     </p>
   </div>
 </template>
@@ -20,16 +23,27 @@ export default {
   mixins: [getImage, getUserImage],
   props: {
     imageId: {
-      type: String
+      type: String,
     },
     msgText: {
-      type: String
+      type: String,
     },
     owner: {
-      type: Boolean
+      type: Boolean,
     },
-    timeStamp: {}
-  }
+    timeStamp: {
+
+    },
+    last:{
+      type:Boolean
+    },
+    seen:{
+      type:Boolean
+    },
+    delivered:{
+      type:Boolean
+    }
+  },
 };
 </script>
 
@@ -51,17 +65,36 @@ p {
   margin: 0;
   font-size: 16px;
   min-height: 48px;
-  padding: 10px 10px;
+  padding: 10px;
   background-color: $offWhite;
   border-radius: 32px;
   max-width: 70%;
   word-break: break-all;
+  position: relative;
+  color: $darkBlue;
 }
-.fa-check{
-  display: absolute;
-  right: 0;
+.fa-check {
+  position: absolute;
+  right: 12px;
+  font-size: 10px;
+  bottom: 12px;
+  font-weight: 200;
+  color: $lightBlue;
 }
-.fa-check:nth-child(2){
-  right: 5px;
+.fa-check-circle {
+  color: white;
+  background-color: $lightPink;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  padding-left: 1.5px;
+  margin: 6px 2px;
+}
+.delivered{
+  background-color: $darkBlue;
+}
+.status{
+  display: flex;
+  flex-direction: column-reverse;
 }
 </style>
