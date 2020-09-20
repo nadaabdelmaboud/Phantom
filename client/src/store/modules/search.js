@@ -18,17 +18,23 @@ const mutations = {
       state.pins.push(pin);
     });
   },
-  setSearchPeople(state, payload) {
-    state.people = payload;
+  setSearchPeople(state, people) {
+    people.forEach(person => {
+      state.people.push(person);
+    });
   },
   setKeys(state, payload) {
     state.keys = payload;
   },
-  setSearchMyPins(state, payload) {
-    state.myPins = payload;
+  setSearchMyPins(state, myPins) {
+    myPins.forEach(pin => {
+      state.myPins.push(pin);
+    });
   },
-  setSearchBoards(state, payload) {
-    state.boards = payload;
+  setSearchBoards(state, boards) {
+    boards.forEach(board => {
+      state.boards.push(board);
+    });
   },
   resetOffset(state) {
     state.offset = 0;
@@ -59,9 +65,8 @@ const actions = {
         );
         state.inProgress = false;
         state.offset += 10;
-        commit("setSearchPins", pins.data);
-        console.log(pins.data);
-        console.log(state.pins);
+        commit("setSearchPins", pins.data.result);
+        state.totalResult = pins.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
@@ -73,71 +78,99 @@ const actions = {
       }
     }
   },
-  searchMyPins({ commit }, payload) {
-    axios
-      .get(
-        "/search/myPins?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
+  async searchMyPins({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let pins = await axios.get(
+          "/search/myPins?limit=10" +
+            "&offset=" +
+            state.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
           }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchMyPins", pins.data.result);
+        state.totalResult = pins.data.length;
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchMyPins", { name: payload.name });
+        } else {
+          state.endReuslt = true;
         }
-      )
-      .then(response => {
-        commit("setSearchMyPins", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    }
   },
-  searchPeople({ commit }, payload) {
-    axios
-      .get(
-        "/search/people?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
+  async searchPeople({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let people = await axios.get(
+          "/search/people?limit=10" +
+            "&offset=" +
+            state.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
           }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchPeople", people.data.result);
+        state.totalResult = people.data.length;
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchPeople", { name: payload.name });
+        } else {
+          state.endReuslt = true;
         }
-      )
-      .then(response => {
-        commit("setSearchPeople", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    }
   },
-  searchBoards({ commit }, payload) {
-    axios
-      .get(
-        "/search/board?limit=" +
-          payload.limit +
-          "&offset=" +
-          payload.offset +
-          "&name=" +
-          payload.name,
-        {
-          headers: {
-            Authorization: localStorage.getItem("userToken")
+  async searchBoards({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let boards = await axios.get(
+          "/search/board?limit=" +
+            payload.limit +
+            "&offset=" +
+            payload.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
           }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchBoards", boards.data.result);
+        state.totalResult = boards.data.length;
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchBoards", { name: payload.name });
+        } else {
+          state.endReuslt = true;
         }
-      )
-      .then(response => {
-        commit("setSearchBoards", response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      }
+    }
   },
   searchKeywords({ commit }, payload) {
     axios
