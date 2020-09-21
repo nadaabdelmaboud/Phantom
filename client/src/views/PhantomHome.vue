@@ -30,6 +30,7 @@
     <LeavingResaonPopUp v-if="leavingPopUp" />
     <CloseAccountPopUp v-if="accountClosingPopup" />
     <SearchSuggestions v-if="searchSuggestions" />
+    <FollowPopUp v-if="showFollowPopup" />
     <div class="toast" id="pinToastId">
       <img :src="getImage(cardImage)" alt="User Image" class="toastimage" />
       <div class="userinfo">
@@ -186,6 +187,7 @@ import SearchSuggestions from "../components/Search/SearchSuggestions";
 import SavePin from "../components/SavePin";
 import ReportPin from "../components/ReportPin";
 import EditPin from "../components/EditPin";
+import FollowPopUp from "../components/FollowPopUp";
 
 import { mapState } from "vuex";
 export default {
@@ -217,7 +219,8 @@ export default {
     SearchSuggestions,
     SavePin,
     ReportPin,
-    EditPin
+    EditPin,
+    FollowPopUp
   },
   methods: {
     toggleChat() {
@@ -262,7 +265,8 @@ export default {
       showToastState: state => state.homeCards.showToastState,
       cardImage: state => state.homeCards.cardImageId,
       ChoosenBoardName: state => state.homeCards.ChoosenBoardName,
-      editPinPopUp: state => state.popUpsState.editPinPopUp
+      editPinPopUp: state => state.popUpsState.editPinPopUp,
+      showFollowPopup: state => state.popUpsState.showFollowPopup
     })
   },
   watch: {

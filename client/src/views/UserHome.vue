@@ -89,10 +89,12 @@ export default {
     })
   },
   created() {
+    if (localStorage.getItem("userToken") != ""){
     this.$store.dispatch("homeCards/userHome");
     setTimeout(() => {
       this.$store.dispatch("homeCards/userGenerateCards", 10);
     }, 3000);
+    }
   },
   methods: {
     showTopics() {
