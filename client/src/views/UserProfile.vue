@@ -1,9 +1,12 @@
 <template>
   <div class="profile" @click="clear">
     <div class="profileInfo">
-      <img :src="getImage(imageId)" />
-      <h1>{{ userName }}</h1>
-      <h6>{{ followers }} following</h6>
+      <img v-if="myprofile" :src="getImage(this.meUser.profileImage)" />
+      <img v-else :src="getImage(this.user.profileImage)" />
+      <h1 v-if="myprofile">{{ this.meUser.userName }}</h1>
+      <h1 v-else>{{ this.user.userName }}</h1>
+      <h6 v-if="myprofile">{{ this.meUser.followers }} following</h6>
+      <h6 v-else>{{ this.user.followers }} following</h6>
       <div
         class="buttons inRoute follow"
         v-if="!myprofile && !isFollowed"
@@ -127,9 +130,6 @@ export default {
       showCreate: false,
       showViewOptions: false,
       myprofile: false,
-      userName: "",
-      imageId: "",
-      followers: "",
       userId: ""
     };
   },
@@ -199,19 +199,9 @@ export default {
         this.$store.dispatch("phantomUser/getUser", this.userId);
         this.$store.dispatch("phantomUser/isFollowed", this.userId);
       }
-    } else {
-      this.userName = this.meUser.firstName + " " + this.meUser.lastName;
-      this.imageId = this.meUser.profileImage;
-      this.followers = this.meUser.followers.length;
     }
   },
   mounted() {
-    if (!this.myprofile) {
-      this.userName = this.user.firstName + " " + this.user.lastName;
-      this.imageId = this.user.profileImage;
-      this.followers = this.user.followers.length;
-    }
-
     if (this.$route.path.includes("/Pins")) {
       this.inBoards = false;
       this.inPins = true;

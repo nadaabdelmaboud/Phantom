@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" :key="isLoggedIn()">
     <div v-if="isLoggedIn() == false">
       <p>Home Page ,Signup or Login</p>
     </div>
