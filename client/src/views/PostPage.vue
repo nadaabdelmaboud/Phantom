@@ -6,10 +6,22 @@
     <div class="row m-0">
       <span>More like this</span>
     </div>
+    <div class="flexWrap">
+      <div class="masonryGrid">
+        <HomeCard
+          v-for="morepin in morePins"
+          :key="morepin._id"
+          class="masonryGridItem"
+          :cardImage="morepin.imageId"
+          :postPageId="morepin._id"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "../scss/MasonryGrid";
 .row {
   display: flex;
   justify-content: center;
@@ -26,10 +38,12 @@ span {
 <script>
 import { mapGetters } from "vuex";
 import PostPageCard from "../components/PostPageCard";
+import HomeCard from "../components/HomeCard";
 export default {
   name: "postpage",
   components: {
-    PostPageCard
+    PostPageCard,
+    HomeCard
   },
   async mounted() {
     await this.$store.dispatch(
@@ -38,9 +52,22 @@ export default {
     );
     await this.$store.dispatch("phantomUser/isFollowed", this.pinCreatorId);
   },
+  created() {
+    this.$store.dispatch(
+      "postPage/moreLikeThisPin",
+      this.$route.params.postPageId
+    );
+    setTimeout(() => {
+      this.$store.dispatch("postPage/generateMorePins", {
+        pinId: this.$route.params.postPageId,
+        limit: 10
+      });
+    }, 3000);
+  },
   computed: {
     ...mapGetters({
-      pinCreatorId: "homeCards/pinCreatorId"
+      pinCreatorId: "homeCards/pinCreatorId",
+      morePins: "postPage/morePins"
     })
   }
 };
