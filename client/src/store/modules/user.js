@@ -236,6 +236,14 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  googleAuth({ commit }) {
+    axios
+      .get("/google", {}, {})
+      .then(commit("setResetStatus", false))
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 

@@ -4,7 +4,13 @@
       <center>
         <h2>Welcome Back 👋</h2>
       </center>
-      <br />
+      <button class="google" @click="googleAuth">
+        <i class="fa fa-google"></i>
+        Continue with Google
+      </button>
+      <div style="font-size: 12px; text-align: center;">
+        <strong>OR</strong>
+      </div>
       <div class="error" v-if="errorMessage && !loginState">
         <p class="text-center" style="padding-bottom:4px;">
           {{ errorMessage }} 😞
@@ -15,7 +21,6 @@
         id="email"
         v-model="email"
         placeholder="Enter Your Email"
-        required
       />
       <br />
       <div>
@@ -24,7 +29,6 @@
           id="password"
           v-model="password"
           placeholder="Enter Your Password"
-          required
         />
       </div>
       <input type="checkbox" id="show-password" @click="togglePassword" />
@@ -46,10 +50,11 @@
 export default {
   methods: {
     login() {
-      this.$store.dispatch("user/login", {
-        email: this.email,
-        password: this.password
-      });
+      if (this.email && this.password)
+        this.$store.dispatch("user/login", {
+          email: this.email,
+          password: this.password
+        });
     },
     togglePassword() {
       var password = document.getElementById("password");
@@ -57,6 +62,9 @@ export default {
         password.getAttribute("type") === "password" ? "text" : "password";
       password.setAttribute("type", type);
       this.passwordType = !this.passwordType;
+    },
+    googleAuth() {
+      this.$store.dispatch("user/googleAuth");
     }
   },
   data: function() {
@@ -166,5 +174,23 @@ a:hover {
 label {
   font-weight: bold;
   font-size: 14px;
+}
+
+span {
+  display: inline-block;
+}
+
+.google {
+  background-color: $offWhite;
+  color: black;
+  min-width: 300px;
+  padding: 10px 61px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+i {
+  color: red;
+  margin-right: 10px;
 }
 </style>
