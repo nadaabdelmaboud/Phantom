@@ -60,6 +60,8 @@ export class RecommendationService {
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];
+    let ALLUSERS = await this.userModel.find({}, { firstName: 1 });
+    console.log('all users length', ALLUSERS.length);
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
       .catch(err => {
