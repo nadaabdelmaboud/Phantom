@@ -22,6 +22,11 @@ export default {
     pins() {
       return this.$store.state.search.pins;
     }
+  },
+  mounted: function() {
+    this.$store.dispatch("search/searchPins", {
+      name: this.$route.params.name
+    });
   }
 };
 </script>

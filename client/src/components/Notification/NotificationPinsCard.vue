@@ -52,10 +52,16 @@ export default {
     toPage() {
       if (this.title == "Boards For You!") {
         this.$router.push("/BoardForYou");
-        this.$store.commit("notifications/setBoards", this.boards);
+        let boards = JSON.stringify(this.boards);
+        if(localStorage.getItem("notificationBoards"))
+        localStorage.removeItem("notificationBoards")
+        localStorage.setItem("notificationBoards",boards)
       } else {
         this.$router.push("/PinsForYou");
-        this.$store.commit("notifications/setPins", this.pins);
+        let pins = JSON.stringify(this.pins);
+        if(localStorage.getItem("notificationPins"))
+        localStorage.removeItem("notificationPins")
+        localStorage.setItem("notificationPins",pins)
       }
       this.$store.commit("notifications/alterShow", false);
     }

@@ -151,7 +151,7 @@ export class BoardService {
         }
       }
     }
-    await this.boardModel.ensureIndexes()
+    await this.boardModel.ensureIndexes();
     return true;
   }
   async sortBoardsAtoZ(userId) {
@@ -323,8 +323,12 @@ export class BoardService {
 
     let boardUser = await this.userModel.findById(boardUserId, {
       boards: 1,
+      email: 1,
     });
     if (!boardUser) return false;
+    if (boardUser.email == process.env.ADMIN_EMAIL) {
+      throw new UnauthorizedException();
+    }
     let retBoards = [];
     for (var i = 0; i < boardUser.boards.length; i++) {
       let board = await this.boardModel.findById(boardUser.boards[i].boardId, {

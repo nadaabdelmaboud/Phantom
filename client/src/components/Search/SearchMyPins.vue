@@ -1,3 +1,40 @@
 <template>
-  <div></div>
+  <div class="flexWrap">
+    <div class="masonryGrid">
+      <HomeCard
+        v-for="pin in pins"
+        :key="pin._id"
+        :cardImage="pin.imageId"
+        :postPageId="pin._id"
+        class="masonryGridItem"
+      />
+    </div>
+  </div>
 </template>
+
+<script>
+import HomeCard from "../HomeCard";
+export default {
+  components: {
+    HomeCard
+  },
+  computed: {
+    pins() {
+      return this.$store.state.search.myPins;
+    }
+  },
+  mounted: function() {
+    this.$store.commit("search/resetOffset");
+    this.$store.dispatch("search/searchMyPins", {
+      name: this.$route.params.name
+    });
+  },
+  created: function() {
+    this.$store.commit("search/resetOffset");
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../../scss/MasonryGrid";
+</style>
