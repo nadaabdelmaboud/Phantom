@@ -192,6 +192,7 @@ export default {
           console.log("notification disabled");
         }
         //alert server that the message has been delivered
+        console.log("hb3t");
         this.socket.emit("delivered", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,
@@ -231,11 +232,10 @@ export default {
         console.log("oh1");
         await this.$store.dispatch("chat/getChat", payload);
         console.log("oh2");
-        if (data.senderId == this.chatWith.id){
-          console.log("oh3")
+        if (data.senderId == this.chatWith.id) {
+          console.log("oh3");
           this.$store.commit("chat/setDeliver", data.messageId);
         }
-         
       });
     },
     seenListener() {
@@ -247,9 +247,9 @@ export default {
         console.log("oh1 seeen");
         await this.$store.dispatch("chat/getChat", payload);
         console.log("oh2 seeen");
-        if (data.senderId == this.chatWith.id){
-            this.$store.commit("setSeen", data.messageId);
-          console.log("oh3")
+        if (data.senderId == this.chatWith.id) {
+          this.$store.commit("setSeen", data.messageId);
+          console.log("oh3");
         }
       });
     },
