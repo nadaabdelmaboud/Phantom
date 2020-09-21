@@ -23,15 +23,14 @@ export function initializeFirebase() {
     messaging = firebase.messaging();
     messaging.onMessage(payload => {
       console.log("Message received. ", payload);
-      store.commit("notifications/setCounter",1);
+      store.commit("notifications/setCounter", 1);
       var notificationTitle = payload.data.title;
       var notificationOptions = {
         body: payload.data.body
       };
       new Notification(notificationTitle, notificationOptions);
     });
-    Notification
-      .requestPermission()
+    Notification.requestPermission()
       .then(() => {
         console.log("Permission granted");
         messaging.usePublicVapidKey(

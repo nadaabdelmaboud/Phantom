@@ -53,15 +53,15 @@ export default {
       if (this.title == "Boards For You!") {
         this.$router.push("/BoardForYou");
         let boards = JSON.stringify(this.boards);
-        if(localStorage.getItem("notificationBoards"))
-        localStorage.removeItem("notificationBoards")
-        localStorage.setItem("notificationBoards",boards)
+        if (localStorage.getItem("notificationBoards"))
+          localStorage.removeItem("notificationBoards");
+        localStorage.setItem("notificationBoards", boards);
       } else {
         this.$router.push("/PinsForYou");
         let pins = JSON.stringify(this.pins);
-        if(localStorage.getItem("notificationPins"))
-        localStorage.removeItem("notificationPins")
-        localStorage.setItem("notificationPins",pins)
+        if (localStorage.getItem("notificationPins"))
+          localStorage.removeItem("notificationPins");
+        localStorage.setItem("notificationPins", pins);
       }
       this.$store.commit("notifications/alterShow", false);
     }

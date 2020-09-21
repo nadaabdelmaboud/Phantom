@@ -53,6 +53,12 @@ export default {
           this.$store.dispatch("search/searchMyPins", {
             name: name
           });
+        } else if (this.$route.path.includes("PostPage")) {
+          let pinId = this.$route.params.postPageId;
+          this.$store.dispatch("postPage/generateMorePins", {
+            pinId: pinId,
+            limit: 10
+          });
         }
       }
     });

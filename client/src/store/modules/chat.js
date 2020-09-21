@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   currentChat: [],
-  recentChats: [],
+  recentChats: []
 };
 
 const mutations = {
@@ -17,15 +17,13 @@ const mutations = {
   setRecentChats(state, chats) {
     state.recentChats = chats;
   },
-  setSeen(state,id){
+  setSeen(state, id) {
     let index = state.currentChat.findIndex(c => c._id == id);
-    if(index!=-1)
-      state.currentChat[index].seen=true;
+    if (index != -1) state.currentChat[index].seen = true;
   },
-  setDeliver(state,id){
+  setDeliver(state, id) {
     let index = state.currentChat.findIndex(c => c._id == id);
-    if(index!=-1)
-      state.currentChat[index].seen=true;
+    if (index != -1) state.currentChat[index].seen = true;
   }
 };
 
@@ -40,7 +38,7 @@ const actions = {
       );
       chat = chat.data;
       let lastin = [false, false];
-      chat.forEach((msg) => {
+      chat.forEach(msg => {
         if (msg.senderId == payload.senderId) {
           msg.owner = true;
           if (!lastin[0]) {
@@ -64,23 +62,25 @@ const actions = {
     commit("setChat", chat);
   },
   sendMsg({ dispatch }, msg) {
-    axios.post("/sentMessage", msg)
-    .then(()=>{
-      dispatch("getChat",{
-        senderId: msg.senderId,
-        recieverId: [msg.recieverId]})
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    axios
+      .post("/sentMessage", msg)
+      .then(() => {
+        dispatch("getChat", {
+          senderId: msg.senderId,
+          recieverId: [msg.recieverId]
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   getRecentChats({ commit }, userId) {
     axios
       .get("getChats/" + userId)
-      .then((response) => {
+      .then(response => {
         commit("setRecentChats", response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         commit("setRecentChats", []);
       });
@@ -91,21 +91,21 @@ const actions = {
         senderId: payload.senderId,
         recieverId: payload.recieverId,
         time: Date.now(),
-        isSeen: true,
+        isSeen: true
       })
       .then(() => {
         dispatch("getChat", payload);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         dispatch("getChat", payload);
       });
-  },
+  }
 };
 
 const getters = {
-  currentChat: (state) => state.currentChat,
-  recentChats: (state) => state.recentChats,
+  currentChat: state => state.currentChat,
+  recentChats: state => state.recentChats
 };
 
 export default {
@@ -113,5 +113,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };
