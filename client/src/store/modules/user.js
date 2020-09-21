@@ -15,7 +15,7 @@ const state = {
   resetPasswordStatus: null,
   userData: null,
   isLoading: false,
-  imgID: null
+  imgID: null,
 };
 
 const mutations = {
@@ -75,7 +75,7 @@ const mutations = {
   },
   changeImgID(state, payload) {
     state.imgID = payload;
-  }
+  },
 };
 
 const actions = {
@@ -86,7 +86,7 @@ const actions = {
       .then(() => {
         commit("changeSignUpState", true);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response.data.message == "Mail exists") {
           commit("changeSignUpState", false);
           commit("setErrorMessage", "This email is already exists");
@@ -100,17 +100,17 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: `${token}`
-          }
+            Authorization: `${token}`,
+          },
         }
       )
-      .then(response => {
+      .then((response) => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
         commit("setEmailConfirm", true);
         dispatch("getUserProfile");
       })
-      .catch(error => {
+      .catch((error) => {
         commit("setEmailConfirm", false);
         console.log("axios caught an error");
         console.log(error);
@@ -119,13 +119,13 @@ const actions = {
   login({ commit, dispatch }, data) {
     axios
       .post("login/", data)
-      .then(response => {
+      .then((response) => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
         commit("setLogin", true);
         dispatch("notifications/notifyUser", null, { root: true });
       })
-      .catch(error => {
+      .catch((error) => {
         commit("setLogin", false);
         console.log(error);
         if (error.response.data.message == "password is not correct")
@@ -139,7 +139,7 @@ const actions = {
       .then(() => {
         commit("setSendEmail", true);
       })
-      .catch(error => {
+      .catch((error) => {
         commit("setSendEmail", false);
         if (error.response.data.message == "not user by this email")
           commit("setErrorMessage", "This Email is not correct");
@@ -155,14 +155,14 @@ const actions = {
         {},
         {
           headers: {
-            Authorization: payload.token
-          }
+            Authorization: payload.token,
+          },
         }
       )
       .then(() => {
         commit("setResetStatus", true);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -172,13 +172,13 @@ const actions = {
     await axios
       .get("users/me", {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       })
-      .then(response => {
+      .then((response) => {
         commit("setUserData", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("axios caught an error");
         console.log(error);
       });
@@ -188,14 +188,14 @@ const actions = {
     axios
       .put("/me/update", payload, {
         headers: {
-          Authorization: token
-        }
+          Authorization: token,
+        },
       })
-      .then(response => {
+      .then((response) => {
         commit("setUpdateStatus", true);
         commit("setUserData", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -204,12 +204,12 @@ const actions = {
     await axios({
       method: "post",
       url: "me/uploadImage",
-      data: img
+      data: img,
     })
-      .then(response => {
+      .then((response) => {
         commit("changeImgID", response.data[0].id);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -227,13 +227,13 @@ const actions = {
     axios
       .put("/me/update-settings", payload, {
         headers: {
-          Authorization: localStorage.getItem("userToken")
-        }
+          Authorization: localStorage.getItem("userToken"),
+        },
       })
-      .then(response => {
+      .then((response) => {
         commit("setUserData", response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
@@ -241,15 +241,15 @@ const actions = {
     axios
       .get("/google", {}, {})
       .then(commit("setResetStatus", false))
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 
 export default {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };

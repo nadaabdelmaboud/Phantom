@@ -53,7 +53,7 @@ export default {
       if (this.email && this.password)
         this.$store.dispatch("user/login", {
           email: this.email,
-          password: this.password
+          password: this.password,
         });
     },
     togglePassword() {
@@ -65,13 +65,13 @@ export default {
     },
     googleAuth() {
       this.$store.dispatch("user/googleAuth");
-    }
+    },
   },
   data: function() {
     return {
       email: null,
       password: null,
-      passwordType: true
+      passwordType: true,
     };
   },
   computed: {
@@ -80,16 +80,16 @@ export default {
     },
     errorMessage: function() {
       return this.$store.state.user.errorMessage;
-    }
+    },
   },
   watch: {
     loginState: function() {
       if (this.loginState) this.$router.push("/");
-    }
+    },
   },
   created: function() {
     this.$store.commit("user/setErrorMessage", null);
-  }
+  },
 };
 </script>
 
