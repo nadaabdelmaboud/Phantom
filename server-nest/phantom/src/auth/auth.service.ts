@@ -10,15 +10,17 @@ import { Payload } from '../types/payload';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
   async googleLogin(req) {
     if (!req.user) {
       throw new NotFoundException('no such user on google');
     }
     let user = req.user;
+    let type;
     let checkUser = await this.userService.checkMAilExistAndFormat(user.email);
     let payload;
     if (!checkUser) {
+      type = 'sign';
       let newUser = await this.userService.createUser({
         email: user.email,
         birthday: null,
@@ -35,14 +37,17 @@ export class AuthService {
         _id: newUser._id,
       };
     } else {
+      type = 'login';
       payload = {
         _id: checkUser._id,
       };
     }
-    return (
-      'Bearer ' +
-      sign(payload, process.env.SECRET_KEY, { expiresIn: '67472347632732h' })
-    );
+    return {
+      token:
+        'Bearer ' +
+        sign(payload, process.env.SECRET_KEY, { expiresIn: '67472347632732h' }),
+      type: type,
+    };
   }
   async signPayload(payload) {
     return (

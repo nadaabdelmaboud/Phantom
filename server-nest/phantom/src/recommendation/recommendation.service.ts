@@ -13,7 +13,7 @@ import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
 import { NotificationService } from '../notification/notification.service';
-import { last } from 'rxjs/operators';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class RecommendationService {
@@ -54,6 +54,7 @@ export class RecommendationService {
     }
     return false;
   }
+
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
