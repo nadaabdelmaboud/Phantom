@@ -1,12 +1,16 @@
 import axios from "axios";
 
 const state = {
-  All: []
+  All: [],
+  Trending: []
 };
 
 const mutations = {
   setAllRecommend(state, cards) {
     state.All = cards;
+  },
+  setTrendingRecommend(state, cards) {
+    state.Trending = cards;
   }
 };
 
@@ -20,11 +24,22 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  trendingRecommendations({ commit }) {
+    axios
+      .get("me/recommendation/trending")
+      .then(response => {
+        commit("setTrendingRecommend", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 
 const getters = {
-  All: state => state.All
+  All: state => state.All,
+  Trending: state => state.Trending
 };
 
 export default {

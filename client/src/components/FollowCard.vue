@@ -30,6 +30,10 @@
     background-color: rgba(212, 209, 209, 0.5);
   }
 }
+img {
+  width: 236px;
+  height: 236px;
+}
 p {
   margin: 0;
 }

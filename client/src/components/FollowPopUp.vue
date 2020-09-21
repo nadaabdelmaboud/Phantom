@@ -62,8 +62,19 @@
             <li>Eyemakeup</li>
           </ul>
         </div>
-        <div class="callCards">
+        <div class="AllCards" v-if="showAll">
           <div v-for="card in All" :key="card.user._id">
+            <FollowCard
+              :followers="card.user.followers"
+              :firstName="card.user.firstName"
+              :lastName="card.user.lastName"
+              :cardImage="card.user.profileImage"
+              :type="card.recommendType"
+            />
+          </div>
+        </div>
+        <div class="Trending" v-if="showTrending">
+          <div v-for="card in Trending" :key="card.user._id">
             <FollowCard
               :followers="card.user.followers"
               :firstName="card.user.firstName"
@@ -170,7 +181,8 @@ ul {
 button:focus {
   outline: 0 !important;
 }
-.callCards {
+.AllCards,
+.Trending {
   margin-top: 15px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -222,7 +234,8 @@ button:focus {
   }
 }
 @media screen and (max-width: 575px) {
-  .callCards {
+  .AllCards,
+  .Trending {
     justify-items: center;
   }
 }
@@ -262,7 +275,9 @@ export default {
   name: "followPopUp",
   data: function() {
     return {
-      showTopicslist: false
+      showTopicslist: false,
+      showAll: true,
+      showTrending: false
     };
   },
   components: {
@@ -270,7 +285,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      All: "follow/All"
+      All: "follow/All",
+      Trending: "follow/Trending"
     })
   },
   methods: {
@@ -279,8 +295,14 @@ export default {
     },
     getAllRecommend() {
       this.$store.dispatch("follow/allRecommendations");
+      this.showAll = true;
+      this.showTrending = false;
     },
-    getTrendingRecommend() {},
+    getTrendingRecommend() {
+      this.$store.dispatch("follow/trendingRecommendations");
+      this.showAll = false;
+      this.showTrending = true;
+    },
     getTopicName(topicName) {
       console.log("TopicName Nihal", topicName);
     },
