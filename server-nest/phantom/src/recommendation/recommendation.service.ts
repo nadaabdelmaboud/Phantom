@@ -921,6 +921,7 @@ export class RecommendationService {
           counts: 1,
           description: 1,
           coverImages: 1,
+          creator: 1,
         },
       )
       .lean();
@@ -929,13 +930,6 @@ export class RecommendationService {
       for (let j = allBoards.length - 1; j >= 0; j--) {
         if (count == 10) break;
         if (String(allBoards[j]._id) != String(user.boards[i].boardId)) {
-          let boardUser = await this.userModel.findById(
-            allBoards[j].creator.id,
-            { email: 1 },
-          );
-          if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
-            continue;
-          }
           let board = await this.boardModel
             .findById(user.boards[i].boardId, {
               name: 1,
@@ -964,7 +958,17 @@ export class RecommendationService {
                     }
                   }
                 }
-
+                for (let index = 0; index < boards.length; index++) {
+                  let boardUser = await this.userModel.findById(
+                    boards[index].creator.id,
+                    { email: 1 },
+                  );
+                  if (
+                    String(boardUser.email) == String(process.env.ADMIN_EMAIL)
+                  ) {
+                    boards.splice(index, 1);
+                  }
+                }
                 let images = [];
                 let count: number = 0;
                 for (let i = 0; i < boards.length; i++) {
@@ -1014,7 +1018,17 @@ export class RecommendationService {
                   }
                 }
               }
-
+              for (let index = 0; index < boards.length; index++) {
+                let boardUser = await this.userModel.findById(
+                  boards[index].creator.id,
+                  { email: 1 },
+                );
+                if (
+                  String(boardUser.email) == String(process.env.ADMIN_EMAIL)
+                ) {
+                  boards.splice(index, 1);
+                }
+              }
               let images = [];
               let count: number = 0;
               for (let i = 0; i < boards.length; i++) {
@@ -1051,6 +1065,7 @@ export class RecommendationService {
             counts: 1,
             description: 1,
             coverImages: 1,
+            creator: 1,
           })
           .lean();
         if (!boards.includes(board)) {
@@ -1064,7 +1079,15 @@ export class RecommendationService {
                 }
               }
             }
-
+            for (let index = 0; index < boards.length; index++) {
+              let boardUser = await this.userModel.findById(
+                boards[index].creator.id,
+                { email: 1 },
+              );
+              if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
+                boards.splice(index, 1);
+              }
+            }
             let images = [];
             let count: number = 0;
             for (let i = 0; i < boards.length; i++) {
@@ -1094,7 +1117,14 @@ export class RecommendationService {
     }
     boards = await this.shuffle(boards);
     console.log('4 ', boards.length);
-
+    for (let index = 0; index < boards.length; index++) {
+      let boardUser = await this.userModel.findById(boards[index].creator.id, {
+        email: 1,
+      });
+      if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
+        boards.splice(index, 1);
+      }
+    }
     let images = [];
     let count: number = 0;
     for (let i = 0; i < boards.length; i++) {
