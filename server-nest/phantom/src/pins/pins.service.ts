@@ -337,9 +337,12 @@ export class PinsService {
     let user;
     if (ifMe == true)
       user = await this.userModel.findById(userId, { pins: 1 }).lean();
-    else user = await this.UserService.getUserById(userId);
-    console.log(user);
+    else user = await this.userModel.findById(userId, { pins: 1, email: 1 });
+
     if (!user) throw new BadRequestException('no such user');
+    if (!ifMe && user.email == process.env.ADMIN_EMAIL) {
+      return [];
+    }
     let retPins = [];
     for (var i = 0; i < user.pins.length; i++) {
       let pinFound = await this.pinModel.findById(user.pins[i].pinId, {
@@ -1431,7 +1434,9 @@ export class PinsService {
     let pins = [];
     for (let i = 0; i < user.following.length; i++) {
       let userPin = await this.getCurrentUserPins(user.following[i], false);
-      pins = await pins.concat(userPin);
+      if (userPin.length > 0) {
+        pins = await pins.concat(userPin);
+      }
     }
     return pins;
   }
