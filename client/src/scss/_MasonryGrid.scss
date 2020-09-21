@@ -44,10 +44,11 @@
   }
   .masonryGrid {
     display: grid;
+    justify-content: center;
     grid-gap: 20px; /* [1] Add some gap between rows and columns */
     grid-template-columns: repeat(
       auto-fill,
-      minmax(252px, 1fr)
+      minmax(auto, 252px)
     ); /* [2] Make columns adjust according to the available viewport */
     grid-auto-rows: 0.00000000000000001px; /* [3] Set the height for implicitly-created row track */
   }

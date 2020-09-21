@@ -1,7 +1,11 @@
 import axios from "axios";
-let num;
 const state = {
   homeCards: [],
+  generating: false,
+  generatedCount: 0,
+  offset: 0,
+  maxMore: false,
+  inProgress: false,
   postImage: "",
   userImage: "",
   postTitle: "",
@@ -156,46 +160,47 @@ const mutations = {
 };
 
 const actions = {
-  userHome({ commit }) {
-    let token = localStorage.getItem("userToken");
-    axios.defaults.headers.common["Authorization"] = token;
-    num = state.offsetnum - 12;
-    state.totalCards = 0;
+  userHome({ state }) {
+    state.homeCards = [];
+    state.offset = 0;
+    state.generating = true;
+    state.maxMore = false;
     axios
       .put("home/me")
       .then(response => {
-        console.log("totalllllllllllllllllllllllllllll", response.data.total);
-        commit("homeGenerated", true);
-        commit("totalNumCards", response.data.total);
+        state.generating = false;
+        state.generatedCount = response.data.total;
       })
       .catch(error => {
         console.log(error);
       });
   },
-
-  async userGenerateCards({ commit }) {
-    commit("setRequestFinished", false);
-    let token = localStorage.getItem("userToken");
-    axios.defaults.headers.common["Authorization"] = token;
-    num += 12;
-    console.log("state.requestFinished", state.requestFinished);
-    await axios
-      .get("me/home?limit=12&offset=" + num)
-      .then(response => {
-        commit("sethomeCards", response.data);
-        commit("setRequestFinished", true);
-        console.log("state.requestFinished", state.requestFinished);
-      })
-      .catch(error => {
-        // state.requestFinished = false;
-        if (num == state.totalCards) state.finishCalling = true;
-        setTimeout(() => {
-          this.userGenerateCards;
-        }, 3000);
+  async userGenerateCards({ state, commit, dispatch }, limit) {
+    if (!state.maxMore && !state.inProgress) {
+      state.inProgress = true;
+      try {
+        let home = await axios.get(
+          "me/home?limit=" + limit + "&offset=" + state.offset
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("sethomeCards", home.data);
+      } catch (error) {
+        let remaining = state.generatedCount - state.offset;
+        state.inProgress = false;
+        if (state.generating) {
+          setTimeout(() => {
+            dispatch("userGenerateCards", 10);
+          }, 1000);
+        } else if (remaining > 0) {
+          dispatch("userGenerateCards", remaining);
+        } else {
+          state.maxMore = true;
+        }
         console.log(error);
-      });
+      }
+    }
   },
-
   async Postpage({ commit }, postPageID) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;

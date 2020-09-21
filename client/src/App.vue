@@ -36,6 +36,8 @@ export default {
           this.$store.dispatch("search/searchPins", {
             name: name
           });
+        } else if (this.$route.path.includes("")) {
+          this.$store.dispatch("homeCards/userGenerateCards", 10);
         }
       }
     });
