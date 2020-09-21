@@ -35,6 +35,13 @@ export class ImagesService {
       return false;
     }
   }
+  async findInfo2() {
+    const result = await this.fileModel.find({});
+    if (!result || result == undefined) {
+      return;
+    }
+    return result;
+  }
   async findInfo(id: string) {
     const result = await this.fileModel.findById(id);
     if (!result || result == undefined) {
