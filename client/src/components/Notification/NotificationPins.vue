@@ -1,4 +1,4 @@
-<template>
++6<template>
  <div class="flexWrap spread">
       <div class="masonryGrid">
         <HomeCard

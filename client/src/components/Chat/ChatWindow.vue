@@ -16,12 +16,12 @@
         >
           <img style=" margin-top: -25px;" :src="getImage(r.profileImage)" />
           <div class="inlineDiv">
-             <p>{{ r.userName }}</p>
-             <p>{{r.lastMessage.message | sliceMsg}}</p>
+            <p>{{ r.userName }}</p>
+            <p>{{ r.lastMessage.message | sliceMsg }}</p>
           </div>
         </div>
 
-        <div v-for="(f,i) in following" :key="i">
+        <div v-for="(f, i) in following" :key="i">
           <div
             class="userInfo"
             v-if="!recentChats.some((r) => r._id === f._id)"
@@ -52,6 +52,9 @@
           :msgText="msg.message"
           :owner="msg.owner"
           :timeStamp="msg.date"
+          :last="msg.last"
+          :seen="msg.seen"
+          :delivered="msg.deliver"
           class="ChatMsg"
         />
         <div v-if="typing" class="typing-loader"></div>
@@ -107,22 +110,15 @@ export default {
           date: Date.now(),
         };
         this.$store.commit("chat/addMsg", msg);
-        let payload = {
-          senderId: this.myData._id,
-          recieverId: [this.chatWith.id],
-          message: this.currentMsg,
-        };
         this.$nextTick(() => {
           let msgBox = document.getElementsByClassName("msgBox")[0];
           msgBox.scrollTop = msgBox.scrollHeight;
         });
-        this.$store.dispatch("chat/sendMsg", payload);
-
         this.socket.emit("message", {
           recieverImage: this.getImage(this.myData.profileImage),
           senderImage: this.getImage(this.myData.profileImage),
           recieverName: this.chatWith.name,
-          recieverId: [this.chatWith.id],
+          recieverId: this.chatWith.id,
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
@@ -148,10 +144,10 @@ export default {
         msgBox.scrollTop = msgBox.scrollHeight;
       }, 3000);
     },
-    toChatters(){
+    toChatters() {
       // this.$store.dispatch("followers/getFollowing");
-    this.$store.dispatch("chat/getRecentChats", this.myData._id);
-      this.inchat = !this.inchat
+      this.$store.dispatch("chat/getRecentChats", this.myData._id);
+      this.inchat = !this.inchat;
     },
     messageListener() {
       this.socket.on("sendMessage", (data) => {
@@ -164,9 +160,10 @@ export default {
             owner: false,
             message: data.message,
             date: data.date,
-            seen:false,
-            deliver:false,
-            last:true
+            seen: false,
+            deliver: false,
+            last: true,
+            _id: data.messageId,
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
@@ -176,10 +173,10 @@ export default {
 
           //if in same chat set as seen
           this.socket.emit("seen", {
-          recieverId: this.chatWith.id,
-          senderId: this.myData._id,
-          messageId: data.messageId
-        });
+            recieverId: this.chatWith.id,
+            senderId: this.myData._id,
+            messageId: data.messageId,
+          });
         }
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
@@ -198,15 +195,18 @@ export default {
         this.socket.emit("delivered", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id,
-          messageId: data.messageId
+          messageId: data.messageId,
         });
       });
     },
     typingLisener() {
       this.socket.on("isTyping", (data) => {
         if (data.senderId == this.chatWith.id) {
-          console.log("dd");
           this.typing = true;
+          this.$nextTick(() => {
+            let msgBox = document.getElementsByClassName("msgBox")[0];
+            msgBox.scrollTop = msgBox.scrollHeight;
+          });
         }
         setTimeout(() => {
           this.typing = false;
@@ -223,15 +223,34 @@ export default {
       }
     },
     deliveredListener() {
-      this.socket.on("setDelivered", (data) => {
-        if(data.senderId == this.chatWith.id)
-          this.$store.commit("setDeliver",data.messageId)
+      this.socket.on("setDelivered", async (data) => {
+        let payload = {
+          senderId: this.myData._id,
+          recieverId: [this.chatWith.id],
+        };
+        console.log("oh1");
+        await this.$store.dispatch("chat/getChat", payload);
+        console.log("oh2");
+        if (data.senderId == this.chatWith.id){
+          console.log("oh3")
+          this.$store.commit("chat/setDeliver", data.messageId);
+        }
+         
       });
     },
     seenListener() {
-      this.socket.on("setSeen", (data) => {
-        if(data.senderId== this.chatWith.id)
-        this.$store.commit("setSeen",data.messageId)
+      this.socket.on("chat/setSeen", async (data) => {
+        let payload = {
+          senderId: this.myData._id,
+          recieverId: [this.chatWith.id],
+        };
+        console.log("oh1 seeen");
+        await this.$store.dispatch("chat/getChat", payload);
+        console.log("oh2 seeen");
+        if (data.senderId == this.chatWith.id){
+            this.$store.commit("setSeen", data.messageId);
+          console.log("oh3")
+        }
       });
     },
   },
@@ -276,9 +295,10 @@ export default {
   },
   filters: {
     sliceMsg: function(value) {
-      console.log("hi",value)
+      console.log("hi", value);
+      if (typeof value == "undefined") return "no msg";
       if (value.length < 25) return value;
-      return value.slice(0,25) + "...";
+      return value.slice(0, 25) + "...";
     },
   },
 };
@@ -363,6 +383,7 @@ input {
   height: 54px;
   img {
     width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-right: 5px;
   }
@@ -452,14 +473,14 @@ input {
   }
 }
 
-.inlineDiv{
+.inlineDiv {
   display: inline-block;
-  p{
+  p {
     margin: 0;
   }
-  p:nth-child(2){
+  p:nth-child(2) {
     font-size: 10px;
-    color:$lightBlue;
+    color: $lightBlue;
   }
 }
 </style>

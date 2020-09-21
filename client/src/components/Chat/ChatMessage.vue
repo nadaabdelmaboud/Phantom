@@ -1,7 +1,7 @@
 <template>
   <div class="msg" :class="{ mymsg: owner }">
     <img :src="getImage(imageId)" v-if="owner && last && seen" />
-    <img :src="getUserImage()" v-if="!owner && last && seen" />
+    <img :src="getUserImage()" v-if="!owner && last" />
     <div class="status">
       <i class="fa fa-check-circle" v-if="owner && !seen"
       :class="{delivered:delivered}"></i>
@@ -52,12 +52,19 @@ export default {
 .msg {
   display: flex;
   margin: 5px 0;
+  img{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  align-self: start;
+  }
 }
 .mymsg {
   flex-direction: row-reverse;
 }
 img {
   width: 48px;
+  height: 48px;
   border-radius: 50%;
   align-self: start;
 }

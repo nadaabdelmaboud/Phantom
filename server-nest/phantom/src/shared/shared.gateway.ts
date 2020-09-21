@@ -55,7 +55,9 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     let messageId = data.messageId;
+    console.log("deliver event")
     if (sender && reciever) {
+      console.log("to emiit")
       socket.to(reciever.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
