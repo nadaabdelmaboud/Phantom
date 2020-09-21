@@ -13,17 +13,22 @@ export class AuthController {
     private userService: UserService,
     private authService: AuthService,
     private email: Email,
-  ) { }
+  ) {}
   @nestCommon.Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) { }
+  async googleAuth(@Req() req) {}
 
   @nestCommon.Get('google/redirect')
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req, @Res() res) {
-    const token = await this.authService.googleLogin(req);
-    if (token) {
-      res.redirect('http://localhost:8080/aouth/google?token=' + token);
+    const data = await this.authService.googleLogin(req);
+    if (data) {
+      res.redirect(
+        'http://localhost:8080/aouth/google?token=' +
+          data.token +
+          '&type=' +
+          data.type,
+      );
     } else {
       throw new NotFoundException();
     }
