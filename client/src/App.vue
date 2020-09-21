@@ -58,7 +58,9 @@ export default {
             name: name
           });
         } else if (this.$route.path.includes("")) {
+          if (localStorage.getItem("userToken") != ""){
           this.$store.dispatch("homeCards/userGenerateCards", 10);
+          }
         }
       }
     });

@@ -7,7 +7,7 @@
       :boardId="board._id"
       :boardName="board.name"
       :pinsImages="board.coverImages"
-      :pinsCount="board.counts.pins"
+      :pinsCount="board.pins.length"
       :isBoard="true"
     />
   </div>
