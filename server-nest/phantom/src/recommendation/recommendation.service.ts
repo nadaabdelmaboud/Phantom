@@ -13,7 +13,7 @@ import { UserService } from '../shared/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
 import { NotificationService } from '../notification/notification.service';
-import { last } from 'rxjs/operators';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class RecommendationService {
@@ -54,12 +54,15 @@ export class RecommendationService {
     }
     return false;
   }
+
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];
+    let ALLUSERS = await this.userModel.find({}, { firstName: 1 });
+    console.log('all users length', ALLUSERS.length);
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
       .catch(err => {
@@ -83,17 +86,20 @@ export class RecommendationService {
         if (random + 15 >= Number(user.lastTopics[i].pinsLength)) {
           random = random - 15;
         }
+        console.log(random + 15);
         let topic = await this.topicModel
           .findOne(
             { name: user.lastTopics[i].topicName },
             {
               pins: {
-                $slice: [random, random + 15],
+                $slice: [random, 15],
               },
             },
           )
           .lean();
         if (topic) {
+          console.log('length');
+          console.log(topic.pins.length);
           for (let j = 0; j < topic.pins.length; j++) {
             let pin = await this.pinModel.findById(topic.pins[j], {
               imageId: 1,
@@ -258,9 +264,17 @@ export class RecommendationService {
     let topic = await this.topicModel
       .findOne({ name: topicName }, { recommendedUsers: 1 })
       .lean();
+    let user = await this.userModel.findById(userId, { following: 1 }).lean();
 
+    let followExist = {};
+    for (let j = 0; j < user.following.length; j++) {
+      followExist[String(user.following[j])] = true;
+    }
     for (let i = 0; i < topic.recommendedUsers.length; i++) {
-      if (String(topic.recommendedUsers[i]) != String(userId)) {
+      if (
+        String(topic.recommendedUsers[i]) != String(userId) &&
+        followExist[String(topic.recommendedUsers[i])] != true
+      ) {
         let recomUser = await this.userModel
           .aggregate()
           .match({ _id: topic.recommendedUsers[i] })
@@ -286,6 +300,7 @@ export class RecommendationService {
   }
   async trendingRecommendation(userId) {
     let followers = [];
+    let user = await this.userModel.findById(userId, { following: 1 }).lean();
     let topUsers = await this.userModel
       .aggregate()
       .match({})
@@ -296,10 +311,17 @@ export class RecommendationService {
         lastName: 1,
       })
       .sort({ followers: -1 })
-      .limit(100);
+      .limit(70);
+    let followExist = {};
+    for (let j = 0; j < user.following.length; j++) {
+      followExist[String(user.following[j])] = true;
+    }
 
     for (let i = 0; i < topUsers.length; i++) {
-      if (String(topUsers[i]._id) != String(userId)) {
+      if (
+        String(topUsers[i]._id) != String(userId) &&
+        followExist[String(topUsers[i]._id)] != true
+      ) {
         followers.push({
           user: topUsers[i],
           recommendType: 'popular phantom accounts',
@@ -321,12 +343,17 @@ export class RecommendationService {
     let followTopics = [];
     let topicTopics = [];
     let topics = [];
-
+    for (let i = user.following.length - 1; i >= 0; i--) {
+      followExist[String(user.following[i])] = true;
+    }
     console.log('here 1');
     for (let i = user.history.length - 1; i >= 0; i--) {
       if (!topics.includes(user.history[i].topic)) {
         historyTopics.push(user.history[i].topic);
         topics.push(user.history[i].topic);
+        if (historyTopics.length > 3) {
+          break;
+        }
       }
     }
     console.log('here 2');
@@ -337,6 +364,9 @@ export class RecommendationService {
       if (!topics.includes(topic.name)) {
         topics.push(topic.name);
         topicTopics.push(topic.name);
+        if (topicTopics.length > 3) {
+          break;
+        }
       }
     }
     console.log('here 3');
@@ -352,11 +382,14 @@ export class RecommendationService {
         if (!topics.includes(topic.name)) {
           topics.push(topic.name);
           followTopics.push(topic.name);
+          if (followTopics.length > 3) {
+            break;
+          }
         }
       }
     }
-    console.log('here 4');
-    let limit: number = topics.length < 5 ? 20 : 10;
+
+    let limit: number = topics.length > 5 ? 5 : 10;
     for (let i = 0; i < historyTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
@@ -441,7 +474,7 @@ export class RecommendationService {
       }
     }
     console.log('here 6');
-    for (let i = 0; i <= followTopics.length; i++) {
+    for (let i = 0; i < followTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
           name: String(followTopics[i]),
@@ -483,6 +516,7 @@ export class RecommendationService {
         }
       }
     }
+    console.log('wee2');
     let topUsers = await this.userModel
       .aggregate()
       .match({})
@@ -494,7 +528,7 @@ export class RecommendationService {
       })
       .sort({ followers: -1 })
       .limit(20);
-
+    console.log('wee');
     for (let i = 0; i < topUsers.length; i++) {
       if (
         String(topUsers[i]._id) != String(userId) &&
@@ -507,7 +541,7 @@ export class RecommendationService {
         followExist[String(topUsers[i]._id)] = true;
       }
     }
-
+    console.log(followers.length);
     return followers;
   }
   async pinMoreLike(userId, pinId) {
@@ -1338,7 +1372,7 @@ export class RecommendationService {
             { name: user.lastTopics[i].topicName },
             {
               pins: {
-                $slice: [random, random + 15],
+                $slice: [random, 15],
               },
             },
           )

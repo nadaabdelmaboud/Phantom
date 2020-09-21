@@ -12,7 +12,7 @@
       <div class="topicsContainer">
         <div v-for="t in topics" :key="t.name" @click="addTopic(t._id)">
           <TopicsCard
-          v-if="!t.isFollow"
+            v-if="!t.isFollow"
             :topicName="t.name"
             :topicId="t._id"
             :imageId="t.imageId"

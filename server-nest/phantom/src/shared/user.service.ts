@@ -102,6 +102,7 @@ export class UserService {
   }
 
   async findByLogin(loginDto: LoginDto): Promise<any> {
+    console.log(await this.userModel.find({}, { _id: 1 }))
     console.log(loginDto.password);
     const user = await this.findUserAndGetData(
       { email: loginDto.email },

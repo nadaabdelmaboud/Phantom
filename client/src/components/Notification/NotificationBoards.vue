@@ -20,15 +20,15 @@ export default {
   name: "NotificationPins",
   data: function() {
     return {
-      boards:[]
+      boards: []
     };
   },
   components: {
     Board
   },
-  created(){
-    this.boards = localStorage.getItem("notificationBoards")
-    this.boards =JSON.parse(this.boards);
+  created() {
+    this.boards = localStorage.getItem("notificationBoards");
+    this.boards = JSON.parse(this.boards);
   }
 };
 </script>

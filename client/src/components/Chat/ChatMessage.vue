@@ -3,8 +3,11 @@
     <img :src="getImage(imageId)" v-if="owner && last && seen" />
     <img :src="getUserImage()" v-if="!owner && last" />
     <div class="status">
-      <i class="fa fa-check-circle" v-if="owner && !seen"
-      :class="{delivered:delivered}"></i>
+      <i
+        class="fa fa-check-circle"
+        v-if="owner && !seen"
+        :class="{ delivered: delivered }"
+      ></i>
     </div>
     <p class="msgText">
       {{ msgText }}
@@ -23,27 +26,25 @@ export default {
   mixins: [getImage, getUserImage],
   props: {
     imageId: {
-      type: String,
+      type: String
     },
     msgText: {
-      type: String,
+      type: String
     },
     owner: {
-      type: Boolean,
+      type: Boolean
     },
-    timeStamp: {
-
+    timeStamp: {},
+    last: {
+      type: Boolean
     },
-    last:{
-      type:Boolean
+    seen: {
+      type: Boolean
     },
-    seen:{
-      type:Boolean
-    },
-    delivered:{
-      type:Boolean
+    delivered: {
+      type: Boolean
     }
-  },
+  }
 };
 </script>
 
@@ -52,11 +53,11 @@ export default {
 .msg {
   display: flex;
   margin: 5px 0;
-  img{
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  align-self: start;
+  img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    align-self: start;
   }
 }
 .mymsg {
@@ -97,10 +98,10 @@ p {
   padding-left: 1.5px;
   margin: 6px 2px;
 }
-.delivered{
+.delivered {
   background-color: $darkBlue;
 }
-.status{
+.status {
   display: flex;
   flex-direction: column-reverse;
 }

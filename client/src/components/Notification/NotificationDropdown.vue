@@ -42,11 +42,11 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch("notifications/getNotifications",false);
-    this.$store.dispatch("user/updateUserSettings",{
-      notificationCounter:0
+    this.$store.dispatch("notifications/getNotifications", false);
+    this.$store.dispatch("user/updateUserSettings", {
+      notificationCounter: 0
     });
-    this.$store.commit("notifications/setCounter",0);
+    this.$store.commit("notifications/setCounter", 0);
   }
 };
 </script>

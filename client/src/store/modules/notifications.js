@@ -27,25 +27,23 @@ const mutations = {
     if (show == false) state.show = show;
     else state.show = !state.show;
   },
-  setCounter(state,add){
-    if(!add)
-    state.notifications.notificationCounter=0;
-    else
-    {
-      console.log("nnn")
-      state.notifications.notificationCounter+=1;
+  setCounter(state, add) {
+    if (!add) state.notifications.notificationCounter = 0;
+    else {
+      console.log("nnn");
+      state.notifications.notificationCounter += 1;
     }
   }
 };
 
 const actions = {
-  getNotifications({ commit },inLogin) {
+  getNotifications({ commit }, inLogin) {
     axios
       .get("notifications/me")
       .then(response => {
-        let notifications= response.data
-        if(!inLogin){
-          notifications.notificationCounter=0;
+        let notifications = response.data;
+        if (!inLogin) {
+          notifications.notificationCounter = 0;
         }
         commit("setNotifications", notifications);
       })
@@ -60,7 +58,7 @@ const actions = {
     axios.get("me/pinsForYou");
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");
-    dispatch("getNotifications",true);
+    dispatch("getNotifications", true);
   }
 };
 

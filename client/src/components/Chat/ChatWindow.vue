@@ -10,7 +10,7 @@
             toChat({
               name: r.userName,
               id: r._id,
-              imageId: r.profileImage,
+              imageId: r.profileImage
             })
           "
         >
@@ -24,12 +24,12 @@
         <div v-for="(f, i) in following" :key="i">
           <div
             class="userInfo"
-            v-if="!recentChats.some((r) => r._id === f._id)"
+            v-if="!recentChats.some(r => r._id === f._id)"
             @click="
               toChat({
                 name: f.firstName + ' ' + f.lastName,
                 id: f._id,
-                imageId: f.profileImage,
+                imageId: f.profileImage
               })
             "
           >
@@ -90,7 +90,7 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: "",
+        id: ""
       },
       socket: "",
       allowNotify: false,
@@ -100,7 +100,7 @@ export default {
   },
   mixins: [getImage],
   components: {
-    ChatMessage,
+    ChatMessage
   },
   methods: {
     sendMsg() {
@@ -108,7 +108,7 @@ export default {
         let msg = {
           owner: true,
           message: this.currentMsg,
-          date: Date.now(),
+          date: Date.now()
         };
         this.$store.commit("chat/addMsg", msg);
         this.$nextTick(() => {
@@ -123,7 +123,7 @@ export default {
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
-          date: Date.now(),
+          date: Date.now()
         });
         this.currentMsg = "";
       }
@@ -131,7 +131,7 @@ export default {
     toChat(chatWith) {
       let payload = {
         senderId: this.myData._id,
-        recieverId: chatWith.id,
+        recieverId: chatWith.id
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.chatWith = chatWith;
@@ -152,7 +152,7 @@ export default {
       this.inchat = !this.inchat;
     },
     messageListener() {
-      this.socket.on("sendMessage", (data) => {
+      this.socket.on("sendMessage", data => {
         this.typing = false;
         let ping = new Audio();
         ping.src = require("../../assets/Ping.mp3");
@@ -165,7 +165,7 @@ export default {
             seen: false,
             deliver: false,
             last: true,
-            _id: data.messageId,
+            _id: data.messageId
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
@@ -177,12 +177,12 @@ export default {
           this.socket.emit("seen", {
             recieverId: data.senderId,
             senderId: this.myData._id,
-            messageId: data.messageId,
+            messageId: data.messageId
           });
         }
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
-          silent: true,
+          silent: true
         };
 
         if (this.allowNotify) {
@@ -194,15 +194,16 @@ export default {
           console.log("notification disabled");
         }
         //alert server that the message has been delivered
+        console.log("hb3t");
         this.socket.emit("delivered", {
           recieverId: data.senderId,
           senderId: this.myData._id,
-          messageId: data.messageId,
+          messageId: data.messageId
         });
       });
     },
     typingLisener() {
-      this.socket.on("isTyping", (data) => {
+      this.socket.on("isTyping", data => {
         if (data.senderId == this.chatWith.id) {
           this.typing = true;
           this.$nextTick(() => {
@@ -221,7 +222,7 @@ export default {
         this.meTyping= true;
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
-          senderId: this.myData._id,
+          senderId: this.myData._id
         });
         setTimeout(() => {
           this.meTyping = false;
@@ -232,7 +233,7 @@ export default {
       this.socket.on("setDelivered", (data) => {
         let payload = {
           senderId: this.myData._id,
-          recieverId: [this.chatWith.id],
+          recieverId: [this.chatWith.id]
         };
         console.log("oh1");
         this.$store.dispatch("chat/getChat", payload);
@@ -241,14 +242,13 @@ export default {
           console.log("oh3")
           this.$store.commit("chat/setDeliver", data.messageId);
         }
-         
       });
     },
     seenListener() {
       this.socket.on("setSeen", (data) => {
         let payload = {
           senderId: this.myData._id,
-          recieverId: [this.chatWith.id],
+          recieverId: [this.chatWith.id]
         };
         console.log("oh1 seeen",data);
         this.$store.dispatch("chat/getChat", payload);
@@ -258,17 +258,17 @@ export default {
           console.log("oh3")
         }
       });
-    },
+    }
   },
   computed: {
     ...mapGetters({
       following: "followers/userFollowing",
       recentChats: "chat/recentChats",
-      chat: "chat/currentChat",
+      chat: "chat/currentChat"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
+      myData: state => state.user.userData
+    })
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
@@ -280,10 +280,10 @@ export default {
     token = token.substring(7);
     //personalise connection
     this.socket.emit("setUserId", {
-      token: token,
+      token: token
     });
     //ensure notification is enabled
-    Notification.requestPermission().then((permission) => {
+    Notification.requestPermission().then(permission => {
       if (permission == "granted") {
         this.allowNotify = true;
       } else {
@@ -305,8 +305,8 @@ export default {
       if (typeof value == "undefined") return "no msg";
       if (value.length < 25) return value;
       return value.slice(0, 25) + "...";
-    },
-  },
+    }
+  }
 };
 </script>
 
