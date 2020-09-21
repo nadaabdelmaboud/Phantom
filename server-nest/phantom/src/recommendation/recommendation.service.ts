@@ -929,6 +929,13 @@ export class RecommendationService {
       for (let j = allBoards.length - 1; j >= 0; j--) {
         if (count == 10) break;
         if (String(allBoards[j]._id) != String(user.boards[i].boardId)) {
+          let boardUser = await this.userModel.findById(
+            allBoards[j].creator.id,
+            { email: 1 },
+          );
+          if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
+            continue;
+          }
           let board = await this.boardModel
             .findById(user.boards[i].boardId, {
               name: 1,
