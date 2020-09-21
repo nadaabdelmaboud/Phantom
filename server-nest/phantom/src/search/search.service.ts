@@ -13,19 +13,15 @@ export class SearchService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private ValidationService: ValidationService,
-  ) {}
-  async Fuzzy(model, params, name, limit, offset) {
+  ) { }
+  async Fuzzy(model, params, name, limit: number, offset: number) {
     const searcher = new search(model, params, {
       caseSensitive: false,
       sort: true,
     });
     let result = searcher.search(name);
-    let limitOffsetResult = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      result,
-    );
-    return { result: limitOffsetResult, length: result.length };
+    let limitOffsetResult = this.ValidationService.limitOffset(limit, offset, result);
+    return { result: limitOffsetResult, length: limitOffsetResult.length }
   }
   async getAllPins(name, limit, offset) {
     let pin = await this.pinModel.find({}, 'title note imageId').lean();

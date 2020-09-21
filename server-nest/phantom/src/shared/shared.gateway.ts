@@ -64,7 +64,7 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-    await this.ChatService.deliver(recieverId, messageId, true);
+      await this.ChatService.deliver(recieverId, messageId, true);
 
     }
   }
@@ -84,7 +84,7 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-    await this.ChatService.seen(recieverId, messageId, true);
+      await this.ChatService.seen(recieverId, messageId, true);
 
     }
   }
@@ -95,6 +95,7 @@ export class SharedGateway {
     let sender = await this.userModel.findById(senderId);
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
+    let messageId = await this.ChatService.sendMessage(senderId, [recieverId], messageText)
     if (sender && reciever && messageText) {
       socket.to(reciever.socketId).emit('sendMessage', {
         recieverImage: reciever.profileImage,
@@ -104,6 +105,7 @@ export class SharedGateway {
         message: messageText,
         senderId: data.senderId,
         date: Date.now(),
+        messageId: messageId
       });
     }
   }
