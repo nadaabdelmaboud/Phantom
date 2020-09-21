@@ -31,7 +31,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -330,7 +330,7 @@ export class PinsService {
     await user.save();
     return true;
   }
-  async getCurrentUserPins(userId, ifMe: Boolean) {
+  async getCurrentUserPins(userId, ifMe: Boolean, limit) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid Id');
     }
@@ -344,7 +344,8 @@ export class PinsService {
       return [];
     }
     let retPins = [];
-    for (var i = 0; i < user.pins.length; i++) {
+    if (!limit || limit > user.pins.length) limit = user.pins.length;
+    for (var i = user.pins.length - 1; i >= user.pins.length - limit; i--) {
       let pinFound = await this.pinModel.findById(user.pins[i].pinId, {
         imageId: 1,
         imageWidth: 1,
@@ -1430,16 +1431,30 @@ export class PinsService {
   }
 
   async getFollowingPins(userId) {
-    const user = await this.userModel.findById(userId, { following: 1 });
-    let pins = [];
-    for (let i = 0; i < user.following.length; i++) {
-      let userPin = await this.getCurrentUserPins(user.following[i], false);
-      if (userPin.length > 0) {
-        pins = await pins.concat(userPin);
-      }
+    const user = await this.userModel.findOne({ _id: userId }, { following: 1 }).lean();
+    let followersPins = [];
+    let limitOfPinsForUser = user.following.length;
+    limitOfPinsForUser = limitOfPinsForUser > 1 ? limitOfPinsForUser : 1;
+    for (let i = user.following.length - 1; i >= 0; i--) {
+      let followedUser = await this.userModel.findOne({ _id: user.following[i] }, {
+        _id: 1,
+        firstName: 1,
+        lastName: 1,
+        profileImage: 1,
+      }).lean();
+      let userPins = await this.getCurrentUserPins(user.following[i], false, limitOfPinsForUser);
+      if (followedUser && userPins)
+        followersPins.push({
+          followedId: followedUser._id,
+          firstName: followedUser.firstName,
+          lastName: followedUser.lastName,
+          profileImage: followedUser.profileImage,
+          pins: userPins
+        })
     }
-    return pins;
+    return followersPins;
   }
+
   async reportPin(userId, pinId, reason) {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
