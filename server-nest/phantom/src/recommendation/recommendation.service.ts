@@ -332,6 +332,9 @@ export class RecommendationService {
       if (!topics.includes(user.history[i].topic)) {
         historyTopics.push(user.history[i].topic);
         topics.push(user.history[i].topic);
+        if (historyTopics.length > 3) {
+          break;
+        }
       }
     }
     console.log('here 2');
@@ -342,6 +345,9 @@ export class RecommendationService {
       if (!topics.includes(topic.name)) {
         topics.push(topic.name);
         topicTopics.push(topic.name);
+        if (topicTopics.length > 3) {
+          break;
+        }
       }
     }
     console.log('here 3');
@@ -357,11 +363,14 @@ export class RecommendationService {
         if (!topics.includes(topic.name)) {
           topics.push(topic.name);
           followTopics.push(topic.name);
+          if (followTopics.length > 3) {
+            break;
+          }
         }
       }
     }
-    console.log('here 4');
-    let limit: number = topics.length < 5 ? 20 : 10;
+
+    let limit: number = topics.length > 5 ? 5 : 10;
     for (let i = 0; i < historyTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
@@ -446,7 +455,7 @@ export class RecommendationService {
       }
     }
     console.log('here 6');
-    for (let i = 0; i <= followTopics.length; i++) {
+    for (let i = 0; i < followTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
           name: String(followTopics[i]),
@@ -488,6 +497,7 @@ export class RecommendationService {
         }
       }
     }
+    console.log('wee2');
     let topUsers = await this.userModel
       .aggregate()
       .match({})
@@ -499,7 +509,7 @@ export class RecommendationService {
       })
       .sort({ followers: -1 })
       .limit(20);
-
+    console.log('wee');
     for (let i = 0; i < topUsers.length; i++) {
       if (
         String(topUsers[i]._id) != String(userId) &&
@@ -512,7 +522,7 @@ export class RecommendationService {
         followExist[String(topUsers[i]._id)] = true;
       }
     }
-
+    console.log(followers.length);
     return followers;
   }
   async pinMoreLike(userId, pinId) {
