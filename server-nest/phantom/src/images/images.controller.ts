@@ -5,6 +5,7 @@ import {
   Res,
   Controller,
   UseInterceptors,
+  Request,
   UseGuards,
   UploadedFiles,
   HttpException,
@@ -31,7 +32,8 @@ export class ImagesController {
   @Post('/me/uploadImage')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('file'))
-  upload(@UploadedFiles() files) {
+  upload(@UploadedFiles() files, @Request() req) {
+    req.setTimeout(0);
     const response = [];
     files.forEach(file => {
       const fileReponse = {
@@ -53,21 +55,12 @@ export class ImagesController {
     return response;
   }
 
-  @Get('imageInfo/:id')
+  @Get('imageInfo')
   @ApiBadRequestResponse({ type: BadRequestException })
-  async getFileInfo(@Param('id') id: string): Promise<FileResponseVm> {
-    const file = await this.ImagesService.findInfo(id);
-    const fileStream = await this.ImagesService.readStream(id);
-    if (!fileStream) {
-      throw new HttpException(
-        'An error occurred while retrieving file info',
-        HttpStatus.EXPECTATION_FAILED,
-      );
-    }
-    return {
-      message: 'File has been detected',
-      file: file,
-    };
+  async getFileInfo(@Request() req) {
+    req.setTimeout(0);
+    const file = await this.ImagesService.findInfo2();
+    return file;
   }
 
   @Get('/image/:id')
