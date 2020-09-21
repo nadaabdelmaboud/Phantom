@@ -7,59 +7,59 @@
           <li @click="getAllRecommend">All</li>
           <li @click="getTrendingRecommend">Trending</li>
           <li @click="getTopicName('Art')">Art</li>
-          <li @click="getTopicName('Nature')">Diy</li>
+          <li @click="getTopicName('Diy')">Diy</li>
           <li @click="openList">More</li>
         </ul>
       </div>
       <div class="cardsDiv">
         <div class="restTopicsListDiv" v-if="showTopicslist">
           <ul class="restTopicsList">
-            <li>Travel</li>
-            <li>Anime</li>
-            <li>Babies</li>
-            <li>Photography</li>
-            <li>Kpop</li>
-            <li>The Witcher</li>
-            <li>Design</li>
-            <li>Books</li>
-            <li>Flowers</li>
-            <li>Men Style</li>
-            <li>Nutrition</li>
+            <li @click="getTopicName('Travel')">Travel</li>
+            <li @click="getTopicName('Anime')">Anime</li>
+            <li @click="getTopicName('Babies')">Babies</li>
+            <li @click="getTopicName('Photography')">Photography</li>
+            <li @click="getTopicName('Kpop')">Kpop</li>
+            <li @click="getTopicName('The Witcher')">The Witcher</li>
+            <li @click="getTopicName('Design')">Design</li>
+            <li @click="getTopicName('Books')">Books</li>
+            <li @click="getTopicName('Flowers')">Flowers</li>
+            <li @click="getTopicName('Men Style')">Men Style</li>
+            <li @click="getTopicName('Nutrition')">Nutrition</li>
             <li @click="getTopicName('Desserts')">Desserts</li>
-            <li>Nature</li>
-            <li>Memes</li>
-            <li>Quran</li>
-            <li>Sewing</li>
-            <li>Skin Care</li>
-            <li>Education</li>
-            <li>Peircing</li>
-            <li>Prom Dresses</li>
-            <li>Love Quotes</li>
-            <li>Dresses Gowns</li>
+            <li @click="getTopicName('Nature')">Nature</li>
+            <li @click="getTopicName('Memes')">Memes</li>
+            <li @click="getTopicName('Quran')">Quran</li>
+            <li @click="getTopicName('Sewing')">Sewing</li>
+            <li @click="getTopicName('Skin Care')">Skin Care</li>
+            <li @click="getTopicName('Education')">Education</li>
+            <li @click="getTopicName('Peircing')">Peircing</li>
+            <li @click="getTopicName('Prom Dresses')">Prom Dresses</li>
+            <li @click="getTopicName('Love Quotes')">Love Quotes</li>
+            <li @click="getTopicName('Dresses Gowns')">Dresses Gowns</li>
           </ul>
           <ul class="restTopicsList">
-            <li>Anime Girls</li>
-            <li>Animation</li>
-            <li>Braids</li>
-            <li>Baking</li>
+            <li @click="getTopicName('Anime Girls')">Anime Girls</li>
+            <li @click="getTopicName('Animation')">Animation</li>
+            <li @click="getTopicName('Braids')">Braids</li>
+            <li @click="getTopicName('Baking')">Baking</li>
             <li @click="getTopicName('Recipes')">Recipes</li>
-            <li>Makeup</li>
-            <li>Beauty</li>
-            <li>Hairstyles</li>
-            <li>Cooking</li>
-            <li>Astronomy</li>
-            <li>Disney</li>
-            <li>Writing</li>
-            <li>Animals</li>
-            <li>Cats</li>
-            <li>Nails</li>
-            <li>Shoes</li>
-            <li>Road Trips</li>
-            <li>Gardening</li>
-            <li>Tatto</li>
-            <li>Men Fitness</li>
-            <li>Harry Potter</li>
-            <li>Eyemakeup</li>
+            <li @click="getTopicName('Makeup')">Makeup</li>
+            <li @click="getTopicName('Beauty')">Beauty</li>
+            <li @click="getTopicName('Hairstyles')">Hairstyles</li>
+            <li @click="getTopicName('Cooking')">Cooking</li>
+            <li @click="getTopicName('Astronomy')">Astronomy</li>
+            <li @click="getTopicName('Disney')">Disney</li>
+            <li @click="getTopicName('Writing')">Writing</li>
+            <li @click="getTopicName('Animals')">Animals</li>
+            <li @click="getTopicName('Cats')">Cats</li>
+            <li @click="getTopicName('Nails')">Nails</li>
+            <li @click="getTopicName('Shoes')">Shoes</li>
+            <li @click="getTopicName('Road Trips')">Road Trips</li>
+            <li @click="getTopicName('Gardening')">Gardening</li>
+            <li @click="getTopicName('Tatto')">Tatto</li>
+            <li @click="getTopicName('Men Fitness')">Men Fitness</li>
+            <li @click="getTopicName('Harry Potter')">Harry Potter</li>
+            <li @click="getTopicName('Eyemakeup')">Eyemakeup</li>
           </ul>
         </div>
         <div class="AllCards" v-if="showAll">
@@ -81,6 +81,17 @@
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+            />
+          </div>
+        </div>
+        <div class="Topics" v-if="showTopics">
+          <div v-for="card in Topics" :key="card._id">
+            <FollowCard
+              :followers="card.followers"
+              :firstName="card.firstName"
+              :lastName="card.lastName"
+              :cardImage="card.profileImage"
+              :type="nameOfTopic"
             />
           </div>
         </div>
@@ -182,7 +193,8 @@ button:focus {
   outline: 0 !important;
 }
 .AllCards,
-.Trending {
+.Trending,
+.Topics {
   margin-top: 15px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -235,7 +247,8 @@ button:focus {
 }
 @media screen and (max-width: 575px) {
   .AllCards,
-  .Trending {
+  .Trending,
+  .Topics {
     justify-items: center;
   }
 }
@@ -277,7 +290,9 @@ export default {
     return {
       showTopicslist: false,
       showAll: true,
-      showTrending: false
+      showTrending: false,
+      showTopics: false,
+      nameOfTopic: ""
     };
   },
   components: {
@@ -286,7 +301,8 @@ export default {
   computed: {
     ...mapGetters({
       All: "follow/All",
-      Trending: "follow/Trending"
+      Trending: "follow/Trending",
+      Topics: "follow/Topics"
     })
   },
   methods: {
@@ -297,14 +313,21 @@ export default {
       this.$store.dispatch("follow/allRecommendations");
       this.showAll = true;
       this.showTrending = false;
+      this.showTopics = false;
     },
     getTrendingRecommend() {
       this.$store.dispatch("follow/trendingRecommendations");
       this.showAll = false;
       this.showTrending = true;
+      this.showTopics = false;
     },
-    getTopicName(topicName) {
-      console.log("TopicName Nihal", topicName);
+    async getTopicName(topicName) {
+      if (this.showTopicslist == true) this.openList();
+      await this.$store.dispatch("follow/topicsRecommendations", topicName);
+      this.showAll = false;
+      this.showTrending = false;
+      this.showTopics = true;
+      this.nameOfTopic = topicName;
     },
     openList() {
       this.showTopicslist = !this.showTopicslist;
