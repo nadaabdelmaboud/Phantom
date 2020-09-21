@@ -263,9 +263,17 @@ export class RecommendationService {
     let topic = await this.topicModel
       .findOne({ name: topicName }, { recommendedUsers: 1 })
       .lean();
+    let user = await this.userModel.findById(userId, { following: 1 }).lean();
 
+    let followExist = {};
+    for (let j = 0; j < user.following.length; j++) {
+      followExist[String(user.following[j])] = true;
+    }
     for (let i = 0; i < topic.recommendedUsers.length; i++) {
-      if (String(topic.recommendedUsers[i]) != String(userId)) {
+      if (
+        String(topic.recommendedUsers[i]) != String(userId) &&
+        followExist[String(topic.recommendedUsers[i])] != true
+      ) {
         let recomUser = await this.userModel
           .aggregate()
           .match({ _id: topic.recommendedUsers[i] })
@@ -291,6 +299,7 @@ export class RecommendationService {
   }
   async trendingRecommendation(userId) {
     let followers = [];
+    let user = await this.userModel.findById(userId, { following: 1 }).lean();
     let topUsers = await this.userModel
       .aggregate()
       .match({})
@@ -301,10 +310,17 @@ export class RecommendationService {
         lastName: 1,
       })
       .sort({ followers: -1 })
-      .limit(100);
+      .limit(70);
+    let followExist = {};
+    for (let j = 0; j < user.following.length; j++) {
+      followExist[String(user.following[j])] = true;
+    }
 
     for (let i = 0; i < topUsers.length; i++) {
-      if (String(topUsers[i]._id) != String(userId)) {
+      if (
+        String(topUsers[i]._id) != String(userId) &&
+        followExist[String(topUsers[i]._id)] != true
+      ) {
         followers.push({
           user: topUsers[i],
           recommendType: 'popular phantom accounts',
@@ -326,7 +342,9 @@ export class RecommendationService {
     let followTopics = [];
     let topicTopics = [];
     let topics = [];
-
+    for (let i = user.following.length - 1; i >= 0; i--) {
+      followExist[String(user.following[i])] = true;
+    }
     console.log('here 1');
     for (let i = user.history.length - 1; i >= 0; i--) {
       if (!topics.includes(user.history[i].topic)) {
