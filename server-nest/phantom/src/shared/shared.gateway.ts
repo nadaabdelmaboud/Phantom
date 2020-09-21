@@ -57,7 +57,7 @@ export class SharedGateway {
     let messageId = data.messageId;
     console.log("deliver event")
     if (sender && reciever) {
-      console.log("to emiit")
+      console.log(reciever.socketId,"to emiit")
       socket.to(reciever.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
