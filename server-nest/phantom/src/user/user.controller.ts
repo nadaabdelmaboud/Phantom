@@ -4,14 +4,14 @@ import { PinsService } from '../pins/pins.service';
 import { BoardService } from '../board/board.service';
 import { TopicService } from '../topic/topic.service';
 import { UserService } from '../shared/user.service';
-import { AuthService } from '../shared/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { Email } from '../shared/send-email.service';
 import { UpdateDto } from './dto/update-user.dto';
 import { NotAcceptableException } from '@nestjs/common';
 import { json } from 'express';
 @nestCommon.Controller()
 export class UserController {
-  constructor(private userService: UserService, private email: Email) {}
+  constructor(private userService: UserService, private email: Email) { }
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('users/me')

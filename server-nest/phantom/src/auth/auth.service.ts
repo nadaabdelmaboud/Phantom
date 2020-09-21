@@ -5,12 +5,12 @@ import {
 } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
 
-import { UserService } from './user.service';
+import { UserService } from '../shared/user.service';
 import { Payload } from '../types/payload';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
   async googleLogin(req) {
     if (!req.user) {
       throw new NotFoundException('no such user on google');

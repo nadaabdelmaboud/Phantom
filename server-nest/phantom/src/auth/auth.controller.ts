@@ -4,7 +4,7 @@ import { UserService } from '../shared/user.service';
 import { Payload } from '../types/payload';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { AuthService } from '../shared/auth.service';
+import { AuthService } from './auth.service';
 import { Email } from '../shared/send-email.service';
 import { UseGuards, Req, NotFoundException, Res } from '@nestjs/common';
 @nestCommon.Controller()
