@@ -36,8 +36,12 @@ export default {
           this.$store.dispatch("search/searchPins", {
             name: name
           });
-        } else if (this.$route.path.includes("")) {
-          this.$store.dispatch("homeCards/userGenerateCards", 10);
+        } else if (this.$route.path.includes("PostPage")) {
+          let postId = this.$route.params.postPageId;
+          this.$store.dispatch("postPage/generateMorePins", {
+            pinId: postId,
+            limit: 10
+          });
         } else if (this.$route.path.includes("people")) {
           let name = this.$route.params.name;
           this.$store.dispatch("search/searchPeople", {
@@ -53,12 +57,8 @@ export default {
           this.$store.dispatch("search/searchMyPins", {
             name: name
           });
-        } else if (this.$route.path.includes("PostPage")) {
-          let pinId = this.$route.params.postPageId;
-          this.$store.dispatch("postPage/generateMorePins", {
-            pinId: pinId,
-            limit: 10
-          });
+        } else if (this.$route.path.includes("")) {
+          this.$store.dispatch("homeCards/userGenerateCards", 10);
         }
       }
     });
