@@ -83,17 +83,20 @@ export class RecommendationService {
         if (random + 15 >= Number(user.lastTopics[i].pinsLength)) {
           random = random - 15;
         }
+        console.log(random + 15);
         let topic = await this.topicModel
           .findOne(
             { name: user.lastTopics[i].topicName },
             {
               pins: {
-                $slice: [random, random + 15],
+                $slice: [random, 15],
               },
             },
           )
           .lean();
         if (topic) {
+          console.log('length');
+          console.log(topic.pins.length);
           for (let j = 0; j < topic.pins.length; j++) {
             let pin = await this.pinModel.findById(topic.pins[j], {
               imageId: 1,
@@ -1338,7 +1341,7 @@ export class RecommendationService {
             { name: user.lastTopics[i].topicName },
             {
               pins: {
-                $slice: [random, random + 15],
+                $slice: [random, 15],
               },
             },
           )
