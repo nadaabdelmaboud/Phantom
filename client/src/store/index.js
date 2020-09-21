@@ -12,6 +12,7 @@ import topics from "./modules/topics.js";
 import chat from "./modules/chat";
 import notifications from "./modules/notifications";
 import search from "./modules/search";
+import follow from "./modules/follow";
 
 Vue.use(Vuex);
 
@@ -28,6 +29,7 @@ export default new Vuex.Store({
     topics,
     chat,
     notifications,
-    search
+    search,
+    follow
   }
 });
