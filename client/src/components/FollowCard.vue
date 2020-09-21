@@ -1,14 +1,13 @@
 <template>
   <div class="followCard">
     <div class="cardImageDiv">
-      <!-- <img v-lazy="getImage(cardImage)" class="cardImg" alt="Card image" /> -->
-      <img src="../assets/logo.png" class="cardImg" alt="Card image" />
+      <img v-lazy="getImage(cardImage)" class="cardImg" alt="Card image" />
     </div>
     <div class="cardContent">
       <div class="cardInfo">
-        <h5 class="cardName">Nihal Mansour</h5>
-        <p class="numFollowers">6 Followers</p>
-        <p class="recommendType">based on your recent activity</p>
+        <h5 class="cardName">{{ firstName }} {{ lastName }}</h5>
+        <p class="numFollowers">{{ followers }} Followers</p>
+        <p class="recommendType">{{ type }}</p>
       </div>
       <div class="followBtn">
         <button class="followButton">Follow</button>
@@ -23,7 +22,7 @@
 .followCard {
   display: block;
   text-align: center;
-  width: 300px;
+  width: 260px;
   border-radius: 12px;
   background-color: white;
   padding: 12px;
@@ -48,6 +47,7 @@ p {
 }
 .cardContent {
   display: flex;
+  margin-top: 12px;
 }
 .followButton {
   letter-spacing: 1px;
@@ -67,10 +67,10 @@ button:focus {
 }
 .cardInfo {
   text-align: start;
-  width: 70%;
+  width: 71%;
 }
 .followBtn {
-  width: 30%;
+  width: 29%;
 }
 </style>
 
@@ -82,6 +82,18 @@ export default {
   props: {
     cardImage: {
       type: String
+    },
+    type: {
+      type: String
+    },
+    firstName: {
+      type: String
+    },
+    lastName: {
+      type: String
+    },
+    followers: {
+      type: Number
     }
   }
 };

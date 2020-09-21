@@ -62,9 +62,18 @@
             <li>Eyemakeup</li>
           </ul>
         </div>
-        Nihal mansour
+        <div class="callCards">
+          <div v-for="card in All" :key="card.user._id">
+            <FollowCard
+              :followers="card.user.followers"
+              :firstName="card.user.firstName"
+              :lastName="card.user.lastName"
+              :cardImage="card.user.profileImage"
+              :type="card.recommendType"
+            />
+          </div>
+        </div>
       </div>
-      <!-- <FollowCard /> -->
       <div class="optionsDiv">
         <button class="optionBtns" id="doneButton" @click="closePopUp">
           Done
@@ -122,6 +131,7 @@ ul {
   justify-content: center;
   overflow-y: auto;
   height: 450px;
+  background-color: white;
 }
 .restTopicsList {
   display: block;
@@ -159,6 +169,13 @@ ul {
 }
 button:focus {
   outline: 0 !important;
+}
+.callCards {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 7px;
+  justify-items: center;
 }
 @media screen and (max-width: 1400px) {
   .content {
@@ -204,6 +221,11 @@ button:focus {
     left: 40%;
   }
 }
+@media screen and (max-width: 575px) {
+  .callCards {
+    justify-items: center;
+  }
+}
 @media screen and (max-width: 530px) {
   .restTopicsListDiv {
     width: 52%;
@@ -234,7 +256,8 @@ button:focus {
 </style>
 
 <script>
-// import FollowCard from "../components/FollowCard";
+import FollowCard from "../components/FollowCard";
+import { mapGetters } from "vuex";
 export default {
   name: "followPopUp",
   data: function() {
@@ -242,14 +265,21 @@ export default {
       showTopicslist: false
     };
   },
-  //     components: {
-  //     FollowCard
-  //   }
+  components: {
+    FollowCard
+  },
+  computed: {
+    ...mapGetters({
+      All: "follow/All"
+    })
+  },
   methods: {
     closePopUp() {
       this.$store.commit("popUpsState/toggleshowFollowPopup");
     },
-    getAllRecommend() {},
+    getAllRecommend() {
+      this.$store.dispatch("follow/allRecommendations");
+    },
     getTrendingRecommend() {},
     getTopicName(topicName) {
       console.log("TopicName Nihal", topicName);

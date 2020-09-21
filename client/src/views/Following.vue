@@ -59,6 +59,9 @@ button:focus {
 <script>
 export default {
   name: "Following",
+  created() {
+    this.$store.dispatch("follow/allRecommendations");
+  },
   methods: {
     showRecommendationPopUp() {
       this.$store.commit("popUpsState/toggleshowFollowPopup");
