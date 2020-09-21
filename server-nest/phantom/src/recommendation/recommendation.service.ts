@@ -54,20 +54,7 @@ export class RecommendationService {
     }
     return false;
   }
-  async usersProfilesSeeds() {
-    let images = [{ id: 1 }, { id: 2 }];
-    let allUsers = await this.userModel.find({}, { profileImage: 1 });
-    let counter = 0;
-    for (let i = 22; i < allUsers.length - 1; i++) {
-      if (counter >= images.length) {
-        counter = 0;
-      }
-      let id = mongoose.Types.ObjectId(images[counter].id);
-      allUsers[i].profileImage = id;
-      await allUsers[i].save();
-      counter++;
-    }
-  }
+
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
