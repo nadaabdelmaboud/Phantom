@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="flexBar flexEnd">
-                <i
+        <i
           class="fa fa-list"
           aria-hidden="true"
           id="view"
@@ -260,9 +260,9 @@ i:hover {
 }
 @media screen and (max-width: 350px) {
   i {
-   height: 40px;
-   width: 40px;
-   padding: 6px;
+    height: 40px;
+    width: 40px;
+    padding: 6px;
   }
 }
 .fa-check {
@@ -321,11 +321,11 @@ i:hover {
 .view {
   right: 80px;
 }
-.flexBar{
+.flexBar {
   display: flex;
   width: 100%;
 }
-.flexEnd{
+.flexEnd {
   justify-content: flex-end;
 }
 </style>

@@ -74,7 +74,7 @@ export default {
   border-radius: 32px;
 }
 @media screen and (max-width: 500px) {
-  .newPinData{
+  .newPinData {
     margin: 50px auto;
     width: 97%;
   }

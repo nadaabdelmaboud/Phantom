@@ -135,7 +135,7 @@
       >
         {{ MergeTo }}
       </div>
-          <div class="boards" v-if="showBoard">
+      <div class="boards" v-if="showBoard">
         <input type="text" v-model="searchBoard" placeholder="Search" />
         <ul v-for="(b, i) in userBoards" :key="i">
           <li
@@ -159,7 +159,7 @@
           When you delete "{{ name }}", you'll lose all followers of that board.
         </p>
       </div>
-  
+
       <div class="buttonDiv mergeButton">
         <button
           :class="{ disable: MergeTo == 'Pick a board' }"
@@ -360,34 +360,34 @@ h3 {
     width: 100px;
   }
 }
-.mergeButton{
-  button:nth-child(1){
+.mergeButton {
+  button:nth-child(1) {
     width: 75%;
     padding: 5px;
   }
-  button:nth-child(2){
+  button:nth-child(2) {
     padding: 10px;
     width: 20%;
   }
 }
-.actionsButton{
-  button{
-   padding: 5px;
-   width: 25%;
-  }
-}
-@media screen and (max-width: 500px) {
-.mergeButton{
-  button{
-    padding: 3px;
-    font-size: 14px;
-  }
-  button:nth-child(1){
-    width: 70%;
-  }
-  button:nth-child(2){
+.actionsButton {
+  button {
+    padding: 5px;
     width: 25%;
   }
 }
+@media screen and (max-width: 500px) {
+  .mergeButton {
+    button {
+      padding: 3px;
+      font-size: 14px;
+    }
+    button:nth-child(1) {
+      width: 70%;
+    }
+    button:nth-child(2) {
+      width: 25%;
+    }
+  }
 }
 </style>

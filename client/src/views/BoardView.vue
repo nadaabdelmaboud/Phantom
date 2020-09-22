@@ -216,11 +216,11 @@ i:hover {
 .view {
   right: 80px;
 }
-.flexBar{
+.flexBar {
   display: flex;
   width: 100%;
 }
-.flexEnd{
+.flexEnd {
   justify-content: flex-end;
 }
 </style>

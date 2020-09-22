@@ -1,6 +1,6 @@
 <template>
-  <form @submit.prevent="submit">
-    <div class="signUpForm">
+  <div class="signUpForm">
+    <form @submit.prevent="submit">
       <p class="text-center" id="phantom">Welcome to Phantom</p>
       <div class="row google">
         <a :href="$url + '/google'">
@@ -16,76 +16,76 @@
           {{ errorMessage }} 😞
         </p>
       </div>
-      <input
-        type="text"
-        id="firstName"
-        v-model="fname"
-        placeholder="First Name"
-      />
-      <br />
-      <input
-        type="text"
-        id="lastName"
-        v-model="lname"
-        placeholder="Last Name"
-      />
-      <br />
-      <input
-        type="email"
-        id="email"
-        v-model="email"
-        placeholder="Enter Your Email"
-      />
-      <br />
-      <input
-        type="password"
-        id="password"
-        v-model="password"
-        placeholder="Enter Your Password"
-        @input="validatePassword()"
-      />
-      <br />
-      <CheckPasswordFormat :password="this.password" />
-      <input
-        type="password"
-        id="passwordConfirm"
-        v-model="confirmPassword"
-        placeholder="Confrim Password"
-        @input="passwordMatch()"
-      />
-      <br />
-      <div v-if="!this.passwordMatching">
-        <p style="color:red;">Password mismatching</p>
+      <div class="fields">
+        <input
+          type="text"
+          id="firstName"
+          v-model="fname"
+          placeholder="First Name"
+        />
+        <br />
+        <input
+          type="text"
+          id="lastName"
+          v-model="lname"
+          placeholder="Last Name"
+        />
+        <br />
+        <input
+          type="email"
+          id="email"
+          v-model="email"
+          placeholder="Enter Your Email"
+        />
+        <br />
+        <input
+          type="password"
+          id="password"
+          v-model="password"
+          placeholder="Enter Your Password"
+          @input="validatePassword()"
+        />
+        <br />
+        <CheckPasswordFormat :password="this.password" />
+        <input
+          type="password"
+          id="passwordConfirm"
+          v-model="confirmPassword"
+          placeholder="Confrim Password"
+          @input="passwordMatch()"
+        />
+        <br />
+        <div v-if="!this.passwordMatching">
+          <p style="color:red;">Password mismatching</p>
+        </div>
+        <label for="birthDate">Date of birth</label><br />
+        <input
+          type="date"
+          id="birthDate"
+          v-model="birthDate"
+          pattern="\d{4}-\d{2}-\d{2}"
+        />
+        <br />
+        <p class="text-center about">About You</p>
+        <p class="optional text-center about">(Optional)</p>
+        <br />
+        <textarea
+          id="about"
+          placeholder="Write something.."
+          rows="4"
+          cols="50"
+          v-model="about"
+        ></textarea>
+        <br />
       </div>
-      <label for="birthDate">Date of birth</label><br />
-      <input
-        type="date"
-        id="birthDate"
-        v-model="birthDate"
-        pattern="\d{4}-\d{2}-\d{2}"
-      />
-      <br />
-      <div class="row">
-        <p>About You</p>
-        <p class="optional">(Optional)</p>
-      </div>
-      <textarea
-        id="about"
-        placeholder="Write something.."
-        rows="4"
-        cols="50"
-        v-model="about"
-      ></textarea>
-      <br />
       <div id="signUp" class="text-center">
         <button type="submit">Sign Up</button>
       </div>
-      <br />
       <router-link to="/login" class="text-center">
         <p>Already have an account? Login</p>
       </router-link>
-    </div>
-  </form>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -161,18 +161,16 @@ export default {
   }
 };
 </script>
-
 <style lang="scss" scoped>
 @import "../../scss/Colors";
+@import "../../scss/Mixins";
 
 input,
 textarea {
   border-radius: 8px;
   border: 2px solid $ligthPaige;
-  padding-left: 8px;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
+  padding: 6px 0px 6px 8px;
+  margin: 5px auto;
   outline: none;
   min-width: 400px;
   max-height: 300px;
@@ -184,16 +182,7 @@ input:focus {
 }
 
 button {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  background-color: $darkBlue;
-  border-radius: 20px;
-  border: none;
-  color: $offWhite;
-  text-decoration: none;
-  font-size: 18px;
+  @include CTAButton;
 }
 
 button:focus {
@@ -201,15 +190,13 @@ button:focus {
 }
 
 .signUpForm {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-  height: 100%;
-  width: 30%;
-  margin: auto;
+  margin: 0 auto;
   padding: 20px;
+}
+
+.fields {
+  margin: 0 auto;
+  text-align: center;
 }
 
 .optional {
@@ -242,11 +229,6 @@ a:hover {
   font-weight: bold;
 }
 
-#findIdeas {
-  font-weight: bold;
-  font-size: 14px;
-}
-
 .error {
   background-color: red;
   color: white;
@@ -268,6 +250,17 @@ a:hover {
 
 .google-icon {
   color: red;
-  margin-right: 10px;
+  margin: 0 10px 0 40px;
+}
+
+label {
+  left: -145px;
+  position: relative;
+}
+
+.about {
+  display: inline;
+  left: -115px;
+  position: relative;
 }
 </style>
