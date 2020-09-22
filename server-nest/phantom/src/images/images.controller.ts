@@ -19,13 +19,11 @@ import {
   ApiCreatedResponse,
   ApiConsumes,
   ApiBadRequestResponse,
-  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
-import { FileResponseVm } from './file-response-vm..model';
-import { fsync } from 'fs';
-var path = require('path');
+import { FileResponseVm } from './file-models/file-response-vm..model';
+const path = require('path');
 @Controller()
 export class ImagesController {
   constructor(private ImagesService: ImagesService) {}
@@ -71,13 +69,11 @@ export class ImagesController {
     if (topic && topic != '') {
       var filePath = './static/' + topic + '.jpg';
       var resolvedPath = await path.resolve(filePath);
-      console.log(resolvedPath);
       return res.sendFile(resolvedPath);
     }
     if (!id || id == ' ' || id == '' || id == 'none') {
       var filePath = './static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
-      console.log(resolvedPath);
       return res.sendFile(resolvedPath);
     }
     const checkImage = await this.ImagesService.checkImage(id);

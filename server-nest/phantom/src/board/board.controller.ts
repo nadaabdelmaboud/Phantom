@@ -35,7 +35,6 @@ export class BoardController {
     @Body('status') status: string,
   ) {
     let userId = req.user._id;
-    console.log(userId);
     let createdBoard = await this.BoardService.createBoard(
       name,
       startDate,

@@ -5,7 +5,7 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
 import { UserService } from './user.service';
 import { AuthService } from '../auth/auth.service';
-import { JwtStrategy } from '../auth/jwt.strategy';
+import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from '../models/pin.schema';
@@ -27,7 +27,6 @@ import { ChatService } from 'src/chat/chat.service';
       { name: 'Topic', schema: Topic },
       { name: 'Message', schema: Message },
       { name: 'Chat', schema: Chat },
-
     ]),
   ],
   providers: [
@@ -50,4 +49,4 @@ import { ChatService } from 'src/chat/chat.service';
   ],
   exports: [UserService, ValidationService, AuthService, Email],
 })
-export class SharedModule { }
+export class SharedModule {}

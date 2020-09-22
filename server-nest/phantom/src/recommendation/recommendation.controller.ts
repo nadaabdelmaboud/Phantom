@@ -26,7 +26,6 @@ export class RecommendationController {
   async generateHomeFeed(@Request() req) {
     req.setTimeout(0);
     let userId = req.user._id;
-    console.log(userId);
     let home = await this.RecommendationService.homeFeed(userId);
     if (home) {
       return home;

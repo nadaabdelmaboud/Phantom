@@ -357,12 +357,10 @@ export class PinsService {
         title: 1,
         topic: 1,
       });
-      console.log('2');
       if (pinFound) {
         retPins.push(pinFound);
       }
     }
-    console.log('3');
     return retPins;
   }
   async savePin(userId, pinId, boardId, sectionId) {
@@ -587,7 +585,6 @@ export class PinsService {
     ) {
       return false;
     }
-    console.log('user');
     let user = await this.userModel
       .findById(userId, {
         firstName: 1,
@@ -822,7 +819,6 @@ export class PinsService {
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
-        console.log('asas');
         lastReactType = String(pin.reacts[i].reactType);
         if (reactType != pin.reacts[i].reactType) {
           switch (pin.reacts[i].reactType) {
@@ -862,9 +858,7 @@ export class PinsService {
               break;
           }
         }
-        console.log(reactType);
         if (reactType == 'none') {
-          console.log('here');
           pin.reacts.splice(i, 1);
         } else {
           pin.reacts[i].reactType = reactType;
@@ -920,7 +914,6 @@ export class PinsService {
         String(lastReactType),
         pin.imageId,
       );
-    console.log('here');
     return true;
   }
   async likeComment(pinId, commentId, userId) {
@@ -947,7 +940,6 @@ export class PinsService {
             }
           }
         } else {
-          console.log('heere');
           pin.comments[i].likes.likers.push(userId);
           pin.comments[i].likes.counts =
             pin.comments[i].likes.counts.valueOf() + 1;
@@ -1005,7 +997,7 @@ export class PinsService {
     }
     return false;
   }
-  //edit pin
+
   async editCreatedPin(
     pinId,
     userId,
