@@ -67,14 +67,14 @@ body {
 
 <script>
 import HomeCard from "../components/HomeCard";
-import { mapGetters ,mapState} from "vuex";
+import { mapGetters, mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {
   name: "UserHome",
-  data:function(){
-    return{
+  data: function() {
+    return {
       //userKey:false
-    }
+    };
   },
   components: {
     HomeCard
@@ -85,7 +85,7 @@ export default {
       cards: "homeCards/userHomePage"
     }),
     ...mapState({
-      userKey:state=>state.user.userKey
+      userKey: state => state.user.userKey
     })
   },
   created() {

@@ -12,9 +12,13 @@
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" :key="componentKey" />
-      <i v-if="isLoggedIn()" class="fa fa-comment globalIcons" @click="toggleChat"></i>
+      <i
+        v-if="isLoggedIn()"
+        class="fa fa-comment globalIcons"
+        @click="toggleChat"
+      ></i>
       <router-link
-      v-if="isLoggedIn()" 
+        v-if="isLoggedIn()"
         tag="i"
         class="fa fa-plus globalIcons"
         to="/PinBuilder"
@@ -198,7 +202,7 @@ export default {
       componentKey: 0
     };
   },
-  mixins: [getImage,isLoggedIn],
+  mixins: [getImage, isLoggedIn],
   components: {
     HomeNavigationBar,
     CreateBoardPopup,
