@@ -1,9 +1,7 @@
 <template>
   <div class="login-form">
     <form @submit.prevent="login">
-      <center>
-        <h2>Welcome Back 👋</h2>
-      </center>
+      <h2>Welcome Back 👋</h2>
       <div class="row google">
         <a :href="$url + '/google'">
           <i class="fa fa-google google-icon"></i>
@@ -93,7 +91,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
+
 input {
   border-radius: 8px;
   border: 2px solid $ligthPaige;
@@ -103,37 +103,19 @@ input {
   min-width: 300px;
   max-height: 300px;
 }
-
 input:focus {
   border: 2px solid $lightBlue;
   border-radius: 8px;
 }
-.field-icon {
-  float: right;
-  margin-left: -25px;
-  margin-top: -37px;
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-}
-
 .login-form {
-  margin: 40px auto;
-  padding: 5%;
+  margin: 10vh auto;
+  padding: 40px;
   border: 2px solid $lightBlue;
   border-radius: 40px;
   max-width: 450px;
 }
-
 button {
-  padding: 4px 40px;
-  margin: 10px 0;
-  background-color: $darkBlue;
-  border-radius: 20px;
-  border: none;
-  color: $offWhite;
-  text-decoration: none;
-  font-size: 18px;
+  @include CTAButton;
 }
 
 button:focus {
@@ -141,6 +123,7 @@ button:focus {
 }
 h2 {
   font-weight: bold;
+  text-align: center;
 }
 .error {
   background-color: red;
@@ -150,7 +133,6 @@ h2 {
   font-weight: bold;
   max-width: 300px;
 }
-
 a {
   text-decoration: none;
   color: black;
@@ -158,35 +140,32 @@ a {
   font-weight: bold;
   margin-top: 5px;
 }
-
 a:hover {
   text-decoration: none;
   color: black;
 }
-
 #show-password {
   min-width: auto;
   margin: 4px 10px 0px 15px;
 }
-
 label {
   font-weight: bold;
   font-size: 14px;
 }
 
-span {
-  display: inline-block;
+form {
+  margin: 0 auto;
 }
-
 .google {
   background-color: $offWhite;
   color: black;
   min-width: 300px;
+  max-width: 320px;
   padding: 10px 61px;
   font-weight: 700;
   font-size: 14px;
+  margin: 0;
 }
-
 i {
   color: red;
   margin-right: 10px;

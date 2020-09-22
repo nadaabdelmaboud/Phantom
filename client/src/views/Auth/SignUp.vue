@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import CheckPasswordFormat from "../components/CheckPasswordFormat.vue";
+import CheckPasswordFormat from "../../components/CheckPasswordFormat.vue";
 export default {
   name: "SignUp",
   data: function() {
@@ -163,7 +163,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
+@import "../../scss/Colors";
 
 input,
 textarea {

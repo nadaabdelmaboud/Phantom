@@ -1,13 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import SignUp from "../views/SignUp.vue";
+import SignUp from "../views/Auth/SignUp.vue";
 import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
 import PinBuilder from "../views/PinBuilder.vue";
 import PostPage from "../views/PostPage.vue";
 import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
-import LoginView from "../views/LoginView.vue";
+import LoginView from "../views/Auth/LoginView.vue";
 import UserProfile from "../views/UserProfile";
 import UserBoards from "../views/UserBoards";
 import UserPins from "../views/UserPins";
@@ -16,8 +16,8 @@ import EditProfileSettings from "../components/UserSettings/EditProfileSettings"
 import AccountSettings from "../components/UserSettings/AccountSettings";
 import NotificationsSettings from "../components/UserSettings/NotificationsSettings";
 import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
-import ForgetPassword from "../views/ForgetPassword.vue";
-import ResetPassword from "../views/ResetPassword.vue";
+import ForgetPassword from "../views/PasswordManagement/ForgetPassword.vue";
+import ResetPassword from "../views/PasswordManagement/ResetPassword.vue";
 import BoardView from "../views/BoardView.vue";
 import BoardPins from "../components/BoardPins";
 import BoardMoreLike from "../components/BoardMoreLike";
@@ -30,7 +30,7 @@ import SearchPins from "../components/Search/SearchPins";
 import SearchMyPins from "../components/Search/SearchMyPins";
 import SearchPeople from "../components/Search/SearchPeople";
 import SearchBoards from "../components/Search/SearchBoards";
-import GoogleAuth from "../views/AuthRedirect.vue";
+import GoogleAuth from "../views/Auth/AuthRedirect.vue";
 
 Vue.use(VueRouter);
 

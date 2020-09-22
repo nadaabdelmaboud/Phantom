@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import CheckPasswordFormat from "../components/CheckPasswordFormat.vue";
+import CheckPasswordFormat from "../../components/CheckPasswordFormat.vue";
 export default {
   data: function() {
     return {
@@ -83,8 +83,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 .main-border {
   margin: 10% auto;
   border: 2px solid $lightBlue;
