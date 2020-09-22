@@ -11,7 +11,7 @@ import { NotAcceptableException } from '@nestjs/common';
 import { json } from 'express';
 @nestCommon.Controller()
 export class UserController {
-  constructor(private userService: UserService, private email: Email) { }
+  constructor(private userService: UserService, private email: Email) {}
 
   @nestCommon.UseGuards(AuthGuard('jwt'))
   @nestCommon.Get('users/me')

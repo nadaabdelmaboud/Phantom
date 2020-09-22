@@ -39,6 +39,7 @@ export const User = new Schema({
     topic: String,
     pinId: mongoose.Types.ObjectId,
   }),
+  googleImage: String,
   profileImage: mongoose.Types.ObjectId,
   pins: Array({
     pinId: mongoose.Types.ObjectId,
@@ -89,4 +90,3 @@ export const User = new Schema({
   },
   createdAt: Date,
 });
-

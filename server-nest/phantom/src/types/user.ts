@@ -24,10 +24,11 @@ export interface user extends Document {
   google: Boolean;
   notificationOfPinsActivity: Boolean;
   gender: String;
+  googleImage: String;
   sortType: String;
   socketId: string;
   notificationCounter: Number;
-  profileImage: mongoose.Types.ObjectId;
+  profileImage: mongoose.Types.ObjectId | String;
   lastTopics: Array<{
     topicName: String;
     pinsLength: Number;
