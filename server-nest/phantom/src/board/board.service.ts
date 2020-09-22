@@ -583,11 +583,15 @@ export class BoardService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       );
       retCollaborators.push({
         id: collaborator._id,
         imageId: collaborator.profileImage,
+        google: collaborator.google,
+        googleImage: collaborator.googleImage,
         name: collaborator.firstName + ' ' + collaborator.lastName,
         savePin: board.collaborators[i].savePin,
         createPin: board.collaborators[i].createPin,

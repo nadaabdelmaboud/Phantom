@@ -31,7 +31,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) { }
+  ) {}
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -72,6 +72,8 @@ export class PinsService {
       .findById(pin.creator.id, {
         profileImage: 1,
         followers: 1,
+        google: 1,
+        googleImage: 1,
       })
       .lean();
     if (!user) throw new NotFoundException({ message: 'user not found' });
@@ -98,6 +100,8 @@ export class PinsService {
         creatorInfo = {
           creatorImage: creator.profileImage,
           followers: creator.followers.length,
+          google: creator.google,
+          googleImage: creator.googleImage,
         };
       }
       if (!user.history) user.history = [];
@@ -485,6 +489,8 @@ export class PinsService {
       firstName: 1,
       lastName: 1,
       profileImage: 1,
+      google: 1,
+      googleImage: 1,
     });
     let pin = await this.pinModel.findById(pinId, {
       title: 1,
@@ -533,11 +539,14 @@ export class PinsService {
           id: newComment._id,
           commenter: newComment.commenter,
           commentText: newComment.comment,
+          google: user.google,
+          googleImage: user.googleImage,
           date: 'just now',
           commenterName: user.firstName + ' ' + user.lastName,
           commenterImage: userId.profileImage,
           pinId: pinId,
           likes: newComment.likes,
+
           isLiked: false,
         },
         replies: newComment.replies,
@@ -554,6 +563,8 @@ export class PinsService {
             commenter: pin.comments[i].commenter,
             commentText: pin.comments[i].comment,
             date: 'just now',
+            google: user.google,
+            googleImage: user.googleImage,
             commenterName: user.firstName + ' ' + user.lastName,
             commenterImage: userId.profileImage,
             pinId: pinId,
@@ -578,7 +589,13 @@ export class PinsService {
     }
     console.log('user');
     let user = await this.userModel
-      .findById(userId, { firstName: 1, lastName: 1, profileImage: 1 })
+      .findById(userId, {
+        firstName: 1,
+        lastName: 1,
+        profileImage: 1,
+        google: 1,
+        googleImage: 1,
+      })
       .lean();
     if (!replyText || replyText == '' || replyText == ' ') {
       throw new BadRequestException('reply is empty');
@@ -610,6 +627,8 @@ export class PinsService {
             id: pin.comments[i].replies[j]._id,
             replier: pin.comments[i].replies[j].replier,
             replyText: pin.comments[i].replies[j].reply,
+            google: user.google,
+            googleImage: user.googleImage,
             date: 'just now',
             commentId: commentId,
             pinId: pinId,
@@ -628,6 +647,8 @@ export class PinsService {
               id: pin.comments[i].replies[j]._id,
               replier: pin.comments[i].replies[j].replier,
               replyText: pin.comments[i].replies[j].reply,
+              google: user.google,
+              googleImage: user.googleImage,
               date: 'just now',
               commentId: commentId,
               pinId: pinId,
@@ -658,6 +679,8 @@ export class PinsService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         })
         .lean();
 
@@ -673,6 +696,8 @@ export class PinsService {
           commenter: pin.comments[i].commenter,
           commenterName: commenter.firstName + ' ' + commenter.lastName,
           commenterImage: commenter.profileImage,
+          google: commenter.google,
+          googleImage: commenter.googleImage,
           commentText: pin.comments[i].comment,
           date: await this.calcDate(pin.comments[i].date),
           likes: pin.comments[i].likes,
@@ -685,6 +710,8 @@ export class PinsService {
               firstName: 1,
               lastName: 1,
               profileImage: 1,
+              google: 1,
+              googleImage: 1,
             })
             .lean();
           if (replier) {
@@ -707,6 +734,8 @@ export class PinsService {
               replierName: replier.firstName + ' ' + replier.lastName,
               replierImage: replier.profileImage,
               replyText: pin.comments[i].replies[j].reply,
+              google: replier.google,
+              googleImage: replier.googleImage,
               date: await this.calcDate(pin.comments[i].replies[j].date),
               likes: pin.comments[i].replies[j].likes,
               isLiked: isLiked,
@@ -771,6 +800,8 @@ export class PinsService {
       profileImage: 1,
       firstName: 1,
       lastName: 1,
+      google: 1,
+      googleImage: 1,
     });
     let pin = await this.pinModel.findById(pinId, {
       reacts: 1,
@@ -1431,26 +1462,41 @@ export class PinsService {
   }
 
   async getFollowingPins(userId) {
-    const user = await this.userModel.findOne({ _id: userId }, { following: 1 }).lean();
+    const user = await this.userModel
+      .findOne({ _id: userId }, { following: 1 })
+      .lean();
     let followersPins = [];
     let limitOfPinsForUser = user.following.length;
     limitOfPinsForUser = limitOfPinsForUser > 1 ? limitOfPinsForUser : 1;
     for (let i = user.following.length - 1; i >= 0; i--) {
-      let followedUser = await this.userModel.findOne({ _id: user.following[i] }, {
-        _id: 1,
-        firstName: 1,
-        lastName: 1,
-        profileImage: 1,
-      }).lean();
-      let userPins = await this.getCurrentUserPins(user.following[i], false, limitOfPinsForUser);
+      let followedUser = await this.userModel
+        .findOne(
+          { _id: user.following[i] },
+          {
+            _id: 1,
+            firstName: 1,
+            lastName: 1,
+            profileImage: 1,
+            google: 1,
+            googleImage: 1,
+          },
+        )
+        .lean();
+      let userPins = await this.getCurrentUserPins(
+        user.following[i],
+        false,
+        limitOfPinsForUser,
+      );
       if (followedUser && userPins)
         followersPins.push({
           followedId: followedUser._id,
           firstName: followedUser.firstName,
           lastName: followedUser.lastName,
           profileImage: followedUser.profileImage,
-          pins: userPins
-        })
+          google: followedUser.google,
+          googleImage: followedUser.googleImage,
+          pins: userPins,
+        });
     }
     return followersPins;
   }

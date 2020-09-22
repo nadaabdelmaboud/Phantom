@@ -565,6 +565,8 @@ export class UserService {
         following: 1,
         firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     let followedUser = await this.findUserAndGetData(
@@ -579,6 +581,8 @@ export class UserService {
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     if (!userFollow || !followedUser)
@@ -638,6 +642,8 @@ export class UserService {
         following: 1,
         firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     let followedUser = await this.findUserAndGetData(
@@ -652,6 +658,8 @@ export class UserService {
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     if (!userFollow || !followedUser)
@@ -725,6 +733,8 @@ export class UserService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       );
       if (currentUser) followersInfo.push(currentUser);
@@ -763,6 +773,8 @@ export class UserService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       );
       if (currentUser) followingsInfo.push(currentUser);

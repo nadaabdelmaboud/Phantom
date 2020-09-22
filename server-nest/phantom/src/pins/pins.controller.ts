@@ -28,7 +28,7 @@ export class PinsController {
     private PinsService: PinsService,
     private ImagesService: ImagesService,
     private BoardService: BoardService,
-  ) { }
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post('/me/pins')
@@ -56,7 +56,7 @@ export class PinsController {
   @Get('/me/pins')
   async getCurrentUserPins(@Request() req) {
     let userId = req.user._id;
-    let pins = await this.PinsService.getCurrentUserPins(userId, true, undefined);
+    let pins = await this.PinsService.getCurrentUserPins(userId, true, null);
     if (pins && pins.length != 0) {
       return pins;
     } else {
@@ -67,7 +67,7 @@ export class PinsController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/user/:userId/pins')
   async getSomeUserPins(@Request() req, @Param('userId') userId: string) {
-    let pins = await this.PinsService.getCurrentUserPins(userId, false, undefined);
+    let pins = await this.PinsService.getCurrentUserPins(userId, false, null);
     if (pins && pins.length != 0) {
       return pins;
     } else {

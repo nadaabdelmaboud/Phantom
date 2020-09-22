@@ -284,6 +284,8 @@ export class RecommendationService {
             profileImage: 1,
             firstName: 1,
             lastName: 1,
+            google: 1,
+            googleImage: 1,
           });
         followers.push(recomUser[0]);
       }
@@ -310,6 +312,8 @@ export class RecommendationService {
         profileImage: 1,
         firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       })
       .sort({ followers: -1 })
       .limit(70);
@@ -423,6 +427,8 @@ export class RecommendationService {
               profileImage: 1,
               firstName: 1,
               lastName: 1,
+              google: 1,
+              googleImage: 1,
             });
           followers.push({
             user: recomUser[0],
@@ -465,6 +471,8 @@ export class RecommendationService {
               profileImage: 1,
               firstName: 1,
               lastName: 1,
+              google: 1,
+              googleImage: 1,
             });
           followers.push({
             user: recomUser[0],
@@ -507,6 +515,8 @@ export class RecommendationService {
               profileImage: 1,
               firstName: 1,
               lastName: 1,
+              google: 1,
+              googleImage: 1,
             });
           followers.push({
             user: recomUser[0],
@@ -526,6 +536,8 @@ export class RecommendationService {
         profileImage: 1,
         firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       })
       .sort({ followers: -1 })
       .limit(20);
