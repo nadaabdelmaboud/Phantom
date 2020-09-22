@@ -32,7 +32,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -69,7 +69,6 @@ export class UserService {
         },
       },
     ]);
-
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user[0].about) user[0].about = '';
@@ -102,7 +101,7 @@ export class UserService {
   }
 
   async findByLogin(loginDto: LoginDto): Promise<any> {
-    console.log(await this.userModel.find({}, { _id: 1 }))
+    console.log(await this.userModel.find({}, { _id: 1 }));
     console.log(loginDto.password);
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
@@ -279,7 +278,7 @@ export class UserService {
         }
       }
     }
-    await this.userModel.ensureIndexes()
+    await this.userModel.ensureIndexes();
     return newUser;
   }
 
@@ -548,11 +547,17 @@ export class UserService {
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     //   console.log(await this.pinModel.find({}, { _id: 1 }));
     if (String(followerId) == String(followingId))
-      throw new HttpException('You can not follow yourself ', HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        'You can not follow yourself ',
+        HttpStatus.FORBIDDEN,
+      );
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
       {
-        _id: 1, followers: 1, following: 1, firstName: 1,
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
         lastName: 1,
       },
     );
@@ -622,7 +627,10 @@ export class UserService {
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
       {
-        _id: 1, followers: 1, following: 1, firstName: 1,
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
         lastName: 1,
       },
     );

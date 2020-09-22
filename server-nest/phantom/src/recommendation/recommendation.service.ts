@@ -58,6 +58,7 @@ export class RecommendationService {
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
+
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];

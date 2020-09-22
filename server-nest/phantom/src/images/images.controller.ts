@@ -58,7 +58,6 @@ export class ImagesController {
   @Get('imageInfo')
   @ApiBadRequestResponse({ type: BadRequestException })
   async getFileInfo(@Request() req) {
-    req.setTimeout(0);
     const file = await this.ImagesService.findInfo2();
     return file;
   }

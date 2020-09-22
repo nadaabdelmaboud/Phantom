@@ -13,7 +13,16 @@
         </div>
       </div>
       <div class="followTopics">
-        <button class="followTopicButton">Follow</button>
+        <button class="followTopicButton" @click="followTopic" v-if="!isFollow">
+          Follow
+        </button>
+        <button
+          class="unfollowTopicButton"
+          @click="unfollowTopic"
+          v-if="isFollow"
+        >
+          Following
+        </button>
       </div>
     </div>
   </div>
@@ -56,7 +65,8 @@ img {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.followTopicButton {
+.followTopicButton,
+.unfollowTopicButton {
   width: 220px;
   border-radius: 25px;
   background-color: black;
@@ -65,9 +75,13 @@ img {
   border: transparent;
   height: 40px;
 }
-.followTopicButton:hover {
+.followTopicButton:hover,
+.unfollowTopicButton:hover {
   transition: transform 0.5s;
   transform: scale(1.02);
+}
+.unfollowTopicButton {
+  background-color: rgb(77, 75, 75);
 }
 button:focus {
   outline: 0;
@@ -92,12 +106,21 @@ export default {
     },
     topicName: {
       type: String
+    },
+    isFollow: {
+      type: Boolean
     }
   },
   methods: {
     toTopicsPage() {
       //add router link
       //this.$router.push("/TopicsPage");
+    },
+    followTopic() {
+      this.$store.dispatch("topics/followTopic", this.topicId);
+    },
+    unfollowTopic() {
+      this.$store.dispatch("topics/unfollowTopic", this.topicId);
     }
   }
 };

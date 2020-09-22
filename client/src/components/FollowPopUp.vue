@@ -65,33 +65,39 @@
         <div class="AllCards" v-if="showAll">
           <div v-for="card in All" :key="card.user._id">
             <FollowCard
+              :userId="card.user._id"
               :followers="card.user.followers"
               :firstName="card.user.firstName"
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+              typeOfCard="All"
             />
           </div>
         </div>
         <div class="Trending" v-if="showTrending">
           <div v-for="card in Trending" :key="card.user._id">
             <FollowCard
+              :userId="card.user._id"
               :followers="card.user.followers"
               :firstName="card.user.firstName"
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+              typeOfCard="Trending"
             />
           </div>
         </div>
         <div class="Topics" v-if="showTopics">
           <div v-for="card in Topics" :key="card._id">
             <FollowCard
+              :userId="card._id"
               :followers="card.followers"
               :firstName="card.firstName"
               :lastName="card.lastName"
               :cardImage="card.profileImage"
               :type="nameOfTopic"
+              typeOfCard="Topics"
             />
           </div>
         </div>
@@ -197,7 +203,7 @@ button:focus {
 .Topics {
   margin-top: 15px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
   gap: 7px;
   justify-items: center;
 }
@@ -277,6 +283,11 @@ button:focus {
   .restTopicsListDiv {
     width: 75%;
     left: 20%;
+  }
+  .AllCards,
+  .Trending,
+  .Topics {
+    grid-template-columns: repeat(auto-fill, minmax(263px, 1fr));
   }
 }
 </style>

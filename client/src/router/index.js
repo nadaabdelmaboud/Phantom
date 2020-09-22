@@ -30,6 +30,7 @@ import SearchPins from "../components/Search/SearchPins";
 import SearchMyPins from "../components/Search/SearchMyPins";
 import SearchPeople from "../components/Search/SearchPeople";
 import SearchBoards from "../components/Search/SearchBoards";
+import GoogleAuth from "../views/AuthRedirect.vue";
 
 Vue.use(VueRouter);
 
@@ -215,6 +216,15 @@ const routes = [
     path: "/password-reset",
     name: "ForgetPassword",
     component: ForgetPassword
+  },
+  {
+    path: "/aouth/google",
+    name: "Auth",
+    props: route => ({
+      token: route.query.token,
+      type: route.query.type
+    }),
+    component: GoogleAuth
   }
 ];
 
