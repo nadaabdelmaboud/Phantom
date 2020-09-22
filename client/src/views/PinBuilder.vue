@@ -247,10 +247,12 @@
   background-color: $lightBlue;
 }
 .noImage {
+  min-height: 400px;
   border: 2px solid red;
   border-radius: 16px;
   background-color: rgba(230, 0, 35, 0.03);
   color: rgb(230, 0, 35);
+  //height: 390px;
 }
 .addData {
   width: 45%;

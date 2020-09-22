@@ -73,7 +73,7 @@ export default {
 @import "../../scss/Colors";
 .imageGrid {
   display: grid;
-  grid-template: 80px 80px/ 80px 80px 80px;
+  grid-template: 80px 80px/ 1fr 1fr 1fr;
   grid-template-areas:
     "img1 img2 img3"
     "img1 img4 img5";
@@ -101,7 +101,7 @@ export default {
 .img {
   border-radius: 16px;
   background-color: $offWhite;
-  // object-fit: cover;
+  object-fit: cover;
 }
 .card {
   border: none;
