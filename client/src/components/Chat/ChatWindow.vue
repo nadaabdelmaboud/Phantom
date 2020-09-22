@@ -95,7 +95,7 @@ export default {
       socket: "",
       allowNotify: false,
       typing: false,
-      meTyping:false
+      meTyping: false
     };
   },
   mixins: [getImage],
@@ -147,7 +147,7 @@ export default {
     },
     toChatters() {
       // this.$store.dispatch("followers/getFollowing");
-      this.chatWith.id=""
+      this.chatWith.id = "";
       this.$store.dispatch("chat/getRecentChats", this.myData._id);
       this.inchat = !this.inchat;
     },
@@ -219,7 +219,7 @@ export default {
     isTyping() {
       console.log("bnm");
       if (!this.meTyping) {
-        this.meTyping= true;
+        this.meTyping = true;
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id
@@ -230,32 +230,32 @@ export default {
       }
     },
     deliveredListener() {
-      this.socket.on("setDelivered", (data) => {
+      this.socket.on("setDelivered", data => {
         let payload = {
           senderId: this.myData._id,
           recieverId: [this.chatWith.id]
         };
         console.log("oh1");
         this.$store.dispatch("chat/getChat", payload);
-        console.log("oh2",data);
-        if (data.senderId == this.chatWith.id){
-          console.log("oh3")
+        console.log("oh2", data);
+        if (data.senderId == this.chatWith.id) {
+          console.log("oh3");
           this.$store.commit("chat/setDeliver", data.messageId);
         }
       });
     },
     seenListener() {
-      this.socket.on("setSeen", (data) => {
+      this.socket.on("setSeen", data => {
         let payload = {
           senderId: this.myData._id,
           recieverId: [this.chatWith.id]
         };
-        console.log("oh1 seeen",data);
+        console.log("oh1 seeen", data);
         this.$store.dispatch("chat/getChat", payload);
         console.log("oh2 seeen");
-        if (data.senderId == this.chatWith.id){
-            this.$store.commit("chat/setSeen", data.messageId);
-          console.log("oh3")
+        if (data.senderId == this.chatWith.id) {
+          this.$store.commit("chat/setSeen", data.messageId);
+          console.log("oh3");
         }
       });
     }
