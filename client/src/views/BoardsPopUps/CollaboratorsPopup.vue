@@ -149,15 +149,15 @@ export default {
   padding: 20px;
   border-radius: 32px;
   max-height: 75vh;
-  overflow-y:auto;
+  overflow-y: auto;
 }
 
-  @media screen and (max-width: 500px) {
-   .addCollab {
-      margin: 50px auto;
-      width: 97%;
-    }
-   }
+@media screen and (max-width: 500px) {
+  .addCollab {
+    margin: 50px auto;
+    width: 97%;
+  }
+}
 h3 {
   width: 100%;
   text-align: center;

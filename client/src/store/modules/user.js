@@ -16,7 +16,7 @@ const state = {
   userData: null,
   isLoading: false,
   imgID: null,
-  userKey:0
+  userKey: 0
 };
 
 const mutations = {
@@ -77,8 +77,8 @@ const mutations = {
   changeImgID(state, payload) {
     state.imgID = payload;
   },
-  setKey(state,payload){
-    state.userKey=payload
+  setKey(state, payload) {
+    state.userKey = payload;
   }
 };
 
@@ -89,7 +89,7 @@ const actions = {
       .post("sign_up", userData)
       .then(() => {
         commit("changeSignUpState", true);
-        commit("setKey",1)
+        commit("setKey", 1);
       })
       .catch(error => {
         if (error.response.data.message == "Mail exists") {
@@ -129,7 +129,7 @@ const actions = {
         localStorage.setItem("userToken", token);
         commit("setLogin", true);
         dispatch("notifications/notifyUser", null, { root: true });
-        commit("setKey",1)
+        commit("setKey", 1);
       })
       .catch(error => {
         commit("setLogin", false);

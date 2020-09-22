@@ -197,7 +197,7 @@
   cursor: pointer;
   i {
     position: absolute;
-    bottom:45%;
+    bottom: 45%;
     right: calc(50% - 15px);
     text-align: center;
     font-size: 30px;
@@ -209,22 +209,22 @@
     text-align: center;
   }
   p:nth-child(3) {
-    bottom:20%;
+    bottom: 20%;
   }
   p:nth-child(2) {
     bottom: 50%;
   }
 }
 @media screen and (max-width: 650px) {
- .imageInput {
-  p {
-  font-size: 12px;
-  font-weight: 600;
+  .imageInput {
+    p {
+      font-size: 12px;
+      font-weight: 600;
+    }
+    p:nth-child(3) {
+      display: none;
+    }
   }
-  p:nth-child(3) {
-   display: none;
-  }
-}
 }
 .doubleBorder {
   position: relative;
@@ -270,7 +270,7 @@
     margin: 5% 5% 20px 5%;
   }
 }
-.fa-user-circle{
+.fa-user-circle {
   color: $darkBlue;
   font-size: 15px;
 }
