@@ -76,7 +76,7 @@
           />
           <br />
           <div v-if="board.type == 'creator'">
-            <label>
+            <label v-if="board.board.sections.length">
               Board sections
             </label>
             <div class="section" v-for="s in board.board.sections" :key="s._id">
