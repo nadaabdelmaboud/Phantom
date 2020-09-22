@@ -1,50 +1,58 @@
-import * as nestCommon from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Put,
+  Request,
+  Delete,
+  HttpStatus,
+  HttpException,
+  Query,
+  UseGuards,
+  Param,
+  BadRequestException,
+  NotAcceptableException
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { PinsService } from '../pins/pins.service';
-import { BoardService } from '../board/board.service';
-import { TopicService } from '../topic/topic.service';
 import { UserService } from './user.service';
-import { AuthService } from '../auth/auth.service';
 import { Email } from '../shared/send-email.service';
 import { UpdateDto } from './dto/update-user.dto';
-import { NotAcceptableException } from '@nestjs/common';
-import { json } from 'express';
-@nestCommon.Controller()
+@Controller()
 export class UserController {
-  constructor(private userService: UserService, private email: Email) {}
+  constructor(private userService: UserService, private email: Email) { }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('users/me')
-  async me(@nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Get('users/me')
+  async me(@Request() req) {
     const user = await this.userService.getUserMe(req.user._id);
 
     return user;
   }
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('notifications/me')
-  async getNotifications(@nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Get('notifications/me')
+  async getNotifications(@Request() req) {
     const user = await this.userService.getUserNotifications(req.user._id);
     return user;
   }
-  @nestCommon.Get('/user/:id')
-  async getUser(@nestCommon.Param() params) {
+  @Get('/user/:id')
+  async getUser(@Param() params) {
     const user = await this.userService.getUserMe(params.id);
     return user;
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/reset-password')
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/reset-password')
   async resetPassword(
-    @nestCommon.Request() req,
-    @nestCommon.Body('newPassword') newPassword: string,
-    @nestCommon.Body('oldPassword') oldPassword: string,
-    @nestCommon.Body('forgetPassword') forgetPassword: Boolean,
+    @Request() req,
+    @Body('newPassword') newPassword: string,
+    @Body('oldPassword') oldPassword: string,
+    @Body('forgetPassword') forgetPassword: Boolean,
   ) {
-    if (forgetPassword == true) oldPassword = undefined;
+    if (forgetPassword == true) oldPassword = null;
     else if (!oldPassword)
-      throw new nestCommon.HttpException(
+      throw new HttpException(
         'oldPassword is reqired',
-        nestCommon.HttpStatus.FORBIDDEN,
+        HttpStatus.FORBIDDEN,
       );
     const ifRest = await this.userService.resetPassword(
       req.user._id,
@@ -53,78 +61,53 @@ export class UserController {
     );
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/update')
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/update')
   async updateUser(
-    @nestCommon.Request() req,
-    @nestCommon.Body() updateData: UpdateDto,
+    @Request() req,
+    @Body() updateData: UpdateDto,
   ) {
     await this.userService.checkUpdateData(updateData);
     await this.userService.updateUserInfo(req.user._id, updateData);
     const user = await this.userService.getUserById(req.user._id);
-    user.password = undefined;
+    user.password = null;
     return user;
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/update-settings')
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/update-settings')
   async updateUserSettings(
-    @nestCommon.Request() req,
-    @nestCommon.Body() updateData,
+    @Request() req,
+    @Body() updateData,
   ) {
-    /*if (updateData.deleteflag) {
-      const user = await this.userService.getUserById(req.user._id);
-      // delete boards created saved
-      for (let i = 0; i < user.boards.length; i++) {
-        await this.BoardService.deleteBoard(req.user._id, user.boards[i].boardId);
-      }
-      for (let i = 0; i < user.pins.length; i++) {
-        await this.BoardService.deletePin(user.pins[i].pinId, req.user._id);
-      }
-      for (let i = 0; i < user.savedPins.length; i++) {
-        await this.BoardService.unsavePin(user.savedPins[i].pinId, user.savedPins[i].boardId, user.savedPins[i].sectionId, req.user._id, true);
-      }
-
-      for (let i = 0; i < user.followers.length; i++) {
-        await this.userService.unfollowUser(user.followers[i], user._id);
-      }
-      for (let i = 0; i < user.following.length; i++) {
-        await this.userService.unfollowUser(user._id, user.followers[i]);
-      }
-      for (let i = 0; i < user.followingTopics.length; i++) {
-        await this.TopicService.unfollowTopic(user._id, user.followingTopics[i])
-      }
-
-    }*/
-
     if (updateData.notificationCounter)
       return await this.userService.updateDataInUser(req.user._id, {
         notificationCounter: 0,
       });
     await this.userService.updateSettings(req.user._id, updateData);
     const user = await this.userService.getUserById(req.user._id);
-    user.password = undefined;
+    user.password = null;
     return user;
   }
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/confirm-update-email')
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/confirm-update-email')
   async confirmUpdateEmail(
-    @nestCommon.Request() req,
-    @nestCommon.Query('type') type: string,
+    @Request() req,
+    @Query('type') type: string,
   ) {
     if (!req.user.email || !req.user.newEmail || !req.user._id)
-      throw new nestCommon.HttpException(
+      throw new HttpException(
         'not correct token',
-        nestCommon.HttpStatus.FORBIDDEN,
+        HttpStatus.FORBIDDEN,
       );
     if (type === 'changeEmail') {
       const user = await this.userService.checkMAilExistAndFormat(
         req.user.email,
       );
       if (!user)
-        throw new nestCommon.HttpException(
+        throw new HttpException(
           'no user by this email',
-          nestCommon.HttpStatus.FORBIDDEN,
+          HttpStatus.FORBIDDEN,
         );
       await this.email.sendEmail(
         req.user.newEmail,
@@ -137,27 +120,27 @@ export class UserController {
         req.user.newEmail,
       );
       if (user)
-        throw new nestCommon.HttpException(
+        throw new HttpException(
           'this email aleardy exists',
-          nestCommon.HttpStatus.FORBIDDEN,
+          HttpStatus.FORBIDDEN,
         );
       if (!(await this.userService.setEmail(req.user._id, req.user.newEmail)))
-        throw new nestCommon.HttpException(
+        throw new HttpException(
           'not user or not email',
-          nestCommon.HttpStatus.BAD_REQUEST,
+          HttpStatus.BAD_REQUEST,
         );
     } else if (!type)
-      throw new nestCommon.HttpException(
+      throw new HttpException(
         'type not correct',
-        nestCommon.HttpStatus.FORBIDDEN,
+        HttpStatus.FORBIDDEN,
       );
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/boards/view')
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/boards/view')
   async setViewState(
-    @nestCommon.Request() req,
-    @nestCommon.Query('viewState') viewState: string,
+    @Request() req,
+    @Query('viewState') viewState: string,
   ) {
     const view = await this.userService.setViewState(req.user._id, viewState);
     if (view) {
@@ -166,9 +149,9 @@ export class UserController {
       throw new NotAcceptableException('view is not updated');
     }
   }
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/me/boards/view')
-  async getViewState(@nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/boards/view')
+  async getViewState(@Request() req) {
     const view = await this.userService.getViewState(req.user._id);
     if (view) {
       return view;
@@ -177,40 +160,40 @@ export class UserController {
     }
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/follow-user/:user_id')
-  async followUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/follow-user/:user_id')
+  async followUser(@Param() params, @Request() req) {
     if (!(await this.userService.followUser(req.user._id, params.user_id)))
-      throw new nestCommon.BadRequestException('can not follow this user');
+      throw new BadRequestException('can not follow this user');
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Delete('/me/follow-user/:user_id')
-  async unfollowUser(@nestCommon.Param() params, @nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me/follow-user/:user_id')
+  async unfollowUser(@Param() params, @Request() req) {
     if (!(await this.userService.unfollowUser(req.user._id, params.user_id)))
-      throw new nestCommon.BadRequestException('can not follow this user');
+      throw new BadRequestException('can not follow this user');
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/me/:fcmToken')
-  async setFCMToken(@nestCommon.Param() params, @nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/me/:fcmToken')
+  async setFCMToken(@Param() params, @Request() req) {
     const user = await this.userService.updateFCMTocken(
       params.fcmToken,
       req.user._id,
     );
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Put('/log-out')
-  async logOut(@nestCommon.Request() req) {
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/log-out')
+  async logOut(@Request() req) {
     const user = await this.userService.updateFCMTocken(' ', req.user._id);
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/me/follow-user/:user_id')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/follow-user/:user_id')
   async checkfollowingUser(
-    @nestCommon.Param() params,
-    @nestCommon.Request() req,
+    @Param() params,
+    @Request() req,
   ) {
     const user = await this.userService.getUserById(req.user._id);
     if (!(await this.userService.checkFollowUser(user, params.user_id)))
@@ -218,44 +201,44 @@ export class UserController {
     else return { follow: 'true' };
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/me/follower')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/follower')
   async getFollowers(
-    @nestCommon.Request() req,
-    @nestCommon.Query('limit') limit: Number,
-    @nestCommon.Query('offset') offset: Number,
+    @Request() req,
+    @Query('limit') limit: Number,
+    @Query('offset') offset: Number,
   ) {
     return await this.userService.userFollowers(req.user._id, limit, offset);
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/me/following')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/following')
   async getFollowings(
-    @nestCommon.Request() req,
-    @nestCommon.Query('limit') limit: Number,
-    @nestCommon.Query('offset') offset: Number,
+    @Request() req,
+    @Query('limit') limit: Number,
+    @Query('offset') offset: Number,
   ) {
     return await this.userService.userFollowings(req.user._id, limit, offset);
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/:user_id/follower')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:user_id/follower')
   async getUserFollowers(
-    @nestCommon.Request() req,
-    @nestCommon.Param() params,
-    @nestCommon.Query('limit') limit: Number,
-    @nestCommon.Query('offset') offset: Number,
+    @Request() req,
+    @Param() params,
+    @Query('limit') limit: Number,
+    @Query('offset') offset: Number,
   ) {
     return await this.userService.userFollowers(params.user_id, limit, offset);
   }
 
-  @nestCommon.UseGuards(AuthGuard('jwt'))
-  @nestCommon.Get('/:user_id/following')
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:user_id/following')
   async getUserFollowings(
-    @nestCommon.Request() req,
-    @nestCommon.Param() params,
-    @nestCommon.Query('limit') limit: Number,
-    @nestCommon.Query('offset') offset: Number,
+    @Request() req,
+    @Param() params,
+    @Query('limit') limit: Number,
+    @Query('offset') offset: Number,
   ) {
     return await this.userService.userFollowings(params.user_id, limit, offset);
   }

@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+
   constructor(private authService: AuthService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -13,15 +14,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /**
+   * validate function to check correct object com from token
+   * @param payload the object created from token
+   * @param done 
+   * return token object 
+   */
   async validate(payload: any, done: VerifiedCallback) {
-    /*const user = await this.authService.validateUser(payload);
-    if (!user) {
-      return done(
-        new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED),
-        false,
-      );
-    }
-    return user;*/
     return payload;
   }
 }
