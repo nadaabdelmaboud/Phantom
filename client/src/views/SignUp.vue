@@ -2,7 +2,15 @@
   <form @submit.prevent="submit">
     <div class="signUpForm">
       <p class="text-center" id="phantom">Welcome to Phantom</p>
-      <p class="text-center" id="findIdeas">Find new ideas to try</p>
+      <div class="row google">
+        <a :href="$url + '/google'">
+          <i class="fa fa-google google-icon"></i>
+          Continue with Google
+        </a>
+      </div>
+      <div style="font-size: 12px; text-align: center;">
+        <strong>OR</strong>
+      </div>
       <div class="error" v-if="errorMessage && !signUpState">
         <p class="text-center" style="padding-bottom:4px;">
           {{ errorMessage }} 😞
@@ -13,7 +21,6 @@
         id="firstName"
         v-model="fname"
         placeholder="First Name"
-        required
       />
       <br />
       <input
@@ -21,7 +28,6 @@
         id="lastName"
         v-model="lname"
         placeholder="Last Name"
-        required
       />
       <br />
       <input
@@ -29,7 +35,6 @@
         id="email"
         v-model="email"
         placeholder="Enter Your Email"
-        required
       />
       <br />
       <input
@@ -37,7 +42,6 @@
         id="password"
         v-model="password"
         placeholder="Enter Your Password"
-        required
         @input="validatePassword()"
       />
       <br />
@@ -47,7 +51,6 @@
         id="passwordConfirm"
         v-model="confirmPassword"
         placeholder="Confrim Password"
-        required
         @input="passwordMatch()"
       />
       <br />
@@ -59,7 +62,6 @@
         type="date"
         id="birthDate"
         v-model="birthDate"
-        required
         pattern="\d{4}-\d{2}-\d{2}"
       />
       <br />
@@ -105,7 +107,15 @@ export default {
   methods: {
     submit() {
       this.passwordMatch();
-      if (this.passwordMatching && this.validPassword) {
+      if (
+        this.passwordMatching &&
+        this.validPassword &&
+        this.fname &&
+        this.lname &&
+        this.password &&
+        this.birthDate &&
+        this.email
+      ) {
         this.$store.dispatch("user/signUp", {
           firstName: this.fname,
           password: this.password,
@@ -122,6 +132,9 @@ export default {
     passwordMatch() {
       if (this.password === this.confirmPassword) this.passwordMatching = true;
       else this.passwordMatching = false;
+    },
+    googleAuth() {
+      this.$store.dispatch("user/googleAuth");
     }
   },
   computed: {
@@ -241,5 +254,20 @@ a:hover {
   margin-bottom: 4px;
   font-weight: bold;
   max-width: 400px;
+}
+
+.google {
+  background-color: $offWhite;
+  color: black;
+  width: 400px;
+  padding: 10px 61px;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 4px auto;
+}
+
+.google-icon {
+  color: red;
+  margin-right: 10px;
 }
 </style>

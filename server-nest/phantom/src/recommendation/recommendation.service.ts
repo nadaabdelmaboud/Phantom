@@ -58,10 +58,7 @@ export class RecommendationService {
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
-    let id = mongoose.Types.ObjectId('5f501b4fa0e8ab8708462574');
-    let eu = await this.userModel.findById(id, { profileImage: 1 });
-    console.log(eu.profileImage);
-    return;
+
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];
