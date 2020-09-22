@@ -148,7 +148,16 @@ export default {
   width: 450px;
   padding: 20px;
   border-radius: 32px;
+  max-height: 75vh;
+  overflow-y:auto;
 }
+
+  @media screen and (max-width: 500px) {
+   .addCollab {
+      margin: 50px auto;
+      width: 97%;
+    }
+   }
 h3 {
   width: 100%;
   text-align: center;
@@ -158,7 +167,7 @@ h3 {
   overflow-y: auto;
 }
 #boardLink {
-  width: 70%;
+  width: 65%;
   height: 48px;
   margin-top: 3px;
   font-size: 12px;
@@ -171,6 +180,8 @@ h3 {
 #copyLink {
   color: $darkBlue;
   background-color: $powderBlue;
+  width: 33%;
+  padding: 5px;
   transition: background-color linear 0.5s;
 }
 #copyLink:hover {
