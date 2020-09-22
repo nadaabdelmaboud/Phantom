@@ -103,26 +103,11 @@ export class ChatService {
       throw new Error('not mongoose id');
 
     if (isSeen)
-<<<<<<< HEAD
       await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId }, seenStatus: { $not: { $elemMatch: { userId: userId } } } }, {
         $push: {
           seenStatus: { userId: userId, time: new Date() }
         }
       });
-=======
-      await this.messageModel.findOneAndUpdate(
-        {
-          _id: messageId,
-          senderId: { $ne: userId },
-          deliverStatus: { $not: { $elemMatch: { userId: userId } } },
-        },
-        {
-          $push: {
-            seenStatus: { userId: userId, time: new Date() },
-          },
-        },
-      );
->>>>>>> cf1e62ab759dc4684ec8c075c371804a4d698756
     return 1;
   }
   async seenMessage(

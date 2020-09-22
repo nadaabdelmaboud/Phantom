@@ -32,15 +32,9 @@ export class TopicController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/topic/:topicId')
   async getTopic(@Request() req, @Param('topicId') topicId: string) {
-<<<<<<< HEAD
     let topic = await this.TopicService.getTopicById(topicId);
     if (topic)
       return topic;
-=======
-    let userId = req.user._id;
-    let topic = await this.TopicService.getTopicById(topicId, userId);
-    if (topic) return topic;
->>>>>>> cf1e62ab759dc4684ec8c075c371804a4d698756
     return new NotFoundException();
   }
   //get all pins of a certain topic
