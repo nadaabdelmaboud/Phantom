@@ -76,7 +76,7 @@
           />
           <br />
           <div v-if="board.type == 'creator'">
-            <label>
+            <label v-if="board.board.sections.length">
               Board sections
             </label>
             <div class="section" v-for="s in board.board.sections" :key="s._id">
@@ -93,7 +93,7 @@
           </div>
         </div>
       </div>
-      <div class="buttonDiv">
+      <div class="buttonDiv actionsButton">
         <button @click="editBoard">
           Done
         </button>
@@ -135,17 +135,7 @@
       >
         {{ MergeTo }}
       </div>
-      <div v-if="MergeTo != 'Pick a board'">
-        <br />
-        <p>
-          You're about to move all the Pins from your "{{ name }}" board to a
-          new section in your "{{ MergeTo }}" board.
-        </p>
-        <p>
-          When you delete "{{ name }}", you'll lose all followers of that board.
-        </p>
-      </div>
-      <div class="boards" v-if="showBoard">
+          <div class="boards" v-if="showBoard">
         <input type="text" v-model="searchBoard" placeholder="Search" />
         <ul v-for="(b, i) in userBoards" :key="i">
           <li
@@ -159,7 +149,18 @@
           </li>
         </ul>
       </div>
-      <div class="buttonDiv">
+      <div v-if="MergeTo != 'Pick a board'">
+        <br />
+        <p>
+          You're about to move all the Pins from your "{{ name }}" board to a
+          new section in your "{{ MergeTo }}" board.
+        </p>
+        <p>
+          When you delete "{{ name }}", you'll lose all followers of that board.
+        </p>
+      </div>
+  
+      <div class="buttonDiv mergeButton">
         <button
           :class="{ disable: MergeTo == 'Pick a board' }"
           @click="mergeBoard"
@@ -293,6 +294,12 @@ export default {
   padding: 20px;
   border-radius: 32px;
 }
+@media screen and (max-width: 500px) {
+  .editBoard {
+    margin: 50px auto;
+    width: 97%;
+  }
+}
 h3 {
   width: 100%;
   text-align: center;
@@ -308,7 +315,7 @@ h3 {
   color: $darkBlue;
 }
 .formBoard {
-  height: 400px;
+  height: 50vh;
   overflow-y: auto;
 }
 .mergeOptions {
@@ -329,9 +336,10 @@ h3 {
 .boards {
   @include optionsList;
   width: 400px;
-  margin-top: 10px;
+  margin: 10px auto;
   max-height: 400px;
   overflow-y: auto;
+  max-width: 85vw;
 }
 .section {
   display: flex;
@@ -351,5 +359,35 @@ h3 {
   button {
     width: 100px;
   }
+}
+.mergeButton{
+  button:nth-child(1){
+    width: 75%;
+    padding: 5px;
+  }
+  button:nth-child(2){
+    padding: 10px;
+    width: 20%;
+  }
+}
+.actionsButton{
+  button{
+   padding: 5px;
+   width: 25%;
+  }
+}
+@media screen and (max-width: 500px) {
+.mergeButton{
+  button{
+    padding: 3px;
+    font-size: 14px;
+  }
+  button:nth-child(1){
+    width: 70%;
+  }
+  button:nth-child(2){
+    width: 25%;
+  }
+}
 }
 </style>

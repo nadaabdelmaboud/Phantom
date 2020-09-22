@@ -5,7 +5,7 @@
       <img v-else :src="getImage(this.user.profileImage)" />
       <h1 v-if="myprofile">{{ this.meUser.userName }}</h1>
       <h1 v-else>{{ this.user.userName }}</h1>
-      <h6 v-if="myprofile">{{ this.meUser.followers }} following</h6>
+      <h6 v-if="myprofile">{{ this.meUser.followers.length }} following</h6>
       <h6 v-else>{{ this.user.followers }} following</h6>
       <div
         class="buttons inRoute follow"
@@ -22,8 +22,8 @@
         unfollow
       </div>
     </div>
-    <div class="stickyBar row  m-0">
-      <div class="col-sm-4 col-4 col1">
+    <div class="stickyBar flexBar">
+      <div class="flexBar">
         <router-link
           to="/settings"
           tag="i"
@@ -31,9 +31,8 @@
           aria-hidden="true"
           v-if="myprofile"
         ></router-link>
-        <i class="fa fa-upload" aria-hidden="true" v-if="myprofile"></i>
       </div>
-      <div class="col-sm-4 col-4 col2">
+      <div class="flexBar">
         <div class="buttons" @click="toBoards" :class="{ inRoute: inBoards }">
           Boards
         </div>
@@ -41,21 +40,21 @@
           Pins
         </div>
       </div>
-      <div class="col-sm-4 col-4 col3">
-        <i
-          class="fa fa-plus"
-          aria-hidden="true"
-          id="create"
-          style="float:right;"
-          @click="showCreate = !showCreate"
-        ></i>
-        <i
+      <div class="flexBar flexEnd">
+                <i
           class="fa fa-list"
           aria-hidden="true"
           id="view"
           style="float:right;"
           @click="showViewOptions = !showViewOptions"
           v-if="myprofile"
+        ></i>
+        <i
+          class="fa fa-plus"
+          aria-hidden="true"
+          id="create"
+          style="float:right;"
+          @click="showCreate = !showCreate"
         ></i>
       </div>
     </div>
@@ -259,6 +258,13 @@ i {
 i:hover {
   background-color: $lightPink;
 }
+@media screen and (max-width: 350px) {
+  i {
+   height: 40px;
+   width: 40px;
+   padding: 6px;
+  }
+}
 .fa-check {
   height: 24px;
   width: 24px;
@@ -314,5 +320,12 @@ i:hover {
 }
 .view {
   right: 80px;
+}
+.flexBar{
+  display: flex;
+  width: 100%;
+}
+.flexEnd{
+  justify-content: flex-end;
 }
 </style>

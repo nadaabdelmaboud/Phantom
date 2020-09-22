@@ -67,6 +67,7 @@ export default {
   animation: dropDown 0.1s linear forwards;
   z-index: 100;
   padding: 20px;
+  max-width: 90vw;
 }
 .flexWrap {
   display: flex;

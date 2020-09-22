@@ -81,6 +81,11 @@ export default {
     border-color: $lightPinkHover;
   }
 }
+@media screen and (max-width: 500px) {
+  .addSection {
+    width: 97%;
+  }
+}
 h3 {
   width: 100%;
   text-align: center;
