@@ -1,5 +1,4 @@
 import axios from "axios";
-import getUserToken from "../../mixins/getUserToken";
 const state = {
   signUpState: null,
   validPasswordLength: null,
@@ -174,11 +173,10 @@ const actions = {
   },
   async getUserProfile({ commit }) {
     commit("setLoading");
-    let token = getUserToken.methods.getUserToken();
     await axios
       .get("users/me", {
         headers: {
-          Authorization: token
+          Authorization: localStorage.getItem("userToken")
         }
       })
       .then(response => {
@@ -190,11 +188,10 @@ const actions = {
       });
   },
   updateUserInfo({ commit }, payload) {
-    let token = getUserToken.methods.getUserToken();
     axios
       .put("/me/update", payload, {
         headers: {
-          Authorization: token
+          Authorization: localStorage.getItem("userToken")
         }
       })
       .then(response => {
