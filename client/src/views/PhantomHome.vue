@@ -82,7 +82,7 @@
 }
 @keyframes away {
   from {
-    right: 140px;
+    right: 80px;
   }
   to {
     right: 0;

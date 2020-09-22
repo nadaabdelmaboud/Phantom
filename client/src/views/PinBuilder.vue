@@ -48,7 +48,6 @@
           class="fa fa-trash deleteicon"
           @click="unUpload"
         ></i>
-        <button class="site" v-if="!imageFile">Save from site</button>
       </div>
 
       <div class="pinData addData">
@@ -147,6 +146,7 @@
 .pin {
   background-color: $offWhite;
   height: calc(100vh - 120px);
+  min-height: 500px;
   border-radius: 16px;
   animation: appear 0.2s linear 1 both;
 }
@@ -183,33 +183,21 @@
   background-color: $lightPink;
   top: 96px;
   border-radius: 16px;
-  .site {
-    position: absolute;
-    top: 103%;
-    width: 100%;
-    height: 48px;
-    background-color: $lightPink;
-    color: $darkBlue;
-    border: none;
-    border-radius: 24px;
-    transition: background-color 0.5s ease;
-    &:hover {
-      background-color: $lightPinkHover;
-    }
-  }
 }
 .addImg {
-  width: 35%;
+  width: 30%;
+  height: 400px;
 }
 .imageInput {
   width: 100%;
+  height: 80%;
   min-height: 420px;
   text-align: center;
   color: $darkBlue;
   cursor: pointer;
   i {
     position: absolute;
-    top: 40%;
+    bottom:45%;
     right: calc(50% - 15px);
     text-align: center;
     font-size: 30px;
@@ -221,11 +209,22 @@
     text-align: center;
   }
   p:nth-child(3) {
-    top: 80%;
+    bottom:20%;
   }
   p:nth-child(2) {
-    top: 50%;
+    bottom: 50%;
   }
+}
+@media screen and (max-width: 650px) {
+ .imageInput {
+  p {
+  font-size: 12px;
+  font-weight: 600;
+  }
+  p:nth-child(3) {
+   display: none;
+  }
+}
 }
 .doubleBorder {
   position: relative;
@@ -240,6 +239,7 @@
   left: 5px;
   right: 5px;
   bottom: 5px;
+  height: 390px;
 }
 .dragging {
   border: 1px solid $darkBlue;
@@ -253,9 +253,10 @@
   color: rgb(230, 0, 35);
 }
 .addData {
-  width: 55%;
+  width: 45%;
   left: 40%;
   padding: 10px;
+  min-height: 300px;
   input {
     border: none;
     width: 90%;
@@ -268,6 +269,10 @@
     font-size: 20px;
     margin: 5% 5% 20px 5%;
   }
+}
+.fa-user-circle{
+  color: $darkBlue;
+  font-size: 15px;
 }
 #imgPreview {
   width: 100%;
