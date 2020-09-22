@@ -8,14 +8,14 @@ import { ImagesModule } from '../images/images.module';
 import { Board } from '../models/board.schema';
 import { SharedModule } from '../shared/shared.module';
 import { Topic } from '../models/topic.schema';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '../shared/notification.service';
 import { User } from '../models/user.schema';
 
 @Module({
   imports: [
     SharedModule,
-    ImagesModule,
     BoardModule,
+    ImagesModule,
     MongooseModule.forFeature([
       { name: 'Pin', schema: Pin },
       { name: 'Board', schema: Board },
@@ -24,7 +24,7 @@ import { User } from '../models/user.schema';
     ]),
   ],
   controllers: [PinsController],
-  providers: [PinsService, NotificationService],
+  providers: [PinsService],
   exports: [PinsService],
 })
 export class PinsModule {}

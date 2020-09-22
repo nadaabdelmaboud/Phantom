@@ -9,17 +9,16 @@ import { Topic } from '../models/topic.schema';
 import { PinsModule } from '../pins/pins.module';
 import { SharedModule } from '../shared/shared.module';
 import { User } from '../models/user.schema';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     SharedModule,
-    ImagesModule,
-    BoardModule,
-    PinsModule,
+    UserModule,
     MongooseModule.forFeature([
       { name: 'Topic', schema: Topic },
       { name: 'Pin', schema: Pin },
-      {name: 'User', schema:User}
+      { name: 'User', schema: User },
     ]),
   ],
   controllers: [TopicController],

@@ -14,10 +14,6 @@ import * as search from 'fuzzy-search';
 @Module({
   imports: [
     SharedModule,
-    ImagesModule,
-    UserModule,
-    BoardModule,
-    PinsModule,
     MongooseModule.forFeature([
       { name: 'Board', schema: Board },
       { name: 'Pin', schema: Pin },

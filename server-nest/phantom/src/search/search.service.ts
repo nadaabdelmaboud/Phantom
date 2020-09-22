@@ -13,15 +13,19 @@ export class SearchService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async Fuzzy(model, params, name, limit: number, offset: number) {
     const searcher = new search(model, params, {
       caseSensitive: false,
       sort: true,
     });
     let result = searcher.search(name);
-    let limitOffsetResult = this.ValidationService.limitOffset(limit, offset, result);
-    return { result: limitOffsetResult, length: limitOffsetResult.length }
+    let limitOffsetResult = this.ValidationService.limitOffset(
+      limit,
+      offset,
+      result,
+    );
+    return { result: limitOffsetResult, length: limitOffsetResult.length };
   }
   async getAllPins(name, limit, offset) {
     let pin = await this.pinModel.find({}, 'title note imageId').lean();
@@ -58,6 +62,8 @@ export class SearchService {
           userName: 1,
           lastName: 1,
           firstName: 1,
+          google: 1,
+          googleImage: 1,
         },
       },
     ]);
@@ -106,7 +112,7 @@ export class SearchService {
   }
   async getBoards(name, limit, offset) {
     let board = await this.boardModel.aggregate([
-      { $match: {} },
+      { $match: { } },
       {
         $project: {
           pins: 1,
@@ -115,6 +121,7 @@ export class SearchService {
           topic: 1,
           description: 1,
           name: 1,
+          creator: 1,
         },
       },
     ]);
@@ -127,6 +134,15 @@ export class SearchService {
       offset,
     );
     for (let i = 0; i < res.result.length; i++) {
+      let creator = await this.userModel.findById(res.result[i].creator.id, {
+        email: 1,
+      });
+      if (creator) {
+        if (String(creator.email) == String(process.env.ADMIN_EMAIL)) {
+          res.result.splice(i, 1);
+          res.length--;
+        }
+      }
       res.result[i].coverImages = [];
       for (let c = 0; c < 3; c++) {
         if (c < res.result[i].pins.length) {

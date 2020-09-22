@@ -9,7 +9,7 @@ import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { topic } from '../types/topic';
 import { ValidationService } from '../shared/validation.service';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { pin } from '../types/pin';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class TopicService {
 
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   async topicsSeeds(topics) {
     for (var i = 0; i < topics.length; i++) {
       await this.createTopic(topics[i].imageId, '', 200, 200, topics[i].name);
@@ -58,10 +58,10 @@ export class TopicService {
     await topic.save();
     return topic;
   }
-  async getTopicById(topicId, userId) {
+  async getTopicById(topicId) {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
-    const topic = await this.topicModel.findById(topicId, (err, topic) => {
+    const topic = await this.topicModel.findById(topicId, 'pins followers', (err, topic) => {
       if (err) throw new Error('topic not found');
       return topic;
     });
@@ -90,9 +90,9 @@ export class TopicService {
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error('not mongoose id');
-    let topic = await this.topicModel.find({ name: topicName });
+    let topic = await this.topicModel.find({ name: topicName }, 'pins');
     let id = mongoose.Types.ObjectId(pinId);
-    const pin = await this.pinModel.findById(id);
+    const pin = await this.pinModel.findById(id, 'topic');
     if (!pin) throw new NotFoundException();
     pin.topic = topicName;
     await pin.save().catch(err => {
@@ -110,9 +110,9 @@ export class TopicService {
   async getPinsOfTopic(topicId, limit, offset, userId): Promise<pin[]> {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
-    const topic = await this.getTopicById(topicId, userId);
+    const topic = await this.getTopicById(topicId);
     if (!topic.pins.length) return [];
-    let pinsIds = await this.ValidationService.limitOffset(
+    let pinsIds = this.ValidationService.limitOffset(
       limit,
       offset,
       topic.pins,
@@ -133,7 +133,7 @@ export class TopicService {
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
-    const topic = await this.getTopicById(topicId, userId);
+    const topic = await this.getTopicById(topicId);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers || topic.followers.length == 0) return false;
@@ -197,7 +197,7 @@ export class TopicService {
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
-    const topic = await this.getTopicById(topicId, userId);
+    const topic = await this.getTopicById(topicId);
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers)

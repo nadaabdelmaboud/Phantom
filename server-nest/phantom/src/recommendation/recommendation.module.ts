@@ -9,13 +9,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User } from '../models/user.schema';
 import { BoardModule } from '../board/board.module';
 import { PinsModule } from '../pins/pins.module';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '../shared/notification.service';
 
 @Module({
   imports: [
     SharedModule,
-    BoardModule,
-    PinsModule,
     MongooseModule.forFeature([
       { name: 'Board', schema: Board },
       { name: 'Pin', schema: Pin },
@@ -24,7 +22,7 @@ import { NotificationService } from '../notification/notification.service';
     ]),
   ],
   controllers: [RecommendationController],
-  providers: [RecommendationService, NotificationService],
+  providers: [RecommendationService],
   exports: [RecommendationService],
 })
 export class RecommendationModule {}
