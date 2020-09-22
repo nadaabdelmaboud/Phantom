@@ -121,6 +121,7 @@ export class SearchService {
           topic: 1,
           description: 1,
           name: 1,
+          creator: 1,
         },
       },
     ]);
@@ -133,6 +134,15 @@ export class SearchService {
       offset,
     );
     for (let i = 0; i < res.result.length; i++) {
+      let creator = await this.userModel.findById(res.result[i].creator.id, {
+        email: 1,
+      });
+      if (creator) {
+        if (String(creator.email) == String(process.env.ADMIN_EMAIL)) {
+          res.result.splice(i, 1);
+          res.length--;
+        }
+      }
       res.result[i].coverImages = [];
       for (let c = 0; c < 3; c++) {
         if (c < res.result[i].pins.length) {
