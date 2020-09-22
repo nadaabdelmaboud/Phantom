@@ -1,6 +1,6 @@
 import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { UserService } from './user.service';
+import { UserService } from '../user/user.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { pin } from '../types/pin';
@@ -14,7 +14,7 @@ export class SharedGateway {
     private ChatService: ChatService,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
-  ) { }
+  ) {}
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
     const token = data.token;
@@ -55,9 +55,9 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     let messageId = data.messageId;
-    console.log("deliver event")
+    console.log('deliver event');
     if (sender && reciever) {
-      console.log(reciever.socketId,"to emiit")
+      console.log(reciever.socketId, 'to emiit');
       socket.to(reciever.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
@@ -67,7 +67,6 @@ export class SharedGateway {
         messageId: data.messageId,
       });
       await this.ChatService.deliver(recieverId, messageId, true);
-
     }
   }
   @SubscribeMessage('seen')
@@ -87,7 +86,6 @@ export class SharedGateway {
         messageId: data.messageId,
       });
       await this.ChatService.seen(recieverId, messageId, true);
-
     }
   }
   @SubscribeMessage('message')
@@ -97,7 +95,11 @@ export class SharedGateway {
     let sender = await this.userModel.findById(senderId);
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
-    let messageId = await this.ChatService.sendMessage(senderId, [recieverId], messageText)
+    let messageId = await this.ChatService.sendMessage(
+      senderId,
+      [recieverId],
+      messageText,
+    );
     if (sender && reciever && messageText) {
       socket.to(reciever.socketId).emit('sendMessage', {
         recieverImage: reciever.profileImage,
@@ -107,7 +109,7 @@ export class SharedGateway {
         message: messageText,
         senderId: data.senderId,
         date: Date.now(),
-        messageId: messageId
+        messageId: messageId,
       });
     }
   }

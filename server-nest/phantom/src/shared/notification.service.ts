@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ValidationService } from '../shared/validation.service';
+import { ValidationService } from './validation.service';
 
 import * as firebase from 'firebase-admin';
 

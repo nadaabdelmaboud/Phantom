@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
   NotAcceptableException,
 } from '@nestjs/common';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '../shared/notification.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { Email } from '../shared/send-email.service';
 import { CreatePinDto } from './dto/create-pin.dto';
@@ -26,7 +26,6 @@ export class PinsService {
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
-    private UserService: UserService,
     private ValidationService: ValidationService,
     private BoardService: BoardService,
     private NotificationService: NotificationService,

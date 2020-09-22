@@ -10,9 +10,24 @@ import { TopicService } from '../topic/topic.service';
 import { Pin } from '../models/pin.schema';
 import { Board } from '../models/board.schema';
 import { Topic } from '../models/topic.schema';
+import { UserService } from './user.service';
+import { User } from 'src/models/user.schema';
+import { Message } from 'src/models/message.schema';
+import { Chat } from 'src/models/chat.schema';
 @Module({
-  imports: [SharedModule],
+  imports: [
+    SharedModule,
+    MongooseModule.forFeature([
+      { name: 'User', schema: User },
+      { name: 'Pin', schema: Pin },
+      { name: 'Board', schema: Board },
+      { name: 'Topic', schema: Topic },
+      { name: 'Message', schema: Message },
+      { name: 'Chat', schema: Chat },
+    ]),
+  ],
   controllers: [UserController],
-  providers: [AuthService, JwtStrategy, Email],
+  providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

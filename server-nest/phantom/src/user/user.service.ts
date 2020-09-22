@@ -13,11 +13,11 @@ import { user } from '../types/user';
 import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import { RegisterDto } from '../auth/dto/register.dto';
-import { UpdateDto } from '../user/dto/update-user.dto';
+import { UpdateDto } from './dto/update-user.dto';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
-import { NotificationService } from '../notification/notification.service';
-import { ValidationService } from './validation.service';
+import { NotificationService } from '../shared/notification.service';
+import { ValidationService } from '../shared/validation.service';
 import { topic } from '../types/topic';
 import { pin } from '../types/pin';
 import { board } from '../types/board';
@@ -27,8 +27,6 @@ export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
-    @InjectModel('Pin') private readonly pinModel: Model<pin>,
-    @InjectModel('Board') private readonly boardModel: Model<board>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,

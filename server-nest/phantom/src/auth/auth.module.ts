@@ -6,9 +6,10 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { Email } from '../shared/send-email.service';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { UserModule } from 'src/user/user.module';
 @Module({
-  imports: [SharedModule],
+  imports: [SharedModule, UserModule],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, Email, GoogleStrategy],
+  providers: [AuthService, JwtStrategy, GoogleStrategy],
 })
 export class AuthModule {}

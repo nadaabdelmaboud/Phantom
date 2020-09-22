@@ -9,7 +9,7 @@ import { Model, Mongoose } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { board } from '../types/board';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { pin } from '../types/pin';
 import { ValidationService } from '../shared/validation.service';
 import { section } from '../types/board';
@@ -24,7 +24,6 @@ export class BoardService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
-    private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
   async getBoardById(boardId): Promise<board> {

@@ -9,10 +9,10 @@ import { Model } from 'mongoose';
 import { board } from '../types/board';
 import { pin } from '../types/pin';
 import { topic } from '../types/topic';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '../shared/notification.service';
 import * as mongoose from 'mongoose';
 
 @Injectable()
@@ -22,7 +22,6 @@ export class RecommendationService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
-    private UserService: UserService,
     private NotificationService: NotificationService,
 
     private ValidationService: ValidationService,

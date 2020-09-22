@@ -19,20 +19,15 @@ import { ImagesService } from '../images/images.service';
 import { TopicService } from './topic.service';
 @Controller()
 export class TopicController {
-  constructor(
-    private TopicService: TopicService,
-    private ImageService: ImagesService,
-  ) { }
+  constructor(private TopicService: TopicService) {}
   //get all the topics
   @UseGuards(AuthGuard('jwt'))
   @Get('/topic')
   async getTopics(@Request() req) {
     let userId = req.user._id;
     let topics = await this.TopicService.getTopics(userId);
-    if (topics)
-      return topics;
+    if (topics) return topics;
     return new NotFoundException();
-
   }
   //get a certain topic
   @UseGuards(AuthGuard('jwt'))
@@ -40,8 +35,7 @@ export class TopicController {
   async getTopic(@Request() req, @Param('topicId') topicId: string) {
     let userId = req.user._id;
     let topic = await this.TopicService.getTopicById(topicId, userId);
-    if (topic)
-      return topic;
+    if (topic) return topic;
     return new NotFoundException();
   }
   //get all pins of a certain topic
@@ -60,10 +54,8 @@ export class TopicController {
       offset,
       userId,
     );
-    if (pins && pins.length != 0)
-      return pins;
+    if (pins && pins.length != 0) return pins;
     return new NotFoundException();
-
   }
   //add pin to a certain topic
   @UseGuards(AuthGuard('jwt'))
@@ -73,10 +65,8 @@ export class TopicController {
     @Body('topicName') topicName: string,
   ) {
     let topics = await this.TopicService.addPinToTopic(topicName, pinId);
-    if (topics)
-      return { message: 'pin has been added successfully!' };
+    if (topics) return { message: 'pin has been added successfully!' };
     return new ForbiddenException();
-
   }
   @UseGuards(AuthGuard('jwt'))
   @Post('/createTopic')
@@ -94,30 +84,25 @@ export class TopicController {
       imageHeight,
       name,
     );
-    if (topic)
-      return topic;
-    await this.ImageService.deleteFile(imageId);
+    if (topic) return topic;
     return new ForbiddenException();
-
   }
 
   @Post('/createTopics')
-  async createTopics(@Body('topics') topics: Array<object>, @Body('topics') images: Array<object>) {
+  async createTopics(
+    @Body('topics') topics: Array<object>,
+    @Body('topics') images: Array<object>,
+  ) {
     let topic = await this.TopicService.topicsSeeds(topics);
-    if (topic)
-      return topic;
+    if (topic) return topic;
     return new ForbiddenException();
-
   }
   @Put('/edit')
   async addImageToTopic(@Body('topics') topics: Array<object>) {
     let topic = await this.TopicService.editTopic(topics);
-    if (topic)
-      return topic;
+    if (topic) return topic;
     return new ForbiddenException();
-
   }
-
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/follow-topic/:topic_id')
@@ -136,7 +121,9 @@ export class TopicController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/follow-topic/:topic_id')
   async checkFollowTopic(@Param() params, @Request() req) {
-    if (!(await this.TopicService.checkFollowTopic(req.user._id, params.topic_id)))
+    if (
+      !(await this.TopicService.checkFollowTopic(req.user._id, params.topic_id))
+    )
       return { follow: 'false' };
     return { follow: 'true' };
   }

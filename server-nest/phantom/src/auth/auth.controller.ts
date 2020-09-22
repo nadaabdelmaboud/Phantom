@@ -1,6 +1,6 @@
 import * as nestCommon from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { Payload } from '../types/payload';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';

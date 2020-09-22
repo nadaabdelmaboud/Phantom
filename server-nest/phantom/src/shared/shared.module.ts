@@ -3,7 +3,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { User } from '../models/user.schema';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
-import { UserService } from './user.service';
+import { UserService } from '../user/user.service';
 import { AuthService } from '../auth/auth.service';
 import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 import { ValidationService } from './validation.service';
@@ -11,7 +11,7 @@ import { SharedGateway } from './shared.gateway';
 import { Pin } from '../models/pin.schema';
 import { Board } from '../models/board.schema';
 import { Email } from './send-email.service';
-import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from './notification.service';
 import { Topic } from '../models/topic.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Message } from 'src/models/message.schema';
@@ -30,14 +30,11 @@ import { ChatService } from 'src/chat/chat.service';
     ]),
   ],
   providers: [
-    UserService,
     SharedGateway,
+    ChatService,
     ValidationService,
-    AuthService,
-    JwtStrategy,
     Email,
     NotificationService,
-    ChatService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
@@ -47,6 +44,6 @@ import { ChatService } from 'src/chat/chat.service';
       useClass: LoggingInterceptor,
     },
   ],
-  exports: [UserService, ValidationService, AuthService, Email],
+  exports: [NotificationService, ValidationService, Email],
 })
 export class SharedModule {}
