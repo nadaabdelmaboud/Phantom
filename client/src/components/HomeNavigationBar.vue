@@ -33,7 +33,7 @@
       class="fa fa-close clear-icon"
       @click="clearSearch"
       :class="{ lefted_icon: this.showFilter }"
-      v-if="!isLoggedIn() && search"
+      v-if="isLoggedIn() && search"
     ></i>
     <div class="bar" v-if="showFilter"></div>
     <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>

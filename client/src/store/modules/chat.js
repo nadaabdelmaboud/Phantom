@@ -10,10 +10,20 @@ const mutations = {
     state.currentChat = chat;
   },
   addMsg(state, msg) {
+    let len = state.currentChat.length;
+    if (len) state.currentChat[len - 1].last = false;
     state.currentChat.push(msg);
   },
   setRecentChats(state, chats) {
     state.recentChats = chats;
+  },
+  setSeen(state, id) {
+    let index = state.currentChat.findIndex(c => c._id == id);
+    if (index != -1) state.currentChat[index].seen = true;
+  },
+  setDeliver(state, id) {
+    let index = state.currentChat.findIndex(c => c._id == id);
+    if (index != -1) state.currentChat[index].seen = true;
   }
 };
 
@@ -27,20 +37,42 @@ const actions = {
         "/getMessagesSent/" + payload.senderId + "/" + payload.recieverId
       );
       chat = chat.data;
+      let lastin = [false, false];
       chat.forEach(msg => {
-        if (msg.senderId == payload.senderId) msg.owner = true;
-        else msg.owner = false;
+        if (msg.senderId == payload.senderId) {
+          msg.owner = true;
+          if (!lastin[0]) {
+            msg.last = true;
+            lastin[0] = true;
+          }
+        } else {
+          if (!lastin[1]) {
+            msg.last = true;
+            lastin[1] = true;
+          }
+          msg.owner = false;
+        }
+        msg.seen = msg.seenStatus.length > 0;
+        msg.deliver = msg.deliverStatus.length > 0;
       });
+      chat = chat.reverse();
     } catch (err) {
       console.log(err);
     }
     commit("setChat", chat);
   },
-  sendMsg({ commit }, msg) {
-    if (msg.note == "") console.log(commit);
-    axios.post("/sentMessage", msg).catch(error => {
-      console.log(error);
-    });
+  sendMsg({ dispatch }, msg) {
+    axios
+      .post("/sentMessage", msg)
+      .then(() => {
+        dispatch("getChat", {
+          senderId: msg.senderId,
+          recieverId: [msg.recieverId]
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   },
   getRecentChats({ commit }, userId) {
     axios
@@ -50,9 +82,10 @@ const actions = {
       })
       .catch(error => {
         console.log(error);
+        commit("setRecentChats", []);
       });
   },
-  setAsSeen({ disatch }, payload) {
+  setAsSeen({ dispatch }, payload) {
     axios
       .post("seenDeliver", {
         senderId: payload.senderId,
@@ -61,10 +94,11 @@ const actions = {
         isSeen: true
       })
       .then(() => {
-        disatch("getChat", payload);
+        dispatch("getChat", payload);
       })
       .catch(error => {
         console.log(error);
+        dispatch("getChat", payload);
       });
   }
 };

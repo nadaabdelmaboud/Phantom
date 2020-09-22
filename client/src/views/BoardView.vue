@@ -12,17 +12,16 @@
         @click="addCollaborator"
       ></i>
     </div>
-    <div class="stickyBar row  m-0">
-      <div class="col-sm-4 col-4 col1">
+    <div class="stickyBar flexBar">
+      <div class="flexBar">
         <i
           class="fa fa-pencil"
           v-if="board.type == 'creator' || board.type == 'collaborator'"
           aria-hidden="true"
           @click="editBoard"
         ></i>
-        <i class="fa fa-upload" aria-hidden="true"></i>
       </div>
-      <div class="col-sm-4 col-4 col2">
+      <div class="flexBar">
         <div class="buttons" :class="{ inRoute: inPins }" @click="toPins">
           Pins
         </div>
@@ -30,7 +29,7 @@
           MoreIdeas
         </div>
       </div>
-      <div class="col-sm-4 col-4 col3">
+      <div class="flexBar flexEnd">
         <i
           class="fa fa-plus"
           aria-hidden="true"
@@ -216,5 +215,12 @@ i:hover {
 }
 .view {
   right: 80px;
+}
+.flexBar{
+  display: flex;
+  width: 100%;
+}
+.flexEnd{
+  justify-content: flex-end;
 }
 </style>

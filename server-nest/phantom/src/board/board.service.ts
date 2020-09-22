@@ -9,7 +9,7 @@ import { Model, Mongoose } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { board } from '../types/board';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { pin } from '../types/pin';
 import { ValidationService } from '../shared/validation.service';
 import { section } from '../types/board';
@@ -24,7 +24,6 @@ export class BoardService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
-    private UserService: UserService,
     private ValidationService: ValidationService,
   ) {}
   async getBoardById(boardId): Promise<board> {
@@ -54,13 +53,11 @@ export class BoardService {
       pins: 1,
       counts: 1,
     });
-    console.log('1');
     if (!board) return false;
     let pin = await this.pinModel.findById(pinId, {
       topic: 1,
       imageId: 1,
     });
-    console.log('2');
 
     if (!pin) return false;
 
@@ -79,11 +76,9 @@ export class BoardService {
       });
       board.counts.pins = board.counts.pins.valueOf() + 1;
     }
-    console.log('4');
     await board.save().catch(err => {
       console.log(err);
     });
-    console.log('pin saved');
     return true;
   }
   async createBoard(name: string, startDate: string, endDate: string, userId) {
@@ -128,9 +123,7 @@ export class BoardService {
     await board.save().catch(err => {
       console.log(err);
     });
-    console.log('saved');
     await this.addBoardtoUser(userId, board._id);
-    console.log('saved 2');
     let topics = await this.topicModel.find(
       {},
       {
@@ -151,7 +144,7 @@ export class BoardService {
         }
       }
     }
-    await this.boardModel.ensureIndexes()
+    await this.boardModel.ensureIndexes();
     return true;
   }
   async sortBoardsAtoZ(userId) {
@@ -192,11 +185,9 @@ export class BoardService {
     });
     user.sortType = 'Date';
     await user.save();
-    console.log(user.boards);
     return true;
   }
-  //start index  0 based index of the element in the array
-  //positionIndex  the postion the element would be in from (>= 1 to the <= array.size())
+
   async reorderBoards(userId, startIndex, positionIndex) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -262,7 +253,6 @@ export class BoardService {
     let user = await this.userModel.findById(userId, {
       boards: 1,
     });
-    console.log(user);
     if (!user) return false;
 
     let retBoards = [];
@@ -323,8 +313,12 @@ export class BoardService {
 
     let boardUser = await this.userModel.findById(boardUserId, {
       boards: 1,
+      email: 1,
     });
     if (!boardUser) return false;
+    if (boardUser.email == process.env.ADMIN_EMAIL) {
+      throw new UnauthorizedException();
+    }
     let retBoards = [];
     for (var i = 0; i < boardUser.boards.length; i++) {
       let board = await this.boardModel.findById(boardUser.boards[i].boardId, {
@@ -500,12 +494,8 @@ export class BoardService {
       (isCreator || (isCollaborator && isCollaborator.addCollaborators)) &&
       editBoardDto.collaboratores
     ) {
-      console.log(editBoardDto.collaboratores);
       let collaboratores = await editBoardDto.collaboratores.split(',');
-      console.log(collaboratores);
       for (var i = 0; i < collaboratores.length; i++) {
-        console.log(collaboratores.length);
-
         if (
           (await this.ValidationService.checkMongooseID([collaboratores[i]])) ==
           0
@@ -538,7 +528,6 @@ export class BoardService {
           createdOrjoined: 'joined',
         });
         await collaborator.save();
-        console.log(collaborator);
         await board.save();
       }
     }
@@ -564,7 +553,6 @@ export class BoardService {
 
     let isCreator = await this.isCreator(board, userId);
     let isCollaborator = await this.isCollaborator(board, userId);
-    console.log(isCollaborator);
     if (!isCreator && !isCollaborator) {
       throw new UnauthorizedException(
         'this user is unauthorized to get this board permissions',
@@ -579,11 +567,15 @@ export class BoardService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       );
       retCollaborators.push({
         id: collaborator._id,
         imageId: collaborator.profileImage,
+        google: collaborator.google,
+        googleImage: collaborator.googleImage,
         name: collaborator.firstName + ' ' + collaborator.lastName,
         savePin: board.collaborators[i].savePin,
         createPin: board.collaborators[i].createPin,
@@ -600,7 +592,6 @@ export class BoardService {
     boardId,
     editCollaboratoresPermissionsDto: EditCollaboratoresPermissionsDto,
   ) {
-    console.log(editCollaboratoresPermissionsDto);
     let collaboratorId = editCollaboratoresPermissionsDto.collaboratorId,
       savePin = editCollaboratoresPermissionsDto.savePin,
       createPin = editCollaboratoresPermissionsDto.createPin,
@@ -695,8 +686,7 @@ export class BoardService {
     if (board.collaborators.length == 0) {
       throw new NotFoundException('this board has no collaboratores');
     }
-    console.log(collaboratorId);
-    console.log(board.collaborators);
+
     for (let i = 0; i < board.collaborators.length; i++) {
       if (
         String(board.collaborators[i].collaboratorId) == String(collaboratorId)
@@ -710,16 +700,12 @@ export class BoardService {
         break;
       }
     }
-    console.log(collaborator.boards);
     if (collaborator) {
-      console.log(boardId);
       for (let index = 0; index < collaborator.boards.length; index++) {
-        console.log(collaborator.boards[index]);
         if (
           String(collaborator.boards[index].boardId) == String(boardId) &&
           collaborator.boards[index].createdOrjoined == 'joined'
         ) {
-          console.log('sss');
           collaborator.boards.splice(index, 1);
           await collaborator.save();
           return true;
@@ -881,7 +867,6 @@ export class BoardService {
       );
     }
     let found = false;
-    console.log(pinId);
     found = await this.unsavePin(pinId, boardId, sectionId, userId, true);
     if (found) return true;
 
@@ -894,7 +879,6 @@ export class BoardService {
     }
 
     if (!found) {
-      console.log('ssss3');
       for (let i = 0; i < board.collaborators.length; i++) {
         let collaborator = await this.userModel.findById(
           board.collaborators[i].collaboratorId,
@@ -1118,14 +1102,11 @@ export class BoardService {
     }
 
     let isAuthorized = await this.authorizedBoard(boardOriginal, userId);
-    console.log(isAuthorized);
-    console.log(String(userId) == String(boardMerged.creator.id));
     if (!(String(userId) == String(boardMerged.creator.id)) || !isAuthorized) {
       throw new UnauthorizedException(
         'user is unauthorized to merge these boards',
       );
     }
-    console.log('Weee');
     if (!boardOriginal.sections) boardOriginal.sections = [];
 
     let originalName =
@@ -1277,12 +1258,10 @@ export class BoardService {
     for (let j = 0; j < user.savedPins.length; j++) {
       if (String(user.savedPins[j].pinId) == String(pinId)) {
         user.savedPins.splice(j, 1);
-        console.log('aaa');
         found = true;
         await user.save().catch(err => {
           console.log(err);
         });
-        console.log(user.savedPins);
         break;
       }
     }

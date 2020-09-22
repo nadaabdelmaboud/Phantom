@@ -1,11 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
 import axios from "axios";
-let messaging;
+import store from "../store";
 
-export function get_messaging() {
-  return messaging;
-}
+let messaging;
 // Your web app's Firebase configuration
 export function initializeFirebase() {
   if (firebase.messaging.isSupported()) {
@@ -25,15 +23,14 @@ export function initializeFirebase() {
     messaging = firebase.messaging();
     messaging.onMessage(payload => {
       console.log("Message received. ", payload);
-
+      store.commit("notifications/setCounter", 1);
       var notificationTitle = payload.data.title;
       var notificationOptions = {
         body: payload.data.body
       };
       new Notification(notificationTitle, notificationOptions);
     });
-    messaging
-      .requestPermission()
+    Notification.requestPermission()
       .then(() => {
         console.log("Permission granted");
         messaging.usePublicVapidKey(

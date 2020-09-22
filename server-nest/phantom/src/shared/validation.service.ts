@@ -5,7 +5,7 @@ import { user } from '../types/user';
 const ObjectId = require('mongoose').Types.ObjectId;
 @Injectable()
 export class ValidationService {
-  constructor() { }
+  constructor() {}
 
   async checkMongooseID(ids) {
     for (let id of ids) {
@@ -14,18 +14,21 @@ export class ValidationService {
     }
     return 1;
   }
-  limitOffset(limit: number, offset: number, specificAlbums: (string | object)[]): any[] {
+  limitOffset(
+    limit: number,
+    offset: number,
+    specificElements: (string | object)[],
+  ): any[] {
     let start = 0;
-    let end = specificAlbums.length;
+    let end = specificElements.length;
     if (offset)
-      if (offset >= 0 && offset <= specificAlbums.length)
-        start = offset;
-    let num = Number(start) + Number(limit)
+      if (offset >= 0 && offset <= specificElements.length) start = offset;
+    let num = Number(start) + Number(limit);
     if (!limit)
       limit = Number(process.env.LIMIT) ? Number(process.env.LIMIT) : 20;
 
-    if (num > 0 && num <= specificAlbums.length)
+    if (num > 0 && num <= specificElements.length)
       end = Number(start) + Number(limit);
-    return specificAlbums.slice(start, end);
+    return specificElements.slice(start, end);
   }
 }

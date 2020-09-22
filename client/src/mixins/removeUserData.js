@@ -11,7 +11,9 @@ export default {
         .put("log-out")
         .then(() => {
           delete axios.defaults.headers.common["Authorization"];
-          this.$router.push("/");
+          this.$store.commit("user/setKey", 0);
+          console.log("r", this.$route.path);
+          if (this.$route.path != "/") this.$router.push("/");
         })
         .catch(err => console.log(err));
     }

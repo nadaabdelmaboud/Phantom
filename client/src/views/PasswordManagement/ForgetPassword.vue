@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
+@import "../../scss/Colors";
 .main-border {
   margin: 10% auto;
   border: 2px solid $lightBlue;

@@ -9,11 +9,11 @@ import { Model } from 'mongoose';
 import { board } from '../types/board';
 import { pin } from '../types/pin';
 import { topic } from '../types/topic';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
-import { NotificationService } from '../notification/notification.service';
-import { last } from 'rxjs/operators';
+import { NotificationService } from '../shared/notification.service';
+import * as mongoose from 'mongoose';
 
 @Injectable()
 export class RecommendationService {
@@ -22,7 +22,6 @@ export class RecommendationService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
-    private UserService: UserService,
     private NotificationService: NotificationService,
 
     private ValidationService: ValidationService,
@@ -54,12 +53,15 @@ export class RecommendationService {
     }
     return false;
   }
+
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
+
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];
+    let ALLUSERS = await this.userModel.find({}, { firstName: 1 });
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
       .catch(err => {
@@ -88,7 +90,7 @@ export class RecommendationService {
             { name: user.lastTopics[i].topicName },
             {
               pins: {
-                $slice: [random, random + 15],
+                $slice: [random, 15],
               },
             },
           )
@@ -258,9 +260,17 @@ export class RecommendationService {
     let topic = await this.topicModel
       .findOne({ name: topicName }, { recommendedUsers: 1 })
       .lean();
+    let user = await this.userModel.findById(userId, { following: 1 }).lean();
 
+    let followExist = {};
+    for (let j = 0; j < user.following.length; j++) {
+      followExist[String(user.following[j])] = true;
+    }
     for (let i = 0; i < topic.recommendedUsers.length; i++) {
-      if (String(topic.recommendedUsers[i]) != String(userId)) {
+      if (
+        String(topic.recommendedUsers[i]) != String(userId) &&
+        followExist[String(topic.recommendedUsers[i])] != true
+      ) {
         let recomUser = await this.userModel
           .aggregate()
           .match({ _id: topic.recommendedUsers[i] })
@@ -269,6 +279,8 @@ export class RecommendationService {
             profileImage: 1,
             firstName: 1,
             lastName: 1,
+            google: 1,
+            googleImage: 1,
           });
         followers.push(recomUser[0]);
       }
@@ -286,6 +298,7 @@ export class RecommendationService {
   }
   async trendingRecommendation(userId) {
     let followers = [];
+    let user = await this.userModel.findById(userId, { following: 1 }).lean();
     let topUsers = await this.userModel
       .aggregate()
       .match({})
@@ -294,12 +307,21 @@ export class RecommendationService {
         profileImage: 1,
         firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       })
       .sort({ followers: -1 })
-      .limit(100);
+      .limit(70);
+    let followExist = {};
+    for (let j = 0; j < user.following.length; j++) {
+      followExist[String(user.following[j])] = true;
+    }
 
     for (let i = 0; i < topUsers.length; i++) {
-      if (String(topUsers[i]._id) != String(userId)) {
+      if (
+        String(topUsers[i]._id) != String(userId) &&
+        followExist[String(topUsers[i]._id)] != true
+      ) {
         followers.push({
           user: topUsers[i],
           recommendType: 'popular phantom accounts',
@@ -321,15 +343,18 @@ export class RecommendationService {
     let followTopics = [];
     let topicTopics = [];
     let topics = [];
-
-    console.log('here 1');
+    for (let i = user.following.length - 1; i >= 0; i--) {
+      followExist[String(user.following[i])] = true;
+    }
     for (let i = user.history.length - 1; i >= 0; i--) {
       if (!topics.includes(user.history[i].topic)) {
         historyTopics.push(user.history[i].topic);
         topics.push(user.history[i].topic);
+        if (historyTopics.length > 3) {
+          break;
+        }
       }
     }
-    console.log('here 2');
     for (let i = user.followingTopics.length - 1; i >= 0; i--) {
       let topic = await this.topicModel.findById(user.followingTopics[i], {
         name: 1,
@@ -337,9 +362,11 @@ export class RecommendationService {
       if (!topics.includes(topic.name)) {
         topics.push(topic.name);
         topicTopics.push(topic.name);
+        if (topicTopics.length > 3) {
+          break;
+        }
       }
     }
-    console.log('here 3');
     for (let i = user.following.length - 1; i >= 0; i--) {
       let follower = await this.userModel.findById(user.following[i], {
         followingTopics: 1,
@@ -352,11 +379,14 @@ export class RecommendationService {
         if (!topics.includes(topic.name)) {
           topics.push(topic.name);
           followTopics.push(topic.name);
+          if (followTopics.length > 3) {
+            break;
+          }
         }
       }
     }
-    console.log('here 4');
-    let limit: number = topics.length < 5 ? 20 : 10;
+
+    let limit: number = topics.length > 5 ? 5 : 10;
     for (let i = 0; i < historyTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
@@ -389,6 +419,8 @@ export class RecommendationService {
               profileImage: 1,
               firstName: 1,
               lastName: 1,
+              google: 1,
+              googleImage: 1,
             });
           followers.push({
             user: recomUser[0],
@@ -398,7 +430,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('here 5');
     for (let i = 0; i < topicTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
@@ -431,6 +462,8 @@ export class RecommendationService {
               profileImage: 1,
               firstName: 1,
               lastName: 1,
+              google: 1,
+              googleImage: 1,
             });
           followers.push({
             user: recomUser[0],
@@ -440,8 +473,7 @@ export class RecommendationService {
         }
       }
     }
-    console.log('here 6');
-    for (let i = 0; i <= followTopics.length; i++) {
+    for (let i = 0; i < followTopics.length; i++) {
       let topic = await this.topicModel.findOne(
         {
           name: String(followTopics[i]),
@@ -473,6 +505,8 @@ export class RecommendationService {
               profileImage: 1,
               firstName: 1,
               lastName: 1,
+              google: 1,
+              googleImage: 1,
             });
           followers.push({
             user: recomUser[0],
@@ -491,10 +525,11 @@ export class RecommendationService {
         profileImage: 1,
         firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       })
       .sort({ followers: -1 })
       .limit(20);
-
     for (let i = 0; i < topUsers.length; i++) {
       if (
         String(topUsers[i]._id) != String(userId) &&
@@ -507,7 +542,6 @@ export class RecommendationService {
         followExist[String(topUsers[i]._id)] = true;
       }
     }
-
     return followers;
   }
   async pinMoreLike(userId, pinId) {
@@ -535,7 +569,6 @@ export class RecommendationService {
         start--;
       }
       let counter = start;
-      console.log(topic.pins.length);
       while (true) {
         if (String(topic.pins[counter]) != String(pinId)) {
           let pinTopic = await this.pinModel
@@ -606,11 +639,8 @@ export class RecommendationService {
       start--;
     }
     let counter = start;
-    console.log(board.pins.length);
     let f = 0;
     while (true && counter < board.pins.length) {
-      console.log(f);
-      console.log(board.pins[counter].topic);
       if (!topics.includes(board.pins[counter].topic)) {
         topics.push(board.pins[counter].topic);
       }
@@ -627,7 +657,6 @@ export class RecommendationService {
       topics.push(board.topic);
     }
     let limit = 50;
-    console.log(topics.length);
     for (let i = 0; i < topics.length; i++) {
       let topic = await this.topicModel.findOne(
         { name: topics[i] },
@@ -682,8 +711,6 @@ export class RecommendationService {
         pinExist[String(allpins[i]._id)] = true;
       }
     }
-    console.log(pins.length);
-    console.log('ohayo');
     if (pins.length < 10) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
@@ -749,7 +776,6 @@ export class RecommendationService {
       start--;
     }
     let counter = start;
-    console.log(board.sections[sectionIndex].pins.length);
     while (true && counter < board.sections[sectionIndex].pins.length) {
       if (!topics.includes(board.sections[sectionIndex].pins[counter].topic)) {
         topics.push(board.sections[sectionIndex].pins[counter].topic);
@@ -845,8 +871,7 @@ export class RecommendationService {
     let pin = await this.pinModel.findById(pinId, { more: 1 }).lean();
     if (!pin) throw new Error('no such pin');
     if (!pin.more) pin.more = [];
-    console.log(pin.more.length);
-    console.log(offset + limit);
+
     if (Number(Number(offset) + Number(limit)) > pin.more.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
@@ -880,8 +905,7 @@ export class RecommendationService {
     for (let i = 0; i < board.sections.length; i++) {
       if (String(board.sections[i]._id) == String(sectionId)) {
         if (!board.sections[i].more) board.sections[i].more = [];
-        console.log(board.sections[i].more.length);
-        console.log(offset + limit);
+
         if (
           Number(Number(offset) + Number(limit)) > board.sections[i].more.length
         ) {
@@ -921,6 +945,7 @@ export class RecommendationService {
           counts: 1,
           description: 1,
           coverImages: 1,
+          creator: 1,
         },
       )
       .lean();
@@ -957,7 +982,17 @@ export class RecommendationService {
                     }
                   }
                 }
-
+                for (let index = 0; index < boards.length; index++) {
+                  let boardUser = await this.userModel.findById(
+                    boards[index].creator.id,
+                    { email: 1 },
+                  );
+                  if (
+                    String(boardUser.email) == String(process.env.ADMIN_EMAIL)
+                  ) {
+                    boards.splice(index, 1);
+                  }
+                }
                 let images = [];
                 let count: number = 0;
                 for (let i = 0; i < boards.length; i++) {
@@ -979,7 +1014,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('1 ', boards.length);
     for (let i = 0; i < user.followingTopics.length; i++) {
       let topic = await this.topicModel
         .findById(user.followingTopics[i], {
@@ -1007,7 +1041,17 @@ export class RecommendationService {
                   }
                 }
               }
-
+              for (let index = 0; index < boards.length; index++) {
+                let boardUser = await this.userModel.findById(
+                  boards[index].creator.id,
+                  { email: 1 },
+                );
+                if (
+                  String(boardUser.email) == String(process.env.ADMIN_EMAIL)
+                ) {
+                  boards.splice(index, 1);
+                }
+              }
               let images = [];
               let count: number = 0;
               for (let i = 0; i < boards.length; i++) {
@@ -1028,7 +1072,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('2 ', boards.length);
 
     for (let i = 0; i < user.following.length; i++) {
       let following = await this.userModel
@@ -1044,6 +1087,7 @@ export class RecommendationService {
             counts: 1,
             description: 1,
             coverImages: 1,
+            creator: 1,
           })
           .lean();
         if (!boards.includes(board)) {
@@ -1057,7 +1101,15 @@ export class RecommendationService {
                 }
               }
             }
-
+            for (let index = 0; index < boards.length; index++) {
+              let boardUser = await this.userModel.findById(
+                boards[index].creator.id,
+                { email: 1 },
+              );
+              if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
+                boards.splice(index, 1);
+              }
+            }
             let images = [];
             let count: number = 0;
             for (let i = 0; i < boards.length; i++) {
@@ -1077,7 +1129,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('3 ', boards.length);
     for (let k = 0; k < user.boards.length; k++) {
       for (let n = 0; n < boards.length; n++) {
         if (String(user.boards[k].boardId) == String(boards[n]._id)) {
@@ -1086,8 +1137,14 @@ export class RecommendationService {
       }
     }
     boards = await this.shuffle(boards);
-    console.log('4 ', boards.length);
-
+    for (let index = 0; index < boards.length; index++) {
+      let boardUser = await this.userModel.findById(boards[index].creator.id, {
+        email: 1,
+      });
+      if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
+        boards.splice(index, 1);
+      }
+    }
     let images = [];
     let count: number = 0;
     for (let i = 0; i < boards.length; i++) {
@@ -1154,7 +1211,6 @@ export class RecommendationService {
       );
       return true;
     }
-    console.log('here2');
     let random = Math.floor(Math.random() * 100 + 1);
     if (random + 5 >= 100) {
       random = random - 5;
@@ -1175,7 +1231,6 @@ export class RecommendationService {
     }
     let topics = [];
     let pins = [];
-    console.log('1');
     for (let i = user.followingTopics.length - 1; i >= 0; i--) {
       let topic = await this.topicModel.findById(user.followingTopics[i], {
         name: 1,
@@ -1190,7 +1245,6 @@ export class RecommendationService {
         topics.push(String(pin.topic));
       }
     }
-    console.log('2');
     for (let i = user.savedPins.length - 1; i >= 0; i--) {
       let pin = await this.pinModel.findById(user.savedPins[i].pinId, {
         topic: 1,
@@ -1199,9 +1253,7 @@ export class RecommendationService {
         topics.push(String(pin.topic));
       }
     }
-    console.log('3');
 
-    console.log('4');
     for (let i = 0; i < topics.length; i++) {
       let topic = await this.topicModel.findOne(
         { name: topics[i] },
@@ -1220,7 +1272,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('5');
     if (pins.length < 10) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
@@ -1249,7 +1300,6 @@ export class RecommendationService {
         }
       }
     }
-    console.log('6');
     for (let i = 0; i < user.savedPins.length; i++) {
       for (let j = 0; j < pins.length; j++) {
         if (String(pins[j]._id) == String(user.savedPins[i].pinId)) {
@@ -1301,7 +1351,7 @@ export class RecommendationService {
             { name: user.lastTopics[i].topicName },
             {
               pins: {
-                $slice: [random, random + 15],
+                $slice: [random, 15],
               },
             },
           )

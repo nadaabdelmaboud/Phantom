@@ -5,7 +5,7 @@
       :key="user._id"
       :name="user.userName"
       :userID="user._id"
-      :imageId="user.profileImage"
+      :imagId="user.profileImage"
       :followersNum="user.followers"
       :boardsNum="user.boards"
     />

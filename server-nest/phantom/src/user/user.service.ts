@@ -13,11 +13,11 @@ import { user } from '../types/user';
 import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import { RegisterDto } from '../auth/dto/register.dto';
-import { UpdateDto } from '../user/dto/update-user.dto';
+import { UpdateDto } from './dto/update-user.dto';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
-import { NotificationService } from '../notification/notification.service';
-import { ValidationService } from './validation.service';
+import { NotificationService } from '../shared/notification.service';
+import { ValidationService } from '../shared/validation.service';
 import { topic } from '../types/topic';
 import { pin } from '../types/pin';
 import { board } from '../types/board';
@@ -27,12 +27,10 @@ export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
-    @InjectModel('Pin') private readonly pinModel: Model<pin>,
-    @InjectModel('Board') private readonly boardModel: Model<board>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -66,10 +64,11 @@ export class UserService {
           userName: 1,
           sortType: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       },
     ]);
-
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user[0].about) user[0].about = '';
@@ -102,6 +101,7 @@ export class UserService {
   }
 
   async findByLogin(loginDto: LoginDto): Promise<any> {
+    console.log(await this.userModel.find({}, { _id: 1 }));
     console.log(loginDto.password);
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
@@ -201,13 +201,14 @@ export class UserService {
   }
 
   async createUser(registerDto: RegisterDto): Promise<any> {
-    await this.checkCreateData(registerDto);
     let hash,
+      googleImage = null,
       picture = null;
     if (registerDto.isGoogle) {
       hash = '';
-      picture = registerDto.profileImage;
+      googleImage = registerDto.profileImage;
     } else {
+      await this.checkCreateData(registerDto);
       const salt = await bcrypt.genSalt(10);
       hash = await bcrypt.hash(registerDto.password, salt);
     }
@@ -232,6 +233,7 @@ export class UserService {
       boardUpdate: true,
       history: [],
       facebook: false,
+      googleImage: googleImage,
       google: registerDto.isGoogle ? registerDto.isGoogle : false,
       about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
@@ -259,12 +261,15 @@ export class UserService {
       createdAt: Date.now(),
     });
     await newUser.save();
-    await this.userModel.updateOne(
-      { _id: newUser._id },
-      { profileImage: newUser._id },
+
+    newUser = await this.userModel.findById(newUser._id, {
+      firstName: 1,
+      lastName: 1,
+    });
+    let topics = await this.topicModel.find(
+      {},
+      { name: 1, recommendedUsers: 1 },
     );
-    newUser = await this.getUserById(newUser._id);
-    let topics = await this.topicModel.find({});
     for (let i = 0; i < topics.length; i++) {
       if (
         newUser.firstName.includes(String(topics[i].name)) ||
@@ -278,7 +283,7 @@ export class UserService {
         }
       }
     }
-    await this.userModel.ensureIndexes()
+    await this.userModel.ensureIndexes();
     return newUser;
   }
 
@@ -306,7 +311,6 @@ export class UserService {
         },
       )
       .lean();
-
     return user;
   }
 
@@ -547,12 +551,20 @@ export class UserService {
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
     //   console.log(await this.pinModel.find({}, { _id: 1 }));
     if (String(followerId) == String(followingId))
-      throw new HttpException('You can not follow yourself ', HttpStatus.FORBIDDEN);
+      throw new HttpException(
+        'You can not follow yourself ',
+        HttpStatus.FORBIDDEN,
+      );
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
       {
-        _id: 1, followers: 1, following: 1, firstName: 1,
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     let followedUser = await this.findUserAndGetData(
@@ -567,6 +579,8 @@ export class UserService {
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     if (!userFollow || !followedUser)
@@ -621,8 +635,13 @@ export class UserService {
     let userFollow = await this.findUserAndGetData(
       { _id: followerId },
       {
-        _id: 1, followers: 1, following: 1, firstName: 1,
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
         lastName: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     let followedUser = await this.findUserAndGetData(
@@ -637,6 +656,8 @@ export class UserService {
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
+        google: 1,
+        googleImage: 1,
       },
     );
     if (!userFollow || !followedUser)
@@ -710,6 +731,8 @@ export class UserService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       );
       if (currentUser) followersInfo.push(currentUser);
@@ -748,6 +771,8 @@ export class UserService {
           firstName: 1,
           lastName: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       );
       if (currentUser) followingsInfo.push(currentUser);

@@ -1,31 +1,33 @@
-<template>
-  <div class="masonry">
-    <HomeCard
-      v-for="homecard in pins"
-      :key="homecard._id"
-      class="masonryItem"
-      :cardImage="homecard.imageId"
-      :postPageId="homecard._id"
-    />
++6<template>
+  <div class="flexWrap spread">
+    <div class="masonryGrid">
+      <HomeCard
+        v-for="p in pins"
+        :key="p._id"
+        :cardImage="p.imageId"
+        :postPageId="p._id"
+        class="masonryGridItem"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import HomeCard from "../HomeCard";
 
 export default {
   name: "NotificationPins",
   data: function() {
-    return {};
+    return {
+      pins: []
+    };
   },
   components: {
     HomeCard
   },
-  computed: {
-    ...mapGetters({
-      pins: "notifications/pins"
-    })
+  created() {
+    this.pins = localStorage.getItem("notificationPins");
+    this.pins = JSON.parse(this.pins);
   }
 };
 </script>
@@ -33,7 +35,10 @@ export default {
 <style lang="scss" scoped>
 @import "../../scss/Colors";
 @import "../../scss/MasonryGrid";
-.masonry {
-  margin: 20px;
+.spread {
+  margin: 0;
+  padding: 90px 40px;
+  width: 100%;
+  background-color: $offWhite;
 }
 </style>

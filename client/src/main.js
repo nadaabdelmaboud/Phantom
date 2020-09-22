@@ -9,7 +9,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 Vue.config.productionTip = false;
-
+Vue.prototype.$url = "http://localhost:3000/api";
 //axios.defaults.baseURL = "https://phantomrequiemserver.herokuapp.com/api";
 axios.defaults.baseURL = "http://localhost:3000/api";
 

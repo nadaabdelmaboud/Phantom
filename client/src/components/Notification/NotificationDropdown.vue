@@ -42,8 +42,11 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch("notifications/getNotifications");
-    this.$store.dispatch("notifications/resetCounter");
+    this.$store.dispatch("notifications/getNotifications", false);
+    this.$store.dispatch("user/updateUserSettings", {
+      notificationCounter: 0
+    });
+    this.$store.commit("notifications/setCounter", 0);
   }
 };
 </script>
@@ -64,6 +67,7 @@ export default {
   animation: dropDown 0.1s linear forwards;
   z-index: 100;
   padding: 20px;
+  max-width: 90vw;
 }
 .flexWrap {
   display: flex;

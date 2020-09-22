@@ -73,6 +73,12 @@ export default {
   padding: 20px;
   border-radius: 32px;
 }
+@media screen and (max-width: 500px) {
+  .newPinData{
+    margin: 50px auto;
+    width: 97%;
+  }
+}
 h1 {
   width: 100%;
   text-align: center;

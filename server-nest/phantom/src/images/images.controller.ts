@@ -5,6 +5,7 @@ import {
   Res,
   Controller,
   UseInterceptors,
+  Request,
   UseGuards,
   UploadedFiles,
   HttpException,
@@ -18,20 +19,19 @@ import {
   ApiCreatedResponse,
   ApiConsumes,
   ApiBadRequestResponse,
-  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
-import { FileResponseVm } from './file-response-vm..model';
-import { fsync } from 'fs';
-var path = require('path');
+import { FileResponseVm } from './file-models/file-response-vm..model';
+const path = require('path');
 @Controller()
 export class ImagesController {
   constructor(private ImagesService: ImagesService) {}
   @Post('/me/uploadImage')
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FilesInterceptor('file'))
-  upload(@UploadedFiles() files) {
+  upload(@UploadedFiles() files, @Request() req) {
+    req.setTimeout(0);
     const response = [];
     files.forEach(file => {
       const fileReponse = {
@@ -53,21 +53,11 @@ export class ImagesController {
     return response;
   }
 
-  @Get('imageInfo/:id')
+  @Get('imageInfo')
   @ApiBadRequestResponse({ type: BadRequestException })
-  async getFileInfo(@Param('id') id: string): Promise<FileResponseVm> {
-    const file = await this.ImagesService.findInfo(id);
-    const fileStream = await this.ImagesService.readStream(id);
-    if (!fileStream) {
-      throw new HttpException(
-        'An error occurred while retrieving file info',
-        HttpStatus.EXPECTATION_FAILED,
-      );
-    }
-    return {
-      message: 'File has been detected',
-      file: file,
-    };
+  async getFileInfo(@Request() req) {
+    const file = await this.ImagesService.findInfo2();
+    return file;
   }
 
   @Get('/image/:id')
@@ -79,13 +69,11 @@ export class ImagesController {
     if (topic && topic != '') {
       var filePath = './static/' + topic + '.jpg';
       var resolvedPath = await path.resolve(filePath);
-      console.log(resolvedPath);
       return res.sendFile(resolvedPath);
     }
     if (!id || id == ' ' || id == '' || id == 'none') {
       var filePath = './static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
-      console.log(resolvedPath);
       return res.sendFile(resolvedPath);
     }
     const checkImage = await this.ImagesService.checkImage(id);

@@ -7,7 +7,13 @@ const state = {
   react: false,
   pinComments: [],
   likeComment: false,
-  likeReply: false
+  likeReply: false,
+  morePins: [],
+  generating: false,
+  generatedCount: 0,
+  offset: 0,
+  maxMore: false,
+  inProgress: false
 };
 
 const mutations = {
@@ -38,10 +44,55 @@ const mutations = {
   },
   addNewReply(state, { reply, commentId }) {
     state.pinComments.find(x => x.comment.id === commentId).replies.push(reply);
+  },
+  setmorePins(state, pins) {
+    for (let index = 0; index < pins.length; index++)
+      state.morePins.push(pins[index]);
   }
 };
 
 const actions = {
+  moreLikeThisPin({ state }, pinId) {
+    state.morePins = [];
+    state.offset = 0;
+    state.generating = true;
+    state.maxMore = false;
+    axios
+      .put("more/pins/" + pinId)
+      .then(response => {
+        state.generating = false;
+        state.generatedCount = response.data.total;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  async generateMorePins({ state, commit, dispatch }, { pinId, limit }) {
+    if (!state.maxMore && !state.inProgress) {
+      state.inProgress = true;
+      try {
+        let morePins = await axios.get(
+          "more/pins/" + pinId + "?limit=" + limit + "&offset=" + state.offset
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setmorePins", morePins.data);
+      } catch (error) {
+        let remaining = state.generatedCount - state.offset;
+        state.inProgress = false;
+        if (state.generating) {
+          setTimeout(() => {
+            dispatch("generateMorePins", { pinId: pinId, limit: 10 });
+          }, 1000);
+        } else if (remaining > 0) {
+          dispatch("generateMorePins", { pinId: pinId, limit: remaining });
+        } else {
+          state.maxMore = true;
+        }
+        console.log(error);
+      }
+    }
+  },
   async postPageAddedComments({ commit }, { postPageId, comment }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
@@ -163,7 +214,8 @@ const actions = {
 };
 
 const getters = {
-  followUser: state => state.followUser
+  followUser: state => state.followUser,
+  morePins: state => state.morePins
 };
 
 export default {

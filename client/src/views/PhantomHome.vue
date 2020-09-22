@@ -12,13 +12,17 @@
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" :key="componentKey" />
-      <i class="fa fa-comment globalIcons" @click="toggleChat"></i>
+      <i
+        v-if="isLoggedIn()"
+        class="fa fa-comment globalIcons"
+        @click="toggleChat"
+      ></i>
       <router-link
+        v-if="isLoggedIn()"
         tag="i"
         class="fa fa-plus globalIcons"
         to="/PinBuilder"
       ></router-link>
-      <i class="fa fa-question-circle globalIcons"></i>
     </div>
     <ChatWindow v-if="chat" id="chat" />
     <ChangePasswordPopUp v-if="changePassword" />
@@ -30,6 +34,7 @@
     <LeavingResaonPopUp v-if="leavingPopUp" />
     <CloseAccountPopUp v-if="accountClosingPopup" />
     <SearchSuggestions v-if="searchSuggestions" />
+    <FollowPopUp v-if="showFollowPopup" />
     <div class="toast" id="pinToastId">
       <img :src="getImage(cardImage)" alt="User Image" class="toastimage" />
       <div class="userinfo">
@@ -54,7 +59,7 @@
     height: 48px;
     width: 48px;
     position: fixed;
-    left: 92%;
+    right: 20px;
     font-size: 24px;
     color: $darkBlue;
     border-radius: 50%;
@@ -70,12 +75,9 @@
   }
 
   .globalIcons:nth-child(3) {
-    bottom: 170px;
-  }
-  .globalIcons:nth-child(4) {
     bottom: 110px;
   }
-  .globalIcons:nth-child(5) {
+  .globalIcons:nth-child(4) {
     bottom: 50px;
   }
 }
@@ -84,7 +86,7 @@
 }
 @keyframes away {
   from {
-    right: 140px;
+    right: 80px;
   }
   to {
     right: 0;
@@ -168,6 +170,7 @@
 </style>
 <script>
 import { default as getImage } from "../mixins/getImage";
+import { default as isLoggedIn } from "../mixins/isLoggedIn";
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/BoardsPopUps/CreateBoardPopup";
 import NewPinPopup from "../views/NewPinPopup";
@@ -188,6 +191,7 @@ import SearchSuggestions from "../components/Search/SearchSuggestions";
 import SavePin from "../components/SavePin";
 import ReportPin from "../components/ReportPin";
 import EditPin from "../components/EditPin";
+import FollowPopUp from "../components/FollowPopUp";
 
 import { mapState } from "vuex";
 export default {
@@ -198,7 +202,7 @@ export default {
       componentKey: 0
     };
   },
-  mixins: [getImage],
+  mixins: [getImage, isLoggedIn],
   components: {
     HomeNavigationBar,
     CreateBoardPopup,
@@ -219,7 +223,8 @@ export default {
     SearchSuggestions,
     SavePin,
     ReportPin,
-    EditPin
+    EditPin,
+    FollowPopUp
   },
   methods: {
     toggleChat() {
@@ -264,7 +269,8 @@ export default {
       showToastState: state => state.homeCards.showToastState,
       cardImage: state => state.homeCards.cardImageId,
       ChoosenBoardName: state => state.homeCards.ChoosenBoardName,
-      editPinPopUp: state => state.popUpsState.editPinPopUp
+      editPinPopUp: state => state.popUpsState.editPinPopUp,
+      showFollowPopup: state => state.popUpsState.showFollowPopup
     })
   },
   watch: {

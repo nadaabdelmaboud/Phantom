@@ -26,7 +26,7 @@
             :boardId="board.board._id"
             :boardName="board.board.name"
             :pinsImages="board.board.coverImages"
-            :pinsCount="board.board.counts.pins"
+            :pinsCount="board.board.pins.length"
             :isBoard="true"
           />
         </draggable>

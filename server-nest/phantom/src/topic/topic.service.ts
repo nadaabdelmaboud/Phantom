@@ -9,7 +9,7 @@ import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { topic } from '../types/topic';
 import { ValidationService } from '../shared/validation.service';
-import { UserService } from '../shared/user.service';
+import { UserService } from '../user/user.service';
 import { pin } from '../types/pin';
 
 @Injectable()
