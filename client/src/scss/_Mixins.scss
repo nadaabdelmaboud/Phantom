@@ -85,6 +85,17 @@
     max-height: 300px;
   }
 
+  @mixin CTAButton {
+    padding: 4px 40px;
+    margin: 10px 0;
+    background-color: $darkBlue;
+    border-radius: 20px;
+    border: none;
+    color: $offWhite;
+    text-decoration: none;
+    font-size: 18px;
+  }
+
   @mixin profileButton {
     border-radius: 400px;
     padding: 7px 15px;
