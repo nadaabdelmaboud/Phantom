@@ -54,6 +54,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
+
 .main-border {
   margin: 10% auto;
   border: 2px solid $lightBlue;

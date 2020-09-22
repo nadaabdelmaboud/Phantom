@@ -91,6 +91,10 @@ button {
   margin-top: 20px;
 }
 
+button:focus {
+  outline: none;
+}
+
 .disable {
   opacity: 0.6;
   cursor: default;
@@ -111,5 +115,23 @@ label {
   font-weight: bold;
   font-size: 18px;
   margin: 10px 5px;
+}
+
+@media screen and (max-width: 600px) {
+  .popup-content {
+    width: 250px;
+  }
+
+  button {
+    padding: 5px 80px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  label {
+    font-size: 16px;
+  }
 }
 </style>

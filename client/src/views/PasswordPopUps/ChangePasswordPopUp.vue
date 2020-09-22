@@ -146,7 +146,8 @@ button:focus {
 }
 
 .action-buttons {
-  float: right;
+  position: relative;
+  right: -200px;
   margin-right: 10px;
 }
 
@@ -175,5 +176,85 @@ label {
   color: red;
   font-size: 12px;
   margin-left: 10vw;
+}
+
+/*Media Quires
+******************/
+@media screen and (max-width: 1200px) {
+  .popup-content {
+    width: 400px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  p,
+  label {
+    font-size: 14px;
+  }
+
+  input {
+    width: 300px;
+  }
+
+  .col1 {
+    width: 40vw;
+    position: relative;
+    left: -10px;
+  }
+
+  .forget-button {
+    margin-left: 0;
+  }
+
+  .action-buttons {
+    position: relative;
+    right: -10px;
+    margin: 5px auto;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .popup-content {
+    width: 250px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  p,
+  label {
+    font-size: 12px;
+  }
+
+  input {
+    width: 150px;
+  }
+
+  .col1 {
+    width: 40vw;
+    position: relative;
+    left: -10px;
+  }
+
+  .forget-button {
+    margin-left: 0;
+  }
+
+  .action-buttons {
+    position: relative;
+    right: -10px;
+    margin: 5px auto;
+  }
+
+  button {
+    font-size: 10px;
+  }
 }
 </style>

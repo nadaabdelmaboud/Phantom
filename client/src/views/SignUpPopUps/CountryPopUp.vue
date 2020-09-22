@@ -119,11 +119,24 @@ p {
   @include popUpTitle;
 }
 
-/**Labels
+/*Media Quires
 ******************/
-label {
-  font-weight: bold;
-  font-size: 18px;
-  margin: 10px 5px;
+@media screen and (max-width: 600px) {
+  .popup-content {
+    width: 250px;
+  }
+
+  button {
+    padding: 5px 80px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  select {
+    width: 80px;
+    margin: 50px 0px;
+  }
 }
 </style>

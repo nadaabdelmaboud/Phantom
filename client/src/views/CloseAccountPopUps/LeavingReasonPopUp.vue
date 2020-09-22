@@ -28,11 +28,8 @@
       <input type="radio" id="other" value="other" v-model="reason" />
       <label for="other">Other</label>
       <br />
-      <div class="row">
-        <button
-          @click="closePopUp"
-          style="margin-left: 300px; background-color: #dedddd; color: black;"
-        >
+      <div class="row action">
+        <button @click="closePopUp" class="close-button">
           Cancel
         </button>
         <button @click="nextPopUp" :class="{ disable: reason == null }">
@@ -102,6 +99,12 @@ button:focus {
   cursor: default;
 }
 
+.close-button {
+  margin-left: 300px;
+  background-color: #dedddd;
+  color: black;
+}
+
 /**Paragraphs
 ****************/
 p {
@@ -117,5 +120,71 @@ p {
 label {
   font-size: 18px;
   margin: 10px 5px;
+}
+
+/*Media Quires
+******************/
+@media screen and (max-width: 1200px) {
+  .popup-content {
+    width: 400px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  p,
+  label {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+
+  .action {
+    position: relative;
+    right: -5px;
+  }
+
+  .close-button {
+    margin-left: 120px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .popup-content {
+    width: 300px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .close-button {
+    margin-left: 80px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .popup-content {
+    width: 200px;
+    margin-top: 10vh;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  p,
+  label {
+    font-size: 7px;
+    margin-top: 0;
+  }
+
+  .close-button {
+    margin-left: 20px;
+    font-size: 10px;
+  }
 }
 </style>

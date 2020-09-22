@@ -103,6 +103,9 @@ button {
   padding: 5px 150px;
 }
 
+button:focus {
+  outline: none;
+}
 /**Paragraphs
 ****************/
 p {

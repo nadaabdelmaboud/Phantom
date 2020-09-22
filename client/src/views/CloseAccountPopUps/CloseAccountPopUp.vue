@@ -84,4 +84,20 @@ button:focus {
   float: right;
   margin-right: 10px;
 }
+
+/*Media Quires
+******************/
+@media screen and (max-width: 600px) {
+  .popup-content {
+    width: 250px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+}
 </style>

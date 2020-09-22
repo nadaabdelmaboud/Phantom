@@ -41,4 +41,22 @@ h2 {
   text-decoration: none;
   font-size: 18px;
 }
+
+@media screen and (max-width: 500px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 12px;
+  }
+}
 </style>
