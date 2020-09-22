@@ -106,7 +106,7 @@ export class SearchService {
   }
   async getBoards(name, limit, offset) {
     let board = await this.boardModel.aggregate([
-      { $match: {} },
+      { $match: { } },
       {
         $project: {
           pins: 1,

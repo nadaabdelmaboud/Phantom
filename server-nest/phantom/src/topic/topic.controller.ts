@@ -5,7 +5,6 @@ import {
   Put,
   Delete,
   ForbiddenException,
-  NotAcceptableException,
   BadRequestException,
   Param,
   Get,
@@ -38,8 +37,7 @@ export class TopicController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/topic/:topicId')
   async getTopic(@Request() req, @Param('topicId') topicId: string) {
-    let userId = req.user._id;
-    let topic = await this.TopicService.getTopicById(topicId, userId);
+    let topic = await this.TopicService.getTopicById(topicId);
     if (topic)
       return topic;
     return new NotFoundException();
