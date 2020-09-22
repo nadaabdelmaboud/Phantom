@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" :key="userKey">
     <div v-if="isLoggedIn() == false">
       <p>Home Page ,Signup or Login</p>
     </div>
@@ -67,10 +67,15 @@ body {
 
 <script>
 import HomeCard from "../components/HomeCard";
-import { mapGetters } from "vuex";
+import { mapGetters ,mapState} from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {
   name: "UserHome",
+  data:function(){
+    return{
+      //userKey:false
+    }
+  },
   components: {
     HomeCard
   },
@@ -78,6 +83,9 @@ export default {
   computed: {
     ...mapGetters({
       cards: "homeCards/userHomePage"
+    }),
+    ...mapState({
+      userKey:state=>state.user.userKey
     })
   },
   created() {

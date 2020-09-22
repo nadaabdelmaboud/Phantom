@@ -21,7 +21,7 @@ const actions = {
     axios
       .get("user/" + userId)
       .then(response => {
-        commit("setUser", response.data.user);
+        commit("setUser", response.data);
       })
       .catch(error => {
         console.log(error);

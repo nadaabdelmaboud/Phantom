@@ -94,7 +94,8 @@ export default {
       },
       socket: "",
       allowNotify: false,
-      typing: false
+      typing: false,
+      meTyping:false
     };
   },
   mixins: [getImage],
@@ -146,6 +147,7 @@ export default {
     },
     toChatters() {
       // this.$store.dispatch("followers/getFollowing");
+      this.chatWith.id=""
       this.$store.dispatch("chat/getRecentChats", this.myData._id);
       this.inchat = !this.inchat;
     },
@@ -173,7 +175,7 @@ export default {
 
           //if in same chat set as seen
           this.socket.emit("seen", {
-            recieverId: this.chatWith.id,
+            recieverId: data.senderId,
             senderId: this.myData._id,
             messageId: data.messageId
           });
@@ -194,7 +196,7 @@ export default {
         //alert server that the message has been delivered
         console.log("hb3t");
         this.socket.emit("delivered", {
-          recieverId: this.chatWith.id,
+          recieverId: data.senderId,
           senderId: this.myData._id,
           messageId: data.messageId
         });
@@ -211,45 +213,49 @@ export default {
         }
         setTimeout(() => {
           this.typing = false;
-        }, 5000);
+        }, 3000);
       });
     },
     isTyping() {
       console.log("bnm");
-      if (!this.typing) {
+      if (!this.meTyping) {
+        this.meTyping= true;
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
           senderId: this.myData._id
         });
+        setTimeout(() => {
+          this.meTyping = false;
+        }, 3000);
       }
     },
     deliveredListener() {
-      this.socket.on("setDelivered", async data => {
+      this.socket.on("setDelivered", (data) => {
         let payload = {
           senderId: this.myData._id,
           recieverId: [this.chatWith.id]
         };
         console.log("oh1");
-        await this.$store.dispatch("chat/getChat", payload);
-        console.log("oh2");
-        if (data.senderId == this.chatWith.id) {
-          console.log("oh3");
+        this.$store.dispatch("chat/getChat", payload);
+        console.log("oh2",data);
+        if (data.senderId == this.chatWith.id){
+          console.log("oh3")
           this.$store.commit("chat/setDeliver", data.messageId);
         }
       });
     },
     seenListener() {
-      this.socket.on("chat/setSeen", async data => {
+      this.socket.on("setSeen", (data) => {
         let payload = {
           senderId: this.myData._id,
           recieverId: [this.chatWith.id]
         };
-        console.log("oh1 seeen");
-        await this.$store.dispatch("chat/getChat", payload);
+        console.log("oh1 seeen",data);
+        this.$store.dispatch("chat/getChat", payload);
         console.log("oh2 seeen");
-        if (data.senderId == this.chatWith.id) {
-          this.$store.commit("setSeen", data.messageId);
-          console.log("oh3");
+        if (data.senderId == this.chatWith.id){
+            this.$store.commit("chat/setSeen", data.messageId);
+          console.log("oh3")
         }
       });
     }
