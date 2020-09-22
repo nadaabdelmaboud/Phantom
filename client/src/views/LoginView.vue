@@ -4,10 +4,12 @@
       <center>
         <h2>Welcome Back 👋</h2>
       </center>
-      <button class="google" @click="googleAuth">
-        <i class="fa fa-google"></i>
-        Continue with Google
-      </button>
+      <div class="row google">
+        <a :href="$url + '/google'">
+          <i class="fa fa-google google-icon"></i>
+          Continue with Google
+        </a>
+      </div>
       <div style="font-size: 12px; text-align: center;">
         <strong>OR</strong>
       </div>
@@ -62,9 +64,6 @@ export default {
         password.getAttribute("type") === "password" ? "text" : "password";
       password.setAttribute("type", type);
       this.passwordType = !this.passwordType;
-    },
-    googleAuth() {
-      this.$store.dispatch("user/googleAuth");
     }
   },
   data: function() {
@@ -124,7 +123,6 @@ input:focus {
   border: 2px solid $lightBlue;
   border-radius: 40px;
   max-width: 450px;
-  margin-left: 35%;
 }
 
 button {

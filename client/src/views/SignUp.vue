@@ -2,10 +2,12 @@
   <form @submit.prevent="submit">
     <div class="signUpForm">
       <p class="text-center" id="phantom">Welcome to Phantom</p>
-      <button class="google" @click="googleAuth">
-        <i class="fa fa-google google-icon"></i>
-        Continue with Google
-      </button>
+      <div class="row google">
+        <a :href="$url + '/google'">
+          <i class="fa fa-google google-icon"></i>
+          Continue with Google
+        </a>
+      </div>
       <div style="font-size: 12px; text-align: center;">
         <strong>OR</strong>
       </div>
@@ -130,6 +132,9 @@ export default {
     passwordMatch() {
       if (this.password === this.confirmPassword) this.passwordMatching = true;
       else this.passwordMatching = false;
+    },
+    googleAuth() {
+      this.$store.dispatch("user/googleAuth");
     }
   },
   computed: {
@@ -254,7 +259,7 @@ a:hover {
 .google {
   background-color: $offWhite;
   color: black;
-  min-width: 400px;
+  width: 400px;
   padding: 10px 61px;
   font-weight: 700;
   font-size: 14px;
