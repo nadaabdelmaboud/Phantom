@@ -66,6 +66,8 @@ export class UserService {
           userName: 1,
           sortType: 1,
           profileImage: 1,
+          google: 1,
+          googleImage: 1,
         },
       },
     ]);
@@ -201,13 +203,14 @@ export class UserService {
   }
 
   async createUser(registerDto: RegisterDto): Promise<any> {
-    await this.checkCreateData(registerDto);
     let hash,
+      googleImage = null,
       picture = null;
     if (registerDto.isGoogle) {
       hash = '';
-      picture = registerDto.profileImage;
+      googleImage = registerDto.profileImage;
     } else {
+      await this.checkCreateData(registerDto);
       const salt = await bcrypt.genSalt(10);
       hash = await bcrypt.hash(registerDto.password, salt);
     }
@@ -232,6 +235,7 @@ export class UserService {
       boardUpdate: true,
       history: [],
       facebook: false,
+      googleImage: googleImage,
       google: registerDto.isGoogle ? registerDto.isGoogle : false,
       about: registerDto.bio ? registerDto.bio : '',
       gender: registerDto.gender,
@@ -259,12 +263,15 @@ export class UserService {
       createdAt: Date.now(),
     });
     await newUser.save();
-    await this.userModel.updateOne(
-      { _id: newUser._id },
-      { profileImage: newUser._id },
+
+    newUser = await this.userModel.findById(newUser._id, {
+      firstName: 1,
+      lastName: 1,
+    });
+    let topics = await this.topicModel.find(
+      {},
+      { name: 1, recommendedUsers: 1 },
     );
-    newUser = await this.getUserById(newUser._id);
-    let topics = await this.topicModel.find({});
     for (let i = 0; i < topics.length; i++) {
       if (
         newUser.firstName.includes(String(topics[i].name)) ||
@@ -306,7 +313,6 @@ export class UserService {
         },
       )
       .lean();
-
     return user;
   }
 

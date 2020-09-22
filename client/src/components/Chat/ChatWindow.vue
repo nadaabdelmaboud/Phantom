@@ -315,14 +315,15 @@ export default {
 
 .msgWindow {
   height: calc(-179px + 100vh);
+  min-height: 250px;
   width: 360px;
   box-shadow: rgba(0, 0, 0, 0.1) -3px 4px 14px 0px;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   border-radius: 16px;
-  top: 160px;
-  right: 140px;
-  bottom: 0px;
+  // top: 160px;
+  right: 80px;
+  bottom: 10px;
   animation: dropDown 0.1s linear forwards;
   z-index: 100;
   padding: 20px;
@@ -335,6 +336,7 @@ export default {
 .msging {
   position: relative;
   height: 100%;
+  overflow-y: auto;
 }
 
 #msg {
@@ -376,7 +378,7 @@ input {
     right: 0px;
   }
   to {
-    right: 140px;
+    right: 80px;
   }
 }
 .userInfo {

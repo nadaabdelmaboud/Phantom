@@ -5,13 +5,13 @@
       <p>{{ section.pins.length }} pins</p>
     </div>
     <div class="flexWrap">
-      <div class="masonry">
+      <div class="masonryGrid">
         <HomeCard
           v-for="b in section.pins"
           :key="b.pin._id"
           :cardImage="b.pin.imageId"
           :postPageId="b.pin._id"
-          class="masonryItem"
+          class="masonryGridItem"
         />
       </div>
     </div>

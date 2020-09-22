@@ -56,6 +56,7 @@ export default {
           let name = this.$route.params.name;
           this.$store.dispatch("search/searchMyPins", {
             name: name
+            
           });
         } else if (this.$route.path.includes("")) {
           //if condition is new here and in userHome

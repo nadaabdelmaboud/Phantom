@@ -24,6 +24,7 @@
             :topicName="topic.name"
             :topicId="topic._id"
             :imageId="topic.imageId"
+            :isFollow="topic.isFollow"
           />
         </div>
       </div>
@@ -110,7 +111,7 @@ h3 {
 <script>
 import { default as getUserImage } from "../mixins/getUserImage";
 import TopicsPageCard from "../components/TopicsPageCard";
-import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 export default {
   name: "TopicsPage",
   components: {
@@ -123,8 +124,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      topics: "topics/topics"
+    ...mapState({
+      topics: state => state.topics.topics
     })
   },
   mounted() {
