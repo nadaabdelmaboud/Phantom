@@ -2,7 +2,7 @@
   <div style="padding-bottom: 20px;">
     <div class="row">
       <div class="col">
-        <h1>Norifications</h1>
+        <h1>Notifications</h1>
         <p>
           We'll always let you know about important changes, but you pick what
           else you want to hear about
@@ -28,39 +28,7 @@
         </button>
       </div>
     </div>
-    <section>
-      <div class="row">
-        <div class="col">
-          <p class="title">On Phantom</p>
-          <p v-if="showPhantomEdit">
-            Pick which notifications to see while in the app or on the site.
-          </p>
-        </div>
-        <div class="col">
-          <button
-            class="edit"
-            v-if="showPhantomEdit"
-            @click="showPhantomEdit = !showPhantomEdit"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-      <div v-if="!showPhantomEdit">
-        <p class="phantom-activity">
-          Control whether you see activity from your Facebook friends and people
-          you follow. This includes things like Pins they saw, people they
-          follow and boards they created.
-        </p>
-        <br />
-        <label class="switch">
-          <input type="checkbox" v-model="activity" />
-          <span class="slider round"></span>
-        </label>
-        <p style="display:inline;">See activity from other people</p>
-      </div>
-    </section>
-    <hr />
+    <br />
     <section class="settings">
       <div class="row">
         <div class="col">
@@ -100,15 +68,6 @@
         <p>Pins inspired by your recent activity</p>
         <br />
         <br />
-
-        <p class="small-title">Social</p>
-        <br />
-        <input type="checkbox" v-model="boardUpdate" />
-        <p>Group board updates</p>
-        <br />
-        <input type="checkbox" v-model="invitation" />
-        <p>Invitations</p>
-        <br /><br />
 
         <p class="small-title">Actions</p>
         <br />

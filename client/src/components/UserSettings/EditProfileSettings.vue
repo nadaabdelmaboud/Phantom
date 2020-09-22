@@ -103,7 +103,7 @@ export default {
         lastName: this.lname,
         bio: this.about ? this.about : undefined,
         userName: this.username,
-        location: this.location
+        location: this.location ? this.location : undefined
       });
     },
     openPopUp: function() {

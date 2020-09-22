@@ -1,16 +1,19 @@
 <template>
   <div>
-    <NavBar />
     <div class="main-content">
-      <div class="col col1">
-        <router-link class="icons" to="/UserProfile/Boards">
-          <i class="fa fa-arrow-left"></i>
-        </router-link>
+      <div class="col-4 col1">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <router-link class="icons" to="/UserProfile/Boards">
+              <i class="fa fa-arrow-left"></i>
+            </router-link>
+          </div>
+          <div class="col-12 col-md-6">
+            <SideBar />
+          </div>
+        </div>
       </div>
-      <div class="col col2">
-        <SideBar />
-      </div>
-      <div class="col col3">
+      <div class="col-sm-8 col2">
         <router-view></router-view>
       </div>
     </div>
@@ -18,11 +21,9 @@
 </template>
 
 <script>
-import NavBar from "./../components/HomeNavigationBar";
 import SideBar from "./../components/UserSettings/EditProfileSideBar";
 export default {
   components: {
-    NavBar,
     SideBar
   }
 };
@@ -35,26 +36,23 @@ export default {
   display: flex;
 }
 
-.col1 {
-  width: 20vw;
-  max-width: 300px;
-}
-
-.col2 {
-  width: 10vw;
-  max-width: 250px;
-}
-
-.col3 {
-  width: 60vw;
-  min-width: 300px;
-}
-
 a {
   color: grey;
 }
 
 a:hover {
   color: darkgrey;
+}
+
+.col {
+  padding-right: 0;
+}
+
+.col1 {
+  padding-right: 0;
+}
+
+.col2 {
+  padding-left: 0;
 }
 </style>

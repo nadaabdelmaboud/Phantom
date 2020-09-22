@@ -30,6 +30,7 @@ export default {};
 <style scoped>
 ul {
   list-style-type: none;
+  padding-left: 0;
 }
 
 i {
@@ -47,10 +48,36 @@ a:hover {
 }
 
 li {
-  padding: 8px;
+  padding: 8px 0;
 }
 
 .exact {
   color: black;
+}
+
+/*Media Quires
+******************/
+@media screen and (max-width: 1200px) {
+  li {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  li {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  li {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  li {
+    font-size: 14px;
+  }
 }
 </style>
