@@ -4,7 +4,7 @@ const params = {
   type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
   projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
   privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
-  privateKey: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY),
+  privateKey: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, '\n')),
   clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
   clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
   authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
