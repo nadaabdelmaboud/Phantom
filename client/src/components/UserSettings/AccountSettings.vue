@@ -321,10 +321,7 @@ select {
     font-size: 10px;
   }
 
-  button,
-  .edit,
-  .trun-off,
-  .small-title {
+  button {
     font-size: 12px;
     margin-left: 0;
   }

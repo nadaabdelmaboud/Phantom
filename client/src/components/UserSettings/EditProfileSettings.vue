@@ -1,11 +1,11 @@
 <template>
   <div>
     <div class="row">
-      <div class="col">
+      <div class="col-12 col-sm-6">
         <h1>Edit profile</h1>
         <p>People on Pinterest will get to know you with the info below</p>
       </div>
-      <div class="col">
+      <div class="col-12 col-sm-6">
         <button
           v-bind:class="{
             'changed-cancel': this.isChanged
@@ -32,15 +32,16 @@
     </section>
     <br />
     <section class="username">
-      <div class="column">
-        <label for="fname">First Name</label><br />
-        <input type="text" id="fname" v-model="fname" />
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <label for="fname">First Name</label><br />
+          <input type="text" id="fname" v-model="fname" />
+        </div>
+        <div class="col-12 col-sm-6">
+          <label for="lname">Last Name</label><br />
+          <input type="text" id="lname" v-model="lname" />
+        </div>
       </div>
-      <div class="column">
-        <label for="lname">Last Name</label><br />
-        <input type="text" id="lname" v-model="lname" />
-      </div>
-      <br />
     </section>
     <section>
       <label for="user-name">Username</label><br />
@@ -173,6 +174,7 @@ label {
 input,
 textarea {
   @include inputField;
+  margin-right: 5px;
 }
 
 textarea {
@@ -194,5 +196,78 @@ button:focus {
 .changed-cancel {
   background-color: $qainsboro;
   color: black;
+}
+
+/*Media Quires
+******************/
+@media screen and (max-width: 1100px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  button {
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  button,
+  .title {
+    font-size: 12px;
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  p,
+  button,
+  .account-changes button,
+  select,
+  .change-password button {
+    font-size: 10px;
+  }
+
+  #change-photo {
+    font-size: 12px;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
 }
 </style>
