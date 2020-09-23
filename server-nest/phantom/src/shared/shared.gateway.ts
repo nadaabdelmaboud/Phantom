@@ -14,11 +14,11 @@ export class SharedGateway {
     private ChatService: ChatService,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
-  ) {}
+  ) { }
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
     const token = data.token;
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, { socketId: 1 });
     if (user) {
@@ -122,7 +122,7 @@ export class SharedGateway {
   @SubscribeMessage('reactPin')
   async reactPin(socket: Socket, data: any) {
     const token = data.token;
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, {
       firstName: 1,
@@ -161,7 +161,7 @@ export class SharedGateway {
   @SubscribeMessage('likeComment')
   async likeComment(socket: Socket, data: any) {
     const token = data.token;
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, {
       firstName: 1,
@@ -186,7 +186,7 @@ export class SharedGateway {
   @SubscribeMessage('likeReply')
   async likeReply(socket: Socket, data: any) {
     const token = data.token;
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, {
       firstName: 1,
@@ -217,7 +217,7 @@ export class SharedGateway {
   @SubscribeMessage('clearUserId')
   async clearUserId(socket: Socket, data: any) {
     const token = data.token;
-    const decoded = await jwt.verify(token, process.env.jwtsecret);
+    const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, { socketId: 1 });
     if (user) {

@@ -3,9 +3,6 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { User } from '../models/user.schema';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
-import { UserService } from '../user/user.service';
-import { AuthService } from '../auth/auth.service';
-import { JwtStrategy } from '../auth/strategies/jwt.strategy';
 import { ValidationService } from './validation.service';
 import { SharedGateway } from './shared.gateway';
 import { Pin } from '../models/pin.schema';
@@ -46,4 +43,4 @@ import { ChatService } from 'src/chat/chat.service';
   ],
   exports: [NotificationService, ValidationService, Email],
 })
-export class SharedModule {}
+export class SharedModule { }
