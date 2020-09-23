@@ -128,7 +128,7 @@ export class UserService {
    * @param {LoginDto} loginDto - email of user & password 
    * @returns {object} object of _id :id of user , profileImage : user image & email :user email
    */
-  async findByLogin(loginDto: LoginDto): Promise<Object> {
+  async findByLogin(loginDto: LoginDto): Promise<any> {
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
       { password: 1, profileImage: 1, email: 1, _id: 1 },
@@ -251,7 +251,7 @@ export class UserService {
    * @param {RegisterDto} registerDto -data to create user
    * @returns {Object} _id ,email and profileImage of userS
    */
-  async createUser(registerDto: RegisterDto): Promise<Object> {
+  async createUser(registerDto: RegisterDto): Promise<any> {
     let hash,
       googleImage = null,
       picture = null;
