@@ -14,6 +14,7 @@ import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { UpdateDto } from './dto/update-user.dto';
+import { UpdateSettingsDto } from './dto/update-user-settings.dto';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../shared/notification.service';
@@ -128,7 +129,7 @@ export class UserService {
    * @param {LoginDto} loginDto - email of user & password 
    * @returns {object} object of _id :id of user , profileImage : user image & email :user email
    */
-  async findByLogin(loginDto: LoginDto): Promise<any> {
+  async findByLogin(loginDto: LoginDto) {
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
       { password: 1, profileImage: 1, email: 1, _id: 1 },
@@ -251,7 +252,7 @@ export class UserService {
    * @param {RegisterDto} registerDto -data to create user
    * @returns {Object} _id ,email and profileImage of userS
    */
-  async createUser(registerDto: RegisterDto): Promise<any> {
+  async createUser(registerDto: RegisterDto) {
     let hash,
       googleImage = null,
       picture = null;
@@ -487,24 +488,7 @@ export class UserService {
    * @param {UpdateSettings} updateSettings - settings data should update 
    * @returns {Number} 1
    */
-  async updateSettings(
-    userId,
-    settings: {
-      facebook?: Boolean;
-      activity?: Boolean;
-      invitation?: Boolean;
-      boardUpdate?: Boolean;
-      google?: Boolean;
-      deleteflag?: Boolean;
-      boardsForYou?: Boolean;
-      popularPins?: Boolean;
-      pinsForYou?: Boolean;
-      pinsInspired?: Boolean;
-      activateaccount?: Boolean;
-      followNotification?: Boolean;
-      pinsNotification?: Boolean;
-    },
-  ) {
+  async updateSettings(userId, settings: UpdateSettingsDto) {
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {
       for (let i = 0; i < user.followers.length; i++) {

@@ -16,6 +16,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { Email } from '../shared/send-email.service';
+import { UpdateSettingsDto } from './dto/update-user-settings.dto';
 import { UpdateDto } from './dto/update-user.dto';
 @Controller()
 export class UserController {
@@ -78,7 +79,7 @@ export class UserController {
   @Put('/me/update-settings')
   async updateUserSettings(
     @Request() req,
-    @Body() updateData,
+    @Body() updateData: UpdateSettingsDto,
   ) {
     if (updateData.notificationCounter)
       return await this.userService.updateDataInUser(req.user._id, {
