@@ -27,10 +27,18 @@ export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<user>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
+    @InjectModel('Pin') private readonly pinModel: Model<pin>,
+    @InjectModel('Board') private readonly boardModel: Model<board>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
+
+  /**
+   * get user by id 
+   * @param {string} id - user id wanted to get 
+   * @returns {object<User>}
+   */
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -39,6 +47,11 @@ export class UserService {
     return user;
   }
 
+  /**
+    * get user by id  with profile data
+    * @param {string} id - user id wanted to get 
+    * @returns {object<User>}
+    */
   async getUserMe(id) {
     let userId = mongoose.Types.ObjectId(id);
     let user = await this.userModel.aggregate([
@@ -72,9 +85,14 @@ export class UserService {
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user[0].about) user[0].about = '';
-
     return user[0];
   }
+
+  /**
+    * get notification data from user 
+    * @param {string} id - user id wanted to get 
+    * @returns {object}
+    */
   async getUserNotifications(userId) {
     let user = await this.userModel.findById(userId, {
       notifications: 1,
@@ -84,25 +102,33 @@ export class UserService {
       user.notifications.length > 30 ? user.notifications.length - 30 : 0;
     let limit: number =
       user.notifications.length > 30 ? offset + 30 : user.notifications.length;
-    console.log(limit);
     let ret = {
       notificationCounter: user.notificationCounter,
       notifications: user.notifications.slice(offset, limit),
     };
     return ret;
   }
+
+  /**
+    * get user by findData and get only from user data
+    * @param {Object} findData - user data wanted to get 
+    * @param {Object} data - data should get 
+    * @returns {Object}
+    */
   async findUserAndGetData(findData: {}, data: {}) {
     const user = await this.userModel.findOne(findData, data).lean();
-    console.log(user);
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     if (!user.about) user.about = '';
     return user;
   }
 
-  async findByLogin(loginDto: LoginDto): Promise<any> {
-    console.log(await this.userModel.find({}, { _id: 1 }));
-    console.log(loginDto.password);
+  /**
+   * get user by login
+   * @param {LoginDto} loginDto - email of user & password 
+   * @returns {object} object of _id :id of user , profileImage : user image & email :user email
+   */
+  async findByLogin(loginDto: LoginDto): Promise<Object> {
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
       { password: 1, profileImage: 1, email: 1, _id: 1 },
@@ -116,6 +142,11 @@ export class UserService {
     }
     throw new HttpException('password is not correct', HttpStatus.FORBIDDEN);
   }
+
+  /**
+   * check data after create user
+   * @param {RegisterDto} registerDto - data of created user
+   */
   async checkCreateData(registerDto: RegisterDto) {
     const shcema = Joi.object({
       email: Joi.string()
@@ -145,6 +176,10 @@ export class UserService {
       );
   }
 
+  /**
+   * check update data after update
+   * @param {UpdateDto} updateDto - data need to update  
+   */
   async checkUpdateData(updateDto: UpdateDto) {
     const shcema = Joi.object({
       email: Joi.string()
@@ -178,6 +213,12 @@ export class UserService {
         );
   }
 
+  /**
+   * update FCM token value
+   * @param {String} fcmToken - token for notification 
+   * @param {String} userId   - id of user
+   * @returns {Number} 1
+   */
   async updateFCMTocken(fcmToken, userId) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -192,6 +233,11 @@ export class UserService {
     return 1;
   }
 
+  /**
+   * get user following topics
+   * @param {String} userId - id of user 
+   * @returns {Array<String>} - following topic ids s
+   */
   async followingTopics(userId) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -200,7 +246,12 @@ export class UserService {
     return user.followingTopics;
   }
 
-  async createUser(registerDto: RegisterDto): Promise<any> {
+  /**
+   * create new user 
+   * @param {RegisterDto} registerDto -data to create user
+   * @returns {Object} _id ,email and profileImage of userS
+   */
+  async createUser(registerDto: RegisterDto): Promise<Object> {
     let hash,
       googleImage = null,
       picture = null;
@@ -261,7 +312,6 @@ export class UserService {
       createdAt: Date.now(),
     });
     await newUser.save();
-
     newUser = await this.userModel.findById(newUser._id, {
       firstName: 1,
       lastName: 1,
@@ -287,6 +337,11 @@ export class UserService {
     return newUser;
   }
 
+  /**
+   * check email in formate and if exist 
+   * @param {String} email - email should check
+   * @returns  {Object<User>}  
+   */
   async checkMAilExistAndFormat(email) {
     const body = { email: email };
     const shcema = Joi.object({
@@ -314,6 +369,13 @@ export class UserService {
     return user;
   }
 
+  /**
+   * change user password
+   * @param {String} userId - user id 
+   * @param {String} newPassword - new password of user
+   * @param {String} oldPassword - old password of user
+   * @returns {Number} 1
+   */
   async resetPassword(userId, newPassword, oldPassword) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -339,10 +401,10 @@ export class UserService {
   /**
    * update information in user profile
    * @param {String} userId -id of user
+   * @param {UpdateDto} updateDto -update data 
+   * @returns {Number} 1
    */
-
   async updateUserInfo(userId, updateDto: UpdateDto) {
-    // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
     const user = await this.getUserMe(userId);
     if (!user) return 0;
     if (updateDto.firstName)
@@ -418,6 +480,13 @@ export class UserService {
       );
     return 1;
   }
+
+  /**
+   * update settings in user profile
+   * @param {String} userId -id of user
+   * @param {UpdateSettings} updateSettings - settings data should update 
+   * @returns {Number} 1
+   */
   async updateSettings(
     userId,
     settings: {
@@ -447,11 +516,6 @@ export class UserService {
       return await this.deleteUser(userId);
     }
     await this.userModel.updateOne({ _id: userId }, settings);
-    /*if(settings.facebook)
-    login with facebook
-    else if(settings.google)
-    login with google
-     */
     return 1;
   }
 
@@ -462,7 +526,6 @@ export class UserService {
    * @returns {Number}
    */
   async setEmail(userId, newEmail) {
-    // if (!checkMonooseObjectID([userId])) throw new Error('not mongoose id');
     const user = await this.findUserAndGetData(
       { _id: userId },
       { email: 1, _id: 1 },
@@ -471,20 +534,34 @@ export class UserService {
     await this.userModel.updateOne({ _id: userId }, { email: newEmail });
     return 1;
   }
-
+  /**
+   * delete user 
+   * @param {string} id -the id of user went to deleted 
+   */
   async deleteUser(id) {
     const user = await this.getUserById(id);
     // delete following
     //delete followers
     // delete pins saved created
+    // delete commints for pin 
+    //delete react 
+    //delete chat (in ask)
+    // delete following topic
     await this.userModel.findByIdAndDelete(id);
     await this.email.sendEmail(
       user.email,
-      undefined,
+      null,
       'Delete account',
       user.firstName,
     );
   }
+
+  /**
+   * set view state of user
+   * @param {String} userId - the id of user
+   * @param  {String} viewState  - view state 'Default' or 'Compact'
+   * @returns {String} view state
+   */
   async setViewState(userId, viewState) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid id');
@@ -503,6 +580,12 @@ export class UserService {
     await this.userModel.update({ _id: userId }, { viewState: viewState });
     return viewState;
   }
+
+  /**
+   * get view state of user
+   * @param {String} userId - the id of user
+   * @returns {String} view state
+   */
   async getViewState(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid id');
@@ -519,6 +602,7 @@ export class UserService {
     if (user.viewState) return user.viewState;
     return false;
   }
+
   /**
    * check if this user follow this user id
    * @param {Object} user - user he follow
@@ -535,6 +619,7 @@ export class UserService {
       if (String(userId) === String(user.following[i])) return true;
     return false;
   }
+
   /**
    * followUser:  make frist user id follow second user id
    * @param {String} followerId - id of user went to follow
@@ -549,7 +634,6 @@ export class UserService {
       ])) === 0
     )
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    //   console.log(await this.pinModel.find({}, { _id: 1 }));
     if (String(followerId) == String(followingId))
       throw new HttpException(
         'You can not follow yourself ',
@@ -610,6 +694,12 @@ export class UserService {
     }
     return 1;
   }
+  /**
+   * update data in user model
+   * @param {String} userId - user id  
+   * @param {Object} data  - object of data need to update in user model 
+   * @returns {Number} 1
+   */
   async updateDataInUser(userId, data: {}) {
     if (!(await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1 })))
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
@@ -684,15 +774,11 @@ export class UserService {
             { _id: followedUser._id },
             { followers: followedUser.followers },
           );
-          //console.log(100);
           var newUserData = await this.notification.unfollowUser(
             followedUser,
             userFollow,
           );
-          //console.log(100);
           await this.updateDataInUser(followingId, newUserData);
-          //console.log(1000);
-
           return 1;
         }
       }
@@ -782,7 +868,9 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
-
+  /**
+   * create seeds of user function if you need ,call it in any route then call the route 
+   */
   async userSeeds() {
     var userObjects = [
       {

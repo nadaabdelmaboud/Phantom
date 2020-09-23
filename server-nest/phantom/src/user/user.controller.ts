@@ -161,16 +161,16 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Put('/me/follow-user/:user_id')
+  @Put('/me/follow-user/:userId')
   async followUser(@Param() params, @Request() req) {
-    if (!(await this.userService.followUser(req.user._id, params.user_id)))
+    if (!(await this.userService.followUser(req.user._id, params.userId)))
       throw new BadRequestException('can not follow this user');
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Delete('/me/follow-user/:user_id')
+  @Delete('/me/follow-user/:userId')
   async unfollowUser(@Param() params, @Request() req) {
-    if (!(await this.userService.unfollowUser(req.user._id, params.user_id)))
+    if (!(await this.userService.unfollowUser(req.user._id, params.userId)))
       throw new BadRequestException('can not follow this user');
   }
 
@@ -190,13 +190,13 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/me/follow-user/:user_id')
+  @Get('/me/follow-user/:userId')
   async checkfollowingUser(
     @Param() params,
     @Request() req,
   ) {
     const user = await this.userService.getUserById(req.user._id);
-    if (!(await this.userService.checkFollowUser(user, params.user_id)))
+    if (!(await this.userService.checkFollowUser(user, params.userId)))
       return { follow: 'false' };
     else return { follow: 'true' };
   }
@@ -222,24 +222,24 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/:user_id/follower')
+  @Get('/:userId/follower')
   async getUserFollowers(
     @Request() req,
     @Param() params,
     @Query('limit') limit: Number,
     @Query('offset') offset: Number,
   ) {
-    return await this.userService.userFollowers(params.user_id, limit, offset);
+    return await this.userService.userFollowers(params.userId, limit, offset);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('/:user_id/following')
+  @Get('/:userId/following')
   async getUserFollowings(
     @Request() req,
     @Param() params,
     @Query('limit') limit: Number,
     @Query('offset') offset: Number,
   ) {
-    return await this.userService.userFollowings(params.user_id, limit, offset);
+    return await this.userService.userFollowings(params.userId, limit, offset);
   }
 }

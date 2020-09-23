@@ -165,7 +165,7 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
-        time: undefined,
+        time: null,
       },
     };
     let notificationData = followedUser.offlineNotifications;
