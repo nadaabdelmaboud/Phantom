@@ -1,14 +1,14 @@
 <template>
   <div class="main-content">
     <section class="row">
-      <div class="col">
+      <div class="col-12 col-sm-6">
         <h1>Account Settings</h1>
         <p>
           Set your login preferences, help us personalize your experience and
           make big account changes here
         </p>
       </div>
-      <div class="col">
+      <div class="col-12 col-sm-6">
         <button
           v-bind:class="{
             'changed-cancel': this.isChanged
@@ -186,6 +186,7 @@ p {
 .main-content {
   max-width: 700px;
   display: block;
+  padding-top: 0;
 }
 
 /**Change Password
@@ -234,7 +235,7 @@ select {
 .account-changes button {
   @include profileButton;
   background-color: $qainsboro;
-  padding: 0 10px;
+  padding: 5 7px;
   color: black;
   float: right;
   font-size: 14px;
@@ -293,5 +294,77 @@ select {
 .toast--visible {
   visibility: visible;
   opacity: 1;
+}
+
+/*Media Quires
+******************/
+@media screen and (max-width: 1100px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  button,
+  .edit,
+  .trun-off,
+  .small-title {
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  button,
+  .title {
+    font-size: 12px;
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  p,
+  button,
+  .account-changes button,
+  select,
+  .change-password button {
+    font-size: 10px;
+  }
+
+  h5 {
+    font-size: 14px;
+  }
 }
 </style>

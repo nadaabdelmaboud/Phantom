@@ -175,6 +175,10 @@ p {
   font-size: 12px;
 }
 
+h1 {
+  font-weight: bold;
+}
+
 /*Edit Buttons
 *****************/
 .edit {
