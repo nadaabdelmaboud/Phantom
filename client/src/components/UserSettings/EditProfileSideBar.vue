@@ -80,4 +80,9 @@ li {
     font-size: 14px;
   }
 }
+@media screen and (max-width: 550px) {
+  li {
+    font-size: 10px;
+  }
+}
 </style>
