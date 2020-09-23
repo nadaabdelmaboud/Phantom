@@ -30,7 +30,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -1452,6 +1452,11 @@ export class PinsService {
     return true;
   }
 
+  /**
+   * get followings pins
+   * @param {String} userId  - user id
+   * @returns {Array<Object>} fololowng user with there pins
+   */
   async getFollowingPins(userId) {
     const user = await this.userModel
       .findOne({ _id: userId }, { following: 1 })
