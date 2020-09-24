@@ -77,7 +77,7 @@
         <ChatMessage
           v-for="(msg, i) in chat"
           :key="i"
-          :imageId="msg.senderImage"
+          :imageId="msg.owner ? myData.profileImage : chatWith.imageId"
           :msgText="msg.message"
           :owner="msg.owner"
           :timeStamp="msg.date"
@@ -159,12 +159,12 @@ export default {
       }
     },
     toChat(chatWith) {
+      this.chatWith = chatWith;
       let payload = {
         senderId: this.myData._id,
         recieverId: chatWith.id,
       };
       this.$store.dispatch("chat/setAsSeen", payload);
-      this.chatWith = chatWith;
       this.inchat = !this.inchat;
       this.$nextTick(() => {
         let msgBox = document.getElementsByClassName("msgBox")[0];
@@ -264,11 +264,12 @@ export default {
           recieverId: [this.chatWith.id],
         };
         console.log("oh1");
-        this.$store.dispatch("chat/getChat", payload);
         console.log("oh2", data);
         if (data.senderId == this.chatWith.id) {
           console.log("oh3");
-          this.$store.commit("chat/setDeliver", data.messageId);
+          setTimeout(()=>{
+             this.$store.dispatch("chat/getChat", payload);
+          },10000)
         }
       });
     },
