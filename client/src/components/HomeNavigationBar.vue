@@ -36,7 +36,9 @@
       v-if="isLoggedIn() && search"
     ></i>
     <div class="bar" v-if="showFilter"></div>
-    <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>
+    <p class="filter" v-if="showFilter" @click="expandMenu = !expandMenu">
+      {{ selectedFilter }}
+    </p>
     <i
       class="fa fa-angle-down expand-menu-icon"
       v-if="showFilter"
@@ -247,6 +249,7 @@
   position: relative;
   top: -1px;
   left: -100px;
+  cursor: pointer;
 }
 
 .expand-menu-icon {
@@ -265,7 +268,7 @@
   right: calc(100vw - 85vw);
   font-size: 12px;
 }
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 6500px) {
   .lefted_icon {
     left: -120px;
   }
