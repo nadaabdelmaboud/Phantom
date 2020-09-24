@@ -325,10 +325,8 @@ export default {
       if (this.search) {
         this.$store.dispatch("search/searchKeywords", this.search);
         this.$store.dispatch("search/searchPeople", {
-          limit: 3,
-          offset: 0,
           name: this.search,
-          recentSearch: false
+          searchSuggestions: true
         });
       }
     },

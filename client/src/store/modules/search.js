@@ -10,7 +10,8 @@ const state = {
   inProgress: false,
   totalResult: 50,
   endResult: false,
-  loading: false
+  loading: false,
+  searchSuggestions: null
 };
 
 const mutations = {
@@ -46,6 +47,9 @@ const mutations = {
   },
   setLoading(state, payload) {
     state.loading = payload;
+  },
+  setSearchSuggestions(state, payload) {
+    state.searchSuggestions = payload;
   }
 };
 
@@ -120,7 +124,7 @@ const actions = {
     }
   },
   async searchPeople({ state, commit, dispatch }, payload) {
-    if (!state.inProgress && !state.endReuslt) {
+    if ((!state.inProgress && !state.endReuslt) || payload.searchSuggestions) {
       state.inProgress = true;
       commit("setLoading", true);
       try {
@@ -139,7 +143,17 @@ const actions = {
         state.inProgress = false;
         commit("setLoading", false);
         state.offset += 10;
-        commit("setSearchPeople", people.data.result);
+        if (payload.searchSuggestions) {
+          let suggestions = [];
+          let n = 0;
+          people.data.result.forEach(one => {
+            if (n < 3) {
+              suggestions.push(one);
+              n++;
+            }
+          });
+          commit("setSearchSuggestions", suggestions);
+        } else commit("setSearchPeople", people.data.result);
         state.totalResult = people.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
