@@ -8,7 +8,6 @@ import {
 import { NotificationService } from '../shared/notification.service';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { UserService } from '../user/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { Email } from '../shared/send-email.service';
 import { CreatePinDto } from './dto/create-pin.dto';
@@ -19,6 +18,9 @@ import { BoardService } from '../board/board.service';
 import { board } from '../types/board';
 import { topic } from '../types/topic';
 import { user } from '../types/user';
+/**
+ * @module Pins
+ */
 @Injectable()
 export class PinsService {
   constructor(
@@ -31,6 +33,12 @@ export class PinsService {
     private NotificationService: NotificationService,
     private EmailService: Email,
   ) {}
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get pin document
+   * @param {string} pinId - the id of the pin
+   * @returns  {Promise<pin>}
+   */
   async getPinById(pinId): Promise<pin> {
     try {
       if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
@@ -41,7 +49,14 @@ export class PinsService {
       throw new Error('pin not found');
     }
   }
-  async getPinFull(pinId, userId): Promise<Object> {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get full pin object with creator data , user&pin type (creator-saved-none) , user&react type
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
+  async getPinFull(pinId, userId): Promise<object> {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0)
       throw new Error('not valid id');
 
@@ -148,7 +163,14 @@ export class PinsService {
 
     return { success: false };
   }
-  async createPin(userId: String, createPinDto: CreatePinDto) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new pin
+   * @param {CreatePinDto} CreatePinDto - the create pin object
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
+  async createPin(userId: String, createPinDto: CreatePinDto): Promise<object> {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -238,7 +260,14 @@ export class PinsService {
       imageId: pin.imageId,
     };
   }
-  async checkPinStatus(pinId, userId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get pin related data (board belongs to , section belongs to , user&pin relation)
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
+  async checkPinStatus(pinId, userId): Promise<object> {
     let pinType = 'none';
     let boardName = 'none';
     let pin = await this.pinModel
@@ -312,7 +341,16 @@ export class PinsService {
       section: sectionName,
     };
   }
-  async addPintoUser(userId, pinId, boardId, sectionId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description add pin to a certain user
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the pin
+   * @param {string} sectionId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
+  async addPintoUser(userId, pinId, boardId, sectionId): Promise<boolean> {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
       throw new BadRequestException('not valid id');
     }
@@ -324,7 +362,7 @@ export class PinsService {
       sectionId = null;
     }
     let user = await this.userModel.findById(userId, { pins: 1 });
-    if (!user) return false;
+    if (!user) throw new NotFoundException('no such user');
     user.pins.push({
       pinId: pinId,
       boardId: boardId,
@@ -333,7 +371,15 @@ export class PinsService {
     await user.save();
     return true;
   }
-  async getCurrentUserPins(userId, ifMe: Boolean, limit) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get user pins
+   * @param {string} userId - the id of the user
+   * @param {boolean} ifMe - flag indicates if current user or another user
+   * @param {number} limit - the limit of user pins returned
+   * @returns  {Promise<Array<object>}
+   */
+  async getCurrentUserPins(userId, ifMe, limit): Promise<Array<object>> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid Id');
     }
@@ -362,7 +408,16 @@ export class PinsService {
     }
     return retPins;
   }
-  async savePin(userId, pinId, boardId, sectionId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description save pin
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the pin
+   * @param {string} sectionId - the id of the user
+   * @returns  {Promise<object>}
+   */
+  async savePin(userId, pinId, boardId, sectionId): Promise<object> {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -374,9 +429,9 @@ export class PinsService {
     }
 
     let user = await this.userModel.findById(userId, { savedPins: 1 });
-    if (!user) return 0;
+    if (!user) throw new NotFoundException('no such user');
     let pin = await this.pinModel.findById(pinId, { savers: 1 });
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException('no such pin');
     let board = await this.boardModel.findById(boardId, {
       creator: 1,
       sections: 1,
@@ -438,7 +493,7 @@ export class PinsService {
       pin.savers.push(userId);
       await pin.save();
     } else {
-      return false;
+      throw new BadRequestException('pin is already saved');
     }
     if (boardId && boardId != undefined) {
       if ((await this.ValidationService.checkMongooseID([boardId])) != 0) {
@@ -453,12 +508,18 @@ export class PinsService {
       imageId: pin.imageId,
     };
   }
-  async getCurrentUserSavedPins(userId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get user saved pins
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
+  async getCurrentUserSavedPins(userId): Promise<Array<object>> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     let user = await this.userModel.findById(userId, { savedPins: 1 }).lean();
-    if (!user) return false;
+    if (!user) throw new NotFoundException('no such user');
     let retPins = [];
     for (var i = 0; i < user.savedPins.length; i++) {
       let pinFound = await this.pinModel
@@ -475,9 +536,17 @@ export class PinsService {
     }
     return retPins;
   }
-  async createComment(pinId, commentText, userId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create a comment on a pin
+   * @param {string} pinId - the id of the pin
+   * @param {string} commentText - the text of the new comment
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
+  async createComment(pinId, commentText, userId): Promise<object> {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     if (!commentText || commentText == '' || commentText == ' ') {
       throw new BadRequestException('comment is empty');
@@ -513,7 +582,7 @@ export class PinsService {
         likers: [],
       },
     });
-    if (!user || !pin) return false;
+    if (!user || !pin) throw new NotFoundException();
     pin.comments.push(cs);
     pin.counts.comments = pin.counts.comments.valueOf() + 1;
     await pin.save();
@@ -574,7 +643,16 @@ export class PinsService {
     }
     throw new Error();
   }
-  async createReply(pinId, replyText, userId, commentId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create a reply on a comment on a pin
+   * @param {string} pinId - the id of the pin
+   * @param {string} replyText - the text of the new reply
+   * @param {string} userId - the id of the user
+   * @param {string} commentId - the id of the comment
+   * @returns  {Promise<object>}
+   */
+  async createReply(pinId, replyText, userId, commentId): Promise<object> {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -582,7 +660,7 @@ export class PinsService {
         commentId,
       ])) == 0
     ) {
-      return false;
+      throw new BadRequestException('invalid id');
     }
     let user = await this.userModel
       .findById(userId, {
@@ -598,7 +676,7 @@ export class PinsService {
     }
     let pin = await this.pinModel.findById(pinId, { comments: 1 });
 
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException();
     for (var i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
         var rp = <reply>(<unknown>{
@@ -660,13 +738,20 @@ export class PinsService {
     }
     throw new Error();
   }
-  async getPinCommentsReplies(pinId, userId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get full detailed array of pin's comments with their replies
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
+  async getPinCommentsReplies(pinId, userId): Promise<Array<object>> {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
 
     let pin = await this.pinModel.findById(pinId, { comments: 1 }).lean();
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException('no such pin');
 
     let retComments = [];
     for (var i = 0; i < pin.comments.length; i++) {
@@ -744,7 +829,14 @@ export class PinsService {
     }
     return retComments;
   }
-  async calcDate(d) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description calc how much time went since a given date
+   * @param d
+   * @returns {Promise<string>}
+   */
+
+  async calcDate(d): Promise<string> {
     d = new Date(d);
     let date = d.getDate();
     let month = d.getMonth() + 1;
@@ -778,9 +870,17 @@ export class PinsService {
     if (diff > 1) s = 's';
     return `${diff} min${s} ago`;
   }
-  async createReact(pinId, reactType, userId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new react on a pin or remove an existed react
+   * @param {string} pinId - the id of the pin
+   * @param {string} reactType - the react type (Wow-Love-Good idea-Thanks-Haha-none)
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
+  async createReact(pinId, reactType, userId): Promise<boolean> {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     if (
       String(reactType) != 'Wow' &&
@@ -790,7 +890,7 @@ export class PinsService {
       String(reactType) != 'Haha' &&
       String(reactType) != 'none'
     ) {
-      return false;
+      throw new BadRequestException('not valid reactType');
     }
     let user = await this.userModel.findById(userId, {
       profileImage: 1,
@@ -814,7 +914,7 @@ export class PinsService {
       pinsNotification: 1,
     });
     var lastReactType = 'none';
-    if (!user || !pin) return false;
+    if (!user || !pin) throw new NotFoundException();
     let found = false;
     for (let i = 0; i < pin.reacts.length; i++) {
       if (String(pin.reacts[i].userId) == String(userId)) {
@@ -915,7 +1015,15 @@ export class PinsService {
       );
     return true;
   }
-  async likeComment(pinId, commentId, userId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new like on a comment or remove an existed like
+   * @param {string} pinId - the id of the pin
+   * @param {string} commentId - the id of the comment
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
+  async likeComment(pinId, commentId, userId): Promise<boolean> {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -948,9 +1056,18 @@ export class PinsService {
         return true;
       }
     }
-    return false;
+    throw new Error();
   }
-  async likeReply(pinId, commentId, userId, replyId) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new like on a reply on a comment or remove an existed like
+   * @param {string} pinId - the id of the pin
+   * @param {string} commentId - the id of the comment
+   * @param {string} userId - the id of the user
+   * @param {string} replyId - the id of the reply
+   * @returns  {Promise<boolean>}
+   */
+  async likeReply(pinId, commentId, userId, replyId): Promise<boolean> {
     if (
       (await this.ValidationService.checkMongooseID([
         userId,
@@ -959,10 +1076,10 @@ export class PinsService {
         replyId,
       ])) == 0
     ) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     let pin = await this.pinModel.findById(pinId, { comments: 1 });
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException('no such pin');
     for (let i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(commentId)) {
         for (let j = 0; j < pin.comments[i].replies.length; j++) {
@@ -994,9 +1111,20 @@ export class PinsService {
         }
       }
     }
-    return false;
+    throw new Error();
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description edit pin that user has created
+   * @param {string} pinId - the id of the pin
+   * @param {string} boardId - the id of the new board
+   * @param {string} userId - the id of the user
+   * @param {string} sectionId - the id of the new section
+   * @param {string} description - the new description
+   * @param {string} title - the new title
+   * @param {string} link - the new destination link
+   * @returns  {Promise<boolean>}
+   */
   async editCreatedPin(
     pinId,
     userId,
@@ -1005,7 +1133,7 @@ export class PinsService {
     description,
     title,
     link,
-  ) {
+  ): Promise<boolean> {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
@@ -1232,7 +1360,23 @@ export class PinsService {
     }
     return true;
   }
-  async editSavedPin(pinId, userId, boardId, sectionId, note) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description edit pin that user has saved
+   * @param {string} pinId - the id of the pin
+   * @param {string} boardId - the id of the new board
+   * @param {string} userId - the id of the user
+   * @param {string} sectionId - the id of the new section
+   * @param {string} note - the new note
+   * @returns  {Promise<boolean>}
+   */
+  async editSavedPin(
+    pinId,
+    userId,
+    boardId,
+    sectionId,
+    note,
+  ): Promise<boolean> {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
@@ -1451,8 +1595,13 @@ export class PinsService {
     }
     return true;
   }
-
-  async getFollowingPins(userId) {
+  /**
+   * @author Aya Samir <ayasamir@gmail.com>
+   * @description get pins of users that the user follow
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
+  async getFollowingPins(userId): Promise<Array<object>> {
     const user = await this.userModel
       .findOne({ _id: userId }, { following: 1 })
       .lean();
@@ -1491,8 +1640,15 @@ export class PinsService {
     }
     return followersPins;
   }
-
-  async reportPin(userId, pinId, reason) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description report a pin by a user
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} reason - reason why the pin has been reported
+   * @returns  {Promise<boolean>}
+   */
+  async reportPin(userId, pinId, reason): Promise<boolean> {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
@@ -1506,6 +1662,6 @@ export class PinsService {
       'report',
       '',
     );
-    return 1;
+    return true;
   }
 }
