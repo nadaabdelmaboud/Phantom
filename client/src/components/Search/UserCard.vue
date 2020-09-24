@@ -1,7 +1,8 @@
 <template>
   <div class="user-card">
     <router-link :to="{ path: '/User/' + userID }">
-      <img :src="getImage(imagId)" alt="User Photo" />
+      <img :src="imagId" alt="User Photo" v-if="google" />
+      <img :src="getImage(imagId)" alt="User Photo" v-else />
       <p class="username">{{ name }}</p>
       <p class="numbers">{{ boardsNum }} boards</p>
       <p class="dot">.</p>
@@ -18,7 +19,8 @@ export default {
     name: String,
     followersNum: Number,
     boardsNum: Number,
-    userID: String
+    userID: String,
+    google: Boolean
   },
   mixins: [getImage]
 };

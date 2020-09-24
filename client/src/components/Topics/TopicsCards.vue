@@ -2,7 +2,7 @@
   <div
     class="topic"
     :style="{ backgroundImage: `url(${getImg})` }"
-    @click="clicked = !clicked"
+    @click="alterFollow"
     @mouseover="hover = true"
     @mouseleave="hover = false"
     :class="[{ show: clicked, doubleBorder: clicked || hover }]"
@@ -80,6 +80,9 @@ export default {
     },
     topicName: {
       type: String
+    },
+    isFollowed:{
+      type:Boolean
     }
   },
   computed: {
@@ -87,6 +90,20 @@ export default {
       let name = this.topicName.replace(/ /g, "%20");
       return "http://localhost:3000/api/image/" + "%20" + "?topic=" + name;
     }
+  },
+  methods:{
+    alterFollow(){
+    this.clicked =!this.clicked;
+     if (this.clicked){
+        this.$store.dispatch("topics/followTopic", this.topicId);
+      } 
+      else {
+         this.$store.dispatch("topics/unfollowTopic", this.topicId);
+      }
+    }
+  },
+  mounted(){
+    this.clicked=this.isFollowed;
   }
 };
 </script>

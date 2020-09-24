@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import CheckPasswordFormat from "../../components/CheckPasswordFormat.vue";
+import CheckPasswordFormat from "../../components/GeneralComponents/CheckPasswordFormat";
 export default {
   data: function() {
     return {
@@ -50,7 +50,7 @@ export default {
       console.log(this.$route.query.token);
       if (this.passwordMatching && this.validatePassword && this.password) {
         this.$store.dispatch("user/resetPassword", {
-          oldPassword: "dont know old password",
+          forgetPassword: true,
           newPassword: this.password,
           token: this.$route.query.token
         });
@@ -61,14 +61,11 @@ export default {
     validPassword: function() {
       return this.$store.state.user.validPassword;
     },
-    signUpState: function() {
-      return this.$store.state.user.signUpState;
-    },
     errorMessage: function() {
       return this.$store.state.user.errorMessage;
     },
     resetStatus: function() {
-      return this.$store.state.user.resetPasswordStatus;
+      return this.$store.state.user.status;
     }
   },
   watch: {

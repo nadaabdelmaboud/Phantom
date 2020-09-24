@@ -1,17 +1,12 @@
 import axios from "axios";
 const state = {
-  signUpState: null,
+  status: null,
   validPasswordLength: null,
   containCapitalChar: null,
   containSpecialChar: null,
   containNumber: null,
   validPassword: null,
   errorMessage: null,
-  emailConfirm: false,
-  loginState: null,
-  updateStatus: null,
-  sendEmailStatus: null,
-  resetPasswordStatus: null,
   userData: null,
   isLoading: false,
   imgID: null,
@@ -19,8 +14,8 @@ const state = {
 };
 
 const mutations = {
-  changeSignUpState(state, payload) {
-    state.signUpState = payload;
+  setStatus(state, payload) {
+    state.status = payload;
   },
   validatePassword(state, password) {
     var upperCaseLetters = /[A-Z]/g;
@@ -51,27 +46,12 @@ const mutations = {
   setErrorMessage(state, message) {
     state.errorMessage = message;
   },
-  setEmailConfirm(state, status) {
-    state.emailConfirm = status;
-  },
-  setLogin(state, status) {
-    state.loginState = status;
-  },
-  setSendEmail(state, status) {
-    state.sendEmailStatus = status;
-  },
-  setResetStatus(state, status) {
-    state.resetPasswordStatus = status;
-  },
   setUserData(state, payload) {
     state.userData = payload;
     state.isLoading = false;
   },
   setLoading() {
     state.isLoading = true;
-  },
-  setUpdateStatus(state, payload) {
-    state.updateStatus = payload;
   },
   changeImgID(state, payload) {
     state.imgID = payload;
@@ -83,21 +63,23 @@ const mutations = {
 
 const actions = {
   signUp({ commit }, userData) {
+    commit("setStatus", false);
     commit("setErrorMessage", null);
     axios
       .post("sign_up", userData)
       .then(() => {
-        commit("changeSignUpState", true);
+        commit("setStatus", true);
         commit("setKey", 1);
       })
       .catch(error => {
         if (error.response.data.message == "Mail exists") {
-          commit("changeSignUpState", false);
+          commit("setStatus", false);
           commit("setErrorMessage", "This email is already exists");
         } else commit("setErrorMessage", error.response.data.message);
       });
   },
   confirmEmail({ commit, dispatch }, token) {
+    commit("setStatus", false);
     axios
       .post(
         "sign_up/confirm",
@@ -111,27 +93,28 @@ const actions = {
       .then(response => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
-        commit("setEmailConfirm", true);
+        commit("setStatus", true);
         dispatch("getUserProfile");
       })
       .catch(error => {
-        commit("setEmailConfirm", false);
+        commit("setStatus", false);
         console.log("axios caught an error");
         console.log(error);
       });
   },
   login({ commit, dispatch }, data) {
+    commit("setStatus", false);
     axios
       .post("login/", data)
       .then(response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
-        commit("setLogin", true);
+        commit("setStatus", true);
         dispatch("notifications/notifyUser", null, { root: true });
         commit("setKey", 1);
       })
       .catch(error => {
-        commit("setLogin", false);
+        commit("setStatus", false);
         console.log(error);
         if (error.response.data.message == "password is not correct")
           commit("setErrorMessage", "Password is not correct");
@@ -139,33 +122,28 @@ const actions = {
       });
   },
   forgetPassword({ commit }, emailAddress) {
+    commit("setStatus", false);
     axios
       .post("/forget-password", { email: emailAddress })
       .then(() => {
-        commit("setSendEmail", true);
+        commit("setStatus", true);
       })
       .catch(error => {
-        commit("setSendEmail", false);
+        commit("setStatus", false);
         if (error.response.data.message == "not user by this email")
           commit("setErrorMessage", "This Email is not correct");
       });
   },
   resetPassword({ commit }, payload) {
+    commit("setStatus", false);
     axios
-      .put(
-        "/me/reset-password?newPassword=" +
-          payload.newPassword +
-          "&oldPassword=" +
-          payload.oldPassword,
-        {},
-        {
-          headers: {
-            Authorization: payload.token
-          }
+      .put("/me/reset-password", payload, {
+        headers: {
+          Authorization: payload.token
         }
-      )
+      })
       .then(() => {
-        commit("setResetStatus", true);
+        commit("setStatus", true);
       })
       .catch(error => {
         console.log(error);
@@ -188,6 +166,7 @@ const actions = {
       });
   },
   updateUserInfo({ commit }, payload) {
+    commit("setStatus", false);
     axios
       .put("/me/update", payload, {
         headers: {
@@ -195,7 +174,7 @@ const actions = {
         }
       })
       .then(response => {
-        commit("setUpdateStatus", true);
+        commit("setStatus", true);
         commit("setUserData", response.data);
       })
       .catch(error => {

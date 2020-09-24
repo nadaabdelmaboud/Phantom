@@ -17,7 +17,17 @@
           class="row"
           @click="openUserProfile(suggestion._id)"
         >
-          <img :src="getImage(suggestion.profileImage)" alt="profile image" />
+          <img
+            :src="suggestion.googleImage"
+            alt="profile image"
+            v-if="suggestion.google"
+          />
+          <img
+            :src="getImage(suggestion.profileImage)"
+            alt="profile image"
+            v-else
+          />
+
           <p class="usernames">{{ suggestion.userName }}</p>
         </div>
       </div>
@@ -34,7 +44,7 @@ export default {
       return this.$store.state.search.keys;
     },
     pepoleSuggestions() {
-      return this.$store.state.search.people;
+      return this.$store.state.search.searchSuggestions;
     }
   },
   methods: {
@@ -48,10 +58,7 @@ export default {
     },
     searchFor(title) {
       this.$store.dispatch("search/searchPins", {
-        limit: 20,
-        offset: 0,
-        name: title,
-        recentSearch: true
+        name: title
       });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
       this.$router.replace("/search/allpins");
@@ -79,9 +86,9 @@ export default {
   @include popUpContent;
   width: calc(100vw - 430px);
   margin-left: 15vw;
-  height: 50vh;
+  height: 55vh;
   border-radius: 0;
-  min-width: 400px;
+  min-width: 360px;
 }
 
 .titles :hover {
