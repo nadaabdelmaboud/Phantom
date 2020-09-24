@@ -34,16 +34,19 @@ export default {
   created: function() {
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/generateMoreLike", this.boardId);
-    setTimeout(() => {
+  //  setTimeout(() => {
       this.$store.dispatch("boards/moreLike", {
         boardId: this.boardId,
         limit: 8
       });
-    }, 3000);
+   // }, 3000);
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../scss/MasonryGrid";
+.flexWrap{
+  min-height: 100vh;
+}
 </style>
