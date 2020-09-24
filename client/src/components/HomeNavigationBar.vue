@@ -69,17 +69,10 @@
         <li @click="searchBoards">Boards</li>
       </ul>
     </div>
+    <div class="icons rightIcon" v-if="isLoggedIn()" id="showList">
+      <i class="fa fa-angle-down" id="showList"></i>
+    </div>
 
-    <div v-if="isLoggedIn() && searchSmall" class="icons searchSmall rightIcon" @click="showSearch">
-      <i class="fa fa-search"></i>
-    </div>
-    <div v-if="isLoggedIn()" class="icons rightIcon" id="alertIcon">
-      <i class="fa fa-bell" id="alertIcon"></i>
-      <div class="count" id="alertIcon">
-        {{ notification.notificationCounter }}
-      </div>
-    </div>
-    <NotificationDropDown v-if="showNotifications" />
     <router-link
       v-if="isLoggedIn()"
       tag="div"
@@ -88,8 +81,15 @@
     >
       <i class="fa fa-user-circle"></i>
     </router-link>
-    <div class="icons rightIcon" v-if="isLoggedIn()" id="showList">
-      <i class="fa fa-angle-down" id="showList"></i>
+        <div v-if="isLoggedIn()" class="icons rightIcon" id="alertIcon">
+      <i class="fa fa-bell" id="alertIcon"></i>
+      <div class="count" id="alertIcon">
+        {{ notification.notificationCounter }}
+      </div>
+    </div>
+    <NotificationDropDown v-if="showNotifications" />
+    <div v-if="isLoggedIn() && searchSmall" class="icons searchSmall rightIcon" @click="showSearch">
+      <i class="fa fa-search"></i>
     </div>
     <router-link
       class="buttons right"
@@ -402,7 +402,7 @@ export default {
           name: this.search,
           recentSearch: false,
         });
-      }
+      } 
     },
     clearSearch() {
       this.search = "";

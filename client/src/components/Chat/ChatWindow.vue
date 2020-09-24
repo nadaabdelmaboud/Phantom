@@ -317,26 +317,31 @@ export default {
   height: calc(-179px + 100vh);
   min-height: 250px;
   width: 360px;
+  max-width: calc(100vw - 70px);
   box-shadow: rgba(0, 0, 0, 0.1) -3px 4px 14px 0px;
   background-color: #fff;
   position: fixed;
   border-radius: 16px;
   // top: 160px;
-  right: 80px;
+  right: 70px;
   bottom: 10px;
   animation: dropDown 0.1s linear forwards;
   z-index: 100;
   padding: 20px;
+  overflow:auto;
 }
 .msgBox {
   height: 80%;
   overflow-y: auto;
+  max-width: calc(100vw - 70px);
 }
 
 .msging {
   position: relative;
+  max-width: calc(100vw - 70px);
   height: 100%;
   overflow-y: auto;
+  
 }
 
 #msg {
@@ -369,16 +374,17 @@ button:active {
 input {
   border: 2px solid $darkBlue;
   height: 40px;
-  width: 250px;
+  width: 70%;
   border-radius: 32px;
   padding: 20px;
+  margin-top: 20px;
 }
 @keyframes dropDown {
   from {
     right: 0px;
   }
   to {
-    right: 80px;
+    right: 70px;
   }
 }
 .userInfo {
@@ -389,6 +395,8 @@ input {
   border-radius: 16px;
   cursor: pointer;
   height: 54px;
+  //max-width: 200px;
+  //overflow-x:auto;
   img {
     width: 40px;
     height: 40px;

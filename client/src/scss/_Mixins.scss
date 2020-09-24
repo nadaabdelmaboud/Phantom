@@ -68,7 +68,7 @@
       input:hover {
         background-color: $lightPinkHover;
       }
-      input:focus {
+      input:focus{
         background-color: $lightPinkHover;
         border: $lightBlue 4px solid;
       }
@@ -131,4 +131,32 @@
     background-color: white;
     margin: 0 auto;
     border-radius: 35px;
+  }
+
+  .searchList {
+    @include optionsList;
+    width: 400px;
+    margin: 10px auto;
+    max-height: 400px;
+    overflow-y: auto;
+    max-width: 85vw;
+  }
+
+  .searchInput {
+    display: table-cell;
+    background-color: $lightPink;
+    height: 48px;
+    margin: 4px auto 10px auto;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    border-radius: 40px;
+    transition: background-color 0.5s ease;
+  }
+  .searchInput:hover {
+    background-color: $lightPinkHover;
+  }
+  .searchInput:focus{
+    background-color: $lightPinkHover;
+    border: $lightBlue 4px solid;
   }

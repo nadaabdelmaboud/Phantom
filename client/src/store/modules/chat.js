@@ -34,7 +34,7 @@ const actions = {
     let chat = [];
     try {
       chat = await axios.get(
-        "/getMessagesSent/" + payload.senderId + "/" + payload.recieverId
+        "/getMessagesSent/" + payload.recieverId+"/"+ payload.senderId
       );
       chat = chat.data;
       let lastin = [false, false];
