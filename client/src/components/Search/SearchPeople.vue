@@ -5,9 +5,10 @@
       :key="user._id"
       :name="user.userName"
       :userID="user._id"
-      :imagId="user.profileImage"
+      :imagId="user.profileImage || user.googleImage"
       :followersNum="user.followers"
       :boardsNum="user.boards"
+      :google="user.google"
     />
   </div>
 </template>

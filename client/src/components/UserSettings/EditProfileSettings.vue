@@ -27,7 +27,13 @@
     </div>
     <section>
       <label for="profile-image">Photo</label><br />
-      <img id="profile-image" :src="getUserImage()" />
+      <img
+        id="profile-image"
+        :src="userData.googleImage"
+        v-if="userData.google"
+      />
+      <img id="profile-image" :src="getUserImage()" v-else />
+
       <button id="change-photo" @click="openPopUp">Change</button>
     </section>
     <br />

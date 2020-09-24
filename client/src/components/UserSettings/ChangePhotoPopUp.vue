@@ -1,5 +1,5 @@
 <template>
-  <div id="changePhoto" @keydown.esc="closePopup">
+  <div id="changePhoto" @click="closePopup" @keydown.esc="closePopup">
     <div class="popup-content">
       <p class="title">Change your picture</p>
       <div class="row action-buttons">

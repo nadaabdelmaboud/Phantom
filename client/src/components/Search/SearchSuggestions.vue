@@ -17,7 +17,17 @@
           class="row"
           @click="openUserProfile(suggestion._id)"
         >
-          <img :src="getImage(suggestion.profileImage)" alt="profile image" />
+          <img
+            :src="googleImage"
+            alt="profile image"
+            v-if="suggestion.google"
+          />
+          <img
+            :src="getImage(suggestion.profileImage)"
+            alt="profile image"
+            v-else
+          />
+
           <p class="usernames">{{ suggestion.userName }}</p>
         </div>
       </div>
