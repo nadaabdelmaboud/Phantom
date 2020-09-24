@@ -58,10 +58,7 @@ export default {
     },
     searchFor(title) {
       this.$store.dispatch("search/searchPins", {
-        limit: 20,
-        offset: 0,
-        name: title,
-        recentSearch: true
+        name: title
       });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
       this.$router.replace("/search/allpins");

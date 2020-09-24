@@ -19,5 +19,6 @@ export default {
 <style lang="scss" scoped>
 .content {
   margin-left: 49vw;
+  padding-bottom: 40px;
 }
 </style>

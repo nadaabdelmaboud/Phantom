@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flexWrap">
+    <div class="flexWrap" v-if="pins.length">
       <div class="masonryGrid">
         <HomeCard
           v-for="pin in pins"
@@ -11,8 +11,11 @@
         />
       </div>
     </div>
+    <div v-if="!loading && !pins.length" class="not-found">
+      <h5>Sorry, we couldn't find any pins for this search</h5>
+    </div>
     <div>
-      <Loading :loading="true" />
+      <Loading :loading="loading" />
     </div>
   </div>
 </template>
@@ -28,6 +31,9 @@ export default {
   computed: {
     pins() {
       return this.$store.state.search.pins;
+    },
+    loading() {
+      return this.$store.state.search.loading;
     }
   },
   mounted: function() {
@@ -40,4 +46,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../scss/MasonryGrid";
+.not-found {
+  margin-top: 35vh;
+  text-align: center;
+}
 </style>
