@@ -73,7 +73,7 @@ export default {
 @import "../../scss/Mixins";
 #search {
   @include popUpBackground;
-  margin-top: 11vh;
+  margin-top: 80px;
 }
 
 .title {
