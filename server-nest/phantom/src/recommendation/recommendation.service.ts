@@ -187,10 +187,10 @@ export class RecommendationService {
         .findOne({ name: sortedTopics[i][0] }, { pins: 1 })
         .lean();
       let start = Math.floor(Math.random() * Number(topic.pins.length) + 1);
-      if (start + 10 >= Number(topic.pins.length)) {
-        start = start - 10;
+      if (start + 20 >= Number(topic.pins.length)) {
+        start = start - 20;
       }
-      for (let j = start; j < start + 10; j++) {
+      for (let j = start; j < start + 20; j++) {
         if (
           pinExist[String(topic.pins[j])] == true ||
           isPinInHome[String(topic.pins[j])] == true
@@ -213,7 +213,7 @@ export class RecommendationService {
         });
     }
 
-    if (homeFeedArr.length < 20) {
+    if (homeFeedArr.length < 200) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
         let start = Math.floor(
