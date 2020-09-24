@@ -15,7 +15,7 @@ export class AuthService {
    * @description google aouth handler
    * @param {Object}
    */
-  async googleLogin(req): Promise<object> {
+  async googleLogin(req) {
     if (!req.user) {
       throw new NotFoundException('no such user on google');
     }

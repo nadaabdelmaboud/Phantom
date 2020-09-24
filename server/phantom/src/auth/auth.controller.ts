@@ -11,7 +11,7 @@ import {
   UseGuards,
   Req,
   NotFoundException,
-  Res
+  Res,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../user/user.service';
@@ -26,10 +26,10 @@ export class AuthController {
     private userService: UserService,
     private authService: AuthService,
     private email: Email,
-  ) { }
+  ) {}
   @Get('google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) { }
+  async googleAuth(@Req() req) {}
 
   @Get('google/redirect')
   @UseGuards(AuthGuard('google'))
@@ -37,10 +37,11 @@ export class AuthController {
     const data = await this.authService.googleLogin(req);
     if (data) {
       res.redirect(
-        'http://localhost:8080/aouth/google?token=' +
-        data.token +
-        '&type=' +
-        data.type,
+        process.env.Front_BASE_URL +
+          '/aouth/google?token=' +
+          data.token +
+          '&type=' +
+          data.type,
       );
     } else {
       throw new NotFoundException();
@@ -84,19 +85,13 @@ export class AuthController {
   async checkEmail(@Query('email') email: string) {
     const user = await this.userService.checkMAilExistAndFormat(email);
     if (user)
-      throw new HttpException(
-        'this user is exists',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('this user is exists', HttpStatus.FORBIDDEN);
   }
   @Post('/forget-password')
   async forgetPassword(@Body() body) {
     const user = await this.userService.checkMAilExistAndFormat(body.email);
     if (!user)
-      throw new HttpException(
-        'not user by this email',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('not user by this email', HttpStatus.FORBIDDEN);
     const payload: Payload = {
       _id: user._id,
       email: user.email,
