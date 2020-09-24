@@ -18,7 +18,7 @@
           @click="openUserProfile(suggestion._id)"
         >
           <img
-            :src="googleImage"
+            :src="suggestion.googleImage"
             alt="profile image"
             v-if="suggestion.google"
           />
@@ -44,7 +44,7 @@ export default {
       return this.$store.state.search.keys;
     },
     pepoleSuggestions() {
-      return this.$store.state.search.people;
+      return this.$store.state.search.searchSuggestions;
     }
   },
   methods: {
@@ -86,9 +86,9 @@ export default {
   @include popUpContent;
   width: calc(100vw - 430px);
   margin-left: 15vw;
-  height: 50vh;
+  height: 55vh;
   border-radius: 0;
-  min-width: 400px;
+  min-width: 360px;
 }
 
 .titles :hover {
