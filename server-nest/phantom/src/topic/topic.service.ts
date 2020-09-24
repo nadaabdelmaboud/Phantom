@@ -126,11 +126,12 @@ export class TopicService {
     return pins;
   }
   /**
-   * check if this user follow this topic 
-   * @param {String} userId -user id  
-   * @param {String} topicId - topic id
-   * @returns {Boolean}
-   */
+   * @author Aya Abohadima
+   * @descriptioncheck if this user follow this topic 
+    * @param {String} userId -user id  
+    * @param {String} topicId - topic id
+    * @returns {Boolean}
+    */
   async checkFollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
@@ -147,10 +148,11 @@ export class TopicService {
   }
 
   /**
-  * make user follow topic
-  * @param {String} userId -user id  
-  * @param {String} topicId - topic id
-  * @returns {Number} 1
+    * @author Aya Abohadima
+    * @description make user follow topic
+    * @param {String} userId -user id  
+    * @param {String} topicId - topic id
+    * @returns {Number} 1
   */
   async followTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
@@ -197,7 +199,8 @@ export class TopicService {
   }
 
   /**
-  * make user unfollow topic
+  * @author Aya Abohadima
+  * @description make user unfollow topic
   * @param {String} userId -user id  
   * @param {String} topicId - topic id
   * @returns {Number} 1
@@ -239,10 +242,11 @@ export class TopicService {
   }
 
   /**
-  * get user following topic
-  * @param {String} userId -user id  
-  * @returns {Array<Object>} -following topic object
-  */
+   * @author Aya Abohadima
+   * @descriptionget user following topic
+   * @param {String} userId -user id  
+   * @returns {Array<Object>} -following topic object
+   */
   async followingTopics(userId) {
     return await this.topicModel.aggregate([
       { $match: { followers: mongoose.Types.ObjectId(userId) } },

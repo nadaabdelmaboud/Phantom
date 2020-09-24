@@ -350,6 +350,7 @@ export class PinsService {
     if (!limit || limit > user.pins.length) limit = user.pins.length;
     for (var i = user.pins.length - 1; i >= user.pins.length - limit; i--) {
       let pinFound = await this.pinModel.findById(user.pins[i].pinId, {
+        _id: 1,
         imageId: 1,
         imageWidth: 1,
         imageHeight: 1,
@@ -1453,7 +1454,8 @@ export class PinsService {
   }
 
   /**
-   * get followings pins
+   * @author Aya Abohadima
+   * @description get followings pins
    * @param {String} userId  - user id
    * @returns {Array<Object>} fololowng user with there pins
    */
@@ -1461,7 +1463,7 @@ export class PinsService {
     const user = await this.userModel
       .findOne({ _id: userId }, { following: 1 })
       .lean();
-    let followersPins = [];
+    let pins = [];
     let limitOfPinsForUser = user.following.length;
     limitOfPinsForUser = limitOfPinsForUser > 1 ? limitOfPinsForUser : 1;
     for (let i = user.following.length - 1; i >= 0; i--) {
@@ -1484,17 +1486,19 @@ export class PinsService {
         limitOfPinsForUser,
       );
       if (followedUser && userPins)
-        followersPins.push({
-          followedId: followedUser._id,
-          firstName: followedUser.firstName,
-          lastName: followedUser.lastName,
-          profileImage: followedUser.profileImage,
-          google: followedUser.google,
-          googleImage: followedUser.googleImage,
-          pins: userPins,
-        });
+        for (let i = 0; i < userPins.length; i++) {
+          pins.push({
+            _id: userPins[i]._id,
+            imageId: userPins[i].imageId,
+            imageWidth: userPins[i].imageWidth,
+            imageHeight: userPins[i].imageHeight,
+            title: userPins[i].title,
+            topic: userPins[i].topic,
+            owner: followedUser
+          })
+        }
     }
-    return followersPins;
+    return pins;
   }
 
   async reportPin(userId, pinId, reason) {

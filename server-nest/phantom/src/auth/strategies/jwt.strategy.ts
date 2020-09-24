@@ -15,7 +15,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   /**
-   * validate function to check correct object com from token
+   * @author Aya Abohadima
+   * @description validate function to check correct object com from token
    * @param payload the object created from token
    * @param done 
    * return token object 
