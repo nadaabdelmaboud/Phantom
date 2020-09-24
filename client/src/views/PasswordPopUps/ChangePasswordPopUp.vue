@@ -91,6 +91,7 @@ export default {
       this.passwordMatch();
       if (this.passwordMatching && this.validPassword && this.oldPassword) {
         this.$store.dispatch("user/resetPassword", {
+          forgetPassword: false,
           oldPassword: this.oldPassword,
           newPassword: this.newPassword,
           token: localStorage.getItem("userToken")
@@ -125,7 +126,7 @@ export default {
 .popup-content {
   @include popUpContent;
   width: 500px;
-  margin-top: 10vh;
+  margin-top: 2vh;
 }
 
 /**Input Fields

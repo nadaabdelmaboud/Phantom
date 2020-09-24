@@ -145,10 +145,9 @@ const actions = {
       state.inProgress = true;
       try {
         let boards = await axios.get(
-          "/search/board?limit=" +
-            payload.limit +
+          "/search/board?limit=10" +
             "&offset=" +
-            payload.offset +
+            state.offset +
             "&name=" +
             payload.name,
           {
