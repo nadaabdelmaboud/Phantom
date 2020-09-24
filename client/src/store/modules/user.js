@@ -218,6 +218,24 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  confrimEmailUpdate({ commit }, payload) {
+    axios
+      .put(
+        "/me/confirm-update-email?type=" + payload.type,
+        {},
+        {
+          headers: {
+            Authorization: payload.token
+          }
+        }
+      )
+      .then(() => {
+        commit("setStatus", true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 

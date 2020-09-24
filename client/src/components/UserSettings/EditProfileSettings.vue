@@ -34,7 +34,9 @@
       />
       <img id="profile-image" :src="getUserImage()" v-else />
 
-      <button id="change-photo" @click="openPopUp">Change</button>
+      <button id="change-photo" @click="openPopUp" v-if="!userData.google">
+        Change
+      </button>
     </section>
     <br />
     <section class="username">
