@@ -1,8 +1,13 @@
 import axios from "axios";
-
+ 
 const state = {
   currentChat: [],
-  recentChats: []
+  recentChats: [],
+  people: [],
+  offset: 0,
+  inProgress: false,
+  totalResult: 50,
+  endResult: false
 };
 
 const mutations = {
@@ -24,6 +29,15 @@ const mutations = {
   setDeliver(state, id) {
     let index = state.currentChat.findIndex(c => c._id == id);
     if (index != -1) state.currentChat[index].seen = true;
+  },
+  resetOffset(state) {
+    state.offset = 0;
+    state.people = [];
+  },
+  setSearchPeople(state, people) {
+    people.forEach(person => {
+      state.people.push(person);
+    });
   }
 };
 
@@ -100,12 +114,44 @@ const actions = {
         console.log(error);
         dispatch("getChat", payload);
       });
+  },
+  async searchPeople({ state, commit, dispatch }, payload) {
+    if (!state.inProgress && !state.endReuslt) {
+      state.inProgress = true;
+      try {
+        let people = await axios.get(
+          "/search/people?limit=10" +
+            "&offset=" +
+            state.offset +
+            "&name=" +
+            payload.name,
+          {
+            headers: {
+              Authorization: localStorage.getItem("userToken")
+            }
+          }
+        );
+        state.inProgress = false;
+        state.offset += 10;
+        commit("setSearchPeople", people.data.result);
+        state.totalResult = people.data.length;
+      } catch {
+        let remaining = state.totalResult - state.offset;
+        state.inProgress = false;
+        if (remaining > 0) {
+          dispatch("searchPeople", { name: payload.name });
+        } else {
+          state.endReuslt = true;
+        }
+      }
+    }
   }
 };
 
 const getters = {
   currentChat: state => state.currentChat,
-  recentChats: state => state.recentChats
+  recentChats: state => state.recentChats,
+  people:state=>state.people
 };
 
 export default {

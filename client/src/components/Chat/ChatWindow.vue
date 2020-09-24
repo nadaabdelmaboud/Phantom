@@ -2,6 +2,35 @@
   <div class="msgWindow">
     <div class="msging">
       <div v-if="!inchat">
+        <input
+          class="searchInput"
+          type="text"
+          v-model="searchWord"
+          placeholder="Search"
+          @input="searchFor"
+        />
+        <div class="searchList" v-if="searchWord">
+          <div class="searchChat" @scroll="getPeople">
+            <div v-for="(s, i) in peopleSearch" :key="i">
+              <div
+                class="userInfo"
+                v-if="myData._id != s._id"
+                @click="
+                  toChat({
+                    name: s.firstName + ' ' + s.lastName,
+                    id: s._id,
+                    imageId: s.profileImage,
+                  })
+                "
+              >
+                <img :src="getImage(s.profileImage)" />
+                <span>{{ s.firstName }}</span>
+                <span> {{ s.lastName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div
           class="userInfo"
           v-for="r in recentChats"
@@ -10,7 +39,7 @@
             toChat({
               name: r.userName,
               id: r._id,
-              imageId: r.profileImage
+              imageId: r.profileImage,
             })
           "
         >
@@ -24,12 +53,12 @@
         <div v-for="(f, i) in following" :key="i">
           <div
             class="userInfo"
-            v-if="!recentChats.some(r => r._id === f._id)"
+            v-if="!recentChats.some((r) => r._id === f._id)"
             @click="
               toChat({
                 name: f.firstName + ' ' + f.lastName,
                 id: f._id,
-                imageId: f.profileImage
+                imageId: f.profileImage,
               })
             "
           >
@@ -90,17 +119,18 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: ""
+        id: "",
       },
       socket: "",
       allowNotify: false,
       typing: false,
-      meTyping: false
+      meTyping: false,
+      searchWord: "",
     };
   },
   mixins: [getImage],
   components: {
-    ChatMessage
+    ChatMessage,
   },
   methods: {
     sendMsg() {
@@ -108,7 +138,7 @@ export default {
         let msg = {
           owner: true,
           message: this.currentMsg,
-          date: Date.now()
+          date: Date.now(),
         };
         this.$store.commit("chat/addMsg", msg);
         this.$nextTick(() => {
@@ -123,7 +153,7 @@ export default {
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
-          date: Date.now()
+          date: Date.now(),
         });
         this.currentMsg = "";
       }
@@ -131,7 +161,7 @@ export default {
     toChat(chatWith) {
       let payload = {
         senderId: this.myData._id,
-        recieverId: chatWith.id
+        recieverId: chatWith.id,
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.chatWith = chatWith;
@@ -152,7 +182,7 @@ export default {
       this.inchat = !this.inchat;
     },
     messageListener() {
-      this.socket.on("sendMessage", data => {
+      this.socket.on("sendMessage", (data) => {
         this.typing = false;
         let ping = new Audio();
         ping.src = require("../../assets/Ping.mp3");
@@ -165,7 +195,7 @@ export default {
             seen: false,
             deliver: false,
             last: true,
-            _id: data.messageId
+            _id: data.messageId,
           };
           this.$store.commit("chat/addMsg", msg);
           this.$nextTick(() => {
@@ -177,12 +207,12 @@ export default {
           this.socket.emit("seen", {
             recieverId: data.senderId,
             senderId: this.myData._id,
-            messageId: data.messageId
+            messageId: data.messageId,
           });
         }
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
-          silent: true
+          silent: true,
         };
 
         if (this.allowNotify) {
@@ -194,16 +224,15 @@ export default {
           console.log("notification disabled");
         }
         //alert server that the message has been delivered
-        console.log("hb3t");
         this.socket.emit("delivered", {
           recieverId: data.senderId,
           senderId: this.myData._id,
-          messageId: data.messageId
+          messageId: data.messageId,
         });
       });
     },
     typingLisener() {
-      this.socket.on("isTyping", data => {
+      this.socket.on("isTyping", (data) => {
         if (data.senderId == this.chatWith.id) {
           this.typing = true;
           this.$nextTick(() => {
@@ -217,12 +246,11 @@ export default {
       });
     },
     isTyping() {
-      console.log("bnm");
       if (!this.meTyping) {
         this.meTyping = true;
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
-          senderId: this.myData._id
+          senderId: this.myData._id,
         });
         setTimeout(() => {
           this.meTyping = false;
@@ -230,10 +258,10 @@ export default {
       }
     },
     deliveredListener() {
-      this.socket.on("setDelivered", data => {
+      this.socket.on("setDelivered", (data) => {
         let payload = {
           senderId: this.myData._id,
-          recieverId: [this.chatWith.id]
+          recieverId: [this.chatWith.id],
         };
         console.log("oh1");
         this.$store.dispatch("chat/getChat", payload);
@@ -245,10 +273,10 @@ export default {
       });
     },
     seenListener() {
-      this.socket.on("setSeen", data => {
+      this.socket.on("setSeen", (data) => {
         let payload = {
           senderId: this.myData._id,
-          recieverId: [this.chatWith.id]
+          recieverId: [this.chatWith.id],
         };
         console.log("oh1 seeen", data);
         this.$store.dispatch("chat/getChat", payload);
@@ -258,21 +286,43 @@ export default {
           console.log("oh3");
         }
       });
-    }
+    },
+    searchFor() {
+      if (this.searchWord) {
+        this.$store.commit("chat/resetOffset");
+        this.$store.dispatch("chat/searchPeople", {
+          name: this.searchWord,
+          recentSearch: false,
+        });
+      } else {
+        this.$store.commit("chat/resetOffset");
+      }
+    },
+    getPeople() {
+      let searchBox = document.getElementsByClassName("searchChat")[0];
+      if (searchBox.scrollTop == searchBox.scrollHeight - 300) {
+        this.$store.dispatch("chat/searchPeople", {
+          name: this.searchWord,
+          recentSearch: false,
+        });
+      }
+    },
   },
   computed: {
     ...mapGetters({
       following: "followers/userFollowing",
       recentChats: "chat/recentChats",
-      chat: "chat/currentChat"
+      chat: "chat/currentChat",
+      peopleSearch: "chat/people",
     }),
     ...mapState({
-      myData: state => state.user.userData
-    })
+      myData: (state) => state.user.userData,
+    }),
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
     this.$store.dispatch("chat/getRecentChats", this.myData._id);
+    this.$store.commit("chat/resetOffset");
     //starting socket connection
     //send seen message to the other party
     this.socket = io.connect("http://localhost:3000");
@@ -280,10 +330,10 @@ export default {
     token = token.substring(7);
     //personalise connection
     this.socket.emit("setUserId", {
-      token: token
+      token: token,
     });
     //ensure notification is enabled
-    Notification.requestPermission().then(permission => {
+    Notification.requestPermission().then((permission) => {
       if (permission == "granted") {
         this.allowNotify = true;
       } else {
@@ -301,202 +351,16 @@ export default {
   },
   filters: {
     sliceMsg: function(value) {
-      console.log("hi", value);
       if (typeof value == "undefined") return "no msg";
       if (value.length < 25) return value;
       return value.slice(0, 25) + "...";
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../scss/Colors";
-
-.msgWindow {
-  height: calc(-179px + 100vh);
-  min-height: 250px;
-  width: 360px;
-  max-width: calc(100vw - 70px);
-  box-shadow: rgba(0, 0, 0, 0.1) -3px 4px 14px 0px;
-  background-color: #fff;
-  position: fixed;
-  border-radius: 16px;
-  // top: 160px;
-  right: 70px;
-  bottom: 10px;
-  animation: dropDown 0.1s linear forwards;
-  z-index: 100;
-  padding: 20px;
-  overflow:auto;
-}
-.msgBox {
-  height: 80%;
-  overflow-y: auto;
-  max-width: calc(100vw - 70px);
-}
-
-.msging {
-  position: relative;
-  max-width: calc(100vw - 70px);
-  height: 100%;
-  overflow-y: auto;
-  
-}
-
-#msg {
-  position: absolute;
-  bottom: 0;
-}
-button {
-  border: none;
-  background-color: $lightPink;
-  font-size: 20px;
-  width: 40px;
-  height: 40px;
-  transition: background-color linear 0.5s;
-  color: $darkBlue;
-  border-radius: 50%;
-  margin: 5px;
-  text-align: center;
-  box-sizing: border-box;
-  i {
-    padding-top: 5px;
-  }
-}
-button:hover {
-  background-color: $lightPinkHover;
-}
-button:active {
-  transform: scale(0.9);
-  background-color: $lightPinkHover;
-}
-input {
-  border: 2px solid $darkBlue;
-  height: 40px;
-  width: 70%;
-  border-radius: 32px;
-  padding: 20px;
-  margin-top: 20px;
-}
-@keyframes dropDown {
-  from {
-    right: 0px;
-  }
-  to {
-    right: 70px;
-  }
-}
-.userInfo {
-  padding: 7px;
-  margin: 4px 0;
-  color: $darkBlue;
-  transition: linear 0.2s;
-  border-radius: 16px;
-  cursor: pointer;
-  height: 54px;
-  //max-width: 200px;
-  //overflow-x:auto;
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 5px;
-  }
-}
-.userInfo:hover {
-  background-color: $offWhite;
-}
-.currentUser {
-  i {
-    display: inline-block;
-    transition: linear 0.2s;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    padding: 7px;
-  }
-  i:hover {
-    background-color: $lightPink;
-  }
-  p {
-    width: 85%;
-    display: inline-block;
-    text-align: center;
-  }
-}
-
-//copied from codepen
-.typing-loader {
-  margin: 10px 0 10px 10px;
-  width: 6px;
-  height: 6px;
-  -webkit-animation: line 1s linear infinite alternate;
-  -moz-animation: line 1s linear infinite alternate;
-  animation: line 1s linear infinite alternate;
-}
-@-webkit-keyframes line {
-  0% {
-    background-color: rgba(0, 0, 0, 1);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
-      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-  25% {
-    background-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 2),
-      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-  75% {
-    background-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
-      24px 0px 0px 0px rgba(0, 0, 0, 2);
-  }
-}
-
-@-moz-keyframes line {
-  0% {
-    background-color: rgba(0, 0, 0, 1);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
-      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-  25% {
-    background-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 2),
-      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-  75% {
-    background-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
-      24px 0px 0px 0px rgba(0, 0, 0, 2);
-  }
-}
-
-@keyframes line {
-  0% {
-    background-color: rgba(0, 0, 0, 1);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
-      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-  25% {
-    background-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 2),
-      24px 0px 0px 0px rgba(0, 0, 0, 0.2);
-  }
-  75% {
-    background-color: rgba(0, 0, 0, 0.4);
-    box-shadow: 12px 0px 0px 0px rgba(0, 0, 0, 0.2),
-      24px 0px 0px 0px rgba(0, 0, 0, 2);
-  }
-}
-
-.inlineDiv {
-  display: inline-block;
-  p {
-    margin: 0;
-  }
-  p:nth-child(2) {
-    font-size: 10px;
-    color: $lightBlue;
-  }
-}
+@import "../../scss/Mixins";
+@import "../../scss/ChatStyling";
 </style>
