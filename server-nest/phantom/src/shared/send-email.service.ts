@@ -5,12 +5,13 @@ export class Email {
   constructor() { }
 
   /**
-   * send email to user email
-   * @param {String} email - email should send to 
-   * @param {String} message - message which should send  
-   * @param {String} type - why send this email confirm ,change email ,.... 
-   * @param {String} userName  - the name of email owner 
-   */
+    * @author Aya Abohadima
+    * @descriptionsend email to user email
+    * @param {String} email - email should send to 
+    * @param {String} message - message which should send  
+    * @param {String} type - why send this email confirm ,change email ,.... 
+    * @param {String} userName  - the name of email owner 
+    */
   async sendEmail(email, message, type, userName) {
     var transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',

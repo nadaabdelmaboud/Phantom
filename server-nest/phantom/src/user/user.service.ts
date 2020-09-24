@@ -36,10 +36,11 @@ export class UserService {
   ) { }
 
   /**
-   * get user by id 
-   * @param {string} id - user id wanted to get 
-   * @returns {object<User>}
-   */
+   * @author Aya Abohadima
+   * @description get user by id 
+ * @param {string} id - user id wanted to get 
+ * @returns {object<User>}
+ */
   async getUserById(id) {
     const user = await this.userModel.findById(id);
     if (!user)
@@ -49,7 +50,7 @@ export class UserService {
   }
 
   /**
-    * get user by id  with profile data
+    * @description Sget user by id  with profile data
     * @param {string} id - user id wanted to get 
     * @returns {object<User>}
     */
@@ -90,10 +91,11 @@ export class UserService {
   }
 
   /**
-    * get notification data from user 
-    * @param {string} id - user id wanted to get 
-    * @returns {object}
-    */
+   * @author Aya Abohadima
+   * @description get notification data from user 
+  * @param {string} id - user id wanted to get 
+  * @returns {object}
+  */
   async getUserNotifications(userId) {
     let user = await this.userModel.findById(userId, {
       notifications: 1,
@@ -111,11 +113,12 @@ export class UserService {
   }
 
   /**
-    * get user by findData and get only from user data
-    * @param {Object} findData - user data wanted to get 
-    * @param {Object} data - data should get 
-    * @returns {Object}
-    */
+   * @author Aya Abohadima
+   * @description get user by findData and get only from user data
+  * @param {Object} findData - user data wanted to get 
+  * @param {Object} data - data should get 
+  * @returns {Object}
+  */
   async findUserAndGetData(findData: {}, data: {}) {
     const user = await this.userModel.findOne(findData, data).lean();
     if (!user)
@@ -125,10 +128,11 @@ export class UserService {
   }
 
   /**
-   * get user by login
-   * @param {LoginDto} loginDto - email of user & password 
-   * @returns {object} object of _id :id of user , profileImage : user image & email :user email
-   */
+     * @author Aya Abohadima
+     * @description get user by login
+    * @param {LoginDto} loginDto - email of user & password 
+    * @returns {object} object of _id :id of user , profileImage : user image & email :user email
+    */
   async findByLogin(loginDto: LoginDto) {
     const user = await this.findUserAndGetData(
       { email: loginDto.email },
@@ -145,9 +149,10 @@ export class UserService {
   }
 
   /**
-   * check data after create user
-   * @param {RegisterDto} registerDto - data of created user
-   */
+     * @author Aya Abohadima
+     * @description check data after create user
+    * @param {RegisterDto} registerDto - data of created user
+    */
   async checkCreateData(registerDto: RegisterDto) {
     const shcema = Joi.object({
       email: Joi.string()
@@ -178,9 +183,10 @@ export class UserService {
   }
 
   /**
-   * check update data after update
-   * @param {UpdateDto} updateDto - data need to update  
-   */
+     * @author Aya Abohadima
+     * @description check update data after update
+    * @param {UpdateDto} updateDto - data need to update  
+    */
   async checkUpdateData(updateDto: UpdateDto) {
     const shcema = Joi.object({
       email: Joi.string()
@@ -215,11 +221,12 @@ export class UserService {
   }
 
   /**
-   * update FCM token value
-   * @param {String} fcmToken - token for notification 
-   * @param {String} userId   - id of user
-   * @returns {Number} 1
-   */
+     * @author Aya Abohadima
+     * @description update FCM token value
+    * @param {String} fcmToken - token for notification 
+    * @param {String} userId   - id of user
+    * @returns {Number} 1
+    */
   async updateFCMTocken(fcmToken, userId) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -235,10 +242,11 @@ export class UserService {
   }
 
   /**
-   * get user following topics
-   * @param {String} userId - id of user 
-   * @returns {Array<String>} - following topic ids s
-   */
+     * @author Aya Abohadima
+     * @description get user following topics
+    * @param {String} userId - id of user 
+    * @returns {Array<String>} - following topic ids s
+    */
   async followingTopics(userId) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -248,10 +256,11 @@ export class UserService {
   }
 
   /**
-   * create new user 
-   * @param {RegisterDto} registerDto -data to create user
-   * @returns {Object} _id ,email and profileImage of userS
-   */
+     * @author Aya Abohadima
+     * @description create new user 
+    * @param {RegisterDto} registerDto -data to create user
+    * @returns {Object} _id ,email and profileImage of userS
+    */
   async createUser(registerDto: RegisterDto) {
     let hash,
       googleImage = null,
@@ -339,10 +348,11 @@ export class UserService {
   }
 
   /**
-   * check email in formate and if exist 
-   * @param {String} email - email should check
-   * @returns  {Object<User>}  
-   */
+     * @author Aya Abohadima
+     * @description check email in formate and if exist 
+    * @param {String} email - email should check
+    * @returns  {Object<User>}  
+    */
   async checkMAilExistAndFormat(email) {
     const body = { email: email };
     const shcema = Joi.object({
@@ -371,12 +381,13 @@ export class UserService {
   }
 
   /**
-   * change user password
-   * @param {String} userId - user id 
-   * @param {String} newPassword - new password of user
-   * @param {String} oldPassword - old password of user
-   * @returns {Number} 1
-   */
+     * @author Aya Abohadima
+     * @description change user password
+    * @param {String} userId - user id 
+    * @param {String} newPassword - new password of user
+    * @param {String} oldPassword - old password of user
+    * @returns {Number} 1
+    */
   async resetPassword(userId, newPassword, oldPassword) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -400,11 +411,12 @@ export class UserService {
   }
 
   /**
-   * update information in user profile
-   * @param {String} userId -id of user
-   * @param {UpdateDto} updateDto -update data 
-   * @returns {Number} 1
-   */
+     * @author Aya Abohadima
+     * @description update information in user profile
+    * @param {String} userId -id of user
+    * @param {UpdateDto} updateDto -update data 
+    * @returns {Number} 1
+    */
   async updateUserInfo(userId, updateDto: UpdateDto) {
     const user = await this.getUserMe(userId);
     if (!user) return 0;
@@ -483,11 +495,12 @@ export class UserService {
   }
 
   /**
-   * update settings in user profile
-   * @param {String} userId -id of user
-   * @param {UpdateSettings} updateSettings - settings data should update 
-   * @returns {Number} 1
-   */
+     * @author Aya Abohadima
+     * @description update settings in user profile
+    * @param {String} userId -id of user
+    * @param {UpdateSettings} updateSettings - settings data should update 
+    * @returns {Number} 1
+    */
   async updateSettings(userId, settings: UpdateSettingsDto) {
     const user = await this.getUserById(userId);
     if (settings.deleteflag) {
@@ -504,11 +517,12 @@ export class UserService {
   }
 
   /**
-   * set user email
-   * @param {string} userId - id of user
-   * @param {string} newEmail  - new email
-   * @returns {Number}
-   */
+     * @author Aya Abohadima
+     * @description set user email
+    * @param {string} userId - id of user
+    * @param {string} newEmail  - new email
+    * @returns {Number}
+    */
   async setEmail(userId, newEmail) {
     const user = await this.findUserAndGetData(
       { _id: userId },
@@ -519,9 +533,10 @@ export class UserService {
     return 1;
   }
   /**
-   * delete user 
-   * @param {string} id -the id of user went to deleted 
-   */
+     * @author Aya Abohadima
+     * @description delete user 
+    * @param {string} id -the id of user went to deleted 
+    */
   async deleteUser(id) {
     const user = await this.getUserById(id);
     // delete following
@@ -541,11 +556,12 @@ export class UserService {
   }
 
   /**
-   * set view state of user
-   * @param {String} userId - the id of user
-   * @param  {String} viewState  - view state 'Default' or 'Compact'
-   * @returns {String} view state
-   */
+     * @author Nada Abdelmaboud
+     * @description set view state of user
+    * @param {String} userId - the id of user
+    * @param  {String} viewState  - view state 'Default' or 'Compact'
+    * @returns {String} view state
+    */
   async setViewState(userId, viewState) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid id');
@@ -566,10 +582,11 @@ export class UserService {
   }
 
   /**
-   * get view state of user
-   * @param {String} userId - the id of user
-   * @returns {String} view state
-   */
+     * @author Nada Abdelmaboud
+     * @description get view state of user
+    * @param {String} userId - the id of user
+    * @returns {String} view state
+    */
   async getViewState(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid id');
@@ -588,11 +605,12 @@ export class UserService {
   }
 
   /**
-   * check if this user follow this user id
-   * @param {Object} user - user he follow
-   * @param {String} userId - id of user followed
-   * @returns {boolean}
-   */
+     * @author Aya Abohadima
+     * @description check if this user follow this user id
+    * @param {Object} user - user he follow
+    * @param {String} userId - id of user followed
+    * @returns {boolean}
+    */
   async checkFollowUser(user, userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
@@ -605,11 +623,12 @@ export class UserService {
   }
 
   /**
-   * followUser:  make frist user id follow second user id
-   * @param {String} followerId - id of user went to follow
-   * @param {String} followingId  - id of user wented to be followed
-   * @returns {Number}
-   */
+     * @author Aya Abohadima
+     * @description followUser:  make frist user id follow second user id
+    * @param {String} followerId - id of user went to follow
+    * @param {String} followingId  - id of user wented to be followed
+    * @returns {Number}
+    */
   async followUser(followerId, followingId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -679,11 +698,12 @@ export class UserService {
     return 1;
   }
   /**
-   * update data in user model
-   * @param {String} userId - user id  
-   * @param {Object} data  - object of data need to update in user model 
-   * @returns {Number} 1
-   */
+     * @author Aya Abohadima
+     * @description update data in user model
+    * @param {String} userId - user id  
+    * @param {Object} data  - object of data need to update in user model 
+    * @returns {Number} 1
+    */
   async updateDataInUser(userId, data: {}) {
     if (!(await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1 })))
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
@@ -692,11 +712,12 @@ export class UserService {
   }
 
   /**
-   * unfollowUser:  make frist user id unfollow second user id
-   * @param {String} followerId - id of user went to unfollow
-   * @param {String} followingId  - id of user wented to be unfollowed
-   * @returns {Number}
-   */
+     * @author Aya Abohadima
+     * @description unfollowUser:  make frist user id unfollow second user id
+    * @param {String} followerId - id of user went to unfollow
+    * @param {String} followingId  - id of user wented to be unfollowed
+    * @returns {Number}
+    */
 
   async unfollowUser(followerId, followingId) {
     if (
@@ -770,12 +791,13 @@ export class UserService {
     throw new BadRequestException('you did not follow this user before');
   }
   /**
-   * userFollowers: get user followers
-   * @param {string} userId - user id
-   * @param {Number} limit  - the limit
-   * @param {Number} offset - the start
-   * @returns {object} - has array of user object and real number of followers
-   */
+     * @author Aya Abohadima
+     * @description userFollowers: get user followers
+    * @param {string} userId - user id
+    * @param {Number} limit  - the limit
+    * @param {Number} offset - the start
+    * @returns {object} - has array of user object and real number of followers
+    */
 
   async userFollowers(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
@@ -811,12 +833,13 @@ export class UserService {
   }
 
   /**
-   * userFollowings: get user following
-   * @param {string} userId - user id
-   * @param {Number} limit  - the limit
-   * @param {Number} offset - the start
-   * @returns {object} - has array of user object and real number of followings
-   */
+     * @author Aya Abohadima
+     * @description userFollowings: get user following
+    * @param {string} userId - user id
+    * @param {Number} limit  - the limit
+    * @param {Number} offset - the start
+    * @returns {object} - has array of user object and real number of followings
+    */
   async userFollowings(userId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([userId])) === 0)
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
@@ -852,119 +875,5 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
-  /**
-   * create seeds of user function if you need ,call it in any route then call the route 
-   */
-  async userSeeds() {
-    var userObjects = [
-      {
-        firstName: 'Aya',
-        password: '12345678',
-        birthday: '2000-02-20',
-        lastName: 'Samir',
-        email: 'aya.abohadima00@eng-st.cu.edu.eg',
-      },
-      {
-        firstName: 'Aya',
-        password: '12345678',
-        birthday: '2000-02-20',
-        lastName: 'Samir',
-        email: 'ayasabohadima@gmail.com',
-      },
-      {
-        firstName: 'Nada',
-        password: '12345678',
-        birthday: '2000-02-22',
-        lastName: 'Abdelmaboud',
-        email: 'knada7161@gmail.com',
-      },
-      {
-        firstName: 'Nada',
-        password: '12345678',
-        birthday: '2000-02-22',
-        lastName: 'Abdelmaboud',
-        email: 'nadaabdelmaboud50@gmail.com',
-      },
-      {
-        firstName: 'Nada',
-        password: '12345678',
-        birthday: '2000-02-22',
-        lastName: 'Abdelmaboud',
-        email: 'nada.abdelmaboud00@eng-st.cu.edu.eg',
-      },
-      {
-        firstName: 'Mena',
-        password: '12345678',
-        birthday: '1999-02-20',
-        lastName: 'mahmoud',
-        email: 'menna123mahmoud@gmail.com',
-      },
-      {
-        firstName: 'Dina',
-        password: '12345678',
-        birthday: '1999-02-20',
-        lastName: 'Alaa',
-        email: 'dinaalaaahmed@gmail.com',
-      },
-      {
-        firstName: 'Eman',
-        password: '12345678',
-        birthday: '2000-02-21',
-        lastName: 'Othman',
-        email: 'eothman21@gmail.com',
-      },
-      {
-        firstName: 'Nihal',
-        password: '12345678',
-        birthday: '1999-05-17',
-        lastName: 'Mansour',
-        email: 'nihalmansour0599@gmail.com',
-      },
-      {
-        firstName: 'test',
-        password: '12345678',
-        birthday: '1999-02-20',
-        lastName: '1',
-        email: 'test1@gmail.com',
-      },
-      {
-        firstName: 'test',
-        password: '12345678',
-        birthday: '1999-02-20',
-        lastName: '2',
-        email: 'test2@gmail.com',
-      },
-      {
-        firstName: 'test',
-        password: '12345678',
-        birthday: '1995-02-20',
-        lastName: '3',
-        email: 'test3@gmail.com',
-      },
-      {
-        firstName: 'test',
-        password: '12345678',
-        birthday: '1995-02-20',
-        lastName: '4',
-        email: 'test4@gmail.com',
-      },
-      {
-        firstName: 'test',
-        password: '12345678',
-        birthday: '1995-06-20',
-        lastName: '5',
-        email: 'test5@gmail.com',
-      },
-      {
-        firstName: 'test',
-        password: '12345678',
-        birthday: '1995-02-10',
-        lastName: '6',
-        email: 'test6@gmail.com',
-      },
-    ];
-    for (let i = 0; i < userObjects.length; i++) {
-      await this.createUser(userObjects[i]);
-    }
-  }
+
 }

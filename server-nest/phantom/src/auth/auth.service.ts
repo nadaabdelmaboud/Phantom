@@ -11,6 +11,11 @@ import { Payload } from '../types/payload';
 export class AuthService {
 
   constructor(private userService: UserService) { }
+  /**
+   * @author Nada Abdelmaboud
+   * @description login with gmail
+   * @param {Object} req - 
+   */
   async googleLogin(req) {
     if (!req.user) {
       throw new NotFoundException('no such user on google');
@@ -51,7 +56,8 @@ export class AuthService {
   }
 
   /**
-   * sign payload function : create token 
+   * @author Aya Abohadima
+   * @description sign payload function : create token 
    * @param payload - object went to convert to token 
    * @returns token which created  
    */
