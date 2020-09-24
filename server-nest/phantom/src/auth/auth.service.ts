@@ -4,14 +4,18 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { sign } from 'jsonwebtoken';
-
 import { UserService } from '../user/user.service';
 import { Payload } from '../types/payload';
 
 @Injectable()
 export class AuthService {
   constructor(private userService: UserService) {}
-  async googleLogin(req) {
+  /**
+   * @author Nada Abdelmaboud <nada5aled52@gmail.com>
+   * @description google aouth handler
+   * @param {Object}
+   */
+  async googleLogin(req): Promise<object> {
     if (!req.user) {
       throw new NotFoundException('no such user on google');
     }
@@ -49,12 +53,25 @@ export class AuthService {
       type: type,
     };
   }
+
+  /**
+   * @author Aya Abohadima
+   * @description sign payload function : create token
+   * @param payload - object went to convert to token
+   * @returns token which created
+   */
   async signPayload(payload) {
     return (
       'Bearer ' +
       sign(payload, process.env.SECRET_KEY, { expiresIn: '67472347632732h' })
     );
   }
+
+  /**
+   * validateUser : check if this object which come from token is user or not .
+   * @param payload - object which come from token .
+   * @returns user object
+   */
   async validateUser(payload: Payload) {
     const user = await this.userService.getUserById(payload._id);
     return user;

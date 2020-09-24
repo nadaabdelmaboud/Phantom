@@ -73,7 +73,7 @@ export default {
   },
   computed: {
     loginState: function() {
-      return this.$store.state.user.loginState;
+      return this.$store.state.user.status;
     },
     errorMessage: function() {
       return this.$store.state.user.errorMessage;

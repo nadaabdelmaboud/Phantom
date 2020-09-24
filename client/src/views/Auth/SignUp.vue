@@ -89,7 +89,7 @@
 </template>
 
 <script>
-import CheckPasswordFormat from "../../components/CheckPasswordFormat.vue";
+import CheckPasswordFormat from "../../components/GeneralComponents/CheckPasswordFormat";
 export default {
   name: "SignUp",
   data: function() {
@@ -142,7 +142,7 @@ export default {
       return this.$store.state.user.validPassword;
     },
     signUpState: function() {
-      return this.$store.state.user.signUpState;
+      return this.$store.state.user.status;
     },
     errorMessage: function() {
       return this.$store.state.user.errorMessage;

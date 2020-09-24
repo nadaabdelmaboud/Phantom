@@ -1,14 +1,14 @@
 <template>
   <div style="padding-bottom: 20px;">
     <div class="row">
-      <div class="col">
-        <h1>Norifications</h1>
+      <div class="col-12 col-sm-6">
+        <h1>Notifications</h1>
         <p>
           We'll always let you know about important changes, but you pick what
           else you want to hear about
         </p>
       </div>
-      <div class="col">
+      <div class="col-12 col-sm-6">
         <button
           v-bind:class="{
             'changed-cancel': this.isChanged
@@ -28,47 +28,15 @@
         </button>
       </div>
     </div>
-    <section>
-      <div class="row">
-        <div class="col">
-          <p class="title">On Phantom</p>
-          <p v-if="showPhantomEdit">
-            Pick which notifications to see while in the app or on the site.
-          </p>
-        </div>
-        <div class="col">
-          <button
-            class="edit"
-            v-if="showPhantomEdit"
-            @click="showPhantomEdit = !showPhantomEdit"
-          >
-            Edit
-          </button>
-        </div>
-      </div>
-      <div v-if="!showPhantomEdit">
-        <p class="phantom-activity">
-          Control whether you see activity from your Facebook friends and people
-          you follow. This includes things like Pins they saw, people they
-          follow and boards they created.
-        </p>
-        <br />
-        <label class="switch">
-          <input type="checkbox" v-model="activity" />
-          <span class="slider round"></span>
-        </label>
-        <p style="display:inline;">See activity from other people</p>
-      </div>
-    </section>
-    <hr />
+    <br />
     <section class="settings">
       <div class="row">
-        <div class="col">
+        <div class="col-12 col-sm-6">
           <p class="title">By push notifications</p>
           <br />
           <p>Pick which notifications to get on your phone or computer.</p>
         </div>
-        <div class="col">
+        <div class="col-12 col-sm-6">
           <button
             class="edit"
             v-if="showPushEdit"
@@ -101,15 +69,6 @@
         <br />
         <br />
 
-        <p class="small-title">Social</p>
-        <br />
-        <input type="checkbox" v-model="boardUpdate" />
-        <p>Group board updates</p>
-        <br />
-        <input type="checkbox" v-model="invitation" />
-        <p>Invitations</p>
-        <br /><br />
-
         <p class="small-title">Actions</p>
         <br />
         <input type="checkbox" v-model="followNotification" />
@@ -133,13 +92,10 @@ export default {
     return {
       showPhantomEdit: true,
       showPushEdit: true,
-      activity: false,
       pinsForYou: false,
       pinsInspired: false,
       popularPins: false,
       boardsForYou: false,
-      boardUpdate: false,
-      invitation: false,
       pinsNotification: false,
       followNotification: false,
       off: false
@@ -147,13 +103,11 @@ export default {
   },
   methods: {
     updateModels: function() {
-      this.activity = this.userData.activity;
       this.pinsForYou = this.userData.pinsForYou;
       this.pinsInspired = this.userData.pinsInspired;
       this.popularPins = this.userData.popularPins;
       this.boardsForYou = this.userData.boardsForYou;
       this.boardUpdate = this.userData.boardUpdate;
-      this.invitation = this.userData.invitation;
       this.pinsNotification = this.userData.pinsNotification;
       this.followNotification = this.userData.followNotification;
     },
@@ -162,13 +116,10 @@ export default {
     },
     changeDone: function() {
       this.$store.dispatch("user/updateUserSettings", {
-        activity: this.activity,
         pinsForYou: this.pinsForYou,
         pinsInspired: this.pinsInspired,
         popularPins: this.popularPins,
         boardsForYou: this.boardsForYou,
-        boardUpdate: this.boardUpdate,
-        invitation: this.invitation,
         pinsNotifica: this.pinsNotification,
         followNotification: this.followNotification
       });
@@ -178,8 +129,6 @@ export default {
       this.pinsInspired = this.off;
       this.popularPins = this.off;
       this.boardsForYou = this.off;
-      this.boardUpdate = this.off;
-      this.invitation = this.off;
       this.pinsNotification = this.off;
       this.followNotification = this.off;
       this.off = !this.off;
@@ -194,13 +143,10 @@ export default {
     },
     isChanged: function() {
       if (this.isLoading) return false;
-      if (this.userData.activity !== this.activity) return true;
       if (this.userData.pinsForYou !== this.pinsForYou) return true;
       if (this.userData.pinsInspired !== this.pinsInspired) return true;
       if (this.userData.popularPins !== this.popularPins) return true;
       if (this.userData.boardsForYou !== this.boardsForYou) return true;
-      if (this.userData.boardUpdate !== this.boardUpdate) return true;
-      if (this.userData.invitation !== this.invitation) return true;
       if (this.userData.pinsNotification !== this.pinsNotification) return true;
       if (this.userData.followNotification !== this.followNotification)
         return true;
@@ -227,6 +173,10 @@ button {
 
 p {
   font-size: 12px;
+}
+
+h1 {
+  font-weight: bold;
 }
 
 /*Edit Buttons
@@ -352,5 +302,65 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/*Media Quires
+******************/
+@media screen and (max-width: 950px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  h1 {
+    font-size: 28px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  button,
+  .edit,
+  .trun-off,
+  .small-title {
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 10px;
+  }
+
+  button,
+  .edit,
+  .trun-off,
+  .title {
+    font-size: 12px;
+    margin-left: 0;
+  }
+
+  .small-title {
+    font-size: 10px;
+  }
 }
 </style>

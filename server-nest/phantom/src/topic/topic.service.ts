@@ -125,6 +125,13 @@ export class TopicService {
     }
     return pins;
   }
+  /**
+   * @author Aya Abohadima
+   * @descriptioncheck if this user follow this topic 
+    * @param {String} userId -user id  
+    * @param {String} topicId - topic id
+    * @returns {Boolean}
+    */
   async checkFollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
@@ -139,6 +146,14 @@ export class TopicService {
     if (!topic.followers || topic.followers.length == 0) return false;
     return topic.followers.includes(userId);
   }
+
+  /**
+    * @author Aya Abohadima
+    * @description make user follow topic
+    * @param {String} userId -user id  
+    * @param {String} topicId - topic id
+    * @returns {Number} 1
+  */
   async followTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
@@ -183,6 +198,13 @@ export class TopicService {
     return 1;
   }
 
+  /**
+  * @author Aya Abohadima
+  * @description make user unfollow topic
+  * @param {String} userId -user id  
+  * @param {String} topicId - topic id
+  * @returns {Number} 1
+  */
   async unfollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
@@ -219,6 +241,12 @@ export class TopicService {
     return 1;
   }
 
+  /**
+   * @author Aya Abohadima
+   * @descriptionget user following topic
+   * @param {String} userId -user id  
+   * @returns {Array<Object>} -following topic object
+   */
   async followingTopics(userId) {
     return await this.topicModel.aggregate([
       { $match: { followers: mongoose.Types.ObjectId(userId) } },

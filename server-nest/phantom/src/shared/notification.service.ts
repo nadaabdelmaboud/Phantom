@@ -1,28 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { ValidationService } from './validation.service';
-
 import * as firebase from 'firebase-admin';
-
 const params = {
-  type: 'service_account',
-  projectId: 'phantom-30457',
-  privateKeyId: '7981418fbe2e57b0c762a3a90bff454eb029ae4d',
-  privateKey:
-    '-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCmsAW07tzhfqKt\nDAd8JppRKyhJI5rHXI7rzRP+UYHHpGcE9cCGm/QaCIeZoHt7lWXHeOX8eGV9Sg0k\nhs4CbO/IVaFybXdhV7PFOpbCeHj8gjPjTzgxW8U0J6qVc601LiBkfEAdy0e5eTvi\nG8UXoKa6E1vBP/5vE25JMfWAv9WP+9OWOtSPiTQF6GUZbRginEkrVM1oPK8dgAzj\nV06Tgpg2g6cqfBNyV3jk9+flekWtX3/C3asal3orV8bfKpWpDyZtUcbNc/xCuDzk\n9EFoieSt9kLW4zun2EaQLIEwg3+PQcuCZrbcaqf4pAa4/UoIFdvvkyq2BLAIg5uG\nn3cKwu9xAgMBAAECggEAAoGCcHQn128BMJNN+ICXENHShvj1Tnp2fpaEbq4YgqEW\n2GT+ajelfY+zxCw8twCpuUw4vukrc2z90hcBuVkcaLla1j7NjOXV4sjs88r+XKNz\ndr8d4+YSiqRvBNSqnbJOE9ynVRtVfnUTYKSUu7RzVThNyJO29kIHRivtWixoIEQ9\ncJ+WJAfcAhulIZToBYMxHEyL3TJ5KzDEqt89QYlcNzOC1BWxtGVFLaEFVk3bcFLJ\niMY0cNKDTJ6N6QkyBHVURU0OUTqRajWSEU5we1q9MSwImcbRH/eh1cu8t+gm6UCR\nz1qN+Hd+UQpSNyvcTCcjcvl0a+HCBWacA3vrxe6HLQKBgQDf6M3qRQjT+fOMvK/m\nR4fe+qe6PF6awBFXz9mrOSLcNePvJSVfUK0OXaomZ259pClftuDSQNhr9LeU7rH0\nYBoWdrCLUgALmIdH1szha+3qRGZJWnRuUIfR2/QPzbiSH1mEX12zuGOf0O2mJns1\nJP/LudMTlzQss1sNM0hEdU2u5QKBgQC+k8KXX74j52j+PSjeVzloss+4XJA6xxId\nKuZh3la0YulfpyS9l5I7hmhVH2qfQqQBoWTrSqfVeHdkxzIBtTemX2MqpikBi/1O\n/UNMCIESy3XromPI6j9sV9TLHuFSBGgZbR9nTPXfzq8ZtHYjLKKr0f/oANJ8qmoe\n9ohN1uwpnQKBgQCqZk6G8eClCXyK53HqCxfg3trUhWrt1Cueq0SY5NOdyLldXuSR\nJCF/ZFLABUj1/v+potB30feiOMuZYQo20wgnfk4eyNnV+U9Cobqr9upJtaIuQtOG\nvGyQjhawDDxhn9ANSFJUGohesK6bGn/7UtwEW7fCGfkP57LsWdGun6Lt7QKBgQC5\n47zaFEyODumtm5Bil6fqxQeyJ6+TdZvokXDYo5vlJdnHMGy49cBwiWD5LsS8ha8d\n3ARpMY/VvESRK29OlSmsAbzj2+GBnb++LXFYF6922rix19sHHd4xWta4Le3QJ3Y2\n3ubTxxDJdnv7UbguBRrDB/panXqymTMb8pLvgiUnTQKBgQCzZYGr7S53XDdrpbCs\njLXj5+EA63bPfqsQwUJcWWnj8DjaZ2Frn4bWeKBX0ebthHvInxliHWXAOoYiR4sg\nxZfedKIvcjO/TLve7iSfFBjKBB3LihDJ974M3nxAITHuCptp4xjTGUh0yPeI0u50\ncmXmuUBAK738LxpeBL0zea4Ofw==\n-----END PRIVATE KEY-----\n',
-  clientEmail: 'firebase-adminsdk-xzh9e@phantom-30457.iam.gserviceaccount.com',
-  clientId: '114806940192433175805',
-  authUri: 'https://accounts.google.com/o/oauth2/auth',
-  tokenUri: 'https://oauth2.googleapis.com/token',
-  authProviderX509CertUrl: 'https://www.googleapis.com/oauth2/v1/certs',
-  clientX509CertUrl:
-    'https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xzh9e%40phantom-30457.iam.gserviceaccount.com',
+  type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
+  projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
+  privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
+  privateKey: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, '\n')),
+  clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
+  clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
+  authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
+  tokenUri: String(process.env.FIREBASE_CREADENTIAL_TOKEN_URI),
+  authProviderX509CertUrl: String(process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL),
+  clientX509CertUrl: String(process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL)
 };
 let app = firebase.initializeApp({
   credential: firebase.credential.cert(params),
 });
 @Injectable()
 export class NotificationService {
-  constructor() {}
+
+  constructor() { }
+
+  /**
+    * @author Aya Abohadima
+    * @descriptionsendNotification : send one notification to client 
+    * @param {Array<String>} tokens  - array of fcm tokens wanted to send this massage to
+    * @param {Object} message - message needed  to send
+    * @returns {Array<String>}array of not send notification
+    */
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -36,7 +40,7 @@ export class NotificationService {
             }
           });
         } else {
-          console.log('Yaay Message has been sent successfully');
+          console.log('Message has been sent successfully');
         }
       })
       .catch(err => {
@@ -45,10 +49,15 @@ export class NotificationService {
     return notSendTokens;
   }
 
+  /**
+    * @author Aya Abohadima
+    * @descriptionsendOfflineNotification :send array of massages & notification
+    * @param {Array<Object>}messages - array of massages wented to send
+    * @param {String} fcmToken - fcm token needed to send to
+    */
   async sendOfflineNotification(messages, fcmToken) {
     if (!messages || messages.length == 0) return;
     for (let i = 0; i < messages.length; i++) messages[i].token = fcmToken;
-
     app
       .messaging()
       .sendAll(messages)
@@ -57,6 +66,13 @@ export class NotificationService {
       });
   }
 
+  /**
+    * @author Aya Abohadima
+    * @descriptionsend notification to user when some one follow hem
+    * @param {Object of User type} followedUser - user who is followed
+    * @param {Object of User type} followerUser -user who follow
+    * @returns {Object} -new changes of user 
+    */
   async followUser(followedUser, followerUser) {
     let message: {
       data: {
@@ -84,7 +100,6 @@ export class NotificationService {
         time: Date.now().toString(),
       },
     };
-    //console.log(message);
     followedUser.notificationCounter = followedUser.notificationCounter
       ? followedUser.notificationCounter + 1
       : 1;
@@ -123,7 +138,13 @@ export class NotificationService {
       notificationCounter: followedUser.notificationCounter,
     };
   }
-
+  /**
+    * @author Aya Abohadima
+    * @descriptiondelete follow message from notification history 
+    * @param {Object of User type} followedUser - user who is followed
+    * @param {Object of User type} followerUser -user who follow
+    * @returns {Object} -new changes of user
+    */
   async unfollowUser(followedUser, followerUser) {
     let message: {
       data: {
@@ -148,7 +169,7 @@ export class NotificationService {
           ' ' +
           followerUser.lastName +
           ' has followed You 😮',
-        time: undefined,
+        time: null,
       },
     };
     let notificationData = followedUser.offlineNotifications;
@@ -156,13 +177,12 @@ export class NotificationService {
       followedUser.offlineNotifications = [];
 
     for (let i = 0; i < followedUser.offlineNotifications.length; i++) {
-      //  notificationData[i].data.time = undefined;
       if (followedUser.offlineNotifications[i].data)
         if (
           followedUser.offlineNotifications[i].data.title ==
-            'your follower increase ' &&
+          'your follower increase ' &&
           message.data.followerId ==
-            followedUser.offlineNotifications[i].data.followerId
+          followedUser.offlineNotifications[i].data.followerId
         ) {
           followedUser.offlineNotifications.splice(i, 1);
           i--;
@@ -173,13 +193,12 @@ export class NotificationService {
     notificationData = followedUser.notifications;
 
     for (let i = 0; i < followedUser.notifications.length; i++) {
-      // notificationData[i].data.time = undefined;
       if (followedUser.notifications[i].data)
         if (
           followedUser.notifications[i].data.title ==
-            'your follower increase ' &&
+          'your follower increase ' &&
           message.data.followerId ==
-            followedUser.notifications[i].data.followerId
+          followedUser.notifications[i].data.followerId
         ) {
           followedUser.notifications.splice(i, 1);
           i--;
@@ -192,76 +211,17 @@ export class NotificationService {
       notificationCounter: followedUser.notificationCounter,
     };
   }
-
-  async followBoard(ownerUser, followerUser, boardName, boardId) {
-    let message: {
-      data: {
-        followerImageId: string;
-        google: string;
-        googleImage: string;
-        followerId: string;
-        boardId: string;
-        title: string;
-        body: string;
-        time: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        time: Date.now().toString(),
-        followerImageId: String(followerUser.profileImage),
-        google: String(followerUser.google),
-        googleImage: String(followerUser.googleImage),
-        followerId: String(followerUser._id),
-        boardId: boardId,
-        title: '😮 your board is followed',
-        body:
-          followerUser.firstName +
-          ' ' +
-          followerUser.lastName +
-          ' has followed Your board ' +
-          '"' +
-          boardName +
-          '"',
-      },
-    };
-    ownerUser.notificationCounter = ownerUser.notificationCounter
-      ? ownerUser.notificationCounter + 1
-      : 1;
-    await ownerUser.save();
-    if (!ownerUser.notifications) ownerUser.notifications = [];
-    ownerUser.notifications = await this.addTolimitedArray(
-      ownerUser.notifications,
-      30,
-      message,
-    );
-    if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
-      if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
-      ownerUser.offlineNotifications = await this.addTolimitedArray(
-        ownerUser.offlineNotifications,
-        30,
-        message,
-      );
-      await ownerUser.save();
-    } else {
-      message.tokens = [ownerUser.fcmToken];
-      let checkFailed = await this.sendNotification(
-        [ownerUser.fcmToken],
-        message,
-      );
-      if (checkFailed.length > 0) {
-        message.tokens = null;
-        ownerUser.offlineNotifications = await this.addTolimitedArray(
-          ownerUser.offlineNotifications,
-          30,
-          message,
-        );
-      }
-    }
-    await ownerUser.save();
-    return 1;
-  }
-
+  /**
+    * @author Aya Abohadima
+    * @descriptionsend notification when some one comment in user pin
+    * @param {Object of user type} ownerUser - user who has pin 
+    * @param  {Object of user type} commenterUser - user who comment in pin
+    * @param {String} comment - comment 
+    * @param {String} pinName - title of pin  
+    * @param {String} pinId - the id of this pin
+    * @param {String} imageId - the id of pin image
+    * @returns {Number} 1 
+    */
   async commentPin(ownerUser, commenterUser, comment, pinName, pinId, imageId) {
     let message: {
       data: {
@@ -283,7 +243,7 @@ export class NotificationService {
         google: String(commenterUser.google),
         googleImage: String(commenterUser.googleImage),
         commenterId: String(commenterUser._id),
-        imageLink: 'http://localhost:3000/image/' + imageId,
+        imageLink: String(process.env.FRONT_BASE_URL) + '/image/' + imageId,
         pinId: pinId,
         title: '📝 Comment on your pin',
         body:
@@ -337,6 +297,17 @@ export class NotificationService {
     return 1;
   }
 
+  /**
+     * @author Aya Abohadima
+     * @description notification to pin owner when someone react to pin
+     * @param {Object of user type} ownerUser - user who has pin 
+     * @param  {Object of user type} reactUser - user who react in pin
+     * @param {String} react - type of react
+     * @param {String} pinName - title of pin  
+     * @param {String} pinId - the id of this pin
+     * @param {String} imageId - the id of pin image
+     * @returns {Number} 1 
+     */
   async reactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
     if (react == 'Love') react = '💖';
     else if (react == 'Good idea') react = '👍';
@@ -364,7 +335,7 @@ export class NotificationService {
         google: String(reactUser.google),
         googleImage: String(reactUser.googleImage),
         userId: String(reactUser._id),
-        imageLink: 'http://localhost:3000/image/' + imageId,
+        imageLink: String(process.env.FRONT_BASE_URL) + '/image/' + imageId,
         pinId: pinId,
         title: react + ' React on your pin',
         body:
@@ -412,11 +383,21 @@ export class NotificationService {
       }
       await ownerUser.save();
     }
-    //  console.log(ownerUser.notifications);
     await ownerUser.save();
     return 1;
   }
 
+  /**
+    * @author Aya Abohadima
+    * @description delete react from user history when unreact
+     * @param {Object of user type} ownerUser - user who has pin 
+     * @param  {Object of user type} reactUser - user who unreact in pin
+     * @param {String} react - type of react
+     * @param {String} pinName - title of pin  
+     * @param {String} pinId - the id of this pin
+     * @param {String} imageId - the id of pin image
+     * @returns {Number} 1 
+     */
   async unreactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
     if (react == 'Love') react = '💖';
     else if (react == 'Good idea') react = '👍';
@@ -428,7 +409,6 @@ export class NotificationService {
     if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
 
     for (let i = 0; i < notificationData.length; i++) {
-      //notificationData[i].data.time = undefined;
       if (notificationData[i].data)
         if (
           notificationData[i].data.userId == reactUser._id &&
@@ -437,20 +417,11 @@ export class NotificationService {
         ) {
           ownerUser.offlineNotifications.splice(i, 1);
           i--;
-          // console.log(550);
         }
     }
-    // console.log("hay now delete one");
     if (!ownerUser.notifications) ownerUser.notifications = [];
-    //  console.log("hay now delete one and do check");
-
     notificationData = ownerUser.notifications;
-    // console.log("before for loop ");
-
-    //  console.log(notificationData.length)
     for (let i = 0; i < notificationData.length; i++) {
-      //   notificationData[i].data.time = undefined;
-      // console.log('in for now');
       if (notificationData[i].data)
         if (
           notificationData[i].data.userId == reactUser._id &&
@@ -459,11 +430,8 @@ export class NotificationService {
         ) {
           ownerUser.notifications.splice(i, 1);
           i--;
-          // console.log(550);
         }
-      //     console.log('after if ');
     }
-    // console.log(ownerUser.notifications);
     await ownerUser.save();
     return 1;
   }
@@ -514,11 +482,18 @@ export class NotificationService {
         return 0;
       }
     }
-
     await user.save();
     return 1;
   }
 
+  /**
+    * @author Nada Abdelmaboud
+    * @descriptionsend popular pin notification to user 
+    * @param {Object of user type }user - user object 
+    * @param {Array<Object>} pins 
+    * @param {Array<ids>} images
+    * @returns {Number} 
+    */
   async popularPins(user, pins, images) {
     let arrayMessage = {
       pins: pins,
@@ -538,8 +513,6 @@ export class NotificationService {
       arrayMessage,
     );
     await user.save();
-    //console.log('aywa');
-    //console.log(user.fcmToken);
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -568,12 +541,20 @@ export class NotificationService {
         await user.save().catch(err => {
           // console.log(err);
         });
-
         return 0;
       }
     }
     return 1;
   }
+
+  /**
+  * @author Nada Abdelmaboud
+  * @description  send pins for certan user notification to user 
+  * @param {Object of user type }user - user object 
+  * @param {Array<Object>} pins 
+  * @param {Array<ids>} images
+  * @returns {Number} 
+  */
   async pinsForYou(user, pins, images) {
     let arrayMessage = {
       pins: pins,
@@ -597,7 +578,6 @@ export class NotificationService {
       return 0;
     } else {
       await user.save();
-
       message = {
         data: {
           title: 'Pins For You!',
@@ -621,6 +601,15 @@ export class NotificationService {
     }
     return 1;
   }
+
+  /**
+  * @author Nada Abdelmaboud
+  * @description send popular inspired notification to user 
+  * @param {Object of user type }user - user object 
+  * @param {Array<Object>} pins 
+  * @param {Array<ids>} images
+  * @returns {Number} 
+  */
   async pinsInspired(user, pins, images) {
     let arrayMessage = {
       pins: pins,
@@ -639,7 +628,6 @@ export class NotificationService {
       30,
       arrayMessage,
     );
-
     await user.save();
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
@@ -652,7 +640,6 @@ export class NotificationService {
         },
         tokens: [String(user.fcmToken)],
       };
-
       let checkFailed = await this.sendNotification([user.fcmToken], message);
       if (checkFailed.length > 0) {
         let last = user.notifications.pop(message);
@@ -669,6 +656,15 @@ export class NotificationService {
     }
     return 1;
   }
+
+  /**
+    * @author Aya Abohadima
+    * @descriptionthis function add to array but this array has limit
+    * @param {Array<Object>} notificationArray -array of data
+    * @param {Number} limit  - the limit should be
+    * @param {Object} pushedData Data should add to array
+    * @returns {Array<Object>} after delete 
+    */
   async addTolimitedArray(
     notificationArray: Array<any>,
     limit: number,

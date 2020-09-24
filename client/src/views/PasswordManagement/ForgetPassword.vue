@@ -40,7 +40,7 @@ export default {
   },
   computed: {
     sendState: function() {
-      return this.$store.state.user.sendEmailStatus;
+      return this.$store.state.user.status;
     },
     errorMessage: function() {
       return this.$store.state.user.errorMessage;

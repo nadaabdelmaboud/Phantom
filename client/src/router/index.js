@@ -32,6 +32,8 @@ import SearchPeople from "../components/Search/SearchPeople";
 import SearchBoards from "../components/Search/SearchBoards";
 import GoogleAuth from "../views/Auth/AuthRedirect.vue";
 
+import isLoggedIn from "@/mixins/isLoggedIn";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -43,27 +45,42 @@ const routes = [
       {
         path: "",
         name: "UserHome",
-        component: UserHome
+        component: UserHome,
+        meta: {
+          allowAnonymous: true
+        }
       },
       {
         path: "Following",
         name: "Following",
-        component: Following
+        component: Following,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "/TopicsPage",
         name: "TopicsPage",
-        component: TopicsPage
+        component: TopicsPage,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "PinBuilder",
         name: "PinBuilder",
-        component: PinBuilder
+        component: PinBuilder,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "PostPage/:postPageId",
         name: "PostPage",
-        component: PostPage
+        component: PostPage,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "/UserProfile",
@@ -73,12 +90,18 @@ const routes = [
           {
             path: "Boards",
             name: "Boards",
-            component: UserBoards
+            component: UserBoards,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "Pins",
             name: "Pins",
-            component: UserPins
+            component: UserPins,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       },
@@ -91,12 +114,18 @@ const routes = [
           {
             path: "Boards",
             name: "Boards",
-            component: UserBoards
+            component: UserBoards,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "Pins",
             name: "Pins",
-            component: UserPins
+            component: UserPins,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       },
@@ -108,12 +137,18 @@ const routes = [
           {
             path: "Pins",
             name: "Pins",
-            component: BoardPins
+            component: BoardPins,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "More",
             name: "More",
-            component: BoardMoreLike
+            component: BoardMoreLike,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       },
@@ -131,29 +166,44 @@ const routes = [
           {
             path: "/settings/edit-profile",
             name: "EditProfile",
-            component: EditProfileSettings
+            component: EditProfileSettings,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "/settings/account-settings",
             name: "AccountSettings",
-            component: AccountSettings
+            component: AccountSettings,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "/settings/notifications",
             name: "Notifications",
-            component: NotificationsSettings
+            component: NotificationsSettings,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       },
       {
         path: "BoardForYou",
         name: "BoardForYou",
-        component: NotidicationBoards
+        component: NotidicationBoards,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "PinsForYou",
         name: "PinsForYou",
-        component: NotidicationPins
+        component: NotidicationPins,
+        meta: {
+          allowAnonymous: false
+        }
       },
       {
         path: "/search",
@@ -164,22 +214,34 @@ const routes = [
           {
             path: "/search/allpins/:name",
             name: "SearchPins",
-            component: SearchPins
+            component: SearchPins,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "/search/mypins/:name",
             name: "SearchMyPins",
-            component: SearchMyPins
+            component: SearchMyPins,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "/search/people/:name",
             name: "SearchPeople",
-            component: SearchPeople
+            component: SearchPeople,
+            meta: {
+              allowAnonymous: false
+            }
           },
           {
             path: "/search/boards/:name",
             name: "SearchBoards",
-            component: SearchBoards
+            component: SearchBoards,
+            meta: {
+              allowAnonymous: false
+            }
           }
         ]
       }
@@ -188,34 +250,52 @@ const routes = [
   {
     path: "/signup",
     name: "SignUp",
-    component: SignUp
+    component: SignUp,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/login",
     name: "Login",
-    component: LoginView
+    component: LoginView,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/confirm",
     name: "confirm",
     query: "token=",
-    component: WelcomePage
+    component: WelcomePage,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/reset_password",
     name: "Reset Password",
     query: "token=",
-    component: ResetPassword
+    component: ResetPassword,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/email-confirm",
     name: "EmailConfirm",
-    component: EmailConfirm
+    component: EmailConfirm,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/password-reset",
     name: "ForgetPassword",
-    component: ForgetPassword
+    component: ForgetPassword,
+    meta: {
+      allowAnonymous: true
+    }
   },
   {
     path: "/aouth/google",
@@ -224,7 +304,10 @@ const routes = [
       token: route.query.token,
       type: route.query.type
     }),
-    component: GoogleAuth
+    component: GoogleAuth,
+    meta: {
+      allowAnonymous: true
+    }
   }
 ];
 
@@ -234,4 +317,21 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.name == "Login" && isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/"
+    });
+  } else if (to.name == "SignUp" && isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/"
+    });
+  } else if (!to.meta.allowAnonymous && !isLoggedIn.methods.isLoggedIn()) {
+    next({
+      path: "/login"
+    });
+  } else {
+    next();
+  }
+});
 export default router;

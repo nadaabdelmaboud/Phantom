@@ -52,9 +52,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
-
 .valid {
   color: green;
 }
