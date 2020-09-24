@@ -46,7 +46,8 @@ export default {
     }
   },
   props: {
-    password: String
+    password: String,
+    signUp: Boolean
   }
 };
 </script>
@@ -59,17 +60,16 @@ export default {
 .unvalid {
   color: red;
 }
-
+.passwordValidation {
+  text-align: start;
+}
 .passwordValidation p {
   font-size: 12px;
+  margin-left: 0;
 }
 
 i {
   margin-right: 4px;
-  margin-left: 12px;
-}
-
-.row {
-  margin-left: 2px;
+  margin-left: 20px;
 }
 </style>

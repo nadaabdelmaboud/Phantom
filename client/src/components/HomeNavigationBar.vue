@@ -278,7 +278,8 @@
 
   .bar,
   .filter,
-  .expand-menu-icon {
+  .expand-menu-icon,
+  .menu {
     display: none;
   }
 }
