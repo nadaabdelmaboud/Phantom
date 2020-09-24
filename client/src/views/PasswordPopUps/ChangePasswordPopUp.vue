@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import CheckPasswordFormat from "../../components/CheckPasswordFormat.vue";
+import CheckPasswordFormat from "../../components/GeneralComponents/CheckPasswordFormat";
 export default {
   data: function() {
     return {
