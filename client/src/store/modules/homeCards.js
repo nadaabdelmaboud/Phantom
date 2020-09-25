@@ -159,12 +159,12 @@ const mutations = {
   imageDownloaded(state, value) {
     state.imageDownloaded = value;
   },
-  resetHome(state){
-    state.homeCards= [];
-    state.generating= false,
-    state.generatedCount=0,
-    state.offset= 0,
-    state.maxMore= false;
+  resetHome(state) {
+    state.homeCards = [];
+    (state.generating = false),
+      (state.generatedCount = 0),
+      (state.offset = 0),
+      (state.maxMore = false);
   }
 };
 
@@ -201,7 +201,7 @@ const actions = {
         state.offset += 10;
         commit("sethomeCards", home.data);
       } catch (error) {
-        if(error.response.status ==404){
+        if (error.response.status == 404) {
           let remaining = state.generatedCount - state.offset;
           state.inProgress = false;
           if (state.generating) {
@@ -348,14 +348,19 @@ const actions = {
   downloadImage({ commit }, imageId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
-      .get("download/" + imageId)
-      .then(() => {
-        commit("imageDownloaded", true);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    commit("imageDownloaded", true);
+    axios({
+      url: "http://localhost:3000/api/image/" + imageId,
+      method: "GET",
+      responseType: "blob"
+    }).then(response => {
+      var imageUrl = window.URL.createObjectURL(new Blob([response.data]));
+      var imageLink = document.createElement("a");
+      imageLink.href = imageUrl;
+      imageLink.setAttribute("download", imageId + ".jpg");
+      document.body.appendChild(imageLink);
+      imageLink.click();
+    });
   }
 };
 

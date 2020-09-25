@@ -1216,10 +1216,6 @@ export default {
     },
     downloadImage() {
       this.$store.dispatch("homeCards/downloadImage", this.postImage);
-      window.open(
-        "http://localhost:3000/api/download/" + this.postImage,
-        "_blank"
-      );
     }
   },
   created: function() {

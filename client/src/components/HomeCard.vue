@@ -172,10 +172,6 @@ export default {
     },
     downloadImage() {
       this.$store.dispatch("homeCards/downloadImage", this.cardImage);
-      window.open(
-        "http://localhost:3000/api/download/" + this.cardImage,
-        "_blank"
-      );
     },
     async showSavePin(event) {
       event.preventDefault();
