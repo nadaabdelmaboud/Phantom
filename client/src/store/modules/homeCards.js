@@ -42,7 +42,8 @@ const state = {
   sectionId: "",
   unsavePin: false,
   editpincase: false,
-  imageDownloaded: false
+  imageDownloaded: false,
+  postPageLoading: false
 };
 
 const mutations = {
@@ -221,6 +222,7 @@ const actions = {
   async Postpage({ commit }, postPageID) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    state.postPageLoading = true;
     await axios
       .get("/pins/" + postPageID)
       .then(response => {
@@ -241,9 +243,11 @@ const actions = {
         commit("setNumReactGoodIdea", res.pin.counts.goodIdeaReacts);
         commit("setNumReactThanks", res.pin.counts.thanksReacts);
         commit("setPinType", res.type);
+        state.postPageLoading = false;
       })
       .catch(error => {
         console.log(error);
+        state.postPageLoading = false;
       });
   },
   deletePin({ commit }, pinId) {
@@ -367,7 +371,8 @@ const getters = {
   pinCreatorId: state => state.pinCreatorId,
   finishCalling: state => state.finishCalling,
   pinId: state => state.pinId,
-  homeLoading: state => state.homeLoading
+  homeLoading: state => state.homeLoading,
+  postPageLoading: state => state.postPageLoading
 };
 
 export default {
