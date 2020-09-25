@@ -13,7 +13,8 @@ const state = {
   generatedCount: 0,
   offset: 0,
   maxMore: false,
-  inProgress: false
+  inProgress: false,
+  moreLoading: false
 };
 
 const mutations = {
@@ -57,6 +58,7 @@ const actions = {
     state.offset = 0;
     state.generating = true;
     state.maxMore = false;
+    state.moreLoading = true;
     axios
       .put("more/pins/" + pinId)
       .then(response => {
@@ -74,6 +76,7 @@ const actions = {
         let morePins = await axios.get(
           "more/pins/" + pinId + "?limit=" + limit + "&offset=" + state.offset
         );
+        state.moreLoading = false;
         state.inProgress = false;
         state.offset += 10;
         commit("setmorePins", morePins.data);
@@ -87,6 +90,7 @@ const actions = {
         } else if (remaining > 0) {
           dispatch("generateMorePins", { pinId: pinId, limit: remaining });
         } else {
+          state.moreLoading = false;
           state.maxMore = true;
         }
         console.log(error);
@@ -215,7 +219,8 @@ const actions = {
 
 const getters = {
   followUser: state => state.followUser,
-  morePins: state => state.morePins
+  morePins: state => state.morePins,
+  moreLoading: state => state.moreLoading
 };
 
 export default {

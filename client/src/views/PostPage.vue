@@ -6,7 +6,8 @@
     <div class="row m-0">
       <span>More like this</span>
     </div>
-    <div class="flexWrap">
+    <Loading :loading="moreLoading" />
+    <div class="flexWrap" v-if="!moreLoading">
       <div class="masonryGrid">
         <HomeCard
           v-for="morepin in morePins"
@@ -39,11 +40,13 @@ span {
 import { mapGetters } from "vuex";
 import PostPageCard from "../components/PostPageCard";
 import HomeCard from "../components/HomeCard";
+import Loading from "../components/GeneralComponents/Loading";
 export default {
   name: "postpage",
   components: {
     PostPageCard,
-    HomeCard
+    HomeCard,
+    Loading
   },
   async mounted() {
     await this.$store.dispatch(
@@ -67,7 +70,8 @@ export default {
   computed: {
     ...mapGetters({
       pinCreatorId: "homeCards/pinCreatorId",
-      morePins: "postPage/morePins"
+      morePins: "postPage/morePins",
+      moreLoading: "postPage/moreLoading"
     })
   }
 };
