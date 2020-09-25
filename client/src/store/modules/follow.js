@@ -3,7 +3,8 @@ import axios from "axios";
 const state = {
   All: [],
   Trending: [],
-  Topics: []
+  Topics: [],
+  following:[]
 };
 
 const mutations = {
@@ -33,6 +34,9 @@ const mutations = {
   },
   setunfollowInTopics(state, id) {
     state.Topics.find(x => x._id === id).followers--;
+  },
+  setFollowing(state , follow){
+    state.following = follow;
   }
 };
 
@@ -96,13 +100,25 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
-  }
+  },
+  followingPage({ commit }) {
+    axios
+      .get("me/followings/pins")
+      .then(response => {
+        console.log("data nihal" , response.data)
+        commit("setFollowing", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
 };
 
 const getters = {
   All: state => state.All,
   Trending: state => state.Trending,
-  Topics: state => state.Topics
+  Topics: state => state.Topics,
+  following: state => state.following
 };
 
 export default {

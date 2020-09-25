@@ -161,6 +161,8 @@ const mutations = {
 
 const actions = {
   userHome({ state }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     state.homeCards = [];
     state.offset = 0;
     state.generating = true;
