@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <Loading v-if="loading" :loading="loading"/>
     <div class="row m-0">
       <div
         class="boardsDefault"
@@ -37,6 +38,7 @@
 
 <script>
 import Board from "../../components/Board";
+import Loading from "../../components/GeneralComponents/Loading";
 import { mapGetters, mapState } from "vuex";
 import draggable from "vuedraggable";
 
@@ -59,7 +61,8 @@ export default {
   },
   components: {
     Board,
-    draggable
+    draggable,
+    Loading
   },
   methods: {
     ReorderBoards(event) {
@@ -74,7 +77,8 @@ export default {
   computed: {
     ...mapGetters({
       boards: "boards/userBoards",
-      viewState: "boards/viewState"
+      viewState: "boards/viewState",
+      loading:"boards/loading"
     }),
     ...mapState({
       myData: state => state.user.userData
