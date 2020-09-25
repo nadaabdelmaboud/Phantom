@@ -1,7 +1,8 @@
-
 const fs = require('fs');
 if (!fs.existsSync('./.env')) {
-  console.log('sorry the code will not run becouse you should create .env file')
+  console.log(
+    'sorry the code will not run becouse you should create .env file',
+  );
   process.exit();
 }
 import 'dotenv/config';
