@@ -48,7 +48,7 @@ export class ImagesController {
     @Request() req,
   ) {
     if (topic && topic != '') {
-      var filePath = './static/' + topic + '.jpg';
+      var filePath = './src/static/' + topic + '.jpg';
       var resolvedPath = await path.resolve(filePath);
       return response.sendFile(resolvedPath);
     }
