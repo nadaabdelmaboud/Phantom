@@ -1,6 +1,6 @@
 <template>
   <div class="UserInfo">
-    <img :src="getImage(imageId)" />
+    <img :src="getImage(imageId, google, googleImage)" />
     <span>{{ firstName }} </span>
     <span>{{ lastName }}</span>
     <button class="editButton" @click="addCollaborator(id)">
@@ -29,6 +29,12 @@ export default {
       type: String
     },
     imageId: {
+      type: String
+    },
+    google: {
+      type: Boolean
+    },
+    googleImage: {
       type: String
     }
   },

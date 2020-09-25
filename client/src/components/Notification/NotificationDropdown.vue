@@ -17,6 +17,8 @@
           :pinId="n.pinId"
           :title="n.title"
           :body="n.body"
+          :google="n.google"
+          :googleImage="n.googleImage"
         />
       </div>
     </div>
