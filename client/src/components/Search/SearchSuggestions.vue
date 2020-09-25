@@ -18,14 +18,14 @@
           @click="openUserProfile(suggestion._id)"
         >
           <img
-            :src="suggestion.googleImage"
+            :src="
+              getImage(
+                suggestion.profileImage,
+                suggestion.google,
+                suggestion.googleImage
+              )
+            "
             alt="profile image"
-            v-if="suggestion.google"
-          />
-          <img
-            :src="getImage(suggestion.profileImage)"
-            alt="profile image"
-            v-else
           />
 
           <p class="usernames">{{ suggestion.userName }}</p>
