@@ -159,12 +159,12 @@ const mutations = {
   imageDownloaded(state, value) {
     state.imageDownloaded = value;
   },
-  resetHome(state){
-    state.homeCards= [];
-    state.generating= false,
-    state.generatedCount=0,
-    state.offset= 0,
-    state.maxMore= false;
+  resetHome(state) {
+    state.homeCards = [];
+    (state.generating = false),
+      (state.generatedCount = 0),
+      (state.offset = 0),
+      (state.maxMore = false);
   }
 };
 
@@ -201,7 +201,7 @@ const actions = {
         state.offset += 10;
         commit("sethomeCards", home.data);
       } catch (error) {
-        if(error.response.status ==404){
+        if (error.response.status == 404) {
           let remaining = state.generatedCount - state.offset;
           state.inProgress = false;
           if (state.generating) {

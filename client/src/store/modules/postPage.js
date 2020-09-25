@@ -85,20 +85,20 @@ const actions = {
         state.offset += 10;
         commit("setmorePins", morePins.data);
       } catch (error) {
-        if(error.response.status ==404){
-        let remaining = state.generatedCount - state.offset;
-        state.inProgress = false;
-        if (state.generating) {
-          setTimeout(() => {
-            dispatch("generateMorePins", { pinId: pinId, limit: 10 });
-          }, 1000);
-        } else if (remaining > 0) {
-          dispatch("generateMorePins", { pinId: pinId, limit: remaining });
-        } else {
-          state.moreLoading = false;
-          state.maxMore = true;
+        if (error.response.status == 404) {
+          let remaining = state.generatedCount - state.offset;
+          state.inProgress = false;
+          if (state.generating) {
+            setTimeout(() => {
+              dispatch("generateMorePins", { pinId: pinId, limit: 10 });
+            }, 1000);
+          } else if (remaining > 0) {
+            dispatch("generateMorePins", { pinId: pinId, limit: remaining });
+          } else {
+            state.moreLoading = false;
+            state.maxMore = true;
+          }
         }
-      }
         console.log(error);
       }
     }
