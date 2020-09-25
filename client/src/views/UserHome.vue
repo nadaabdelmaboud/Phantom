@@ -1,6 +1,7 @@
 <template>
   <div class="home" :key="userKey">
     <div v-if="isLoggedIn() == false">
+      <Loading :loading="homeLoading" />
       <p>Home Page ,Signup or Login</p>
     </div>
     <div v-if="isLoggedIn() == true">
@@ -8,7 +9,8 @@
         <h2>Add more Ideas to your feed</h2>
         <i class="fa fa-plus" @click="showTopics"></i>
       </div>
-      <div class="flexWrap">
+      <Loading :loading="homeLoading" />
+      <div class="flexWrap" v-if="!homeLoading">
         <div class="masonryGrid">
           <HomeCard
             v-for="homecard in cards"
@@ -67,6 +69,7 @@ body {
 
 <script>
 import HomeCard from "../components/HomeCard";
+import Loading from "../components/GeneralComponents/Loading";
 import { mapGetters, mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {
@@ -77,12 +80,14 @@ export default {
     };
   },
   components: {
-    HomeCard
+    HomeCard,
+    Loading
   },
   mixins: [isLoggedIn],
   computed: {
     ...mapGetters({
-      cards: "homeCards/userHomePage"
+      cards: "homeCards/userHomePage",
+      homeLoading: "homeCards/homeLoading"
     }),
     ...mapState({
       userKey: state => state.user.userKey

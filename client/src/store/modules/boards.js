@@ -15,10 +15,10 @@ const state = {
   offset: 0,
   maxMore: false,
   inProgress: false,
-  loadingMore:false,
-  first:true,
-  loading:false,
-  isMine:true
+  loadingMore: false,
+  first: true,
+  loading: false,
+  isMine: true
 };
 
 const mutations = {
@@ -66,12 +66,12 @@ const actions = {
         console.log(error);
       });
   },
-  userBoards({ commit ,state}) {
-    if(!state.isMine || state.first){
-      state.loading=true;
-      state.userBoards=[];
-      state.isMine=true;
-      state.first=false;
+  userBoards({ commit, state }) {
+    if (!state.isMine || state.first) {
+      state.loading = true;
+      state.userBoards = [];
+      state.isMine = true;
+      state.first = false;
     }
     let token = localStorage.getItem("userToken");
     console.log(token);
@@ -81,11 +81,11 @@ const actions = {
       .then(response => {
         console.log(response.data);
         commit("setBoards", response.data);
-        state.loading=false;
+        state.loading = false;
       })
       .catch(error => {
         commit("setBoards", []);
-        state.loading=false;
+        state.loading = false;
         console.log(error);
       });
   },
@@ -119,11 +119,11 @@ const actions = {
   },
   //not my boards another user boards
   getUserBoards({ commit }, userId) {
-    if(state.isMine || state.first){
-      state.loading=true;
-      state.userBoards=[];
-      state.isMine=false;
-      state.first=false;
+    if (state.isMine || state.first) {
+      state.loading = true;
+      state.userBoards = [];
+      state.isMine = false;
+      state.first = false;
     }
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
@@ -131,11 +131,11 @@ const actions = {
       .get("users/" + userId + "/boards")
       .then(response => {
         commit("setBoards", response.data);
-        state.loading=false;
+        state.loading = false;
       })
       .catch(error => {
         commit("setBoards", []);
-        state.loading=false;
+        state.loading = false;
         console.log(error);
       });
   },
@@ -296,27 +296,27 @@ const actions = {
       }
     }
   },
-  getFullSection({ commit,state }, { boardId, sectionId }) {
+  getFullSection({ commit, state }, { boardId, sectionId }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    let newLoad=false;
-    if(!state.section.section || sectionId != state.section.section._id){
-      state.section={}
+    let newLoad = false;
+    if (!state.section.section || sectionId != state.section.section._id) {
+      state.section = {};
       commit("popUpsState/toggleLoadingPopup", null, { root: true });
-      newLoad=true;
+      newLoad = true;
     }
     axios
       .get("boards/" + boardId + "/sections/" + sectionId)
       .then(response => {
         let section = response.data;
         commit("setCurrentSection", section);
-        if(newLoad)
-        commit("popUpsState/toggleLoadingPopup", null, { root: true });
+        if (newLoad)
+          commit("popUpsState/toggleLoadingPopup", null, { root: true });
       })
       .catch(error => {
         console.log(error);
-        if(newLoad)
-        commit("popUpsState/toggleLoadingPopup", null, { root: true });
+        if (newLoad)
+          commit("popUpsState/toggleLoadingPopup", null, { root: true });
       });
   },
   createSection({ dispatch }, { id, name }) {
@@ -373,8 +373,8 @@ const getters = {
   moreLike: state => state.moreLike,
   section: state => state.section,
   viewState: state => state.viewState,
-  loadingMore:state=>state.loadingMore,
-  loading:state=>state.loading
+  loadingMore: state => state.loadingMore,
+  loading: state => state.loading
 };
 
 export default {
