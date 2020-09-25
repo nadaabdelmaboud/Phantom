@@ -211,7 +211,7 @@ export class RecommendationService {
         });
     }
 
-    if (homeFeedArr.length < 200) {
+    if (homeFeedArr.length < 400) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
         let start = Math.floor(
