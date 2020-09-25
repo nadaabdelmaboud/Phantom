@@ -28,10 +28,9 @@ export class BoardService {
   ) {}
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
-   * @description
-   * @param {string} pinId - the id of the pin
-   * @param {string} userId - the id of the user
-   * @returns  {Promise<object>}
+   * @description get board document
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<board>}
    */
   async getBoardById(boardId): Promise<board> {
     try {
@@ -152,7 +151,7 @@ export class BoardService {
       }
     }
     await this.boardModel.ensureIndexes();
-    return {_id:board._id};
+    return { _id: board._id };
   }
   async sortBoardsAtoZ(userId) {
     userId = mongoose.Types.ObjectId(userId);
