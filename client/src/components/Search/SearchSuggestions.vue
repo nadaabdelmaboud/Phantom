@@ -61,7 +61,7 @@ export default {
         name: title
       });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
-      this.$router.replace("/search/allpins");
+      this.$router.replace("/search/allpins/" + title);
     }
   },
   mixins: [getImage]
