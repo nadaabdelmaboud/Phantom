@@ -15,7 +15,7 @@ const state = {
   offset: 0,
   maxMore: false,
   inProgress: false,
-  loadingMore:false
+  loadingMore: false
 };
 
 const mutations = {
@@ -78,14 +78,14 @@ const actions = {
         console.log(error);
       });
   },
-  getBoard({ commit ,state}, boardId) {
+  getBoard({ commit, state }, boardId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    let newLoad=false;
-    if(!state.currentBoard.board || boardId != state.currentBoard.board._id){
-      state.currentBoard={}
+    let newLoad = false;
+    if (!state.currentBoard.board || boardId != state.currentBoard.board._id) {
+      state.currentBoard = {};
       commit("popUpsState/toggleLoadingPopup", null, { root: true });
-      newLoad=true;
+      newLoad = true;
     }
     axios
       .get("boards/" + boardId)
@@ -97,13 +97,13 @@ const actions = {
           boardId: board.board._id,
           sectionId: ""
         });
-        if(newLoad)
-        commit("popUpsState/toggleLoadingPopup", null, { root: true });
+        if (newLoad)
+          commit("popUpsState/toggleLoadingPopup", null, { root: true });
       })
       .catch(error => {
         console.log(error);
-        if(newLoad)
-        commit("popUpsState/toggleLoadingPopup", null, { root: true });
+        if (newLoad)
+          commit("popUpsState/toggleLoadingPopup", null, { root: true });
       });
   },
   //not my boards another user boards
@@ -232,7 +232,7 @@ const actions = {
     state.offset = 0;
     state.generating = true;
     state.maxMore = false;
-    state.loadingMore=true;
+    state.loadingMore = true;
     axios
       .put("more/boards/" + boardId)
       .then(reponse => {
@@ -255,7 +255,7 @@ const actions = {
             "&offset=" +
             state.offset
         );
-        state.loadingMore=false;
+        state.loadingMore = false;
         state.inProgress = false;
         state.offset += 8;
         commit("setMoreLike", more.data);
@@ -270,7 +270,7 @@ const actions = {
           console.log("remaining ", remaining);
           dispatch("moreLike", { boardId: boardId, limit: remaining });
         } else {
-          state.loadingMore=false;
+          state.loadingMore = false;
           state.maxMore = true;
         }
         console.log(error);
@@ -344,7 +344,7 @@ const getters = {
   moreLike: state => state.moreLike,
   section: state => state.section,
   viewState: state => state.viewState,
-  loadingMore:state=>state.loadingMore
+  loadingMore: state => state.loadingMore
 };
 
 export default {

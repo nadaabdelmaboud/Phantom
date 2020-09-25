@@ -9,7 +9,7 @@
     <CollaboratorsPopup v-if="collaborators" />
     <AddSectionPopup v-if="addSection" />
     <TopicsPopup v-if="topics" />
-    <LoadingPopup v-if="LoadingPopup"/>
+    <LoadingPopup v-if="LoadingPopup" />
     <div>
       <HomeNavigationBar />
       <router-view class="mainComponent" :key="componentKey" />
@@ -193,7 +193,7 @@ import SavePin from "../components/SavePin";
 import ReportPin from "../components/ReportPin";
 import EditPin from "../components/EditPin";
 import FollowPopUp from "../components/FollowPopUp";
-import LoadingPopup from "../components/GeneralComponents/LoadingPopup"
+import LoadingPopup from "../components/GeneralComponents/LoadingPopup";
 
 import { mapState } from "vuex";
 export default {
@@ -274,7 +274,7 @@ export default {
       ChoosenBoardName: state => state.homeCards.ChoosenBoardName,
       editPinPopUp: state => state.popUpsState.editPinPopUp,
       showFollowPopup: state => state.popUpsState.showFollowPopup,
-      LoadingPopup:state=>state.popUpsState.loadingPopup
+      LoadingPopup: state => state.popUpsState.loadingPopup
     })
   },
   watch: {
