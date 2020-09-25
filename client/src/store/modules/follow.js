@@ -4,7 +4,8 @@ const state = {
   All: [],
   Trending: [],
   Topics: [],
-  following: []
+  following: [],
+  followPageLoading: false
 };
 
 const mutations = {
@@ -102,14 +103,17 @@ const actions = {
       });
   },
   followingPage({ commit }) {
+    state.followPageLoading = true;
     axios
       .get("me/followings/pins")
       .then(response => {
         console.log("data nihal", response.data);
         commit("setFollowing", response.data);
+        state.followPageLoading = false;
       })
       .catch(error => {
         console.log(error);
+        state.followPageLoading = false;
       });
   }
 };
@@ -118,7 +122,8 @@ const getters = {
   All: state => state.All,
   Trending: state => state.Trending,
   Topics: state => state.Topics,
-  following: state => state.following
+  following: state => state.following,
+  followPageLoading: state => state.followPageLoading
 };
 
 export default {
