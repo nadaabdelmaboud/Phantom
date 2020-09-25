@@ -31,14 +31,14 @@ export default {
     body: {
       type: String
     },
-    id: {
+    followerId: {
       type: String
     }
   },
   methods: {
     toPage() {
-      if (this.title == "your follower increase")
-        this.$router.push("/User/" + this.followeId);
+      if (this.title.includes("your follower increase"))
+        this.$router.push("/User/" + this.followerId);
       else this.$router.push("/PostPage/" + this.pinId);
       this.$store.commit("notifications/alterShow", false);
     }
