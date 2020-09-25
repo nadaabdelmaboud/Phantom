@@ -337,14 +337,19 @@ const actions = {
   downloadImage({ commit }, imageId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
-      .get("download/" + imageId)
-      .then(() => {
-        commit("imageDownloaded", true);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    commit("imageDownloaded", true);
+    axios({
+      url: "http://localhost:3000/api/image/" + imageId,
+      method: "GET",
+      responseType: "blob"
+    }).then(response => {
+      var imageUrl = window.URL.createObjectURL(new Blob([response.data]));
+      var imageLink = document.createElement("a");
+      imageLink.href = imageUrl;
+      imageLink.setAttribute("download", imageId + ".jpg");
+      document.body.appendChild(imageLink);
+      imageLink.click();
+    });
   }
 };
 
