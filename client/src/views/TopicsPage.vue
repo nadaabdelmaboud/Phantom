@@ -18,7 +18,8 @@
           />
         </div>
       </div>
-      <div class="callingTopicsCards">
+      <Loading :loading="topicsLoading" />
+      <div class="callingTopicsCards" v-if="!topicsLoading">
         <div v-for="topic in topics" :key="topic.name">
           <TopicsPageCard
             :topicName="topic.name"
@@ -111,11 +112,13 @@ h3 {
 <script>
 import { default as getUserImage } from "../mixins/getUserImage";
 import TopicsPageCard from "../components/TopicsPageCard";
-import { mapState } from "vuex";
+import Loading from "../components/GeneralComponents/Loading";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "TopicsPage",
   components: {
-    TopicsPageCard
+    TopicsPageCard,
+    Loading
   },
   mixins: [getUserImage],
   methods: {
@@ -126,6 +129,9 @@ export default {
   computed: {
     ...mapState({
       topics: state => state.topics.topics
+    }),
+    ...mapGetters({
+      topicsLoading: "topics/topicsLoading"
     })
   },
   mounted() {

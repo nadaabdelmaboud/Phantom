@@ -2,12 +2,14 @@
   <div class="postpagecard">
     <div class="container">
       <div class="box">
-        <div class="imagebox">
+        <Loading :loading="postPageLoading" v-if="postPageLoading" />
+        <div class="imagebox" v-if="!postPageLoading">
           <img :src="getImage(this.postImage)" alt="Post Image" />
         </div>
       </div>
       <div class="box">
-        <div class="contentbox">
+        <Loading :loading="postPageLoading" v-if="postPageLoading" />
+        <div class="contentbox" v-if="!postPageLoading">
           <div id="navbar">
             <button class="save-post" id="saveImage" @click="savePin">
               Save
@@ -931,9 +933,13 @@ li button {
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
 import getUserImage from "../mixins/getUserImage.js";
+import Loading from "../components/GeneralComponents/Loading";
 import io from "socket.io-client";
 export default {
   name: "postpagecard",
+  components: {
+    Loading
+  },
   data: function() {
     return {
       firstTime: true,
@@ -1099,6 +1105,7 @@ export default {
       console.log("after request", this.addCommentObject);
       socket.emit("comment", this.addCommentObject);
       socket.on("sendComment", data => {
+        console.log("is received");
         this.$store.commit("postPage/addNewComment", data);
       });
       inputField.value = "";
@@ -1209,10 +1216,6 @@ export default {
     },
     downloadImage() {
       this.$store.dispatch("homeCards/downloadImage", this.postImage);
-      window.open(
-        "http://localhost:3000/api/download/" + this.postImage,
-        "_blank"
-      );
     }
   },
   created: function() {
@@ -1262,7 +1265,8 @@ export default {
       numberofFollowers: "homeCards/numberofFollowers",
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
-      pinId: "homeCards/pinId"
+      pinId: "homeCards/pinId",
+      postPageLoading: "homeCards/postPageLoading"
     })
   }
 };

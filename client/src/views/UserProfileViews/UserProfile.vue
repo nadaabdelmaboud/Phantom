@@ -1,12 +1,36 @@
 <template>
   <div class="profile" @click="clear">
     <div class="profileInfo">
-      <img v-if="myprofile" :src="getImage(this.meUser.profileImage)" />
-      <img v-else :src="getImage(this.user.profileImage)" />
+      <img
+        v-if="myprofile"
+        :src="
+          getImage(
+            this.meUser.profileImage,
+            this.meUser.google,
+            this.meUser.googleImage
+          )
+        "
+      />
+      <img
+        v-else
+        :src="
+          getImage(
+            this.user.profileImage,
+            this.user.google,
+            this.user.googleImage
+          )
+        "
+      />
       <h1 v-if="myprofile">{{ this.meUser.userName }}</h1>
       <h1 v-else>{{ this.user.userName }}</h1>
       <h6 v-if="myprofile">
-        {{ Array.isArray(this.meUser.followers)?this.meUser.followers.length: this.meUser.followers}} following</h6>
+        {{
+          Array.isArray(this.meUser.followers)
+            ? this.meUser.followers.length
+            : this.meUser.followers
+        }}
+        following
+      </h6>
       <h6 v-else>{{ this.user.followers }} following</h6>
       <div
         class="buttons inRoute follow"

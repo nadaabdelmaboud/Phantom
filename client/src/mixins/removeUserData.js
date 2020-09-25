@@ -11,9 +11,10 @@ export default {
         .put("log-out")
         .then(() => {
           delete axios.defaults.headers.common["Authorization"];
-          this.$store.commit("user/setKey", 0);
           console.log("r", this.$route.path);
           if (this.$route.path != "/") this.$router.push("/");
+          this.$store.commit("user/setKey", 0);
+          this.$store.commit("homeCards/resetHome");
         })
         .catch(err => console.log(err));
     }

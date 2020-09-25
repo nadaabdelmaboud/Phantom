@@ -1,7 +1,7 @@
 <template>
   <div class="collab">
     <div class="userInfo">
-      <img :src="getImage(imageId)" />
+      <img :src="getImage(imageId, google, googleImage)" />
       <span>{{ collabName }}</span>
       <button
         class="editButton"
@@ -144,6 +144,12 @@ export default {
     },
     addCollaborators: {
       type: Boolean
+    },
+    google: {
+      type: Boolean
+    },
+    googleImage: {
+      type: String
     }
   },
   data: function() {

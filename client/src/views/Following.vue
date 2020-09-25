@@ -80,8 +80,8 @@ export default {
     Loading
   },
   created() {
-    this.$store.dispatch("follow/followingPage");
     this.$store.dispatch("follow/allRecommendations");
+    this.$store.dispatch("follow/followingPage");
   },
   computed: {
     ...mapGetters({

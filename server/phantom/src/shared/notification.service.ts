@@ -4,13 +4,19 @@ const params = {
   type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
   projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
   privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
-  privateKey: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, '\n')),
+  privateKey: String(
+    process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  ),
   clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
   clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
   authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
   tokenUri: String(process.env.FIREBASE_CREADENTIAL_TOKEN_URI),
-  authProviderX509CertUrl: String(process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL),
-  clientX509CertUrl: String(process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL)
+  authProviderX509CertUrl: String(
+    process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL,
+  ),
+  clientX509CertUrl: String(
+    process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL,
+  ),
 };
 let app = firebase.initializeApp({
   credential: firebase.credential.cert(params),
@@ -20,16 +26,15 @@ let app = firebase.initializeApp({
  */
 @Injectable()
 export class NotificationService {
-
-  constructor() { }
+  constructor() {}
 
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @descriptionsendNotification : send one notification to client 
-    * @param {Array<String>} tokens  - array of fcm tokens wanted to send this massage to
-    * @param {Object} message - message needed  to send
-    * @returns {Array<String>}array of not send notification
-    */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptionsendNotification : send one notification to client
+   * @param {Array<String>} tokens  - array of fcm tokens wanted to send this massage to
+   * @param {Object} message - message needed  to send
+   * @returns {Array<String>}array of not send notification
+   */
   async sendNotification(tokens, message) {
     const notSendTokens = [];
     app
@@ -53,11 +58,11 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @descriptionsendOfflineNotification :send array of massages & notification
-    * @param {Array<Object>}messages - array of massages wented to send
-    * @param {String} fcmToken - fcm token needed to send to
-    */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptionsendOfflineNotification :send array of massages & notification
+   * @param {Array<Object>}messages - array of massages wented to send
+   * @param {String} fcmToken - fcm token needed to send to
+   */
   async sendOfflineNotification(messages, fcmToken) {
     if (!messages || messages.length == 0) return;
     for (let i = 0; i < messages.length; i++) messages[i].token = fcmToken;
@@ -70,12 +75,12 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @descriptionsend notification to user when some one follow hem
-    * @param {Object of User type} followedUser - user who is followed
-    * @param {Object of User type} followerUser -user who follow
-    * @returns {Object} -new changes of user 
-    */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptionsend notification to user when some one follow hem
+   * @param {Object of User type} followedUser - user who is followed
+   * @param {Object of User type} followerUser -user who follow
+   * @returns {Object} -new changes of user
+   */
   async followUser(followedUser, followerUser) {
     let message: {
       data: {
@@ -142,12 +147,12 @@ export class NotificationService {
     };
   }
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @descriptiondelete follow message from notification history 
-    * @param {Object of User type} followedUser - user who is followed
-    * @param {Object of User type} followerUser -user who follow
-    * @returns {Object} -new changes of user
-    */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptiondelete follow message from notification history
+   * @param {Object of User type} followedUser - user who is followed
+   * @param {Object of User type} followerUser -user who follow
+   * @returns {Object} -new changes of user
+   */
   async unfollowUser(followedUser, followerUser) {
     let message: {
       data: {
@@ -183,9 +188,9 @@ export class NotificationService {
       if (followedUser.offlineNotifications[i].data)
         if (
           followedUser.offlineNotifications[i].data.title ==
-          'your follower increase ' &&
+            'your follower increase ' &&
           message.data.followerId ==
-          followedUser.offlineNotifications[i].data.followerId
+            followedUser.offlineNotifications[i].data.followerId
         ) {
           followedUser.offlineNotifications.splice(i, 1);
           i--;
@@ -199,9 +204,9 @@ export class NotificationService {
       if (followedUser.notifications[i].data)
         if (
           followedUser.notifications[i].data.title ==
-          'your follower increase ' &&
+            'your follower increase ' &&
           message.data.followerId ==
-          followedUser.notifications[i].data.followerId
+            followedUser.notifications[i].data.followerId
         ) {
           followedUser.notifications.splice(i, 1);
           i--;
@@ -215,16 +220,16 @@ export class NotificationService {
     };
   }
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @descriptionsend notification when some one comment in user pin
-    * @param {Object of user type} ownerUser - user who has pin 
-    * @param  {Object of user type} commenterUser - user who comment in pin
-    * @param {String} comment - comment 
-    * @param {String} pinName - title of pin  
-    * @param {String} pinId - the id of this pin
-    * @param {String} imageId - the id of pin image
-    * @returns {Number} 1 
-    */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptionsend notification when some one comment in user pin
+   * @param {Object of user type} ownerUser - user who has pin
+   * @param  {Object of user type} commenterUser - user who comment in pin
+   * @param {String} comment - comment
+   * @param {String} pinName - title of pin
+   * @param {String} pinId - the id of this pin
+   * @param {String} imageId - the id of pin image
+   * @returns {Number} 1
+   */
   async commentPin(ownerUser, commenterUser, comment, pinName, pinId, imageId) {
     let message: {
       data: {
@@ -301,16 +306,16 @@ export class NotificationService {
   }
 
   /**
-     * @author Aya Abohadima <ayasabohadima@gmail.com>
-     * @description notification to pin owner when someone react to pin
-     * @param {Object of user type} ownerUser - user who has pin 
-     * @param  {Object of user type} reactUser - user who react in pin
-     * @param {String} react - type of react
-     * @param {String} pinName - title of pin  
-     * @param {String} pinId - the id of this pin
-     * @param {String} imageId - the id of pin image
-     * @returns {Number} 1 
-     */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description notification to pin owner when someone react to pin
+   * @param {Object of user type} ownerUser - user who has pin
+   * @param  {Object of user type} reactUser - user who react in pin
+   * @param {String} react - type of react
+   * @param {String} pinName - title of pin
+   * @param {String} pinId - the id of this pin
+   * @param {String} imageId - the id of pin image
+   * @returns {Number} 1
+   */
   async reactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
     if (react == 'Love') react = '💖';
     else if (react == 'Good idea') react = '👍';
@@ -391,16 +396,16 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @description delete react from user history when unreact
-     * @param {Object of user type} ownerUser - user who has pin 
-     * @param  {Object of user type} reactUser - user who unreact in pin
-     * @param {String} react - type of react
-     * @param {String} pinName - title of pin  
-     * @param {String} pinId - the id of this pin
-     * @param {String} imageId - the id of pin image
-     * @returns {Number} 1 
-     */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description delete react from user history when unreact
+   * @param {Object of user type} ownerUser - user who has pin
+   * @param  {Object of user type} reactUser - user who unreact in pin
+   * @param {String} react - type of react
+   * @param {String} pinName - title of pin
+   * @param {String} pinId - the id of this pin
+   * @param {String} imageId - the id of pin image
+   * @returns {Number} 1
+   */
   async unreactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
     if (react == 'Love') react = '💖';
     else if (react == 'Good idea') react = '👍';
@@ -490,13 +495,13 @@ export class NotificationService {
   }
 
   /**
-    * @author Nada AbdElmaboud <nada5aled52@gmail.com> 
-    * @descriptionsend popular pin notification to user 
-    * @param {Object of user type }user - user object 
-    * @param {Array<Object>} pins 
-    * @param {Array<ids>} images
-    * @returns {Number} 
-    */
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @descriptionsend popular pin notification to user
+   * @param {Object of user type }user - user object
+   * @param {Array<Object>} pins
+   * @param {Array<ids>} images
+   * @returns {Number}
+   */
   async popularPins(user, pins, images) {
     let arrayMessage = {
       pins: pins,
@@ -551,13 +556,13 @@ export class NotificationService {
   }
 
   /**
-  * @author Nada AbdElmaboud <nada5aled52@gmail.com> 
-  * @description  send pins for certan user notification to user 
-  * @param {Object of user type }user - user object 
-  * @param {Array<Object>} pins 
-  * @param {Array<ids>} images
-  * @returns {Number} 
-  */
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description  send pins for certan user notification to user
+   * @param {Object of user type }user - user object
+   * @param {Array<Object>} pins
+   * @param {Array<ids>} images
+   * @returns {Number}
+   */
   async pinsForYou(user, pins, images) {
     let arrayMessage = {
       pins: pins,
@@ -606,13 +611,13 @@ export class NotificationService {
   }
 
   /**
-  * @author Nada AbdElmaboud <nada5aled52@gmail.com> 
-  * @description send popular inspired notification to user 
-  * @param {Object of user type }user - user object 
-  * @param {Array<Object>} pins 
-  * @param {Array<ids>} images
-  * @returns {Number} 
-  */
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description send popular inspired notification to user
+   * @param {Object of user type }user - user object
+   * @param {Array<Object>} pins
+   * @param {Array<ids>} images
+   * @returns {Number}
+   */
   async pinsInspired(user, pins, images) {
     let arrayMessage = {
       pins: pins,
@@ -661,13 +666,13 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @descriptionthis function add to array but this array has limit
-    * @param {Array<Object>} notificationArray -array of data
-    * @param {Number} limit  - the limit should be
-    * @param {Object} pushedData Data should add to array
-    * @returns {Array<Object>} after delete 
-    */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptionthis function add to array but this array has limit
+   * @param {Array<Object>} notificationArray -array of data
+   * @param {Number} limit  - the limit should be
+   * @param {Object} pushedData Data should add to array
+   * @returns {Array<Object>} after delete
+   */
   async addTolimitedArray(
     notificationArray: Array<any>,
     limit: number,

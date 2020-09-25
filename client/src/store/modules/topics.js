@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const state = {
-  topics: []
+  topics: [],
+  topicsLoading: false
 };
 
 const mutations = {
@@ -40,20 +41,24 @@ const actions = {
   getTopics({ commit }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    state.topicsLoading = true;
     axios
       .get("topic")
       .then(response => {
         let topics = response.data;
         commit("setTopics", topics);
+        state.topicsLoading = false;
       })
       .catch(error => {
         console.log(error);
+        state.topicsLoading = false;
       });
   }
 };
 
 const getters = {
-  topics: state => state.topics
+  topics: state => state.topics,
+  topicsLoading: state => state.topicsLoading
 };
 
 export default {
