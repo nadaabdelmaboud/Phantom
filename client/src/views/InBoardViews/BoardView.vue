@@ -2,6 +2,7 @@
   <div class="profile" @click="clear">
     <div class="boardInfo">
       <h1>{{ board.board.name }}</h1>
+      <p style="width:100%;text-align:center;margin:0">{{ board.board.pins.length }} pins {{ board.board.sections.length }} section</p>
       <img :src="getUserImage()" />
       <i
         class="fa fa-plus globalIcons"
@@ -99,7 +100,7 @@ export default {
       this.$router.push("/Board/" + this.boardId + "/More");
       this.inPins = false;
       this.inMore = true;
-    }
+    } 
   },
   computed: {
     ...mapGetters({

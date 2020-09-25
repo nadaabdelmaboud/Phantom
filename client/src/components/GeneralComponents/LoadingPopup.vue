@@ -1,5 +1,5 @@
 <template>
-  <div id="newPin" @click="newPinPopup">
+  <div id="newPin">
     <div class="newPinData">
        <Loading :loading="loading"/>
     </div>
