@@ -19,9 +19,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "compodoc": "npx compodoc -p tsconfig.json -s"
   },
   "dependencies": {
+    "@compodoc/compodoc": "^1.1.11",
     "@google-cloud/firestore": "^4.2.0",
     "@hapi/joi": "^17.1.1",
     "@nestjs-modules/mailer": "^1.5.1",

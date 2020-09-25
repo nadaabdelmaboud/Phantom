@@ -1,0 +1,3066 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>phantom documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">phantom documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>RecommendationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/recommendation/recommendation.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#boardMoreLike">boardMoreLike</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#boardsForYou">boardsForYou</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkDublicates">checkDublicates</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followAllRecommendation">followAllRecommendation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getBoardMoreLike">getBoardMoreLike</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getHomeFeed">getHomeFeed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPinMoreLike">getPinMoreLike</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getSectionMoreLike">getSectionMoreLike</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#homeFeed">homeFeed</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pinMoreLike">pinMoreLike</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pinsForYou">pinsForYou</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pinsInspired">pinsInspired</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#popularPins">popularPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sectionMoreLike">sectionMoreLike</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#shuffle">shuffle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#topicRecommendation">topicRecommendation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#trendingRecommendation">trendingRecommendation</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(boardModel: <a href="../interfaces/board.html">Model<board></a>, pinModel: <a href="../interfaces/pin.html">Model<pin></a>, topicModel: <a href="../interfaces/topic.html">Model<topic></a>, userModel: <a href="../interfaces/user.html">Model<user></a>, NotificationService: <a href="../injectables/NotificationService.html">NotificationService</a>, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/recommendation/recommendation.service.ts:19</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>boardModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/board.html" target="_self" >Model&lt;board&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>pinModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/pin.html" target="_self" >Model&lt;pin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>topicModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/topic.html" target="_self" >Model&lt;topic&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/user.html" target="_self" >Model&lt;user&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>NotificationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NotificationService.html" target="_self" >NotificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>ValidationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="boardMoreLike"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            boardMoreLike
+                        </b>
+                        <a href="#boardMoreLike"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>boardMoreLike(userId, boardId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="620"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:620</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="boardsForYou"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            boardsForYou
+                        </b>
+                        <a href="#boardsForYou"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>boardsForYou(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="923"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:923</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkDublicates"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkDublicates
+                        </b>
+                        <a href="#checkDublicates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkDublicates(values)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:46</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>values</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followAllRecommendation"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            followAllRecommendation
+                        </b>
+                        <a href="#followAllRecommendation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followAllRecommendation(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="333"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:333</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBoardMoreLike"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getBoardMoreLike
+                        </b>
+                        <a href="#getBoardMoreLike"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBoardMoreLike(boardId, offset, limit)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="883"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:883</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHomeFeed"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getHomeFeed
+                        </b>
+                        <a href="#getHomeFeed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHomeFeed(userId, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, offset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:30</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPinMoreLike"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getPinMoreLike
+                        </b>
+                        <a href="#getPinMoreLike"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPinMoreLike(pinId, limit, offset)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="868"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:868</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSectionMoreLike"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getSectionMoreLike
+                        </b>
+                        <a href="#getSectionMoreLike"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getSectionMoreLike(boardId, sectionId, offset, limit)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="898"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:898</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>sectionId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="homeFeed"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            homeFeed
+                        </b>
+                        <a href="#homeFeed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>homeFeed(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:57</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinMoreLike"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            pinMoreLike
+                        </b>
+                        <a href="#pinMoreLike"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pinMoreLike(userId, pinId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="547"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:547</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinsForYou"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            pinsForYou
+                        </b>
+                        <a href="#pinsForYou"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pinsForYou(userId, isSearch)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1220"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:1220</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isSearch</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinsInspired"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            pinsInspired
+                        </b>
+                        <a href="#pinsInspired"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pinsInspired(userId, isSearch)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1330"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:1330</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isSearch</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popularPins"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            popularPins
+                        </b>
+                        <a href="#popularPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>popularPins(userId, isSearch)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1166"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:1166</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>isSearch</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sectionMoreLike"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            sectionMoreLike
+                        </b>
+                        <a href="#sectionMoreLike"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sectionMoreLike(userId, boardId, sectionId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="744"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:744</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>sectionId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shuffle"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            shuffle
+                        </b>
+                        <a href="#shuffle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>shuffle(a)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="251"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:251</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>a</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topicRecommendation"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            topicRecommendation
+                        </b>
+                        <a href="#topicRecommendation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>topicRecommendation(topicName, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="258"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:258</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>topicName</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trendingRecommendation"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            trendingRecommendation
+                        </b>
+                        <a href="#trendingRecommendation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>trendingRecommendation(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="299"
+                            class="link-to-prism">src/recommendation/recommendation.service.ts:299</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Injectable,
+  NotFoundException,
+  NotAcceptableException,
+  BadRequestException,
+} from &#x27;@nestjs/common&#x27;;
+import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
+import { Model } from &#x27;mongoose&#x27;;
+import { board } from &#x27;../types/board&#x27;;
+import { pin } from &#x27;../types/pin&#x27;;
+import { topic } from &#x27;../types/topic&#x27;;
+import { UserService } from &#x27;../user/user.service&#x27;;
+import { ValidationService } from &#x27;../shared/validation.service&#x27;;
+import { user } from &#x27;../types/user&#x27;;
+import { NotificationService } from &#x27;../shared/notification.service&#x27;;
+import * as mongoose from &#x27;mongoose&#x27;;
+
+@Injectable()
+export class RecommendationService {
+  constructor(
+    @InjectModel(&#x27;Board&#x27;) private readonly boardModel: Model&lt;board&gt;,
+    @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
+    @InjectModel(&#x27;Topic&#x27;) private readonly topicModel: Model&lt;topic&gt;,
+    @InjectModel(&#x27;User&#x27;) private readonly userModel: Model&lt;user&gt;,
+    private NotificationService: NotificationService,
+
+    private ValidationService: ValidationService,
+  ) {}
+
+  async getHomeFeed(userId, limit: number, offset: number) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let user &#x3D; await this.userModel.findById(userId, { homeFeed: 1 });
+    if (!user) throw new Error(&#x27;no such user&#x27;);
+    if (!user.homeFeed) user.homeFeed &#x3D; [];
+
+    if (Number(Number(offset) + Number(limit)) &gt; user.homeFeed.length) {
+      throw new NotFoundException(&#x27;invalid offset limit || not enough data&#x27;);
+    }
+    const part &#x3D; await user.homeFeed.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
+    return part;
+  }
+  async checkDublicates(values) {
+    for (let i &#x3D; 0; i &lt; values.length; i++) {
+      for (let j &#x3D; i + 1; j &lt; values.length; j++) {
+        if (String(values[i]._id) &#x3D;&#x3D; String(values[j]._id)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  async homeFeed(userId): Promise&lt;Object&gt; {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+
+    let pinExist &#x3D; {};
+    let isPinInHome &#x3D; {};
+    let topics &#x3D; [];
+    let ALLUSERS &#x3D; await this.userModel.find({}, { firstName: 1 });
+    await this.userModel
+      .update({ _id: userId }, { homeFeed: [] })
+      .catch(err &#x3D;&gt; {
+        console.log(err);
+      });
+    let user &#x3D; await this.userModel.findById(userId, {
+      history: 1,
+      followingTopics: 1,
+      homeFeed: 1,
+      boards: 1,
+      lastTopics: 1,
+    });
+    if (!user) throw new Error(&#x27;no such user&#x27;);
+    let homeFeedArr &#x3D; [];
+
+    if (user.lastTopics &amp;&amp; user.lastTopics.length &gt; 0) {
+      for (let i &#x3D; user.lastTopics.length - 1; i &gt;&#x3D; 0; i--) {
+        let random &#x3D; Math.floor(
+          Math.random() * Number(user.lastTopics[i].pinsLength) + 1,
+        );
+        if (random + 15 &gt;&#x3D; Number(user.lastTopics[i].pinsLength)) {
+          random &#x3D; random - 15;
+        }
+        let topic &#x3D; await this.topicModel
+          .findOne(
+            { name: user.lastTopics[i].topicName },
+            {
+              pins: {
+                $slice: [random, 15],
+              },
+            },
+          )
+          .lean();
+        if (topic) {
+          for (let j &#x3D; 0; j &lt; topic.pins.length; j++) {
+            let pin &#x3D; await this.pinModel.findById(topic.pins[j], {
+              imageId: 1,
+            });
+            if (pin) {
+              if (isPinInHome[String(pin._id)] !&#x3D; true) {
+                homeFeedArr.push(pin);
+                isPinInHome[String(pin._id)] &#x3D; true;
+              }
+            }
+          }
+
+          await this.userModel
+            .update({ _id: user._id }, { homeFeed: homeFeedArr })
+            .catch(err &#x3D;&gt; {
+              console.log(err);
+            });
+        }
+      }
+    }
+
+    if (!user.history) user.history &#x3D; [];
+    if (!user.followingTopics) user.followingTopics &#x3D; [];
+    for (let i &#x3D; user.history.length - 1; i &gt;&#x3D; 0; i--) {
+      topics.push(user.history[i].topic);
+      if (!pinExist[String(user.history[i].pinId)])
+        pinExist[String(user.history[i].pinId)] &#x3D; true;
+    }
+
+    for (let i &#x3D; user.followingTopics.length - 1; i &gt;&#x3D; 0; i--) {
+      let followTopic &#x3D; await this.topicModel
+        .findById(user.followingTopics[i], { name: 1 })
+        .lean();
+      if (followTopic) {
+        topics.push(followTopic.name);
+      }
+    }
+    for (let i &#x3D; 0; i &lt; user.boards.length; i++) {
+      let board &#x3D; await this.boardModel
+        .findById(user.boards[i].boardId, {
+          topic: 1,
+          personalization: 1,
+          pins: 1,
+          sections: 1,
+        })
+        .lean();
+      if (board &amp;&amp; board.personalization) {
+        if (board.topic &amp;&amp; board.topic !&#x3D; &#x27;&#x27;) {
+          topics.push(board.topic);
+        } else {
+          for (let j &#x3D; 0; j &lt; board.pins.length; j++) {
+            topics.push(board.pins[j].topic);
+            if (!pinExist[String(board.pins[j].pinId)])
+              pinExist[String(board.pins[j].pinId)] &#x3D; true;
+          }
+          for (let k &#x3D; 0; k &lt; board.sections.length; k++) {
+            for (let j &#x3D; 0; j &lt; board.sections[k].pins.length; j++) {
+              topics.push(board.sections[k].pins[j].topic);
+              if (!pinExist[String(board.sections[k].pins[j].pinId)])
+                pinExist[String(board.sections[k].pins[j].pinId)] &#x3D; true;
+            }
+          }
+        }
+      }
+    }
+
+    var freq &#x3D; {};
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      if (topics[i] &amp;&amp; topics[i] !&#x3D; undefined) {
+        if (!freq[topics[i]]) {
+          freq[topics[i]] &#x3D; 0;
+        }
+        freq[topics[i]]++;
+      }
+    }
+
+    let allHome &#x3D; 0;
+    let sortedTopics &#x3D; [];
+    for (let item in freq) {
+      sortedTopics.push([item, freq[item]]);
+      allHome +&#x3D; freq[item];
+    }
+    sortedTopics.sort(function(a, b) {
+      return b[1] - a[1];
+    });
+
+    for (let i &#x3D; 0; i &lt; sortedTopics.length; i++) {
+      let topic &#x3D; await this.topicModel
+        .findOne({ name: sortedTopics[i][0] }, { pins: 1 })
+        .lean();
+      let start &#x3D; Math.floor(Math.random() * Number(topic.pins.length) + 1);
+      if (start + 20 &gt;&#x3D; Number(topic.pins.length)) {
+        start &#x3D; start - 20;
+      }
+      for (let j &#x3D; start; j &lt; start + 20; j++) {
+        if (
+          pinExist[String(topic.pins[j])] &#x3D;&#x3D; true ||
+          isPinInHome[String(topic.pins[j])] &#x3D;&#x3D; true
+        ) {
+          continue;
+        }
+        pinExist[String(topic.pins[j])] &#x3D; true;
+        isPinInHome[String(topic.pins[j])] &#x3D; true;
+        let pin &#x3D; await this.pinModel
+          .findById(topic.pins[j], {
+            imageId: 1,
+          })
+          .lean();
+        homeFeedArr.push(pin);
+      }
+      await this.userModel
+        .update({ _id: userId }, { homeFeed: homeFeedArr })
+        .catch(err &#x3D;&gt; {
+          console.log(err);
+        });
+    }
+
+    if (homeFeedArr.length &lt; 200) {
+      let allTopics &#x3D; await this.topicModel.find({}, { pins: 1 }).lean();
+      for (let i &#x3D; 0; i &lt; allTopics.length; i++) {
+        let start &#x3D; Math.floor(
+          Math.random() * Number(allTopics[i].pins.length) + 1,
+        );
+        if (start + 10 &gt;&#x3D; Number(allTopics[i].pins.length)) {
+          start &#x3D; start - 10;
+        }
+        for (let j &#x3D; start; j &lt; start + 10; j++) {
+          if (
+            pinExist[String(allTopics[i].pins[j])] &#x3D;&#x3D; true ||
+            isPinInHome[String(allTopics[i].pins[j])] &#x3D;&#x3D; true
+          ) {
+            continue;
+          }
+          pinExist[String(allTopics[i].pins[j])] &#x3D; true;
+          isPinInHome[String(allTopics[i].pins[j])] &#x3D; true;
+          let pin &#x3D; await this.pinModel
+            .findById(allTopics[i].pins[j], {
+              imageId: 1,
+            })
+            .lean();
+          homeFeedArr.push(pin);
+        }
+        await this.userModel
+          .update({ _id: userId }, { homeFeed: homeFeedArr })
+          .catch(err &#x3D;&gt; {
+            console.log(err);
+          });
+      }
+    }
+    return { total: homeFeedArr.length };
+  }
+
+  async shuffle(a) {
+    for (let i &#x3D; a.length - 1; i &gt; 0; i--) {
+      const j &#x3D; Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] &#x3D; [a[j], a[i]];
+    }
+    return a;
+  }
+  async topicRecommendation(topicName, userId) {
+    let followers &#x3D; [];
+    let topic &#x3D; await this.topicModel
+      .findOne({ name: topicName }, { recommendedUsers: 1 })
+      .lean();
+    let user &#x3D; await this.userModel.findById(userId, { following: 1 }).lean();
+
+    let followExist &#x3D; {};
+    for (let j &#x3D; 0; j &lt; user.following.length; j++) {
+      followExist[String(user.following[j])] &#x3D; true;
+    }
+    for (let i &#x3D; 0; i &lt; topic.recommendedUsers.length; i++) {
+      if (
+        String(topic.recommendedUsers[i]) !&#x3D; String(userId) &amp;&amp;
+        followExist[String(topic.recommendedUsers[i])] !&#x3D; true
+      ) {
+        let recomUser &#x3D; await this.userModel
+          .aggregate()
+          .match({ _id: topic.recommendedUsers[i] })
+          .project({
+            followers: { $size: &#x27;$followers&#x27; },
+            profileImage: 1,
+            firstName: 1,
+            lastName: 1,
+            google: 1,
+            googleImage: 1,
+          });
+        followers.push(recomUser[0]);
+      }
+    }
+    followers &#x3D; followers.sort(function(a, b) {
+      if (a.followers &gt; b.followers) {
+        return -1;
+      } else if (a.followers &lt; b.followers) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return followers;
+  }
+  async trendingRecommendation(userId) {
+    let followers &#x3D; [];
+    let user &#x3D; await this.userModel.findById(userId, { following: 1 }).lean();
+    let topUsers &#x3D; await this.userModel
+      .aggregate()
+      .match({})
+      .project({
+        followers: { $size: &#x27;$followers&#x27; },
+        profileImage: 1,
+        firstName: 1,
+        lastName: 1,
+        google: 1,
+        googleImage: 1,
+      })
+      .sort({ followers: -1 })
+      .limit(70);
+    let followExist &#x3D; {};
+    for (let j &#x3D; 0; j &lt; user.following.length; j++) {
+      followExist[String(user.following[j])] &#x3D; true;
+    }
+
+    for (let i &#x3D; 0; i &lt; topUsers.length; i++) {
+      if (
+        String(topUsers[i]._id) !&#x3D; String(userId) &amp;&amp;
+        followExist[String(topUsers[i]._id)] !&#x3D; true
+      ) {
+        followers.push({
+          user: topUsers[i],
+          recommendType: &#x27;popular phantom accounts&#x27;,
+        });
+      }
+    }
+    return followers;
+  }
+  async followAllRecommendation(userId) {
+    let followers &#x3D; [];
+    let user &#x3D; await this.userModel.findById(userId, {
+      history: 1,
+      followingTopics: 1,
+      following: 1,
+    });
+    if (!user) throw new Error(&#x27;no such user&#x27;);
+    let followExist &#x3D; {};
+    let historyTopics &#x3D; [];
+    let followTopics &#x3D; [];
+    let topicTopics &#x3D; [];
+    let topics &#x3D; [];
+    for (let i &#x3D; user.following.length - 1; i &gt;&#x3D; 0; i--) {
+      followExist[String(user.following[i])] &#x3D; true;
+    }
+    for (let i &#x3D; user.history.length - 1; i &gt;&#x3D; 0; i--) {
+      if (!topics.includes(user.history[i].topic)) {
+        historyTopics.push(user.history[i].topic);
+        topics.push(user.history[i].topic);
+        if (historyTopics.length &gt; 3) {
+          break;
+        }
+      }
+    }
+    for (let i &#x3D; user.followingTopics.length - 1; i &gt;&#x3D; 0; i--) {
+      let topic &#x3D; await this.topicModel.findById(user.followingTopics[i], {
+        name: 1,
+      });
+      if (!topics.includes(topic.name)) {
+        topics.push(topic.name);
+        topicTopics.push(topic.name);
+        if (topicTopics.length &gt; 3) {
+          break;
+        }
+      }
+    }
+    for (let i &#x3D; user.following.length - 1; i &gt;&#x3D; 0; i--) {
+      let follower &#x3D; await this.userModel.findById(user.following[i], {
+        followingTopics: 1,
+      });
+      for (let j &#x3D; 0; j &lt; follower.followingTopics.length; j++) {
+        let topic &#x3D; await this.topicModel.findById(
+          follower.followingTopics[j],
+          { name: 1 },
+        );
+        if (!topics.includes(topic.name)) {
+          topics.push(topic.name);
+          followTopics.push(topic.name);
+          if (followTopics.length &gt; 3) {
+            break;
+          }
+        }
+      }
+    }
+
+    let limit: number &#x3D; topics.length &gt; 5 ? 5 : 10;
+    for (let i &#x3D; 0; i &lt; historyTopics.length; i++) {
+      let topic &#x3D; await this.topicModel.findOne(
+        {
+          name: String(historyTopics[i]),
+        },
+        { recommendedUsers: 1 },
+      );
+      let start &#x3D; Math.floor(
+        Math.random() * Number(topic.recommendedUsers.length) + 1,
+      );
+      if (start + limit &gt;&#x3D; Number(topic.recommendedUsers.length)) {
+        start &#x3D; start - limit;
+        if (start &lt; 0) {
+          start &#x3D; 0;
+          if (start + limit &gt;&#x3D; Number(topic.recommendedUsers.length)) {
+            limit &#x3D; topic.recommendedUsers.length;
+          }
+        }
+      }
+      for (let j &#x3D; start; j &lt; start + limit; j++) {
+        if (
+          String(topic.recommendedUsers[j]) !&#x3D; String(userId) &amp;&amp;
+          followExist[String(topic.recommendedUsers[j])] !&#x3D; true
+        ) {
+          let recomUser &#x3D; await this.userModel
+            .aggregate()
+            .match({ _id: topic.recommendedUsers[j] })
+            .project({
+              followers: { $size: &#x27;$followers&#x27; },
+              profileImage: 1,
+              firstName: 1,
+              lastName: 1,
+              google: 1,
+              googleImage: 1,
+            });
+          followers.push({
+            user: recomUser[0],
+            recommendType: &#x27;based on your recent activity&#x27;,
+          });
+          followExist[String(topic.recommendedUsers[j])] &#x3D; true;
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; topicTopics.length; i++) {
+      let topic &#x3D; await this.topicModel.findOne(
+        {
+          name: String(topicTopics[i]),
+        },
+        { recommendedUsers: 1 },
+      );
+      let start &#x3D; Math.floor(
+        Math.random() * Number(topic.recommendedUsers.length) + 1,
+      );
+      if (start + limit &gt;&#x3D; Number(topic.recommendedUsers.length)) {
+        start &#x3D; start - limit;
+        if (start &lt; 0) {
+          start &#x3D; 0;
+          if (start + limit &gt;&#x3D; Number(topic.recommendedUsers.length)) {
+            limit &#x3D; topic.recommendedUsers.length;
+          }
+        }
+      }
+      for (let j &#x3D; start; j &lt; start + limit; j++) {
+        if (
+          String(topic.recommendedUsers[j]) !&#x3D; String(userId) &amp;&amp;
+          followExist[String(topic.recommendedUsers[j])] !&#x3D; true
+        ) {
+          let recomUser &#x3D; await this.userModel
+            .aggregate()
+            .match({ _id: topic.recommendedUsers[j] })
+            .project({
+              followers: { $size: &#x27;$followers&#x27; },
+              profileImage: 1,
+              firstName: 1,
+              lastName: 1,
+              google: 1,
+              googleImage: 1,
+            });
+          followers.push({
+            user: recomUser[0],
+            recommendType: &#x27;based on your interest&#x27;,
+          });
+          followExist[String(topic.recommendedUsers[j])] &#x3D; true;
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; followTopics.length; i++) {
+      let topic &#x3D; await this.topicModel.findOne(
+        {
+          name: String(followTopics[i]),
+        },
+        { recommendedUsers: 1 },
+      );
+      let start &#x3D; Math.floor(
+        Math.random() * Number(topic.recommendedUsers.length) + 1,
+      );
+      if (start + limit &gt;&#x3D; Number(topic.recommendedUsers.length)) {
+        start &#x3D; start - limit;
+        if (start &lt; 0) {
+          start &#x3D; 0;
+          if (start + limit &gt;&#x3D; Number(topic.recommendedUsers.length)) {
+            limit &#x3D; topic.recommendedUsers.length;
+          }
+        }
+      }
+      for (let j &#x3D; start; j &lt; start + limit; j++) {
+        if (
+          String(topic.recommendedUsers[j]) !&#x3D; String(userId) &amp;&amp;
+          followExist[String(topic.recommendedUsers[j])] !&#x3D; true
+        ) {
+          let recomUser &#x3D; await this.userModel
+            .aggregate()
+            .match({ _id: topic.recommendedUsers[j] })
+            .project({
+              followers: { $size: &#x27;$followers&#x27; },
+              profileImage: 1,
+              firstName: 1,
+              lastName: 1,
+              google: 1,
+              googleImage: 1,
+            });
+          followers.push({
+            user: recomUser[0],
+            recommendType: &#x27;based on people you follow&#x27;,
+          });
+
+          followExist[String(topic.recommendedUsers[j])] &#x3D; true;
+        }
+      }
+    }
+    let topUsers &#x3D; await this.userModel
+      .aggregate()
+      .match({})
+      .project({
+        followers: { $size: &#x27;$followers&#x27; },
+        profileImage: 1,
+        firstName: 1,
+        lastName: 1,
+        google: 1,
+        googleImage: 1,
+      })
+      .sort({ followers: -1 })
+      .limit(20);
+    for (let i &#x3D; 0; i &lt; topUsers.length; i++) {
+      if (
+        String(topUsers[i]._id) !&#x3D; String(userId) &amp;&amp;
+        followExist[String(topUsers[i]._id)] !&#x3D; true
+      ) {
+        followers.push({
+          user: topUsers[i],
+          recommendType: &#x27;popular on phantom&#x27;,
+        });
+        followExist[String(topUsers[i]._id)] &#x3D; true;
+      }
+    }
+    return followers;
+  }
+  async pinMoreLike(userId, pinId) {
+    if ((await this.ValidationService.checkMongooseID([userId, pinId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    await this.pinModel.update({ _id: pinId }, { more: [] }).catch(err &#x3D;&gt; {
+      console.log(err);
+    });
+    let pin &#x3D; await this.pinModel.findById(pinId, {
+      topic: 1,
+      title: 1,
+      note: 1,
+      more: 1,
+    });
+    if (!pin) throw new Error(&#x27;no such user&#x27;);
+    let topic &#x3D; await this.topicModel
+      .findOne({ name: pin.topic }, { pins: 1 })
+      .lean();
+    let pins &#x3D; [];
+    let pinExist &#x3D; {};
+
+    if (topic) {
+      let start &#x3D; Math.floor(Math.random() * Number(topic.pins.length) + 1);
+      if (start &#x3D;&#x3D; topic.pins.length) {
+        start--;
+      }
+      let counter &#x3D; start;
+      while (true) {
+        if (String(topic.pins[counter]) !&#x3D; String(pinId)) {
+          let pinTopic &#x3D; await this.pinModel
+            .findById(topic.pins[counter], { imageId: 1 })
+            .lean();
+          if (pinTopic) {
+            if (pinExist[String(pinTopic._id)] !&#x3D; true) {
+              pins.push(pinTopic);
+              await this.pinModel
+                .update({ _id: pinId }, { more: pins })
+                .catch(err &#x3D;&gt; {
+                  console.log(err);
+                });
+            }
+            pinExist[String(pinTopic._id)] &#x3D; true;
+          }
+        }
+        counter++;
+        if (counter &gt;&#x3D; topic.pins.length) {
+          counter &#x3D; 0;
+        }
+        if (counter &#x3D;&#x3D; start) {
+          break;
+        }
+      }
+    }
+    let allpins &#x3D; await this.pinModel.find({}, { title: 1, note: 1 });
+    for (let i &#x3D; allpins.length - 1; i &gt;&#x3D; 0; i--) {
+      if (
+        (allpins[i].note &amp;&amp;
+          (allpins[i].note.includes(String(pin.title)) ||
+            allpins[i].note.includes(String(pin.note)))) ||
+        allpins[i].title.includes(String(pin.title)) ||
+        allpins[i].title.includes(String(pin.note))
+      ) {
+        if (pinExist[String(allpins[i]._id)] !&#x3D; true) {
+          pins.push(allpins[i]);
+          await this.pinModel
+            .update({ _id: pinId }, { more: pins })
+            .catch(err &#x3D;&gt; {
+              console.log(err);
+            });
+        }
+        pinExist[String(allpins[i]._id)] &#x3D; true;
+      }
+    }
+    return { total: pins.length };
+  }
+  async boardMoreLike(userId, boardId) {
+    if ((await this.ValidationService.checkMongooseID([userId, boardId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    await this.boardModel.update({ _id: boardId }, { more: [] }).catch(err &#x3D;&gt; {
+      console.log(err);
+    });
+    let board &#x3D; await this.boardModel.findById(boardId, {
+      more: 1,
+      topic: 1,
+      pins: 1,
+      name: 1,
+    });
+    if (!board) throw new Error(&#x27;no such user&#x27;);
+
+    let pins &#x3D; [];
+    let pinExist &#x3D; {};
+    let topics &#x3D; [];
+    let start &#x3D; Math.floor(Math.random() * Number(board.pins.length) + 1);
+    if (start &#x3D;&#x3D; board.pins.length) {
+      start--;
+    }
+    let counter &#x3D; start;
+    let f &#x3D; 0;
+    while (true &amp;&amp; counter &lt; board.pins.length) {
+      if (!topics.includes(board.pins[counter].topic)) {
+        topics.push(board.pins[counter].topic);
+      }
+      counter++;
+      if (counter &gt;&#x3D; board.pins.length) {
+        counter &#x3D; 0;
+      }
+      if (counter &#x3D;&#x3D; start) {
+        break;
+      }
+      f++;
+    }
+    if (board.topic &amp;&amp; board.topic !&#x3D; &#x27;&#x27;) {
+      topics.push(board.topic);
+    }
+    let limit &#x3D; 50;
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      let topic &#x3D; await this.topicModel.findOne(
+        { name: topics[i] },
+        { pins: 1 },
+      );
+      if (topic) {
+        let start &#x3D; Math.floor(Math.random() * Number(topic.pins.length) + 1);
+        if (start + limit &gt;&#x3D; Number(topic.pins.length)) {
+          start &#x3D; start - limit;
+          if (start &lt; 0) {
+            start &#x3D; 0;
+          }
+        }
+        for (let j &#x3D; start; j &lt; start + limit; j++) {
+          if (j &lt; topic.pins.length) {
+            let pinTopic &#x3D; await this.pinModel.findById(topic.pins[j], {
+              imageId: 1,
+            });
+            if (pinTopic) {
+              if (pinExist[String(pinTopic._id)] !&#x3D; true) {
+                pins.push(pinTopic);
+                await this.boardModel
+                  .update({ _id: boardId }, { more: pins })
+                  .catch(err &#x3D;&gt; {
+                    console.log(err);
+                  });
+              }
+              pinExist[String(pinTopic._id)] &#x3D; true;
+            }
+          }
+        }
+      }
+    }
+
+    let allpins &#x3D; await this.pinModel.find(
+      {},
+      { imageId: 1, title: 1, note: 1 },
+    );
+    for (let i &#x3D; 0; i &lt; allpins.length; i++) {
+      if (
+        (allpins[i].note &amp;&amp; allpins[i].note.includes(String(board.name))) ||
+        allpins[i].title.includes(String(board.name))
+      ) {
+        if (pinExist[String(allpins[i]._id)] !&#x3D; true) {
+          pins.push(allpins[i]);
+          await this.boardModel
+            .update({ _id: boardId }, { more: pins })
+            .catch(err &#x3D;&gt; {
+              console.log(err);
+            });
+        }
+        pinExist[String(allpins[i]._id)] &#x3D; true;
+      }
+    }
+    if (pins.length &lt; 10) {
+      let allTopics &#x3D; await this.topicModel.find({}, { pins: 1 }).lean();
+      for (let i &#x3D; 0; i &lt; allTopics.length; i++) {
+        let start &#x3D; Math.floor(
+          Math.random() * Number(allTopics[i].pins.length) + 1,
+        );
+        if (start + 3 &gt;&#x3D; Number(allTopics[i].pins.length)) {
+          start &#x3D; start - 3;
+        }
+        for (let j &#x3D; start; j &lt; start + 3; j++) {
+          if (pinExist[String(allTopics[i].pins[j])] &#x3D;&#x3D; true) {
+            continue;
+          }
+          pinExist[String(allTopics[i].pins[j])] &#x3D; true;
+          let pin &#x3D; await this.pinModel
+            .findById(allTopics[i].pins[j], {
+              imageId: 1,
+            })
+            .lean();
+          pins.push(pin);
+        }
+        await this.boardModel
+          .update({ _id: boardId }, { more: pins })
+          .catch(err &#x3D;&gt; {
+            console.log(err);
+          });
+      }
+    }
+    return { total: pins.length };
+  }
+  async sectionMoreLike(userId, boardId, sectionId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        boardId,
+        sectionId,
+      ])) &#x3D;&#x3D; 0
+    )
+      throw new Error(&#x27;not valid id&#x27;);
+
+    let board &#x3D; await this.boardModel.findById(boardId, { sections: 1 });
+    if (!board) throw new Error(&#x27;no such board&#x27;);
+    let pins &#x3D; [];
+    let pinExist &#x3D; {};
+    let sectionIndex &#x3D; null;
+    for (let k &#x3D; 0; k &lt; board.sections.length; k++) {
+      if (String(sectionId) &#x3D;&#x3D; String(board.sections[k]._id)) {
+        sectionIndex &#x3D; k;
+        board.sections[k].more &#x3D; [];
+        await board.save();
+        break;
+      }
+    }
+    if (!sectionIndex) {
+      throw new NotFoundException(&#x27;no section&#x27;);
+    }
+
+    let topics &#x3D; [];
+    let start &#x3D; Math.floor(
+      Math.random() * Number(board.sections[sectionIndex].pins.length) + 1,
+    );
+    if (start &#x3D;&#x3D; board.sections[sectionIndex].pins.length) {
+      start--;
+    }
+    let counter &#x3D; start;
+    while (true &amp;&amp; counter &lt; board.sections[sectionIndex].pins.length) {
+      if (!topics.includes(board.sections[sectionIndex].pins[counter].topic)) {
+        topics.push(board.sections[sectionIndex].pins[counter].topic);
+      }
+      counter++;
+      if (counter &gt;&#x3D; board.sections[sectionIndex].pins.length) {
+        counter &#x3D; 0;
+      }
+      if (counter &#x3D;&#x3D; start) {
+        break;
+      }
+    }
+
+    let limit &#x3D; 50;
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      let topic &#x3D; await this.topicModel.findOne(
+        { name: topics[i] },
+        { pins: 1 },
+      );
+      if (topic) {
+        let start &#x3D; Math.floor(Math.random() * Number(topic.pins.length) + 1);
+        if (start + limit &gt;&#x3D; Number(topic.pins.length)) {
+          start &#x3D; start - limit;
+          if (start &lt; 0) {
+            start &#x3D; 0;
+          }
+        }
+        for (let j &#x3D; start; j &lt; start + limit; j++) {
+          if (j &lt; topic.pins.length) {
+            let pinTopic &#x3D; await this.pinModel.findById(topic.pins[j], {
+              imageId: 1,
+            });
+            if (pinTopic) {
+              if (pinExist[String(pinTopic._id)] !&#x3D; true) {
+                pins.push(pinTopic);
+                board.sections[sectionIndex].more.push(pinTopic);
+                await board.save();
+              }
+              pinExist[String(pinTopic._id)] &#x3D; true;
+            }
+          }
+        }
+      }
+    }
+
+    let allpins &#x3D; await this.pinModel.find(
+      {},
+      { imageId: 1, title: 1, note: 1 },
+    );
+    for (let i &#x3D; 0; i &lt; allpins.length; i++) {
+      if (
+        (allpins[i].note &amp;&amp; allpins[i].note.includes(String(board.name))) ||
+        allpins[i].title.includes(String(board.name))
+      ) {
+        if (pinExist[String(allpins[i]._id)] !&#x3D; true) {
+          pins.push(allpins[i]);
+          board.sections[sectionIndex].more.push(allpins[i]);
+          await board.save();
+        }
+        pinExist[String(allpins[i]._id)] &#x3D; true;
+      }
+    }
+    if (pins.length &lt; 10) {
+      let allTopics &#x3D; await this.topicModel.find({}, { pins: 1 }).lean();
+      for (let i &#x3D; 0; i &lt; allTopics.length; i++) {
+        let start &#x3D; Math.floor(
+          Math.random() * Number(allTopics[i].pins.length) + 1,
+        );
+        if (start + 3 &gt;&#x3D; Number(allTopics[i].pins.length)) {
+          start &#x3D; start - 3;
+        }
+        for (let j &#x3D; start; j &lt; start + 3; j++) {
+          if (pinExist[String(allTopics[i].pins[j])] &#x3D;&#x3D; true) {
+            continue;
+          }
+          pinExist[String(allTopics[i].pins[j])] &#x3D; true;
+          let pin &#x3D; await this.pinModel
+            .findById(allTopics[i].pins[j], {
+              imageId: 1,
+            })
+            .lean();
+          pins.push(pin);
+          board.sections[sectionIndex].more.push(pin);
+          await board.save();
+        }
+      }
+    }
+    return { total: pins.length };
+  }
+  async getPinMoreLike(pinId, limit, offset) {
+    if ((await this.ValidationService.checkMongooseID([pinId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let pin &#x3D; await this.pinModel.findById(pinId, { more: 1 }).lean();
+    if (!pin) throw new Error(&#x27;no such pin&#x27;);
+    if (!pin.more) pin.more &#x3D; [];
+
+    if (Number(Number(offset) + Number(limit)) &gt; pin.more.length) {
+      throw new NotFoundException(&#x27;invalid offset limit || not enough data&#x27;);
+    }
+    return pin.more.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
+  }
+  async getBoardMoreLike(boardId, offset, limit) {
+    if ((await this.ValidationService.checkMongooseID([boardId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let board &#x3D; await this.boardModel.findById(boardId, { more: 1 }).lean();
+    if (!board) throw new Error(&#x27;no such board&#x27;);
+    if (!board.more) board.more &#x3D; [];
+    if (Number(Number(offset) + Number(limit)) &gt; board.more.length) {
+      throw new NotFoundException(&#x27;invalid offset limit || not enough data&#x27;);
+    }
+
+    return board.more.slice(
+      Number(offset),
+      Number(Number(offset) + Number(limit)),
+    );
+  }
+  async getSectionMoreLike(boardId, sectionId, offset, limit) {
+    if (
+      (await this.ValidationService.checkMongooseID([boardId, sectionId])) &#x3D;&#x3D; 0
+    )
+      throw new Error(&#x27;not valid id&#x27;);
+    let board &#x3D; await this.boardModel.findById(boardId, { sections: 1 });
+    if (!board) throw new Error(&#x27;no such board&#x27;);
+    for (let i &#x3D; 0; i &lt; board.sections.length; i++) {
+      if (String(board.sections[i]._id) &#x3D;&#x3D; String(sectionId)) {
+        if (!board.sections[i].more) board.sections[i].more &#x3D; [];
+
+        if (
+          Number(Number(offset) + Number(limit)) &gt; board.sections[i].more.length
+        ) {
+          throw new NotFoundException(
+            &#x27;invalid offset limit || not enough data&#x27;,
+          );
+        }
+        return board.sections[i].more.slice(
+          Number(offset),
+          Number(Number(offset) + Number(limit)),
+        );
+      }
+    }
+  }
+  async boardsForYou(userId) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let boards &#x3D; [];
+    let user &#x3D; await this.userModel.findById(userId, {
+      notifications: 1,
+      boards: 1,
+      following: 1,
+      followingTopics: 1,
+      notificationCounter: 1,
+      fcmToken: 1,
+      boardsForYou: 1,
+    });
+    if (!user.boardsForYou) {
+      throw new BadRequestException(&#x27;user should allow boards for you first&#x27;);
+    }
+    let allBoards &#x3D; await this.boardModel
+      .find(
+        {},
+        {
+          topic: 1,
+          name: 1,
+          counts: 1,
+          description: 1,
+          coverImages: 1,
+          creator: 1,
+        },
+      )
+      .lean();
+    for (let i &#x3D; 0; i &lt; user.boards.length; i++) {
+      let count &#x3D; 0;
+      for (let j &#x3D; allBoards.length - 1; j &gt;&#x3D; 0; j--) {
+        if (count &#x3D;&#x3D; 10) break;
+        if (String(allBoards[j]._id) !&#x3D; String(user.boards[i].boardId)) {
+          let board &#x3D; await this.boardModel
+            .findById(user.boards[i].boardId, {
+              name: 1,
+              topic: 1,
+              description: 1,
+            })
+            .lean();
+          if (
+            allBoards[j].topic &#x3D;&#x3D; board.topic ||
+            allBoards[j].name.includes(String(board.name)) ||
+            board.name.includes(String(allBoards[j].name)) ||
+            allBoards[j].description.includes(String(board.description)) ||
+            board.description.includes(String(allBoards[j].description))
+          ) {
+            if (!boards.includes(allBoards[j])) {
+              boards.push(allBoards[j]);
+              count++;
+              if (boards.length &gt;&#x3D; 50) {
+                boards &#x3D; await this.shuffle(boards);
+                for (let k &#x3D; 0; k &lt; user.boards.length; k++) {
+                  for (let n &#x3D; 0; n &lt; boards.length; n++) {
+                    if (
+                      String(user.boards[k].boardId) &#x3D;&#x3D; String(boards[n]._id)
+                    ) {
+                      boards.splice(n, 1);
+                    }
+                  }
+                }
+                for (let index &#x3D; 0; index &lt; boards.length; index++) {
+                  let boardUser &#x3D; await this.userModel.findById(
+                    boards[index].creator.id,
+                    { email: 1 },
+                  );
+                  if (
+                    String(boardUser.email) &#x3D;&#x3D; String(process.env.ADMIN_EMAIL)
+                  ) {
+                    boards.splice(index, 1);
+                  }
+                }
+                let images &#x3D; [];
+                let count: number &#x3D; 0;
+                for (let i &#x3D; 0; i &lt; boards.length; i++) {
+                  if (count &gt;&#x3D; 5) break;
+                  if (boards[i].coverImages.length &gt; 0) {
+                    count++;
+                    images.push(boards[i].coverImages[0]);
+                  }
+                }
+                let res &#x3D; await this.NotificationService.boardsForYou(
+                  user,
+                  boards,
+                  images,
+                );
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; user.followingTopics.length; i++) {
+      let topic &#x3D; await this.topicModel
+        .findById(user.followingTopics[i], {
+          name: 1,
+        })
+        .lean();
+      let count &#x3D; 0;
+      for (let j &#x3D; allBoards.length - 1; j &gt;&#x3D; 0; j--) {
+        if (count &gt; 5) break;
+        if (
+          allBoards[j].topic &#x3D;&#x3D; topic.name ||
+          allBoards[j].name.includes(String(topic.name)) ||
+          topic.name.includes(String(allBoards[j].name)) ||
+          allBoards[j].description.includes(String(topic.name))
+        ) {
+          if (!boards.includes(allBoards[j])) {
+            boards.push(allBoards[j]);
+            count++;
+            if (boards.length &gt;&#x3D; 50) {
+              boards &#x3D; await this.shuffle(boards);
+              for (let k &#x3D; 0; k &lt; user.boards.length; k++) {
+                for (let n &#x3D; 0; n &lt; boards.length; n++) {
+                  if (String(user.boards[k].boardId) &#x3D;&#x3D; String(boards[n]._id)) {
+                    boards.splice(n, 1);
+                  }
+                }
+              }
+              for (let index &#x3D; 0; index &lt; boards.length; index++) {
+                let boardUser &#x3D; await this.userModel.findById(
+                  boards[index].creator.id,
+                  { email: 1 },
+                );
+                if (
+                  String(boardUser.email) &#x3D;&#x3D; String(process.env.ADMIN_EMAIL)
+                ) {
+                  boards.splice(index, 1);
+                }
+              }
+              let images &#x3D; [];
+              let count: number &#x3D; 0;
+              for (let i &#x3D; 0; i &lt; boards.length; i++) {
+                if (count &gt;&#x3D; 5) break;
+                if (boards[i].coverImages.length &gt; 0) {
+                  count++;
+                  images.push(boards[i].coverImages[0]);
+                }
+              }
+              let res &#x3D; await this.NotificationService.boardsForYou(
+                user,
+                boards,
+                images,
+              );
+              return 1;
+            }
+          }
+        }
+      }
+    }
+
+    for (let i &#x3D; 0; i &lt; user.following.length; i++) {
+      let following &#x3D; await this.userModel
+        .findById(user.following[i], {
+          boards: 1,
+        })
+        .lean();
+      for (let j &#x3D; 0; j &lt; following.boards.length; j++) {
+        let board &#x3D; await this.boardModel
+          .findById(following.boards[j].boardId, {
+            topic: 1,
+            name: 1,
+            counts: 1,
+            description: 1,
+            coverImages: 1,
+            creator: 1,
+          })
+          .lean();
+        if (!boards.includes(board)) {
+          boards.push(board);
+          if (boards.length &gt;&#x3D; 50) {
+            boards &#x3D; await this.shuffle(boards);
+            for (let k &#x3D; 0; k &lt; user.boards.length; k++) {
+              for (let n &#x3D; 0; n &lt; boards.length; n++) {
+                if (String(user.boards[k].boardId) &#x3D;&#x3D; String(boards[n]._id)) {
+                  boards.splice(n, 1);
+                }
+              }
+            }
+            for (let index &#x3D; 0; index &lt; boards.length; index++) {
+              let boardUser &#x3D; await this.userModel.findById(
+                boards[index].creator.id,
+                { email: 1 },
+              );
+              if (String(boardUser.email) &#x3D;&#x3D; String(process.env.ADMIN_EMAIL)) {
+                boards.splice(index, 1);
+              }
+            }
+            let images &#x3D; [];
+            let count: number &#x3D; 0;
+            for (let i &#x3D; 0; i &lt; boards.length; i++) {
+              if (count &gt;&#x3D; 5) break;
+              if (boards[i].coverImages.length &gt; 0) {
+                count++;
+                images.push(boards[i].coverImages[0]);
+              }
+            }
+            let res &#x3D; await this.NotificationService.boardsForYou(
+              user,
+              boards,
+              images,
+            );
+            return 1;
+          }
+        }
+      }
+    }
+    for (let k &#x3D; 0; k &lt; user.boards.length; k++) {
+      for (let n &#x3D; 0; n &lt; boards.length; n++) {
+        if (String(user.boards[k].boardId) &#x3D;&#x3D; String(boards[n]._id)) {
+          boards.splice(n, 1);
+        }
+      }
+    }
+    boards &#x3D; await this.shuffle(boards);
+    for (let index &#x3D; 0; index &lt; boards.length; index++) {
+      let boardUser &#x3D; await this.userModel.findById(boards[index].creator.id, {
+        email: 1,
+      });
+      if (String(boardUser.email) &#x3D;&#x3D; String(process.env.ADMIN_EMAIL)) {
+        boards.splice(index, 1);
+      }
+    }
+    let images &#x3D; [];
+    let count: number &#x3D; 0;
+    for (let i &#x3D; 0; i &lt; boards.length; i++) {
+      if (count &gt;&#x3D; 5) break;
+      if (boards[i].coverImages.length &gt; 0) {
+        count++;
+        images.push(boards[i].coverImages[0]);
+      }
+    }
+    if (boards.length &gt; 0) {
+      let res &#x3D; await this.NotificationService.boardsForYou(
+        user,
+        boards,
+        images,
+      );
+    }
+    return 1;
+  }
+  async popularPins(userId, isSearch) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let user &#x3D; await this.userModel.findById(userId, {
+      pins: 1,
+      savedPins: 1,
+      popularPins: 1,
+    });
+    if (!user.popularPins) {
+      throw new BadRequestException(&#x27;user should allow popular pins first&#x27;);
+    }
+    let allPins &#x3D; await this.pinModel
+      .find({}, { imageId: 1 })
+      .sort({ reacts: -1 })
+      .limit(100);
+
+    for (let i &#x3D; 0; i &lt; user.pins.length; i++) {
+      for (let j &#x3D; 0; j &lt; allPins.length; j++) {
+        if (String(allPins[j]._id) &#x3D;&#x3D; String(user.pins[i].pinId)) {
+          allPins.splice(j, 1);
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      for (let j &#x3D; 0; j &lt; allPins.length; j++) {
+        if (String(allPins[j]._id) &#x3D;&#x3D; String(user.savedPins[i].pinId)) {
+          allPins.splice(j, 1);
+        }
+      }
+    }
+    if (!isSearch) {
+      let images &#x3D; [];
+      let count: number &#x3D; 0;
+      for (let i &#x3D; 0; i &lt; allPins.length; i++) {
+        if (count &gt;&#x3D; 5) break;
+        if (allPins[i].imageId) {
+          count++;
+          images.push(allPins[i].imageId);
+        }
+      }
+
+      let res &#x3D; await this.NotificationService.popularPins(
+        user,
+        allPins,
+        images,
+      );
+      return true;
+    }
+    let random &#x3D; Math.floor(Math.random() * 100 + 1);
+    if (random + 5 &gt;&#x3D; 100) {
+      random &#x3D; random - 5;
+    }
+    return allPins.slice(random, random + 5);
+  }
+  async pinsForYou(userId, isSearch) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let user &#x3D; await this.userModel.findById(userId, {
+      pins: 1,
+      savedPins: 1,
+      followingTopics: 1,
+      pinsForYou: 1,
+    });
+    if (!user.pinsForYou) {
+      throw new BadRequestException(&#x27;user should allow pins for you first&#x27;);
+    }
+    let topics &#x3D; [];
+    let pins &#x3D; [];
+    for (let i &#x3D; user.followingTopics.length - 1; i &gt;&#x3D; 0; i--) {
+      let topic &#x3D; await this.topicModel.findById(user.followingTopics[i], {
+        name: 1,
+      });
+      if (topic &amp;&amp; !topics.includes(String(topic.name))) {
+        topics.push(String(topic.name));
+      }
+    }
+    for (let i &#x3D; user.pins.length - 1; i &gt;&#x3D; 0; i--) {
+      let pin &#x3D; await this.pinModel.findById(user.pins[i].pinId, { topic: 1 });
+      if (pin &amp;&amp; !topics.includes(String(pin.topic))) {
+        topics.push(String(pin.topic));
+      }
+    }
+    for (let i &#x3D; user.savedPins.length - 1; i &gt;&#x3D; 0; i--) {
+      let pin &#x3D; await this.pinModel.findById(user.savedPins[i].pinId, {
+        topic: 1,
+      });
+      if (pin &amp;&amp; !topics.includes(String(pin.topic))) {
+        topics.push(String(pin.topic));
+      }
+    }
+
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      let topic &#x3D; await this.topicModel.findOne(
+        { name: topics[i] },
+        { pins: 1 },
+      );
+      if (topic) {
+        let start &#x3D; Math.floor(Math.random() * Number(topic.pins.length) + 1);
+        if (start + 10 &gt;&#x3D; Number(topic.pins.length)) {
+          start &#x3D; start - 10;
+        }
+        for (let j &#x3D; start; j &lt; start + 10; j++) {
+          let pin &#x3D; await this.pinModel.findById(topic.pins[j], { imageId: 1 });
+          if (pin &amp;&amp; !pins.includes(pin)) {
+            pins.push(pin);
+          }
+        }
+      }
+    }
+    if (pins.length &lt; 10) {
+      let allTopics &#x3D; await this.topicModel.find({}, { pins: 1 }).lean();
+      for (let i &#x3D; 0; i &lt; allTopics.length; i++) {
+        let start &#x3D; Math.floor(
+          Math.random() * Number(allTopics[i].pins.length) + 1,
+        );
+        if (start + 10 &gt;&#x3D; Number(allTopics[i].pins.length)) {
+          start &#x3D; start - 10;
+        }
+        for (let j &#x3D; start; j &lt; start + 10; j++) {
+          let pin &#x3D; await this.pinModel
+            .findById(allTopics[i].pins[j], {
+              imageId: 1,
+            })
+            .lean();
+          if (pin &amp;&amp; !pins.includes(pin)) {
+            pins.push(pin);
+          }
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; user.pins.length; i++) {
+      for (let j &#x3D; 0; j &lt; pins.length; j++) {
+        if (String(pins[j]._id) &#x3D;&#x3D; String(user.pins[i].pinId)) {
+          pins.splice(j, 1);
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      for (let j &#x3D; 0; j &lt; pins.length; j++) {
+        if (String(pins[j]._id) &#x3D;&#x3D; String(user.savedPins[i].pinId)) {
+          pins.splice(j, 1);
+        }
+      }
+    }
+    if (!isSearch) {
+      pins &#x3D; await this.shuffle(pins);
+      let images &#x3D; [];
+      let count: number &#x3D; 0;
+      for (let i &#x3D; 0; i &lt; pins.length; i++) {
+        if (count &gt;&#x3D; 5) break;
+        if (pins[i].imageId) {
+          count++;
+          images.push(pins[i].imageId);
+        }
+      }
+      await this.NotificationService.pinsForYou(user, pins, images);
+      return true;
+    }
+    let random &#x3D; Math.floor(Math.random() * pins.length + 1);
+    if (random + 5 &gt;&#x3D; pins.length) {
+      random &#x3D; random - 5;
+    }
+    return pins.slice(random, random + 5);
+  }
+  async pinsInspired(userId, isSearch) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+    let user &#x3D; await this.userModel.findById(userId);
+    if (!user.pinsInspired) {
+      throw new BadRequestException(
+        &#x27;user should allow pins inspired by activity first&#x27;,
+      );
+    }
+
+    let pins &#x3D; [];
+    if (user.lastTopics &amp;&amp; user.lastTopics.length &gt; 0) {
+      for (let i &#x3D; user.lastTopics.length - 1; i &gt;&#x3D; 0; i--) {
+        let random &#x3D; Math.floor(
+          Math.random() * Number(user.lastTopics[i].pinsLength) + 1,
+        );
+        if (random + 15 &gt;&#x3D; Number(user.lastTopics[i].pinsLength)) {
+          random &#x3D; random - 15;
+        }
+        let topic &#x3D; await this.topicModel
+          .findOne(
+            { name: user.lastTopics[i].topicName },
+            {
+              pins: {
+                $slice: [random, 15],
+              },
+            },
+          )
+          .lean();
+        if (topic) {
+          for (let j &#x3D; 0; j &lt; topic.pins.length; j++) {
+            let pin &#x3D; await this.pinModel.findById(topic.pins[j], {
+              imageId: 1,
+            });
+            if (pin) {
+              pins.push(pin);
+            }
+          }
+        }
+      }
+    }
+
+    for (let i &#x3D; 0; i &lt; user.pins.length; i++) {
+      for (let j &#x3D; 0; j &lt; pins.length; j++) {
+        if (String(pins[j]._id) &#x3D;&#x3D; String(user.pins[i].pinId)) {
+          pins.splice(j, 1);
+        }
+      }
+    }
+    for (let i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      for (let j &#x3D; 0; j &lt; pins.length; j++) {
+        if (String(pins[j]._id) &#x3D;&#x3D; String(user.savedPins[i].pinId)) {
+          pins.splice(j, 1);
+        }
+      }
+    }
+    if (!isSearch &amp;&amp; pins.length &gt; 0) {
+      let images &#x3D; [];
+      let count: number &#x3D; 0;
+      for (let i &#x3D; 0; i &lt; pins.length; i++) {
+        if (count &gt;&#x3D; 5) break;
+        if (pins[i].imageId) {
+          count++;
+          images.push(pins[i].imageId);
+        }
+      }
+      await this.NotificationService.pinsInspired(user, pins, images);
+      return true;
+    }
+    let random &#x3D; Math.floor(Math.random() * pins.length + 1);
+    if (random + 5 &gt;&#x3D; pins.length) {
+      random &#x3D; random - 5;
+    }
+    return pins.slice(random, random + 5);
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'RecommendationService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

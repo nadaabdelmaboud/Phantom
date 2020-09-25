@@ -22,7 +22,9 @@ import { ValidationService } from '../shared/validation.service';
 import { topic } from '../types/topic';
 import { pin } from '../types/pin';
 import { board } from '../types/board';
-
+/**
+ * @module Users
+ */
 @Injectable()
 export class UserService {
   constructor(
@@ -33,10 +35,10 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description get user by id
    * @param {string} id - user id wanted to get
    * @returns {object<User>}
@@ -91,7 +93,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description get notification data from user
    * @param {string} id - user id wanted to get
    * @returns {object}
@@ -113,7 +115,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description get user by findData and get only from user data
    * @param {Object} findData - user data wanted to get
    * @param {Object} data - data should get
@@ -128,7 +130,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description get user by login
    * @param {LoginDto} loginDto - email of user & password
    * @returns {object} object of _id :id of user , profileImage : user image & email :user email
@@ -149,7 +151,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description check data after create user
    * @param {RegisterDto} registerDto - data of created user
    */
@@ -183,7 +185,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description check update data after update
    * @param {UpdateDto} updateDto - data need to update
    */
@@ -221,7 +223,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description update FCM token value
    * @param {String} fcmToken - token for notification
    * @param {String} userId   - id of user
@@ -242,7 +244,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description get user following topics
    * @param {String} userId - id of user
    * @returns {Array<String>} - following topic ids s
@@ -256,7 +258,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description create new user
    * @param {RegisterDto} registerDto -data to create user
    * @returns {Object} _id ,email and profileImage of userS
@@ -348,7 +350,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description check email in formate and if exist
    * @param {String} email - email should check
    * @returns  {Object<User>}
@@ -381,7 +383,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description change user password
    * @param {String} userId - user id
    * @param {String} newPassword - new password of user
@@ -411,7 +413,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description update information in user profile
    * @param {String} userId -id of user
    * @param {UpdateDto} updateDto -update data
@@ -495,7 +497,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description update settings in user profile
    * @param {String} userId -id of user
    * @param {UpdateSettings} updateSettings - settings data should update
@@ -517,7 +519,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description set user email
    * @param {string} userId - id of user
    * @param {string} newEmail  - new email
@@ -533,7 +535,7 @@ export class UserService {
     return 1;
   }
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description delete user
    * @param {string} id -the id of user went to deleted
    */
@@ -556,7 +558,7 @@ export class UserService {
   }
 
   /**
-   * @author Nada Abdelmaboud
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description set view state of user
    * @param {String} userId - the id of user
    * @param  {String} viewState  - view state 'Default' or 'Compact'
@@ -582,7 +584,7 @@ export class UserService {
   }
 
   /**
-   * @author Nada Abdelmaboud
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get view state of user
    * @param {String} userId - the id of user
    * @returns {String} view state
@@ -605,7 +607,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description check if this user follow this user id
    * @param {Object} user - user he follow
    * @param {String} userId - id of user followed
@@ -623,7 +625,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description followUser:  make frist user id follow second user id
    * @param {String} followerId - id of user went to follow
    * @param {String} followingId  - id of user wented to be followed
@@ -698,7 +700,7 @@ export class UserService {
     return 1;
   }
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description update data in user model
    * @param {String} userId - user id
    * @param {Object} data  - object of data need to update in user model
@@ -712,7 +714,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description unfollowUser:  make frist user id unfollow second user id
    * @param {String} followerId - id of user went to unfollow
    * @param {String} followingId  - id of user wented to be unfollowed
@@ -791,7 +793,7 @@ export class UserService {
     throw new BadRequestException('you did not follow this user before');
   }
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description userFollowers: get user followers
    * @param {string} userId - user id
    * @param {Number} limit  - the limit
@@ -833,7 +835,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description userFollowings: get user following
    * @param {string} userId - user id
    * @param {Number} limit  - the limit
