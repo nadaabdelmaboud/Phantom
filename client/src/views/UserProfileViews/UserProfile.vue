@@ -5,7 +5,8 @@
       <img v-else :src="getImage(this.user.profileImage)" />
       <h1 v-if="myprofile">{{ this.meUser.userName }}</h1>
       <h1 v-else>{{ this.user.userName }}</h1>
-      <h6 v-if="myprofile">{{ this.meUser.followers }} following</h6>
+      <h6 v-if="myprofile">
+        {{ Array.isArray(this.meUser.followers)?this.meUser.followers.length: this.meUser.followers}} following</h6>
       <h6 v-else>{{ this.user.followers }} following</h6>
       <div
         class="buttons inRoute follow"
