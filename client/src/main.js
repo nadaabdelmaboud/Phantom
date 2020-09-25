@@ -8,10 +8,9 @@ import "./registerServiceWorker";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-Vue.config.productionTip = false;
-Vue.prototype.$url = "http://localhost:3000/api";
-//axios.defaults.baseURL = "https://phantomrequiemserver.herokuapp.com/api";
-axios.defaults.baseURL = "http://localhost:3000/api";
+Vue.config.productionTip = process.env.VUE_APP_productionTip;
+Vue.prototype.$url = process.env.VUE_APP_baseURL;
+axios.defaults.baseURL = process.env.VUE_APP_baseURL;
 
 new Vue({
   router,
