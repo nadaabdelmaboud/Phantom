@@ -5,7 +5,8 @@ const state = {
   Trending: [],
   Topics: [],
   following: [],
-  followPageLoading: false
+  followPageLoading: false,
+  popupLoading: false
 };
 
 const mutations = {
@@ -43,30 +44,36 @@ const mutations = {
 
 const actions = {
   allRecommendations({ commit }) {
+    state.popupLoading = true;
     axios
       .get("me/recommendation/follow")
       .then(response => {
         commit("setAllRecommend", response.data);
+        state.popupLoading = false;
       })
       .catch(error => {
         console.log(error);
       });
   },
   trendingRecommendations({ commit }) {
+    state.popupLoading = true;
     axios
       .get("me/recommendation/trending")
       .then(response => {
         commit("setTrendingRecommend", response.data);
+        state.popupLoading = false;
       })
       .catch(error => {
         console.log(error);
       });
   },
   async topicsRecommendations({ commit }, topicName) {
+    state.popupLoading = true;
     await axios
       .get("me/recommendation/topics/" + topicName)
       .then(response => {
         commit("setTopicsRecommend", response.data);
+        state.popupLoading = false;
       })
       .catch(error => {
         console.log(error);
@@ -123,7 +130,8 @@ const getters = {
   Trending: state => state.Trending,
   Topics: state => state.Topics,
   following: state => state.following,
-  followPageLoading: state => state.followPageLoading
+  followPageLoading: state => state.followPageLoading,
+  popupLoading: state => state.popupLoading
 };
 
 export default {
