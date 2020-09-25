@@ -19,11 +19,13 @@
                   toChat({
                     name: s.firstName + ' ' + s.lastName,
                     id: s._id,
-                    imageId: s.profileImage
+                    imageId: s.profileImage,
+                    google:s.google,
+                    googleImage:s.googleImage
                   })
                 "
               >
-                <img :src="getImage(s.profileImage)" />
+                <img :src="getImage(s.profileImage,s.google,s.googleImage)" />
                 <span>{{ s.firstName }}</span>
                 <span> {{ s.lastName }}</span>
               </div>
@@ -39,11 +41,13 @@
             toChat({
               name: r.userName,
               id: r._id,
-              imageId: r.profileImage
+              imageId: r.profileImage,
+              google:r.google,
+              googleImage:r.googleImage
             })
           "
         >
-          <img style=" margin-top: -25px;" :src="getImage(r.profileImage)" />
+          <img style=" margin-top: -25px;" :src="getImage(r.profileImage,r.google,r.googleImage)" />
           <div class="inlineDiv">
             <p>{{ r.userName }}</p>
             <p>{{ r.lastMessage.message | sliceMsg }}</p>
@@ -58,11 +62,13 @@
               toChat({
                 name: f.firstName + ' ' + f.lastName,
                 id: f._id,
-                imageId: f.profileImage
+                imageId: f.profileImage,
+                google:f.google,
+                googleImage:f.googleImage
               })
             "
           >
-            <img :src="getImage(f.profileImage)" />
+            <img :src="getImage(f.profileImage,f.google,f.googleImage)" />
             <span>{{ f.firstName }}</span>
             <span> {{ f.lastName }}</span>
           </div>
@@ -85,6 +91,8 @@
           :last="msg.last"
           :seen="msg.seen"
           :delivered="msg.deliver"
+          :google="msg.owner ? myData.google : chatWith.google"
+          :googleImage="msg.owner ? myData.googleImage : chatWith.googleImage"
           class="ChatMsg"
         />
         <div v-if="typing" class="typing-loader"></div>
@@ -121,7 +129,9 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: ""
+        id: "",
+        google:false,
+        googleImage:""
       },
       socket: "",
       allowNotify: false,
@@ -146,8 +156,6 @@ export default {
         this.$store.commit("chat/addMsg", msg);
         this.scrollDown();
         this.socket.emit("message", {
-          recieverImage: this.getImage(this.myData.profileImage),
-          senderImage: this.getImage(this.myData.profileImage),
           recieverName: this.chatWith.name,
           recieverId: this.chatWith.id,
           senderName: this.myData.firstName + " " + this.myData.lastName,

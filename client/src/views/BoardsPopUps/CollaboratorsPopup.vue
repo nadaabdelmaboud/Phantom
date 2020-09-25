@@ -22,6 +22,8 @@
             :personalization="c.personalization"
             :editDescription="c.editDescription"
             :addCollaborators="c.addCollaborators"
+            :google="c.google"
+            :googleImage="c.googleImage"
           />
         </div>
         <div style="margin-top:10px">
@@ -57,6 +59,8 @@
                   :firstName="s.firstName"
                   :lastName="s.lastName"
                   :id="s._id"
+                  :google="s.google"
+                  :googleImage="s.googleImage"
                 />
               </div>
             </div>
@@ -75,6 +79,8 @@
               :firstName="follower.firstName"
               :lastName="follower.lastName"
               :id="follower._id"
+              :google="follower.google"
+              :googleImage="follower.googleImage"
             />
           </div>
         </div>
@@ -92,6 +98,8 @@
               :firstName="f.firstName"
               :lastName="f.lastName"
               :id="f._id"
+              :google="f.google"
+              :googleImage="f.googleImage"
             />
           </div>
         </div>

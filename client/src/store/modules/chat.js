@@ -78,6 +78,7 @@ const actions = {
       console.log(err);
     }
     commit("setChat", chat);
+    state.loading = false;
   },
   sendMsg({ dispatch }, msg) {
     axios
