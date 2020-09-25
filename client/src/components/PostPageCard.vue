@@ -1099,6 +1099,7 @@ export default {
       console.log("after request", this.addCommentObject);
       socket.emit("comment", this.addCommentObject);
       socket.on("sendComment", data => {
+        console.log("is received")
         this.$store.commit("postPage/addNewComment", data);
       });
       inputField.value = "";
