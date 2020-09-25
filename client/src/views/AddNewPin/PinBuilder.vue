@@ -146,7 +146,7 @@
 .pin {
   background-color: $offWhite;
   height: calc(100vh - 120px);
-  min-height: 500px;
+  min-height:600px ;
   border-radius: 16px;
   animation: appear 0.2s linear 1 both;
 }
@@ -186,7 +186,6 @@
 }
 .addImg {
   width: 30%;
-  height: 400px;
 }
 .imageInput {
   width: 100%;
@@ -209,7 +208,7 @@
     text-align: center;
   }
   p:nth-child(3) {
-    bottom: 20%;
+    bottom: 20px;
   }
   p:nth-child(2) {
     bottom: 50%;
@@ -239,7 +238,6 @@
   left: 5px;
   right: 5px;
   bottom: 5px;
-  height: 390px;
 }
 .dragging {
   border: 1px solid $darkBlue;
@@ -247,7 +245,6 @@
   background-color: $lightBlue;
 }
 .noImage {
-  min-height: 400px;
   border: 2px solid red;
   border-radius: 16px;
   background-color: rgba(230, 0, 35, 0.03);

@@ -277,17 +277,27 @@ const actions = {
       }
     }
   },
-  getFullSection({ commit }, { boardId, sectionId }) {
+  getFullSection({ commit,state }, { boardId, sectionId }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    let newLoad=false;
+    if(!state.section.section || sectionId != state.section.section._id){
+      state.section={}
+      commit("popUpsState/toggleLoadingPopup", null, { root: true });
+      newLoad=true;
+    }
     axios
       .get("boards/" + boardId + "/sections/" + sectionId)
       .then(response => {
         let section = response.data;
         commit("setCurrentSection", section);
+        if(newLoad)
+        commit("popUpsState/toggleLoadingPopup", null, { root: true });
       })
       .catch(error => {
         console.log(error);
+        if(newLoad)
+        commit("popUpsState/toggleLoadingPopup", null, { root: true });
       });
   },
   createSection({ dispatch }, { id, name }) {
