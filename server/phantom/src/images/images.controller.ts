@@ -52,8 +52,9 @@ export class ImagesController {
       var resolvedPath = await path.resolve(filePath);
       return response.sendFile(resolvedPath);
     }
-    if (!id || id == ' ' || id == '' || id == 'none') {
-      var filePath = './static/default.jpg';
+    console.log(id);
+    if (!id || id == ' ' || id == '' || id == 'none' || id == 'null') {
+      var filePath = './src/static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
       return response.sendFile(resolvedPath);
     }
@@ -62,14 +63,14 @@ export class ImagesController {
       { responseType: 'stream' },
       function(err, res) {
         if (err) {
-          var filePath = './static/default.jpg';
+          var filePath = './src/static/default.jpg';
           var resolvedPath = path.resolve(filePath);
           return response.sendFile(resolvedPath);
         }
         res.data
           .on('end', () => {})
           .on('error', err => {
-            var filePath = './static/default.jpg';
+            var filePath = './src/static/default.jpg';
             var resolvedPath = path.resolve(filePath);
             return response.sendFile(resolvedPath);
           })
