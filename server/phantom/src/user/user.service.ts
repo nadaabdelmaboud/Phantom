@@ -455,10 +455,9 @@ export class UserService {
         { country: updateDto.country },
       );
     if (updateDto.profileImage) {
-      let profileImage = mongoose.Types.ObjectId(updateDto.profileImage);
       await this.userModel.updateOne(
         { _id: userId },
-        { profileImage: profileImage },
+        { profileImage: updateDto.profileImage },
       );
     }
 

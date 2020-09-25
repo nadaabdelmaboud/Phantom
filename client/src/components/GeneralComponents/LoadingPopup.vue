@@ -1,22 +1,22 @@
 <template>
   <div id="newPin">
     <div class="newPinData">
-       <Loading :loading="loading"/>
+      <Loading :loading="loading" />
     </div>
   </div>
 </template>
 
 <script>
-import Loading from "./Loading"
+import Loading from "./Loading";
 export default {
   name: "LoadingPopup",
-  data:function(){
-      return{
-          loading:true
-      };
+  data: function() {
+    return {
+      loading: true
+    };
   },
-  components:{
-      Loading
+  components: {
+    Loading
   }
 };
 </script>

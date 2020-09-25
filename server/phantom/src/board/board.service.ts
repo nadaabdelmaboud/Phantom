@@ -26,6 +26,13 @@ export class BoardService {
     @InjectModel('User') private readonly userModel: Model<user>,
     private ValidationService: ValidationService,
   ) {}
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
   async getBoardById(boardId): Promise<board> {
     try {
       if (!this.ValidationService.checkMongooseID([boardId]))
@@ -145,7 +152,7 @@ export class BoardService {
       }
     }
     await this.boardModel.ensureIndexes();
-    return true;
+    return {_id:board._id};
   }
   async sortBoardsAtoZ(userId) {
     userId = mongoose.Types.ObjectId(userId);

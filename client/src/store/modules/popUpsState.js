@@ -21,7 +21,7 @@ const state = {
   showFollowPopup: false,
   navList: false,
   showList: false,
-  loadingPopup:false
+  loadingPopup: false
 };
 
 const mutations = {
@@ -91,7 +91,7 @@ const mutations = {
     else state.navList = !state.navList;
   },
   toggleLoadingPopup(state) {
-   state.loadingPopup = !state.loadingPopup
+    state.loadingPopup = !state.loadingPopup;
   }
 };
 export default {
