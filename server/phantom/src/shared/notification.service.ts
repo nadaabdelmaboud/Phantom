@@ -15,13 +15,16 @@ const params = {
 let app = firebase.initializeApp({
   credential: firebase.credential.cert(params),
 });
+/**
+ * @module Notification
+ */
 @Injectable()
 export class NotificationService {
 
   constructor() { }
 
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @descriptionsendNotification : send one notification to client 
     * @param {Array<String>} tokens  - array of fcm tokens wanted to send this massage to
     * @param {Object} message - message needed  to send
@@ -50,7 +53,7 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @descriptionsendOfflineNotification :send array of massages & notification
     * @param {Array<Object>}messages - array of massages wented to send
     * @param {String} fcmToken - fcm token needed to send to
@@ -67,7 +70,7 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @descriptionsend notification to user when some one follow hem
     * @param {Object of User type} followedUser - user who is followed
     * @param {Object of User type} followerUser -user who follow
@@ -139,7 +142,7 @@ export class NotificationService {
     };
   }
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @descriptiondelete follow message from notification history 
     * @param {Object of User type} followedUser - user who is followed
     * @param {Object of User type} followerUser -user who follow
@@ -212,7 +215,7 @@ export class NotificationService {
     };
   }
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @descriptionsend notification when some one comment in user pin
     * @param {Object of user type} ownerUser - user who has pin 
     * @param  {Object of user type} commenterUser - user who comment in pin
@@ -298,7 +301,7 @@ export class NotificationService {
   }
 
   /**
-     * @author Aya Abohadima
+     * @author Aya Abohadima <ayasabohadima@gmail.com>
      * @description notification to pin owner when someone react to pin
      * @param {Object of user type} ownerUser - user who has pin 
      * @param  {Object of user type} reactUser - user who react in pin
@@ -388,7 +391,7 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @description delete react from user history when unreact
      * @param {Object of user type} ownerUser - user who has pin 
      * @param  {Object of user type} reactUser - user who unreact in pin
@@ -487,7 +490,7 @@ export class NotificationService {
   }
 
   /**
-    * @author Nada Abdelmaboud
+    * @author Nada AbdElmaboud <nada5aled52@gmail.com> 
     * @descriptionsend popular pin notification to user 
     * @param {Object of user type }user - user object 
     * @param {Array<Object>} pins 
@@ -548,7 +551,7 @@ export class NotificationService {
   }
 
   /**
-  * @author Nada Abdelmaboud
+  * @author Nada AbdElmaboud <nada5aled52@gmail.com> 
   * @description  send pins for certan user notification to user 
   * @param {Object of user type }user - user object 
   * @param {Array<Object>} pins 
@@ -603,7 +606,7 @@ export class NotificationService {
   }
 
   /**
-  * @author Nada Abdelmaboud
+  * @author Nada AbdElmaboud <nada5aled52@gmail.com> 
   * @description send popular inspired notification to user 
   * @param {Object of user type }user - user object 
   * @param {Array<Object>} pins 
@@ -658,7 +661,7 @@ export class NotificationService {
   }
 
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @descriptionthis function add to array but this array has limit
     * @param {Array<Object>} notificationArray -array of data
     * @param {Number} limit  - the limit should be

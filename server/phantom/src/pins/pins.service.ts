@@ -1598,7 +1598,7 @@ export class PinsService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description get followings pins
    * @param {String} userId  - user id
    * @returns {Array<Object>} fololowng user with there pins

@@ -126,7 +126,7 @@ export class TopicService {
     return pins;
   }
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @descriptioncheck if this user follow this topic 
     * @param {String} userId -user id  
     * @param {String} topicId - topic id
@@ -148,7 +148,7 @@ export class TopicService {
   }
 
   /**
-    * @author Aya Abohadima
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
     * @description make user follow topic
     * @param {String} userId -user id  
     * @param {String} topicId - topic id
@@ -199,7 +199,7 @@ export class TopicService {
   }
 
   /**
-  * @author Aya Abohadima
+  * @author Aya Abohadima <ayasabohadima@gmail.com>
   * @description make user unfollow topic
   * @param {String} userId -user id  
   * @param {String} topicId - topic id
@@ -242,7 +242,7 @@ export class TopicService {
   }
 
   /**
-   * @author Aya Abohadima
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @descriptionget user following topic
    * @param {String} userId -user id  
    * @returns {Array<Object>} -following topic object

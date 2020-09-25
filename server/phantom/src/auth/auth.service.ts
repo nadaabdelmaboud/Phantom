@@ -6,10 +6,12 @@ import {
 import { sign } from 'jsonwebtoken';
 import { UserService } from '../user/user.service';
 import { Payload } from '../types/payload';
-
+/**
+ * @module Authorization
+ */
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
   /**
    * @author Nada Abdelmaboud <nada5aled52@gmail.com>
    * @description google aouth handler

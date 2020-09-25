@@ -72,9 +72,18 @@ export default {
   methods: {
     checkLists(event) {
       console.log(event.target.id);
-      if (event.target.id == "alertIcon")
-        this.$store.commit("notifications/alterShow", true);
-      else this.$store.commit("notifications/alterShow", false);
+      this.$store.commit(
+        "notifications/alterShow",
+        event.target.id == "alertIcon"
+      );
+      this.$store.commit(
+        "popUpsState/toggleNavList",
+        event.target.id == "homeNavSmall"
+      );
+      this.$store.commit(
+        "popUpsState/toggleShowList",
+        event.target.id == "showList"
+      );
     }
   }
 };

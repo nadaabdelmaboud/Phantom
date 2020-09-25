@@ -1,6 +1,8 @@
 <template>
   <div class="content">
-    <ring-loader :loading="loading" color="#da94a8"></ring-loader>
+    <div class="wrapper">
+      <ring-loader :loading="loading" color="#da94a8"></ring-loader>
+    </div>
   </div>
 </template>
 
@@ -18,7 +20,10 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  margin-left: 49vw;
   padding-bottom: 40px;
+}
+.wrapper {
+  width: 60px;
+  margin: auto;
 }
 </style>

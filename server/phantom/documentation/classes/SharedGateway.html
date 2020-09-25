@@ -1,0 +1,1517 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>phantom documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">phantom documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li>SharedGateway</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/shared/shared.gateway.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#clearUserId">clearUserId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#comment">comment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deliver">deliver</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#likeComment">likeComment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#likeReply">likeReply</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#message">message</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reactPin">reactPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reply">reply</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#seenMessage">seenMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setUserId">setUserId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#type">type</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(ChatService: <a href="../injectables/ChatService.html">ChatService</a>, pinModel: <a href="../interfaces/pin.html">Model<pin></a>, userModel: <a href="../interfaces/user.html">Model<user></a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/shared/shared.gateway.ts:12</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>ChatService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ChatService.html" target="_self" >ChatService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>pinModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/pin.html" target="_self" >Model&lt;pin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/user.html" target="_self" >Model&lt;user&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearUserId"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            clearUserId
+                        </b>
+                        <a href="#clearUserId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>clearUserId(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;clearUserId&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="218"
+                            class="link-to-prism">src/shared/shared.gateway.ts:218</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="comment"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            comment
+                        </b>
+                        <a href="#comment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>comment(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;comment&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/shared/shared.gateway.ts:31</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deliver"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deliver
+                        </b>
+                        <a href="#deliver"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deliver(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;delivered&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">src/shared/shared.gateway.ts:52</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="likeComment"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            likeComment
+                        </b>
+                        <a href="#likeComment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>likeComment(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;likeComment&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/shared/shared.gateway.ts:162</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="likeReply"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            likeReply
+                        </b>
+                        <a href="#likeReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>likeReply(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;likeReply&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="187"
+                            class="link-to-prism">src/shared/shared.gateway.ts:187</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="message"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            message
+                        </b>
+                        <a href="#message"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>message(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;message&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="92"
+                            class="link-to-prism">src/shared/shared.gateway.ts:92</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reactPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            reactPin
+                        </b>
+                        <a href="#reactPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reactPin(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;reactPin&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/shared/shared.gateway.ts:123</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reply"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            reply
+                        </b>
+                        <a href="#reply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reply(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;reply&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">src/shared/shared.gateway.ts:118</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seenMessage"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            seenMessage
+                        </b>
+                        <a href="#seenMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>seenMessage(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;seen&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">src/shared/shared.gateway.ts:73</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setUserId"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setUserId
+                        </b>
+                        <a href="#setUserId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setUserId(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;setUserId&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">src/shared/shared.gateway.ts:19</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="type"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            type
+                        </b>
+                        <a href="#type"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>type(socket: Socket, data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@SubscribeMessage(&#x27;typing&#x27;)<br /></code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/shared/shared.gateway.ts:35</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>socket</td>
+                                    <td>
+                                            <code>Socket</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SubscribeMessage, WebSocketGateway } from &#x27;@nestjs/websockets&#x27;;
+import { Socket } from &#x27;socket.io&#x27;;
+import { UserService } from &#x27;../user/user.service&#x27;;
+import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
+import { Model } from &#x27;mongoose&#x27;;
+import { pin } from &#x27;../types/pin&#x27;;
+import { user } from &#x27;../types/user&#x27;;
+import { ChatService } from &#x27;src/chat/chat.service&#x27;;
+import { time } from &#x27;console&#x27;;
+const jwt &#x3D; require(&#x27;jsonwebtoken&#x27;);
+@WebSocketGateway()
+export class SharedGateway {
+  constructor(
+    private ChatService: ChatService,
+    @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
+    @InjectModel(&#x27;User&#x27;) private readonly userModel: Model&lt;user&gt;,
+  ) { }
+  @SubscribeMessage(&#x27;setUserId&#x27;)
+  async setUserId(socket: Socket, data: any) {
+    const token &#x3D; data.token;
+    const decoded &#x3D; await jwt.verify(token, process.env.SECRET_KEY);
+    let userId &#x3D; decoded._id;
+    let user &#x3D; await this.userModel.findById(userId, { socketId: 1 });
+    if (user) {
+      console.log(&#x27;user&#x27;, socket.id);
+      user.socketId &#x3D; socket.id;
+      await user.save();
+    }
+  }
+  @SubscribeMessage(&#x27;comment&#x27;)
+  async comment(socket: Socket, data: any) {
+    socket.emit(&#x27;sendComment&#x27;, data);
+  }
+  @SubscribeMessage(&#x27;typing&#x27;)
+  async type(socket: Socket, data: any) {
+    let senderId &#x3D; data.senderId;
+    let sender &#x3D; await this.userModel.findById(senderId);
+    let recieverId &#x3D; data.recieverId;
+    let reciever &#x3D; await this.userModel.findById(recieverId);
+    if (sender &amp;&amp; reciever) {
+      console.log(&#x27;sending&#x27;);
+      socket.to(reciever.socketId).emit(&#x27;isTyping&#x27;, {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
+        senderName: sender.firstName + &#x27; &#x27; + sender.lastName,
+        senderId: data.senderId,
+      });
+    }
+  }
+  @SubscribeMessage(&#x27;delivered&#x27;)
+  async deliver(socket: Socket, data: any) {
+    let senderId &#x3D; data.senderId;
+    let sender &#x3D; await this.userModel.findById(senderId);
+    let recieverId &#x3D; data.recieverId;
+    let reciever &#x3D; await this.userModel.findById(recieverId);
+    let messageId &#x3D; data.messageId;
+    console.log(&#x27;deliver event&#x27;);
+    if (sender &amp;&amp; reciever) {
+      console.log(reciever.socketId, &#x27;to emiit&#x27;);
+      socket.to(reciever.socketId).emit(&#x27;setDelivered&#x27;, {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
+        senderName: sender.firstName + &#x27; &#x27; + sender.lastName,
+        senderId: data.senderId,
+        messageId: data.messageId,
+      });
+      await this.ChatService.deliver(recieverId, messageId, true);
+    }
+  }
+  @SubscribeMessage(&#x27;seen&#x27;)
+  async seenMessage(socket: Socket, data: any) {
+    let senderId &#x3D; data.senderId;
+    let sender &#x3D; await this.userModel.findById(senderId);
+    let recieverId &#x3D; data.recieverId;
+    let reciever &#x3D; await this.userModel.findById(recieverId);
+    let messageId &#x3D; data.messageId;
+    if (sender &amp;&amp; reciever) {
+      socket.to(reciever.socketId).emit(&#x27;setSeen&#x27;, {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
+        senderName: sender.firstName + &#x27; &#x27; + sender.lastName,
+        senderId: data.senderId,
+        messageId: data.messageId,
+      });
+      await this.ChatService.seen(recieverId, messageId, true);
+    }
+  }
+  @SubscribeMessage(&#x27;message&#x27;)
+  async message(socket: Socket, data: any) {
+    let messageText &#x3D; data.message;
+    let senderId &#x3D; data.senderId;
+    let sender &#x3D; await this.userModel.findById(senderId);
+    let recieverId &#x3D; data.recieverId;
+    let reciever &#x3D; await this.userModel.findById(recieverId);
+    let messageId &#x3D; await this.ChatService.sendMessage(
+      senderId,
+      [recieverId],
+      messageText,
+    );
+    if (sender &amp;&amp; reciever &amp;&amp; messageText) {
+      socket.to(reciever.socketId).emit(&#x27;sendMessage&#x27;, {
+        recieverImage: reciever.profileImage,
+        senderImage: sender.profileImage,
+        recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
+        senderName: sender.firstName + &#x27; &#x27; + sender.lastName,
+        message: messageText,
+        senderId: data.senderId,
+        date: Date.now(),
+        messageId: messageId,
+      });
+    }
+  }
+
+  @SubscribeMessage(&#x27;reply&#x27;)
+  async reply(socket: Socket, data: any) {
+    socket.emit(&#x27;sendReply&#x27;, data);
+  }
+
+  @SubscribeMessage(&#x27;reactPin&#x27;)
+  async reactPin(socket: Socket, data: any) {
+    const token &#x3D; data.token;
+    const decoded &#x3D; await jwt.verify(token, process.env.SECRET_KEY);
+    let userId &#x3D; decoded._id;
+    let user &#x3D; await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    let pin &#x3D; await this.pinModel.findById(data.pinId, { counts: 1 });
+    socket.emit(&#x27;sendPinReact&#x27;, {
+      reactType: data.reactType,
+      userName: user.firstName + &#x27; &#x27; + user.lastName,
+      userImage: user.profileImage,
+      pinId: data.pinId,
+      wowReacts:
+        data.reactType &#x3D;&#x3D; &#x27;Wow&#x27;
+          ? pin.counts.wowReacts.valueOf() + 1
+          : pin.counts.wowReacts,
+      loveReacts:
+        data.reactType &#x3D;&#x3D; &#x27;Love&#x27;
+          ? pin.counts.loveReacts.valueOf() + 1
+          : pin.counts.loveReacts,
+      goodIdeaReacts:
+        data.reactType &#x3D;&#x3D; &#x27;Good idea&#x27;
+          ? pin.counts.goodIdeaReacts.valueOf() + 1
+          : pin.counts.goodIdeaReacts,
+      hahaReacts:
+        data.reactType &#x3D;&#x3D; &#x27;Haha&#x27;
+          ? pin.counts.hahaReacts.valueOf() + 1
+          : pin.counts.hahaReacts,
+      thanksReacts:
+        data.reactType &#x3D;&#x3D; &#x27;Thanks&#x27;
+          ? pin.counts.thanksReacts.valueOf() + 1
+          : pin.counts.thanksReacts,
+    });
+  }
+
+  @SubscribeMessage(&#x27;likeComment&#x27;)
+  async likeComment(socket: Socket, data: any) {
+    const token &#x3D; data.token;
+    const decoded &#x3D; await jwt.verify(token, process.env.SECRET_KEY);
+    let userId &#x3D; decoded._id;
+    let user &#x3D; await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    let pin &#x3D; await this.pinModel.findById(data.pinId, { comments: 1 });
+    for (var i &#x3D; 0; i &lt; pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) &#x3D;&#x3D; String(data.commentId)) {
+        socket.emit(&#x27;sendLikeComment&#x27;, {
+          userName: user.firstName + &#x27; &#x27; + user.lastName,
+          userImage: user.profileImage,
+          pinId: data.pinId,
+          commentId: pin.comments[i]._id,
+          commentLikes: pin.comments[i].likes.counts.valueOf() + 1,
+        });
+        break;
+      }
+    }
+  }
+
+  @SubscribeMessage(&#x27;likeReply&#x27;)
+  async likeReply(socket: Socket, data: any) {
+    const token &#x3D; data.token;
+    const decoded &#x3D; await jwt.verify(token, process.env.SECRET_KEY);
+    let userId &#x3D; decoded._id;
+    let user &#x3D; await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+    });
+    let pin &#x3D; await this.pinModel.findById(data.pinId, { comments: 1 });
+    for (var i &#x3D; 0; i &lt; pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) &#x3D;&#x3D; String(data.commentId)) {
+        for (var j &#x3D; 0; j &lt; pin.comments[i].replies.length; j++) {
+          if (String(pin.comments[i].replies[j]._id) &#x3D;&#x3D; String(data.replyId)) {
+            socket.emit(&#x27;sendLikeReply&#x27;, {
+              userName: user.firstName + &#x27; &#x27; + user.lastName,
+              userImage: user.profileImage,
+              pinId: data.pinId,
+              commentId: pin.comments[i]._id,
+              replyId: data.replyId,
+              replyLikes: pin.comments[i].replies[j].likes.counts.valueOf() + 1,
+            });
+            break;
+          }
+        }
+
+        break;
+      }
+    }
+  }
+  @SubscribeMessage(&#x27;clearUserId&#x27;)
+  async clearUserId(socket: Socket, data: any) {
+    const token &#x3D; data.token;
+    const decoded &#x3D; await jwt.verify(token, process.env.SECRET_KEY);
+    let userId &#x3D; decoded._id;
+    let user &#x3D; await this.userModel.findById(userId, { socketId: 1 });
+    if (user) {
+      user.socketId &#x3D; &#x27;none&#x27;;
+      await user.save();
+    }
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'SharedGateway.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -18,7 +18,10 @@ const state = {
   searchWindow: false,
   searchSuggestions: false,
   editPinPopUp: false,
-  showFollowPopup: false
+  showFollowPopup: false,
+  navList: false,
+  showList: false,
+  loadingPopup:false
 };
 
 const mutations = {
@@ -78,6 +81,17 @@ const mutations = {
   },
   toggleshowFollowPopup(state) {
     state.showFollowPopup = !state.showFollowPopup;
+  },
+  toggleShowList(state, show) {
+    if (show == false) state.showList = show;
+    else state.showList = !state.showList;
+  },
+  toggleNavList(state, show) {
+    if (show == false) state.navList = show;
+    else state.navList = !state.navList;
+  },
+  toggleLoadingPopup(state) {
+   state.loadingPopup = !state.loadingPopup
   }
 };
 export default {

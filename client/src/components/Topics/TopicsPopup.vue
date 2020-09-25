@@ -1,5 +1,5 @@
 <template>
-  <div id="createBoard" @click="closePopup">
+  <div id="createBoard">
     <div class="boardData">
       <div class="dots">
         <i class="fa fa-circle"></i>
@@ -9,10 +9,11 @@
         <i class="fa fa-circle"></i>
       </div>
       <h2>Last step! Tell us what you're interested in</h2>
-      <div class="topicsContainer">
+      <Loading :loading="!topics.length" />
+      <div v-if="topics.length" class="topicsContainer">
         <div v-for="t in topics" :key="t.name" @click="addTopic(t._id)">
           <TopicsCard
-            v-if="!t.isFollow"
+            :isFollowed="t.isFollow"
             :topicName="t.name"
             :topicId="t._id"
             :imageId="t.imageId"
@@ -23,7 +24,7 @@
         <button v-if="picked.length < 5" class="disable">
           pick {{ 5 - picked.length }} more
         </button>
-        <button v-if="picked.length >= 5" @click="followTopics">Done</button>
+        <button v-if="picked.length >= 5" @click="closePopup">Done</button>
       </div>
     </div>
   </div>
@@ -31,6 +32,7 @@
 
 <script>
 import TopicsCard from "./TopicsCards";
+import Loading from "../GeneralComponents/Loading";
 import { mapGetters } from "vuex";
 
 export default {
@@ -41,26 +43,21 @@ export default {
     };
   },
   components: {
-    TopicsCard
+    TopicsCard,
+    Loading
   },
   methods: {
-    addTopic(name) {
-      let findtopic = this.picked.indexOf(name);
-      if (findtopic == -1) this.picked.push(name);
-      else {
+    addTopic(id) {
+      let findtopic = this.picked.indexOf(id);
+      console.log("find", findtopic);
+      if (findtopic == -1) {
+        this.picked.push(id);
+      } else {
         this.picked.splice(findtopic, 1);
       }
     },
-    followTopics() {
-      this.picked.forEach(topic => {
-        console.log(topic);
-        this.$store.dispatch("topics/followTopic", topic);
-      });
+    closePopup() {
       this.$store.commit("popUpsState/toggleTopicsPopup");
-    },
-    closePopup(event) {
-      if (event.target.id == "createBoard")
-        this.$store.commit("popUpsState/toggleTopicsPopup");
     }
   },
   computed: {
@@ -70,6 +67,22 @@ export default {
   },
   mounted() {
     this.$store.dispatch("topics/getTopics");
+    this.topics.forEach(topic => {
+      if (topic.isFollow && this.picked.indexOf(topic._id) == -1) {
+        this.picked.push(topic._id);
+      }
+    });
+  },
+  watch: {
+    topics: {
+      handler(topics) {
+        topics.forEach(topic => {
+          if (topic.isFollow && this.picked.indexOf(topic._id) == -1) {
+            this.picked.push(topic._id);
+          }
+        });
+      }
+    }
   }
 };
 </script>

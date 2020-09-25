@@ -1,0 +1,4013 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>phantom documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">phantom documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>PinsService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/pins/pins.service.ts</code>
+        </p>
+
+
+
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#addPintoUser">addPintoUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#calcDate">calcDate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkPinStatus">checkPinStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createComment">createComment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createPin">createPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createReact">createReact</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createReply">createReply</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#editCreatedPin">editCreatedPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#editSavedPin">editSavedPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCurrentUserPins">getCurrentUserPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCurrentUserSavedPins">getCurrentUserSavedPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getFollowingPins">getFollowingPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPinById">getPinById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPinCommentsReplies">getPinCommentsReplies</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPinFull">getPinFull</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#likeComment">likeComment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#likeReply">likeReply</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reportPin">reportPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#savePin">savePin</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(pinModel: <a href="../interfaces/pin.html">Model<pin></a>, boardModel: <a href="../interfaces/board.html">Model<board></a>, userModel: <a href="../interfaces/user.html">Model<user></a>, topicModel: <a href="../interfaces/topic.html">Model<topic></a>, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>, BoardService: <a href="../injectables/BoardService.html">BoardService</a>, NotificationService: <a href="../injectables/NotificationService.html">NotificationService</a>, EmailService: <a href="../injectables/Email.html">Email</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/pins/pins.service.ts:25</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>pinModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/pin.html" target="_self" >Model&lt;pin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>boardModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/board.html" target="_self" >Model&lt;board&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/user.html" target="_self" >Model&lt;user&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>topicModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/topic.html" target="_self" >Model&lt;topic&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>ValidationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>BoardService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/BoardService.html" target="_self" >BoardService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>NotificationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NotificationService.html" target="_self" >NotificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>EmailService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/Email.html" target="_self" >Email</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addPintoUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            addPintoUser
+                        </b>
+                        <a href="#addPintoUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addPintoUser(userId, pinId, boardId, sectionId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="353"
+                            class="link-to-prism">src/pins/pins.service.ts:353</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>sectionId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calcDate"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            calcDate
+                        </b>
+                        <a href="#calcDate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calcDate(d)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="840"
+                            class="link-to-prism">src/pins/pins.service.ts:840</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>d</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkPinStatus"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkPinStatus
+                        </b>
+                        <a href="#checkPinStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkPinStatus(pinId, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="270"
+                            class="link-to-prism">src/pins/pins.service.ts:270</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createComment"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            createComment
+                        </b>
+                        <a href="#createComment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createComment(pinId, commentText, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="548"
+                            class="link-to-prism">src/pins/pins.service.ts:548</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>commentText</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the text of the new comment</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            createPin
+                        </b>
+                        <a href="#createPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPin(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, createPinDto: <a href="../classes/CreatePinDto.html">CreatePinDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/pins/pins.service.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank" >String</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>createPinDto</td>
+                                    <td>
+                                                <code><a href="../classes/CreatePinDto.html" target="_self" >CreatePinDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createReact"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            createReact
+                        </b>
+                        <a href="#createReact"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createReact(pinId, reactType, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="882"
+                            class="link-to-prism">src/pins/pins.service.ts:882</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>reactType</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the react type (Wow-Love-Good idea-Thanks-Haha-none)</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createReply"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            createReply
+                        </b>
+                        <a href="#createReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createReply(pinId, replyText, userId, commentId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="656"
+                            class="link-to-prism">src/pins/pins.service.ts:656</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>replyText</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the text of the new reply</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>commentId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the comment</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editCreatedPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            editCreatedPin
+                        </b>
+                        <a href="#editCreatedPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>editCreatedPin(pinId, userId, boardId, sectionId, description, title, link)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1129"
+                            class="link-to-prism">src/pins/pins.service.ts:1129</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the new board</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>sectionId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the new section</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>description</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the new description</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>title</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the new title</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>link</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the new destination link</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editSavedPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            editSavedPin
+                        </b>
+                        <a href="#editSavedPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>editSavedPin(pinId, userId, boardId, sectionId, note)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1374"
+                            class="link-to-prism">src/pins/pins.service.ts:1374</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the new board</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>sectionId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the new section</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>note</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the new note</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentUserPins"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getCurrentUserPins
+                        </b>
+                        <a href="#getCurrentUserPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCurrentUserPins(userId, ifMe, limit)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="382"
+                            class="link-to-prism">src/pins/pins.service.ts:382</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ifMe</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>flag indicates if current user or another user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the limit of user pins returned</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/pin.html" target="_self" >Promise&lt;Array&lt;pin&gt;&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCurrentUserSavedPins"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getCurrentUserSavedPins
+                        </b>
+                        <a href="#getCurrentUserSavedPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCurrentUserSavedPins(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="518"
+                            class="link-to-prism">src/pins/pins.service.ts:518</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Array&lt;object&gt;&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFollowingPins"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getFollowingPins
+                        </b>
+                        <a href="#getFollowingPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFollowingPins(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1606"
+                            class="link-to-prism">src/pins/pins.service.ts:1606</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>fololowng user with there pins</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPinById"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getPinById
+                        </b>
+                        <a href="#getPinById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPinById(pinId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/pins/pins.service.ts:42</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/pin.html" target="_self" >Promise&lt;pin&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPinCommentsReplies"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getPinCommentsReplies
+                        </b>
+                        <a href="#getPinCommentsReplies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPinCommentsReplies(pinId, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="749"
+                            class="link-to-prism">src/pins/pins.service.ts:749</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Array&lt;object&gt;&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPinFull"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getPinFull
+                        </b>
+                        <a href="#getPinFull"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPinFull(pinId, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/pins/pins.service.ts:59</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="likeComment"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            likeComment
+                        </b>
+                        <a href="#likeComment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>likeComment(pinId, commentId, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1027"
+                            class="link-to-prism">src/pins/pins.service.ts:1027</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>commentId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the comment</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="likeReply"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            likeReply
+                        </b>
+                        <a href="#likeReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>likeReply(pinId, commentId, userId, replyId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1071"
+                            class="link-to-prism">src/pins/pins.service.ts:1071</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>commentId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the comment</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>replyId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the reply</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            reportPin
+                        </b>
+                        <a href="#reportPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reportPin(userId, pinId, reason)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1655"
+                            class="link-to-prism">src/pins/pins.service.ts:1655</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>reason</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>reason why the pin has been reported</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="savePin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            savePin
+                        </b>
+                        <a href="#savePin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>savePin(userId, pinId, boardId, sectionId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="421"
+                            class="link-to-prism">src/pins/pins.service.ts:421</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>boardId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>sectionId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of the user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  UnauthorizedException,
+  NotAcceptableException,
+} from &#x27;@nestjs/common&#x27;;
+import { NotificationService } from &#x27;../shared/notification.service&#x27;;
+import { Model } from &#x27;mongoose&#x27;;
+import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
+import { ValidationService } from &#x27;../shared/validation.service&#x27;;
+import { Email } from &#x27;../shared/send-email.service&#x27;;
+import { CreatePinDto } from &#x27;./dto/create-pin.dto&#x27;;
+import { pin } from &#x27;../types/pin&#x27;;
+import { comment } from &#x27;../types/pin&#x27;;
+import { reply } from &#x27;../types/pin&#x27;;
+import { BoardService } from &#x27;../board/board.service&#x27;;
+import { board } from &#x27;../types/board&#x27;;
+import { topic } from &#x27;../types/topic&#x27;;
+import { user } from &#x27;../types/user&#x27;;
+/**
+ * @module Pins
+ */
+@Injectable()
+export class PinsService {
+  constructor(
+    @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
+    @InjectModel(&#x27;Board&#x27;) private readonly boardModel: Model&lt;board&gt;,
+    @InjectModel(&#x27;User&#x27;) private readonly userModel: Model&lt;user&gt;,
+    @InjectModel(&#x27;Topic&#x27;) private readonly topicModel: Model&lt;topic&gt;,
+    private ValidationService: ValidationService,
+    private BoardService: BoardService,
+    private NotificationService: NotificationService,
+    private EmailService: Email,
+  ) {}
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get pin document
+   * @param {string} pinId - the id of the pin
+   * @returns  {Promise&lt;pin&gt;}
+   */
+  async getPinById(pinId): Promise&lt;pin&gt; {
+    try {
+      if ((await this.ValidationService.checkMongooseID([pinId])) &#x3D;&#x3D; 0)
+        throw new Error(&#x27;not valid id&#x27;);
+      const pin &#x3D; await this.pinModel.findById(pinId);
+      return pin;
+    } catch (ex) {
+      throw new Error(&#x27;pin not found&#x27;);
+    }
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get full pin object with creator data , user&amp;pin type (creator-saved-none) , user&amp;react type
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;object&gt;}
+   */
+  async getPinFull(pinId, userId): Promise&lt;object&gt; {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) &#x3D;&#x3D; 0)
+      throw new Error(&#x27;not valid id&#x27;);
+
+    let pinType &#x3D; &#x27;none&#x27;;
+    let pin &#x3D; await this.pinModel
+      .findById(pinId, {
+        creator: 1,
+        reacts: 1,
+        topic: 1,
+        imageId: 1,
+        title: 1,
+        note: 1,
+        imageHeight: 1,
+        imageWidth: 1,
+        comments: 1,
+        counts: 1,
+      })
+      .lean();
+
+    let user &#x3D; await this.userModel.findById(userId, {
+      savedPins: 1,
+      history: 1,
+      lastTopics: 1,
+    });
+
+    let creator &#x3D; await this.userModel
+      .findById(pin.creator.id, {
+        profileImage: 1,
+        followers: 1,
+        google: 1,
+        googleImage: 1,
+      })
+      .lean();
+    if (!user) throw new NotFoundException({ message: &#x27;user not found&#x27; });
+    if (String(pin.creator.id) &#x3D;&#x3D; String(userId)) {
+      pinType &#x3D; &#x27;creator&#x27;;
+    } else {
+      for (let k &#x3D; 0; k &lt; user.savedPins.length; k++) {
+        if (String(user.savedPins[k].pinId) &#x3D;&#x3D; String(pin._id)) {
+          pinType &#x3D; &#x27;saved&#x27;;
+          break;
+        }
+      }
+    }
+    let react &#x3D; &#x27;none&#x27;;
+    for (let i &#x3D; 0; i &lt; pin.reacts.length; i++) {
+      if (String(pin.reacts[i].userId) &#x3D;&#x3D; String(userId)) {
+        react &#x3D; pin.reacts[i].reactType.toString();
+        break;
+      }
+    }
+    if (pin) {
+      let creatorInfo &#x3D; {};
+      if (creator) {
+        creatorInfo &#x3D; {
+          creatorImage: creator.profileImage,
+          followers: creator.followers.length,
+          google: creator.google,
+          googleImage: creator.googleImage,
+        };
+      }
+      if (!user.history) user.history &#x3D; [];
+      user.history.push({
+        topic: pin.topic,
+        pinId: pin._id,
+      });
+      user.lastTopics &#x3D; [];
+      await user.save();
+      if (!user.lastTopics) user.lastTopics &#x3D; [];
+      if (pin.topic &amp;&amp; pin.topic !&#x3D; undefined &amp;&amp; pin.topic !&#x3D; &#x27;undefined&#x27;) {
+        let topic &#x3D; await this.topicModel
+          .aggregate()
+          .match({ name: pin.topic })
+          .project({ pins: { $size: &#x27;$pins&#x27; } });
+        if (user.lastTopics.length &gt; 0) {
+          if (
+            user.lastTopics[user.lastTopics.length - 1].topicName &#x3D;&#x3D; pin.topic
+          ) {
+            await user.save();
+            return {
+              pin: pin,
+              type: pinType,
+              creatorInfo: creatorInfo,
+              react: react,
+            };
+          }
+        }
+        user.lastTopics.push({
+          topicName: pin.topic,
+          pinsLength: topic[0].pins,
+        });
+        if (user.lastTopics.length &gt; 5) {
+          user.lastTopics &#x3D; user.lastTopics.slice(1, 5);
+        }
+      }
+      await user.save();
+      return {
+        pin: pin,
+        type: pinType,
+        creatorInfo: creatorInfo,
+        react: react,
+      };
+    }
+
+    return { success: false };
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description create new pin
+   * @param {CreatePinDto} CreatePinDto - the create pin object
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;object&gt;}
+   */
+  async createPin(userId: String, createPinDto: CreatePinDto): Promise&lt;object&gt; {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        createPinDto.board,
+      ])) &#x3D;&#x3D; 0
+    )
+      throw new BadRequestException({ message: &#x27;user/board id not valid&#x27; });
+    let user &#x3D; await this.userModel
+      .findById(userId, {
+        firstName: 1,
+        lastName: 1,
+      })
+      .lean();
+    if (!user) throw new NotFoundException({ message: &#x27;user not found&#x27; });
+    let board &#x3D; await this.boardModel.findById(createPinDto.board, {
+      sections: 1,
+      creator: 1,
+      collaborators: 1,
+    });
+    if (!board) {
+      throw new NotFoundException({ message: &#x27;board not found&#x27; });
+    }
+
+    let isCreator &#x3D; await this.BoardService.isCreator(board, userId);
+    let isCollaborator &#x3D; await this.BoardService.isCollaborator(board, userId);
+    if (!isCreator &amp;&amp; !(isCollaborator &amp;&amp; isCollaborator.createPin)) {
+      throw new UnauthorizedException(
+        &#x27;this user is unauthorized to add pin to this board&#x27;,
+      );
+    }
+    let section &#x3D; null;
+    if (createPinDto.section) {
+      let checkSection &#x3D; await this.BoardService.checkBoardHasSection(
+        board,
+        createPinDto.section,
+      );
+      if (checkSection) {
+        section &#x3D; createPinDto.section;
+      }
+    }
+    let pin &#x3D; new this.pinModel({
+      imageId: createPinDto.imageId,
+      imageWidth: createPinDto.imageWidth,
+      imageHeight: createPinDto.imageHeight,
+      destLink: createPinDto.link,
+      topic: createPinDto.topicName,
+      section: section,
+      title: createPinDto.title,
+      creator: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: userId,
+      },
+      board: createPinDto.board,
+      createdAt: Date.now(),
+      note: createPinDto.note,
+      comments: [],
+      counts: {
+        comments: 0,
+        thanksReacts: 0,
+        loveReacts: 0,
+        wowReacts: 0,
+        goodIdeaReacts: 0,
+        hahaReacts: 0,
+      },
+      reacts: [],
+    });
+    await pin.save().catch(err &#x3D;&gt; {
+      console.log(err);
+    });
+    await this.BoardService.addPintoBoard(
+      pin._id,
+      createPinDto.board,
+      createPinDto.section,
+    );
+    await this.addPintoUser(
+      userId,
+      pin._id,
+      createPinDto.board,
+      createPinDto.section,
+    );
+    await this.pinModel.ensureIndexes();
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get pin related data (board belongs to , section belongs to , user&amp;pin relation)
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;object&gt;}
+   */
+  async checkPinStatus(pinId, userId): Promise&lt;object&gt; {
+    let pinType &#x3D; &#x27;none&#x27;;
+    let boardName &#x3D; &#x27;none&#x27;;
+    let pin &#x3D; await this.pinModel
+      .findById(pinId, {
+        creator: 1,
+        board: 1,
+        section: 1,
+      })
+      .lean();
+
+    let user &#x3D; await this.userModel
+      .findById(userId, {
+        savedPins: 1,
+      })
+      .lean();
+    let boardId &#x3D; &#x27;none&#x27;;
+    let sectionId &#x3D; &#x27;none&#x27;;
+    let sectionName &#x3D; &#x27;none&#x27;;
+
+    if (!user) throw new NotFoundException({ message: &#x27;user not found&#x27; });
+    if (String(pin.creator.id) &#x3D;&#x3D; String(userId)) {
+      pinType &#x3D; &#x27;creator&#x27;;
+      let board &#x3D; await this.boardModel
+        .findById(pin.board, { name: 1, sections: 1 })
+        .lean();
+      if (board) {
+        boardName &#x3D; String(board.name);
+        boardId &#x3D; board._id;
+      }
+      if (pin.section) {
+        for (let i &#x3D; 0; i &lt; board.sections.length; i++) {
+          if (String(board.sections[i]._id) &#x3D;&#x3D; String(pin.section)) {
+            sectionId &#x3D; String(pin.section);
+            sectionName &#x3D; String(board.sections[i].sectionName);
+            break;
+          }
+        }
+      }
+    } else {
+      for (let k &#x3D; 0; k &lt; user.savedPins.length; k++) {
+        if (String(user.savedPins[k].pinId) &#x3D;&#x3D; String(pin._id)) {
+          pinType &#x3D; &#x27;saved&#x27;;
+          let board &#x3D; await this.boardModel
+            .findById(user.savedPins[k].boardId, { name: 1, sections: 1 })
+            .lean();
+          if (board) {
+            boardName &#x3D; String(board.name);
+            boardId &#x3D; board._id;
+          }
+          if (user.savedPins[k].sectionId) {
+            for (let i &#x3D; 0; i &lt; board.sections.length; i++) {
+              if (
+                String(board.sections[i]._id) &#x3D;&#x3D;
+                String(user.savedPins[k].sectionId)
+              ) {
+                sectionId &#x3D; String(user.savedPins[k].sectionId);
+                sectionName &#x3D; String(board.sections[i].sectionName);
+                break;
+              }
+            }
+          }
+          break;
+        }
+      }
+    }
+    return {
+      board: boardName,
+      type: pinType,
+      boardId: boardId,
+      sectionId: sectionId,
+      section: sectionName,
+    };
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description add pin to a certain user
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the pin
+   * @param {string} sectionId - the id of the user
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async addPintoUser(userId, pinId, boardId, sectionId): Promise&lt;boolean&gt; {
+    if ((await this.ValidationService.checkMongooseID([userId, pinId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    if (sectionId) {
+      if ((await this.ValidationService.checkMongooseID([sectionId])) &#x3D;&#x3D; 0) {
+        throw new BadRequestException(&#x27;not valid id&#x27;);
+      }
+    } else {
+      sectionId &#x3D; null;
+    }
+    let user &#x3D; await this.userModel.findById(userId, { pins: 1 });
+    if (!user) throw new NotFoundException(&#x27;no such user&#x27;);
+    user.pins.push({
+      pinId: pinId,
+      boardId: boardId,
+      sectionId: sectionId,
+    });
+    await user.save();
+    return true;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get user pins
+   * @param {string} userId - the id of the user
+   * @param {boolean} ifMe - flag indicates if current user or another user
+   * @param {number} limit - the limit of user pins returned
+   * @returns  {Promise&lt;Array&lt;object&gt;}
+   */
+  async getCurrentUserPins(userId, ifMe, limit): Promise&lt;Array&lt;pin&gt;&gt; {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid Id&#x27;);
+    }
+    let user;
+    if (ifMe &#x3D;&#x3D; true)
+      user &#x3D; await this.userModel.findById(userId, { pins: 1 }).lean();
+    else user &#x3D; await this.userModel.findById(userId, { pins: 1, email: 1 });
+
+    if (!user) throw new BadRequestException(&#x27;no such user&#x27;);
+    if (!ifMe &amp;&amp; user.email &#x3D;&#x3D; process.env.ADMIN_EMAIL) {
+      return [];
+    }
+    let retPins &#x3D; [];
+    if (!limit || limit &gt; user.pins.length) limit &#x3D; user.pins.length;
+    for (var i &#x3D; user.pins.length - 1; i &gt;&#x3D; user.pins.length - limit; i--) {
+      let pinFound &#x3D; await this.pinModel.findById(user.pins[i].pinId, {
+        _id: 1,
+        imageId: 1,
+        imageWidth: 1,
+        imageHeight: 1,
+        title: 1,
+        topic: 1,
+      });
+      if (pinFound) {
+        retPins.push(pinFound);
+      }
+    }
+    return retPins;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description save pin
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the pin
+   * @param {string} sectionId - the id of the user
+   * @returns  {Promise&lt;object&gt;}
+   */
+  async savePin(userId, pinId, boardId, sectionId): Promise&lt;object&gt; {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        pinId,
+        boardId,
+      ])) &#x3D;&#x3D; 0
+    ) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+
+    let user &#x3D; await this.userModel.findById(userId, { savedPins: 1 });
+    if (!user) throw new NotFoundException(&#x27;no such user&#x27;);
+    let pin &#x3D; await this.pinModel.findById(pinId, { savers: 1 });
+    if (!pin) throw new NotFoundException(&#x27;no such pin&#x27;);
+    let board &#x3D; await this.boardModel.findById(boardId, {
+      creator: 1,
+      sections: 1,
+      collaborators: 1,
+    });
+    if (!board) {
+      throw new NotFoundException({ message: &#x27;board not found&#x27; });
+    }
+    let isCreator &#x3D; await this.BoardService.isCreator(board, userId);
+    let isCollaborator &#x3D; await this.BoardService.isCollaborator(board, userId);
+    if (!isCreator &amp;&amp; !(isCollaborator &amp;&amp; isCollaborator.savePin)) {
+      throw new UnauthorizedException(
+        &#x27;this user is unauthorized to save pin to this board&#x27;,
+      );
+    }
+    let found &#x3D; false;
+    for (var i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      if (String(user.savedPins[i].pinId) &#x3D;&#x3D; String(pinId)) {
+        found &#x3D; true;
+        break;
+      }
+    }
+    if (!found) {
+      let section &#x3D; null;
+      if (sectionId) {
+        if ((await this.ValidationService.checkMongooseID([sectionId])) &#x3D;&#x3D; 0) {
+          throw new BadRequestException(&#x27;not valid section id&#x27;);
+        }
+        let checkSection &#x3D; await this.BoardService.checkBoardHasSection(
+          board,
+          sectionId,
+        );
+        if (checkSection) {
+          let board &#x3D; await this.boardModel.findById(boardId, { sections: 1 });
+          for (let i &#x3D; 0; i &lt; board.sections.length; i++) {
+            for (let j &#x3D; 0; j &lt; board.sections[i].pins.length; j++) {
+              if (String(board.sections[i].pins[j].pinId) &#x3D;&#x3D; String(pinId)) {
+                throw new BadRequestException(&#x27;pin is already in this section&#x27;);
+              }
+            }
+          }
+          section &#x3D; sectionId;
+        }
+      } else {
+        let board &#x3D; await this.boardModel.findById(boardId, { pins: 1 });
+        for (let i &#x3D; 0; i &lt; board.pins.length; i++) {
+          if (String(board.pins[i].pinId) &#x3D;&#x3D; String(pinId)) {
+            throw new BadRequestException(&#x27;pin is already in this board&#x27;);
+          }
+        }
+      }
+
+      user.savedPins.push({
+        pinId: pinId,
+        boardId: boardId,
+        sectionId: section,
+        note: &#x27;&#x27;,
+      });
+      pin.savers.push(userId);
+      await pin.save();
+    } else {
+      throw new BadRequestException(&#x27;pin is already saved&#x27;);
+    }
+    if (boardId &amp;&amp; boardId !&#x3D; undefined) {
+      if ((await this.ValidationService.checkMongooseID([boardId])) !&#x3D; 0) {
+        await this.BoardService.addPintoBoard(pinId, boardId, sectionId);
+      }
+    }
+    await user.save();
+    return {
+      board: pin.board,
+      section: pin.section,
+      _id: pin._id,
+      imageId: pin.imageId,
+    };
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get user saved pins
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;Array&lt;object&gt;&gt;}
+   */
+  async getCurrentUserSavedPins(userId): Promise&lt;Array&lt;object&gt;&gt; {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    let user &#x3D; await this.userModel.findById(userId, { savedPins: 1 }).lean();
+    if (!user) throw new NotFoundException(&#x27;no such user&#x27;);
+    let retPins &#x3D; [];
+    for (var i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      let pinFound &#x3D; await this.pinModel
+        .findById(user.savedPins[i].pinId, {
+          imageId: 1,
+          imageHeight: 1,
+          imageWidth: 1,
+          topic: 1,
+        })
+        .lean();
+      if (pinFound) {
+        retPins.push(pinFound);
+      }
+    }
+    return retPins;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description create a comment on a pin
+   * @param {string} pinId - the id of the pin
+   * @param {string} commentText - the text of the new comment
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;object&gt;}
+   */
+  async createComment(pinId, commentText, userId): Promise&lt;object&gt; {
+    if ((await this.ValidationService.checkMongooseID([userId, pinId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    if (!commentText || commentText &#x3D;&#x3D; &#x27;&#x27; || commentText &#x3D;&#x3D; &#x27; &#x27;) {
+      throw new BadRequestException(&#x27;comment is empty&#x27;);
+    }
+    let user &#x3D; await this.userModel.findById(userId, {
+      firstName: 1,
+      lastName: 1,
+      profileImage: 1,
+      google: 1,
+      googleImage: 1,
+    });
+    let pin &#x3D; await this.pinModel.findById(pinId, {
+      title: 1,
+      imageId: 1,
+      comments: 1,
+      counts: 1,
+      creator: 1,
+    });
+    let ownerUser &#x3D; await this.userModel.findById(pin.creator.id, {
+      notifications: 1,
+      offlineNotifications: 1,
+      fcmToken: 1,
+      notificationCounter: 1,
+      pinsNotification: 1,
+    });
+    let cs &#x3D; &lt;comment&gt;(&lt;unknown&gt;{
+      commenter: userId,
+      comment: commentText,
+      date: new Date(Date.now()),
+      replies: [],
+      likes: {
+        counts: 0,
+        likers: [],
+      },
+    });
+    if (!user || !pin) throw new NotFoundException();
+    pin.comments.push(cs);
+    pin.counts.comments &#x3D; pin.counts.comments.valueOf() + 1;
+    await pin.save();
+    if (!ownerUser.pinsNotification || ownerUser.pinsNotification &#x3D;&#x3D; true)
+      await this.NotificationService.commentPin(
+        ownerUser,
+        user,
+        commentText,
+        pin.title,
+        pinId,
+        pin.imageId,
+      );
+    let newComment &#x3D; pin.comments[pin.comments.length - 1];
+    if (
+      String(newComment.commenter) &#x3D;&#x3D; String(userId) &amp;&amp;
+      String(commentText) &#x3D;&#x3D; String(newComment.comment)
+    ) {
+      return {
+        comment: {
+          id: newComment._id,
+          commenter: newComment.commenter,
+          commentText: newComment.comment,
+          google: user.google,
+          googleImage: user.googleImage,
+          date: &#x27;just now&#x27;,
+          commenterName: user.firstName + &#x27; &#x27; + user.lastName,
+          commenterImage: userId.profileImage,
+          pinId: pinId,
+          likes: newComment.likes,
+
+          isLiked: false,
+        },
+        replies: newComment.replies,
+      };
+    }
+    for (let i &#x3D; pin.comments.length - 1; i &gt;&#x3D; 0; i--) {
+      if (
+        String(pin.comments[i].commenter) &#x3D;&#x3D; String(userId) &amp;&amp;
+        String(commentText) &#x3D;&#x3D; String(pin.comments[i].comment)
+      ) {
+        return {
+          comment: {
+            id: pin.comments[i]._id,
+            commenter: pin.comments[i].commenter,
+            commentText: pin.comments[i].comment,
+            date: &#x27;just now&#x27;,
+            google: user.google,
+            googleImage: user.googleImage,
+            commenterName: user.firstName + &#x27; &#x27; + user.lastName,
+            commenterImage: userId.profileImage,
+            pinId: pinId,
+            likes: pin.comments[i].likes,
+            isLiked: false,
+          },
+          replies: pin.comments[i].replies,
+        };
+      }
+    }
+    throw new Error();
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description create a reply on a comment on a pin
+   * @param {string} pinId - the id of the pin
+   * @param {string} replyText - the text of the new reply
+   * @param {string} userId - the id of the user
+   * @param {string} commentId - the id of the comment
+   * @returns  {Promise&lt;object&gt;}
+   */
+  async createReply(pinId, replyText, userId, commentId): Promise&lt;object&gt; {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        pinId,
+        commentId,
+      ])) &#x3D;&#x3D; 0
+    ) {
+      throw new BadRequestException(&#x27;invalid id&#x27;);
+    }
+    let user &#x3D; await this.userModel
+      .findById(userId, {
+        firstName: 1,
+        lastName: 1,
+        profileImage: 1,
+        google: 1,
+        googleImage: 1,
+      })
+      .lean();
+    if (!replyText || replyText &#x3D;&#x3D; &#x27;&#x27; || replyText &#x3D;&#x3D; &#x27; &#x27;) {
+      throw new BadRequestException(&#x27;reply is empty&#x27;);
+    }
+    let pin &#x3D; await this.pinModel.findById(pinId, { comments: 1 });
+
+    if (!pin) throw new NotFoundException();
+    for (var i &#x3D; 0; i &lt; pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) &#x3D;&#x3D; String(commentId)) {
+        var rp &#x3D; &lt;reply&gt;(&lt;unknown&gt;{
+          replier: userId,
+          reply: replyText,
+          date: new Date(Date.now()),
+          likes: {
+            counts: 0,
+            likers: [],
+          },
+        });
+        pin.comments[i].replies.push(rp);
+        await pin.save();
+        let newReply &#x3D;
+          pin.comments[i].replies[pin.comments[i].replies.length - 1];
+        if (
+          String(newReply.replier) &#x3D;&#x3D; String(userId) &amp;&amp;
+          String(replyText) &#x3D;&#x3D; String(newReply.reply)
+        ) {
+          let j &#x3D; pin.comments[i].replies.length - 1;
+          return {
+            id: pin.comments[i].replies[j]._id,
+            replier: pin.comments[i].replies[j].replier,
+            replyText: pin.comments[i].replies[j].reply,
+            google: user.google,
+            googleImage: user.googleImage,
+            date: &#x27;just now&#x27;,
+            commentId: commentId,
+            pinId: pinId,
+            replierName: user.firstName + &#x27; &#x27; + user.lastName,
+            replierImage: userId.profileImage,
+            likes: pin.comments[i].replies[j].likes,
+            isLiked: false,
+          };
+        }
+        for (let j &#x3D; pin.comments[i].replies.length - 1; j &gt;&#x3D; 0; j--) {
+          if (
+            String(pin.comments[i].replies[j].replier) &#x3D;&#x3D; String(userId) &amp;&amp;
+            String(replyText) &#x3D;&#x3D; String(pin.comments[i].replies[j].reply)
+          ) {
+            return {
+              id: pin.comments[i].replies[j]._id,
+              replier: pin.comments[i].replies[j].replier,
+              replyText: pin.comments[i].replies[j].reply,
+              google: user.google,
+              googleImage: user.googleImage,
+              date: &#x27;just now&#x27;,
+              commentId: commentId,
+              pinId: pinId,
+              replierName: user.firstName + &#x27; &#x27; + user.lastName,
+              replierImage: userId.profileImage,
+              likes: pin.comments[i].replies[j].likes,
+              isLiked: false,
+            };
+          }
+        }
+        throw new Error();
+      }
+    }
+    throw new Error();
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get full detailed array of pin&#x27;s comments with their replies
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;Array&lt;object&gt;&gt;}
+   */
+  async getPinCommentsReplies(pinId, userId): Promise&lt;Array&lt;object&gt;&gt; {
+    if ((await this.ValidationService.checkMongooseID([pinId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+
+    let pin &#x3D; await this.pinModel.findById(pinId, { comments: 1 }).lean();
+    if (!pin) throw new NotFoundException(&#x27;no such pin&#x27;);
+
+    let retComments &#x3D; [];
+    for (var i &#x3D; 0; i &lt; pin.comments.length; i++) {
+      let commenter &#x3D; await this.userModel
+        .findById(pin.comments[i].commenter, {
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+          google: 1,
+          googleImage: 1,
+        })
+        .lean();
+
+      if (commenter) {
+        let isLiked &#x3D; false;
+        for (let n &#x3D; 0; n &lt; pin.comments[i].likes.likers.length; n++) {
+          if (String(userId) &#x3D;&#x3D; String(pin.comments[i].likes.likers[n])) {
+            isLiked &#x3D; true;
+          }
+        }
+        let comment &#x3D; {
+          id: pin.comments[i]._id,
+          commenter: pin.comments[i].commenter,
+          commenterName: commenter.firstName + &#x27; &#x27; + commenter.lastName,
+          commenterImage: commenter.profileImage,
+          google: commenter.google,
+          googleImage: commenter.googleImage,
+          commentText: pin.comments[i].comment,
+          date: await this.calcDate(pin.comments[i].date),
+          likes: pin.comments[i].likes,
+          isLiked: isLiked,
+        };
+        let replies &#x3D; [];
+        for (var j &#x3D; 0; j &lt; pin.comments[i].replies.length; j++) {
+          let replier &#x3D; await this.userModel
+            .findById(pin.comments[i].replies[j].replier, {
+              firstName: 1,
+              lastName: 1,
+              profileImage: 1,
+              google: 1,
+              googleImage: 1,
+            })
+            .lean();
+          if (replier) {
+            let isLiked &#x3D; false;
+            for (
+              let n &#x3D; 0;
+              n &lt; pin.comments[i].replies[j].likes.likers.length;
+              n++
+            ) {
+              if (
+                String(userId) &#x3D;&#x3D;
+                String(pin.comments[i].replies[j].likes.likers[n])
+              ) {
+                isLiked &#x3D; true;
+              }
+            }
+            let reply &#x3D; {
+              id: pin.comments[i].replies[j]._id,
+              replier: pin.comments[i].replies[j].replier,
+              replierName: replier.firstName + &#x27; &#x27; + replier.lastName,
+              replierImage: replier.profileImage,
+              replyText: pin.comments[i].replies[j].reply,
+              google: replier.google,
+              googleImage: replier.googleImage,
+              date: await this.calcDate(pin.comments[i].replies[j].date),
+              likes: pin.comments[i].replies[j].likes,
+              isLiked: isLiked,
+            };
+            replies.push(reply);
+          }
+        }
+        retComments.push({ comment: comment, replies: replies });
+      }
+    }
+    return retComments;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description calc how much time went since a given date
+   * @param d
+   * @returns {Promise&lt;string&gt;}
+   */
+
+  async calcDate(d): Promise&lt;string&gt; {
+    d &#x3D; new Date(d);
+    let date &#x3D; d.getDate();
+    let month &#x3D; d.getMonth() + 1;
+    let year &#x3D; d.getFullYear();
+    let now &#x3D; new Date();
+    let dateNow &#x3D; now.getDate();
+    let monthNow &#x3D; now.getMonth() + 1;
+    let yearNow &#x3D; now.getFullYear();
+    let s &#x3D; &#x27;&#x27;;
+    if (yearNow - year !&#x3D; 0) {
+      if (yearNow - year &gt; 1) s &#x3D; &#x27;s&#x27;;
+      return &#x60;${yearNow - year} year${s} ago&#x60;;
+    }
+    if (monthNow - month !&#x3D; 0) {
+      if (monthNow - month &gt; 1) s &#x3D; &#x27;s&#x27;;
+      return &#x60;${monthNow - month} month${s} ago&#x60;;
+    }
+    if (dateNow - date !&#x3D; 0) {
+      if (dateNow - date &gt; 1) s &#x3D; &#x27;s&#x27;;
+      return &#x60;${dateNow - date} day${s} ago&#x60;;
+    }
+
+    let diff &#x3D; (now.getTime() - d.getTime()) / 1000;
+    diff /&#x3D; 60;
+    if (diff &gt; 60) {
+      diff &#x3D; Math.floor(diff / 60);
+      if (diff &gt; 1) s &#x3D; &#x27;s&#x27;;
+      return &#x60;${diff} hr${s} ago&#x60;;
+    }
+    diff &#x3D; Math.abs(Math.round(diff));
+    if (diff &gt; 1) s &#x3D; &#x27;s&#x27;;
+    return &#x60;${diff} min${s} ago&#x60;;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description create new react on a pin or remove an existed react
+   * @param {string} pinId - the id of the pin
+   * @param {string} reactType - the react type (Wow-Love-Good idea-Thanks-Haha-none)
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async createReact(pinId, reactType, userId): Promise&lt;boolean&gt; {
+    if ((await this.ValidationService.checkMongooseID([userId, pinId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    if (
+      String(reactType) !&#x3D; &#x27;Wow&#x27; &amp;&amp;
+      String(reactType) !&#x3D; &#x27;Love&#x27; &amp;&amp;
+      String(reactType) !&#x3D; &#x27;Good idea&#x27; &amp;&amp;
+      String(reactType) !&#x3D; &#x27;Thanks&#x27; &amp;&amp;
+      String(reactType) !&#x3D; &#x27;Haha&#x27; &amp;&amp;
+      String(reactType) !&#x3D; &#x27;none&#x27;
+    ) {
+      throw new BadRequestException(&#x27;not valid reactType&#x27;);
+    }
+    let user &#x3D; await this.userModel.findById(userId, {
+      profileImage: 1,
+      firstName: 1,
+      lastName: 1,
+      google: 1,
+      googleImage: 1,
+    });
+    let pin &#x3D; await this.pinModel.findById(pinId, {
+      reacts: 1,
+      counts: 1,
+      title: 1,
+      imageId: 1,
+      creator: 1,
+    });
+    let pinOwner &#x3D; await this.userModel.findById(pin.creator.id, {
+      notifications: 1,
+      offlineNotifications: 1,
+      fcmToken: 1,
+      notificationCounter: 1,
+      pinsNotification: 1,
+    });
+    var lastReactType &#x3D; &#x27;none&#x27;;
+    if (!user || !pin) throw new NotFoundException();
+    let found &#x3D; false;
+    for (let i &#x3D; 0; i &lt; pin.reacts.length; i++) {
+      if (String(pin.reacts[i].userId) &#x3D;&#x3D; String(userId)) {
+        lastReactType &#x3D; String(pin.reacts[i].reactType);
+        if (reactType !&#x3D; pin.reacts[i].reactType) {
+          switch (pin.reacts[i].reactType) {
+            case &#x27;Wow&#x27;:
+              pin.counts.wowReacts &#x3D; pin.counts.wowReacts.valueOf() - 1;
+              break;
+            case &#x27;Love&#x27;:
+              pin.counts.loveReacts &#x3D; pin.counts.loveReacts.valueOf() - 1;
+              break;
+            case &#x27;Haha&#x27;:
+              pin.counts.hahaReacts &#x3D; pin.counts.hahaReacts.valueOf() - 1;
+              break;
+            case &#x27;Thanks&#x27;:
+              pin.counts.thanksReacts &#x3D; pin.counts.thanksReacts.valueOf() - 1;
+              break;
+            case &#x27;Good idea&#x27;:
+              pin.counts.goodIdeaReacts &#x3D;
+                pin.counts.goodIdeaReacts.valueOf() - 1;
+              break;
+          }
+          switch (reactType) {
+            case &#x27;Wow&#x27;:
+              pin.counts.wowReacts &#x3D; pin.counts.wowReacts.valueOf() + 1;
+              break;
+            case &#x27;Love&#x27;:
+              pin.counts.loveReacts &#x3D; pin.counts.loveReacts.valueOf() + 1;
+              break;
+            case &#x27;Haha&#x27;:
+              pin.counts.hahaReacts &#x3D; pin.counts.hahaReacts.valueOf() + 1;
+              break;
+            case &#x27;Thanks&#x27;:
+              pin.counts.thanksReacts &#x3D; pin.counts.thanksReacts.valueOf() + 1;
+              break;
+            case &#x27;Good idea&#x27;:
+              pin.counts.goodIdeaReacts &#x3D;
+                pin.counts.goodIdeaReacts.valueOf() + 1;
+              break;
+          }
+        }
+        if (reactType &#x3D;&#x3D; &#x27;none&#x27;) {
+          pin.reacts.splice(i, 1);
+        } else {
+          pin.reacts[i].reactType &#x3D; reactType;
+        }
+        await pin.save();
+        found &#x3D; true;
+        break;
+      }
+    }
+    if (!found &amp;&amp; reactType !&#x3D; &#x27;none&#x27;) {
+      pin.reacts.push({
+        reactType: reactType,
+        userId: userId,
+      });
+
+      switch (reactType) {
+        case &#x27;Wow&#x27;:
+          pin.counts.wowReacts &#x3D; pin.counts.wowReacts.valueOf() + 1;
+          break;
+        case &#x27;Love&#x27;:
+          pin.counts.loveReacts &#x3D; pin.counts.loveReacts.valueOf() + 1;
+          break;
+        case &#x27;Haha&#x27;:
+          pin.counts.hahaReacts &#x3D; pin.counts.hahaReacts.valueOf() + 1;
+          break;
+        case &#x27;Thanks&#x27;:
+          pin.counts.thanksReacts &#x3D; pin.counts.thanksReacts.valueOf() + 1;
+          break;
+        case &#x27;Good idea&#x27;:
+          pin.counts.goodIdeaReacts &#x3D; pin.counts.goodIdeaReacts.valueOf() + 1;
+          break;
+      }
+      await pin.save();
+    }
+    if (
+      (!pinOwner.pinsNotification || pinOwner.pinsNotification &#x3D;&#x3D; true) &amp;&amp;
+      reactType !&#x3D; &#x27;none&#x27;
+    )
+      await this.NotificationService.reactPin(
+        pinOwner,
+        user,
+        pin.title,
+        pinId,
+        String(reactType),
+        pin.imageId,
+      );
+    if (lastReactType !&#x3D; &#x27;none&#x27;)
+      await this.NotificationService.unreactPin(
+        pinOwner,
+        user,
+        pin.title,
+        pinId,
+        String(lastReactType),
+        pin.imageId,
+      );
+    return true;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description create new like on a comment or remove an existed like
+   * @param {string} pinId - the id of the pin
+   * @param {string} commentId - the id of the comment
+   * @param {string} userId - the id of the user
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async likeComment(pinId, commentId, userId): Promise&lt;boolean&gt; {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        pinId,
+        commentId,
+      ])) &#x3D;&#x3D; 0
+    ) {
+      throw new BadRequestException(&#x27;invalid id&#x27;);
+    }
+    let pin &#x3D; await this.pinModel.findById(pinId, { comments: 1 });
+    if (!pin) throw new NotFoundException(&#x27;invalid pin&#x27;);
+    for (let i &#x3D; 0; i &lt; pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) &#x3D;&#x3D; String(commentId)) {
+        if (pin.comments[i].likes.likers.includes(userId)) {
+          for (let k &#x3D; 0; k &lt; pin.comments[i].likes.likers.length; k++) {
+            if (String(userId) &#x3D;&#x3D; String(pin.comments[i].likes.likers[k])) {
+              pin.comments[i].likes.likers.splice(k, 1);
+              pin.comments[i].likes.counts &#x3D;
+                pin.comments[i].likes.counts.valueOf() - 1;
+              break;
+            }
+          }
+        } else {
+          pin.comments[i].likes.likers.push(userId);
+          pin.comments[i].likes.counts &#x3D;
+            pin.comments[i].likes.counts.valueOf() + 1;
+        }
+
+        await pin.save();
+        return true;
+      }
+    }
+    throw new Error();
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description create new like on a reply on a comment or remove an existed like
+   * @param {string} pinId - the id of the pin
+   * @param {string} commentId - the id of the comment
+   * @param {string} userId - the id of the user
+   * @param {string} replyId - the id of the reply
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async likeReply(pinId, commentId, userId, replyId): Promise&lt;boolean&gt; {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        userId,
+        pinId,
+        commentId,
+        replyId,
+      ])) &#x3D;&#x3D; 0
+    ) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    let pin &#x3D; await this.pinModel.findById(pinId, { comments: 1 });
+    if (!pin) throw new NotFoundException(&#x27;no such pin&#x27;);
+    for (let i &#x3D; 0; i &lt; pin.comments.length; i++) {
+      if (String(pin.comments[i]._id) &#x3D;&#x3D; String(commentId)) {
+        for (let j &#x3D; 0; j &lt; pin.comments[i].replies.length; j++) {
+          if (String(pin.comments[i].replies[j]._id) &#x3D;&#x3D; String(replyId)) {
+            if (pin.comments[i].replies[j].likes.likers.includes(userId)) {
+              for (
+                let k &#x3D; 0;
+                k &lt; pin.comments[i].replies[j].likes.likers.length;
+                k++
+              ) {
+                if (
+                  String(userId) &#x3D;&#x3D;
+                  String(pin.comments[i].replies[j].likes.likers[k])
+                ) {
+                  pin.comments[i].replies[j].likes.likers.splice(k, 1);
+                  pin.comments[i].replies[j].likes.counts &#x3D;
+                    pin.comments[i].replies[j].likes.counts.valueOf() - 1;
+                  break;
+                }
+              }
+            } else {
+              pin.comments[i].replies[j].likes.likers.push(userId);
+              pin.comments[i].replies[j].likes.counts &#x3D;
+                pin.comments[i].replies[j].likes.counts.valueOf() + 1;
+            }
+            await pin.save();
+            return true;
+          }
+        }
+      }
+    }
+    throw new Error();
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description edit pin that user has created
+   * @param {string} pinId - the id of the pin
+   * @param {string} boardId - the id of the new board
+   * @param {string} userId - the id of the user
+   * @param {string} sectionId - the id of the new section
+   * @param {string} description - the new description
+   * @param {string} title - the new title
+   * @param {string} link - the new destination link
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async editCreatedPin(
+    pinId,
+    userId,
+    boardId,
+    sectionId,
+    description,
+    title,
+    link,
+  ): Promise&lt;boolean&gt; {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    let user &#x3D; await this.userModel.findById(userId, { pins: 1 });
+    if (!user) {
+      throw new BadRequestException(&#x27;not valid user&#x27;);
+    }
+    let pin &#x3D; await this.pinModel.findById(pinId, {
+      creator: 1,
+      title: 1,
+      note: 1,
+      destLink: 1,
+      section: 1,
+      board: 1,
+    });
+
+    if (!pin) {
+      throw new BadRequestException(&#x27;not valid pin&#x27;);
+    }
+    if (pin.creator.id !&#x3D; userId) {
+      throw new UnauthorizedException();
+    }
+    for (let i &#x3D; 0; i &lt; user.pins.length; i++) {
+      if (String(user.pins[i].pinId) &#x3D;&#x3D; String(pinId)) {
+        if (
+          boardId &amp;&amp;
+          !sectionId &amp;&amp;
+          (await this.ValidationService.checkMongooseID([boardId])) !&#x3D; 0
+        ) {
+          let board &#x3D; await this.boardModel.findById(boardId, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let oldBoard &#x3D; await this.boardModel.findById(pin.board, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let checkBoard &#x3D; await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+
+          if (checkBoard) {
+            board.pins.push({
+              pinId: pin._id,
+              topic: pin.topic,
+            });
+            board.counts.pins &#x3D; board.counts.pins.valueOf() + 1;
+            await board.save();
+
+            if (pin.section) {
+              for (let n &#x3D; 0; n &lt; oldBoard.sections.length; n++) {
+                if (String(pin.section) &#x3D;&#x3D; String(oldBoard.sections[n]._id)) {
+                  for (let d &#x3D; 0; d &lt; oldBoard.sections[n].pins.length; d++) {
+                    if (
+                      String(pinId) &#x3D;&#x3D;
+                      String(oldBoard.sections[n].pins[d].pinId)
+                    ) {
+                      oldBoard.sections[n].pins.splice(d, 1);
+                      oldBoard.counts.pins &#x3D; oldBoard.counts.pins.valueOf() - 1;
+                      await oldBoard.save();
+                      break;
+                    }
+                  }
+                }
+              }
+            } else {
+              for (let d &#x3D; 0; d &lt; oldBoard.pins.length; d++) {
+                if (String(pinId) &#x3D;&#x3D; String(oldBoard.pins[d].pinId)) {
+                  oldBoard.pins.splice(d, 1);
+                  await oldBoard.save();
+                  break;
+                }
+              }
+            }
+            user.pins[i].boardId &#x3D; boardId;
+            pin.board &#x3D; boardId;
+            user.pins[i].sectionId &#x3D; null;
+            pin.section &#x3D; null;
+          }
+        }
+        if (
+          sectionId &amp;&amp;
+          boardId &amp;&amp;
+          (await this.ValidationService.checkMongooseID([sectionId])) !&#x3D; 0
+        ) {
+          let board &#x3D; await this.boardModel.findById(boardId, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let checkBoard &#x3D; await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          let oldBoard &#x3D; await this.boardModel.findById(pin.board, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let checkSection &#x3D; await this.BoardService.checkBoardHasSection(
+            board,
+            sectionId,
+          );
+          if (checkBoard &amp;&amp; checkSection) {
+            for (let s &#x3D; 0; s &lt; board.sections.length; s++) {
+              if (String(board.sections[s]._id) &#x3D;&#x3D; String(sectionId)) {
+                board.sections[s].pins.push({
+                  pinId: pin._id,
+                  topic: pin.topic,
+                });
+                await board.save();
+                break;
+              }
+            }
+            if (pin.section) {
+              for (let n &#x3D; 0; n &lt; oldBoard.sections.length; n++) {
+                if (String(pin.section) &#x3D;&#x3D; String(oldBoard.sections[n]._id)) {
+                  for (let d &#x3D; 0; d &lt; oldBoard.sections[n].pins.length; d++) {
+                    if (
+                      String(pinId) &#x3D;&#x3D;
+                      String(oldBoard.sections[n].pins[d].pinId)
+                    ) {
+                      oldBoard.sections[n].pins.splice(d, 1);
+                      oldBoard.counts.pins &#x3D; oldBoard.counts.pins.valueOf() - 1;
+                      await oldBoard.save();
+                      break;
+                    }
+                  }
+                }
+              }
+            } else {
+              for (let d &#x3D; 0; d &lt; oldBoard.pins.length; d++) {
+                if (String(pinId) &#x3D;&#x3D; String(oldBoard.pins[d].pinId)) {
+                  oldBoard.pins.splice(d, 1);
+                  await oldBoard.save();
+                  break;
+                }
+              }
+            }
+            user.pins[i].boardId &#x3D; boardId;
+            pin.board &#x3D; boardId;
+            user.pins[i].sectionId &#x3D; sectionId;
+            pin.section &#x3D; sectionId;
+          }
+        }
+        if (
+          !boardId &amp;&amp;
+          sectionId &amp;&amp;
+          (await this.ValidationService.checkMongooseID([sectionId])) !&#x3D; 0
+        ) {
+          let board &#x3D; await this.boardModel.findById(pin.board, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let checkSection &#x3D; await this.BoardService.checkBoardHasSection(
+            board,
+            sectionId,
+          );
+          if (checkSection) {
+            for (let s &#x3D; 0; s &lt; board.sections.length; s++) {
+              if (String(board.sections[s]._id) &#x3D;&#x3D; String(sectionId)) {
+                board.sections[s].pins.push({
+                  pinId: pin._id,
+                  topic: pin.topic,
+                });
+                await board.save();
+                break;
+              }
+            }
+            if (pin.section) {
+              for (let n &#x3D; 0; n &lt; board.sections.length; n++) {
+                if (String(pin.section) &#x3D;&#x3D; String(board.sections[n]._id)) {
+                  for (let d &#x3D; 0; d &lt; board.sections[n].pins.length; d++) {
+                    if (
+                      String(pinId) &#x3D;&#x3D; String(board.sections[n].pins[d].pinId)
+                    ) {
+                      board.sections[n].pins.splice(d, 1);
+                      await board.save();
+                      break;
+                    }
+                  }
+                }
+              }
+            } else {
+              for (let d &#x3D; 0; d &lt; board.pins.length; d++) {
+                if (String(pinId) &#x3D;&#x3D; String(board.pins[d].pinId)) {
+                  board.pins.splice(d, 1);
+                  await board.save();
+                  break;
+                }
+              }
+            }
+            user.pins[i].sectionId &#x3D; sectionId;
+            pin.section &#x3D; sectionId;
+          }
+        }
+        if (title) {
+          pin.title &#x3D; title;
+        }
+        if (description) {
+          pin.note &#x3D; description;
+        }
+        if (link) {
+          pin.destLink &#x3D; link;
+        }
+        await user.save();
+        await pin.save();
+        break;
+      }
+    }
+    return true;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description edit pin that user has saved
+   * @param {string} pinId - the id of the pin
+   * @param {string} boardId - the id of the new board
+   * @param {string} userId - the id of the user
+   * @param {string} sectionId - the id of the new section
+   * @param {string} note - the new note
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async editSavedPin(
+    pinId,
+    userId,
+    boardId,
+    sectionId,
+    note,
+  ): Promise&lt;boolean&gt; {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    let user &#x3D; await this.userModel.findById(userId, { savedPins: 1 });
+    if (!user) {
+      throw new BadRequestException(&#x27;not valid user&#x27;);
+    }
+    let pin &#x3D; await this.pinModel.findById(pinId, { topic: 1 });
+    if (!pin) {
+      throw new BadRequestException(&#x27;not valid pin&#x27;);
+    }
+
+    for (let i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      if (String(user.savedPins[i].pinId) &#x3D;&#x3D; String(pinId)) {
+        if (
+          boardId &amp;&amp;
+          !sectionId &amp;&amp;
+          (await this.ValidationService.checkMongooseID([boardId])) !&#x3D; 0
+        ) {
+          let board &#x3D; await this.boardModel.findById(boardId, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let checkBoard &#x3D; await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          let oldBoard &#x3D; await this.boardModel.findById(
+            user.savedPins[i].boardId,
+            {
+              pins: 1,
+              counts: 1,
+              sections: 1,
+              creator: 1,
+              collaborators: 1,
+            },
+          );
+          if (checkBoard) {
+            board.pins.push({
+              pinId: pin._id,
+              topic: pin.topic,
+            });
+            board.counts.pins &#x3D; board.counts.pins.valueOf() + 1;
+            await board.save();
+            if (user.savedPins[i].sectionId) {
+              for (let n &#x3D; 0; n &lt; oldBoard.sections.length; n++) {
+                if (
+                  String(user.savedPins[i].sectionId) &#x3D;&#x3D;
+                  String(oldBoard.sections[n]._id)
+                ) {
+                  for (let d &#x3D; 0; d &lt; oldBoard.sections[n].pins.length; d++) {
+                    if (
+                      String(pinId) &#x3D;&#x3D;
+                      String(oldBoard.sections[n].pins[d].pinId)
+                    ) {
+                      oldBoard.sections[n].pins.splice(d, 1);
+                      await oldBoard.save();
+                      break;
+                    }
+                  }
+                }
+              }
+            } else {
+              for (let d &#x3D; 0; d &lt; oldBoard.pins.length; d++) {
+                if (String(pinId) &#x3D;&#x3D; String(oldBoard.pins[d].pinId)) {
+                  oldBoard.pins.splice(d, 1);
+                  await oldBoard.save();
+                  break;
+                }
+              }
+            }
+            user.savedPins[i].boardId &#x3D; boardId;
+            user.savedPins[i].sectionId &#x3D; null;
+          }
+        }
+        if (
+          sectionId &amp;&amp;
+          boardId &amp;&amp;
+          (await this.ValidationService.checkMongooseID([sectionId])) !&#x3D; 0
+        ) {
+          let board &#x3D; await this.boardModel.findById(boardId, {
+            pins: 1,
+            counts: 1,
+            sections: 1,
+            creator: 1,
+            collaborators: 1,
+          });
+          let oldBoard &#x3D; await this.boardModel.findById(
+            user.savedPins[i].boardId,
+            {
+              pins: 1,
+              counts: 1,
+              sections: 1,
+              creator: 1,
+              collaborators: 1,
+            },
+          );
+          let checkBoard &#x3D; await this.BoardService.authorizedBoard(
+            board,
+            userId,
+          );
+          let checkSection &#x3D; await this.BoardService.checkBoardHasSection(
+            board,
+            sectionId,
+          );
+          if (checkBoard &amp;&amp; checkSection) {
+            for (let s &#x3D; 0; s &lt; board.sections.length; s++) {
+              if (String(board.sections[s]._id) &#x3D;&#x3D; String(sectionId)) {
+                board.sections[s].pins.push({
+                  pinId: pin._id,
+                  topic: pin.topic,
+                });
+                await board.save();
+                break;
+              }
+            }
+            if (user.savedPins[i].sectionId) {
+              for (let n &#x3D; 0; n &lt; oldBoard.sections.length; n++) {
+                if (
+                  String(user.savedPins[i].sectionId) &#x3D;&#x3D;
+                  String(oldBoard.sections[n]._id)
+                ) {
+                  for (let d &#x3D; 0; d &lt; oldBoard.sections[n].pins.length; d++) {
+                    if (
+                      String(pinId) &#x3D;&#x3D;
+                      String(oldBoard.sections[n].pins[d].pinId)
+                    ) {
+                      oldBoard.sections[n].pins.splice(d, 1);
+                      await oldBoard.save();
+                      break;
+                    }
+                  }
+                }
+              }
+            } else {
+              for (let d &#x3D; 0; d &lt; oldBoard.pins.length; d++) {
+                if (String(pinId) &#x3D;&#x3D; String(oldBoard.pins[d].pinId)) {
+                  oldBoard.pins.splice(d, 1);
+                  await oldBoard.save();
+                  break;
+                }
+              }
+            }
+            user.savedPins[i].boardId &#x3D; boardId;
+            user.savedPins[i].sectionId &#x3D; sectionId;
+          }
+        }
+        if (
+          !boardId &amp;&amp;
+          sectionId &amp;&amp;
+          (await this.ValidationService.checkMongooseID([sectionId])) !&#x3D; 0
+        ) {
+          let board &#x3D; await this.boardModel.findById(
+            user.savedPins[i].boardId,
+            {
+              pins: 1,
+              counts: 1,
+              sections: 1,
+              creator: 1,
+              collaborators: 1,
+            },
+          );
+          let checkSection &#x3D; await this.BoardService.checkBoardHasSection(
+            board,
+            sectionId,
+          );
+          if (checkSection) {
+            for (let s &#x3D; 0; s &lt; board.sections.length; s++) {
+              if (String(board.sections[s]._id) &#x3D;&#x3D; String(sectionId)) {
+                board.sections[s].pins.push({
+                  pinId: pin._id,
+                  topic: pin.topic,
+                });
+                await board.save();
+                break;
+              }
+            }
+            if (user.savedPins[i].sectionId) {
+              for (let n &#x3D; 0; n &lt; board.sections.length; n++) {
+                if (
+                  String(user.savedPins[i].sectionId) &#x3D;&#x3D;
+                  String(board.sections[n]._id)
+                ) {
+                  for (let d &#x3D; 0; d &lt; board.sections[n].pins.length; d++) {
+                    if (
+                      String(pinId) &#x3D;&#x3D; String(board.sections[n].pins[d].pinId)
+                    ) {
+                      board.sections[n].pins.splice(d, 1);
+                      await board.save();
+                      break;
+                    }
+                  }
+                }
+              }
+            } else {
+              for (let d &#x3D; 0; d &lt; board.pins.length; d++) {
+                if (String(pinId) &#x3D;&#x3D; String(board.pins[d].pinId)) {
+                  board.pins.splice(d, 1);
+                  await board.save();
+                  break;
+                }
+              }
+            }
+            user.savedPins[i].sectionId &#x3D; sectionId;
+          }
+        }
+        if (note) {
+          user.savedPins[i].note &#x3D; note;
+        }
+        await user.save();
+        break;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description get followings pins
+   * @param {String} userId  - user id
+   * @returns {Array&lt;Object&gt;} fololowng user with there pins
+   */
+  async getFollowingPins(userId) {
+    const user &#x3D; await this.userModel
+      .findOne({ _id: userId }, { following: 1 })
+      .lean();
+    let pins &#x3D; [];
+    let limitOfPinsForUser &#x3D; user.following.length;
+    limitOfPinsForUser &#x3D; limitOfPinsForUser &gt; 1 ? limitOfPinsForUser : 1;
+    for (let i &#x3D; user.following.length - 1; i &gt;&#x3D; 0; i--) {
+      let followedUser &#x3D; await this.userModel
+        .findOne(
+          { _id: user.following[i] },
+          {
+            _id: 1,
+            firstName: 1,
+            lastName: 1,
+            profileImage: 1,
+            google: 1,
+            googleImage: 1,
+          },
+        )
+        .lean();
+      let userPins &#x3D; await this.getCurrentUserPins(
+        user.following[i],
+        false,
+        limitOfPinsForUser,
+      );
+      if (followedUser &amp;&amp; userPins)
+        for (let i &#x3D; 0; i &lt; userPins.length; i++) {
+          pins.push({
+            _id: userPins[i]._id,
+            imageId: userPins[i].imageId,
+            imageWidth: userPins[i].imageWidth,
+            imageHeight: userPins[i].imageHeight,
+            title: userPins[i].title,
+            topic: userPins[i].topic,
+            owner: followedUser,
+          });
+        }
+    }
+    return pins;
+  }
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description report a pin by a user
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} reason - reason why the pin has been reported
+   * @returns  {Promise&lt;boolean&gt;}
+   */
+  async reportPin(userId, pinId, reason): Promise&lt;boolean&gt; {
+    if ((await this.ValidationService.checkMongooseID([pinId, userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    let user &#x3D; await this.userModel.findById(userId, { userName: 1 });
+    if (!user) {
+      throw new BadRequestException(&#x27;not valid user&#x27;);
+    }
+    await this.EmailService.sendEmail(
+      process.env.EMAIL,
+      { pinId: pinId, userId: userId, userName: user.userName, reason: reason },
+      &#x27;report&#x27;,
+      &#x27;&#x27;,
+    );
+    return true;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'PinsService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

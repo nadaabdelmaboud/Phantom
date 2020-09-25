@@ -1,0 +1,2142 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>phantom documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">phantom documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>NotificationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/shared/notification.service.ts</code>
+        </p>
+
+
+
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#addTolimitedArray">addTolimitedArray</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#boardsForYou">boardsForYou</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#commentPin">commentPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followUser">followUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pinsForYou">pinsForYou</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#pinsInspired">pinsInspired</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#popularPins">popularPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reactPin">reactPin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendNotification">sendNotification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendOfflineNotification">sendOfflineNotification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unfollowUser">unfollowUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unreactPin">unreactPin</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/shared/notification.service.ts:22</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addTolimitedArray"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            addTolimitedArray
+                        </b>
+                        <a href="#addTolimitedArray"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addTolimitedArray(notificationArray: Array<any>, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pushedData: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="671"
+                            class="link-to-prism">src/shared/notification.service.ts:671</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>notificationArray</td>
+                                    <td>
+                                            <code>Array&lt;any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-array of data</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the limit should be</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pushedData</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Data should add to array</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>after delete </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="boardsForYou"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            boardsForYou
+                        </b>
+                        <a href="#boardsForYou"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>boardsForYou(user, boards, images)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="442"
+                            class="link-to-prism">src/shared/notification.service.ts:442</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>boards</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>images</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="commentPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            commentPin
+                        </b>
+                        <a href="#commentPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>commentPin(ownerUser, commenterUser, comment, pinName, pinId, imageId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="228"
+                            class="link-to-prism">src/shared/notification.service.ts:228</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ownerUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>commenterUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>comment</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>comment </li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinName</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>title of pin  </li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of this pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>imageId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of pin image</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1 </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            followUser
+                        </b>
+                        <a href="#followUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followUser(followedUser, followerUser)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/shared/notification.service.ts:79</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>followedUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>followerUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>-new changes of user </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinsForYou"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            pinsForYou
+                        </b>
+                        <a href="#pinsForYou"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pinsForYou(user, pins, images)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="561"
+                            class="link-to-prism">src/shared/notification.service.ts:561</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pins</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>images</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pinsInspired"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            pinsInspired
+                        </b>
+                        <a href="#pinsInspired"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>pinsInspired(user, pins, images)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="616"
+                            class="link-to-prism">src/shared/notification.service.ts:616</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pins</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>images</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popularPins"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            popularPins
+                        </b>
+                        <a href="#popularPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>popularPins(user, pins, images)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="500"
+                            class="link-to-prism">src/shared/notification.service.ts:500</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pins</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>images</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reactPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            reactPin
+                        </b>
+                        <a href="#reactPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reactPin(ownerUser, reactUser, pinName, pinId, react, imageId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="314"
+                            class="link-to-prism">src/shared/notification.service.ts:314</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ownerUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>reactUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinName</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>title of pin  </li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of this pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>react</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>type of react</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>imageId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of pin image</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1 </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendNotification"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            sendNotification
+                        </b>
+                        <a href="#sendNotification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendNotification(tokens, message)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="33"
+                            class="link-to-prism">src/shared/notification.service.ts:33</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>tokens</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>array of fcm tokens wanted to send this massage to</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>message</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>message needed  to send</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>array of not send notification</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendOfflineNotification"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            sendOfflineNotification
+                        </b>
+                        <a href="#sendOfflineNotification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendOfflineNotification(messages, fcmToken)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/shared/notification.service.ts:61</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>messages</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>array of massages wented to send</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>fcmToken</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>fcm token needed to send to</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unfollowUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            unfollowUser
+                        </b>
+                        <a href="#unfollowUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unfollowUser(followedUser, followerUser)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="151"
+                            class="link-to-prism">src/shared/notification.service.ts:151</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>followedUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>followerUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>-new changes of user</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unreactPin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            unreactPin
+                        </b>
+                        <a href="#unreactPin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unreactPin(ownerUser, reactUser, pinName, pinId, react, imageId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="404"
+                            class="link-to-prism">src/shared/notification.service.ts:404</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ownerUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>reactUser</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinName</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>title of pin  </li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of this pin</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>react</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>type of react</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>imageId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of pin image</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1 </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
+import * as firebase from &#x27;firebase-admin&#x27;;
+const params &#x3D; {
+  type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
+  projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
+  privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
+  privateKey: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, &#x27;\n&#x27;)),
+  clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
+  clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
+  authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
+  tokenUri: String(process.env.FIREBASE_CREADENTIAL_TOKEN_URI),
+  authProviderX509CertUrl: String(process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL),
+  clientX509CertUrl: String(process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL)
+};
+let app &#x3D; firebase.initializeApp({
+  credential: firebase.credential.cert(params),
+});
+/**
+ * @module Notification
+ */
+@Injectable()
+export class NotificationService {
+
+  constructor() { }
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @descriptionsendNotification : send one notification to client 
+    * @param {Array&lt;String&gt;} tokens  - array of fcm tokens wanted to send this massage to
+    * @param {Object} message - message needed  to send
+    * @returns {Array&lt;String&gt;}array of not send notification
+    */
+  async sendNotification(tokens, message) {
+    const notSendTokens &#x3D; [];
+    app
+      .messaging()
+      .sendMulticast(message)
+      .then(response &#x3D;&gt; {
+        if (response.failureCount &gt; 0) {
+          response.responses.forEach((res, id) &#x3D;&gt; {
+            if (!res.success) {
+              notSendTokens.push(tokens[id]);
+            }
+          });
+        } else {
+          console.log(&#x27;Message has been sent successfully&#x27;);
+        }
+      })
+      .catch(err &#x3D;&gt; {
+        console.log(err);
+      });
+    return notSendTokens;
+  }
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @descriptionsendOfflineNotification :send array of massages &amp; notification
+    * @param {Array&lt;Object&gt;}messages - array of massages wented to send
+    * @param {String} fcmToken - fcm token needed to send to
+    */
+  async sendOfflineNotification(messages, fcmToken) {
+    if (!messages || messages.length &#x3D;&#x3D; 0) return;
+    for (let i &#x3D; 0; i &lt; messages.length; i++) messages[i].token &#x3D; fcmToken;
+    app
+      .messaging()
+      .sendAll(messages)
+      .then(response &#x3D;&gt; {
+        console.log(response.successCount + &#x27; messages were sent successfully&#x27;);
+      });
+  }
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @descriptionsend notification to user when some one follow hem
+    * @param {Object of User type} followedUser - user who is followed
+    * @param {Object of User type} followerUser -user who follow
+    * @returns {Object} -new changes of user 
+    */
+  async followUser(followedUser, followerUser) {
+    let message: {
+      data: {
+        followerImageId: string;
+        followerId: string;
+        title: string;
+        google: string;
+        googleImage: string;
+        body: string;
+        time: string;
+      };
+      tokens?: [string];
+    } &#x3D; {
+      data: {
+        followerImageId: String(followerUser.profileImage),
+        google: String(followerUser.google),
+        googleImage: String(followerUser.googleImage),
+        followerId: String(followerUser._id),
+        title: &#x27;your follower increase &#x27;,
+        body:
+          followerUser.firstName +
+          &#x27; &#x27; +
+          followerUser.lastName +
+          &#x27; has followed You 😮&#x27;,
+        time: Date.now().toString(),
+      },
+    };
+    followedUser.notificationCounter &#x3D; followedUser.notificationCounter
+      ? followedUser.notificationCounter + 1
+      : 1;
+    if (!followedUser.notifications) followedUser.notifications &#x3D; [];
+    followedUser.notifications &#x3D; await this.addTolimitedArray(
+      followedUser.notifications,
+      30,
+      message,
+    );
+    if (!followedUser.fcmToken || followedUser.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      if (!followedUser.offlineNotifications)
+        followedUser.offlineNotifications &#x3D; [];
+      followedUser.offlineNotifications &#x3D; await this.addTolimitedArray(
+        followedUser.offlineNotifications,
+        30,
+        message,
+      );
+    } else {
+      message.tokens &#x3D; [followedUser.fcmToken];
+      let checkFailed &#x3D; await this.sendNotification(
+        [followedUser.fcmToken],
+        message,
+      );
+      if (checkFailed.length &gt; 0) {
+        message.tokens &#x3D; null;
+        followedUser.offlineNotifications &#x3D; await this.addTolimitedArray(
+          followedUser.offlineNotifications,
+          30,
+          message,
+        );
+      }
+    }
+    return {
+      offlineNotifications: followedUser.offlineNotifications,
+      notifications: followedUser.notifications,
+      notificationCounter: followedUser.notificationCounter,
+    };
+  }
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @descriptiondelete follow message from notification history 
+    * @param {Object of User type} followedUser - user who is followed
+    * @param {Object of User type} followerUser -user who follow
+    * @returns {Object} -new changes of user
+    */
+  async unfollowUser(followedUser, followerUser) {
+    let message: {
+      data: {
+        followerImageId: string;
+        followerId: string;
+        google: string;
+        googleImage: string;
+        title: string;
+        body: string;
+        time?: string;
+      };
+      tokens?: [string];
+    } &#x3D; {
+      data: {
+        followerImageId: String(followerUser.profileImage),
+        google: String(followerUser.google),
+        googleImage: String(followerUser.googleImage),
+        followerId: String(followerUser._id),
+        title: &#x27;your follower increase &#x27;,
+        body:
+          followerUser.firstName +
+          &#x27; &#x27; +
+          followerUser.lastName +
+          &#x27; has followed You 😮&#x27;,
+        time: null,
+      },
+    };
+    let notificationData &#x3D; followedUser.offlineNotifications;
+    if (!followedUser.offlineNotifications)
+      followedUser.offlineNotifications &#x3D; [];
+
+    for (let i &#x3D; 0; i &lt; followedUser.offlineNotifications.length; i++) {
+      if (followedUser.offlineNotifications[i].data)
+        if (
+          followedUser.offlineNotifications[i].data.title &#x3D;&#x3D;
+          &#x27;your follower increase &#x27; &amp;&amp;
+          message.data.followerId &#x3D;&#x3D;
+          followedUser.offlineNotifications[i].data.followerId
+        ) {
+          followedUser.offlineNotifications.splice(i, 1);
+          i--;
+        }
+    }
+
+    if (!followedUser.notifications) followedUser.notifications &#x3D; [];
+    notificationData &#x3D; followedUser.notifications;
+
+    for (let i &#x3D; 0; i &lt; followedUser.notifications.length; i++) {
+      if (followedUser.notifications[i].data)
+        if (
+          followedUser.notifications[i].data.title &#x3D;&#x3D;
+          &#x27;your follower increase &#x27; &amp;&amp;
+          message.data.followerId &#x3D;&#x3D;
+          followedUser.notifications[i].data.followerId
+        ) {
+          followedUser.notifications.splice(i, 1);
+          i--;
+        }
+    }
+
+    return {
+      offlineNotifications: followedUser.offlineNotifications,
+      notifications: followedUser.notifications,
+      notificationCounter: followedUser.notificationCounter,
+    };
+  }
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @descriptionsend notification when some one comment in user pin
+    * @param {Object of user type} ownerUser - user who has pin 
+    * @param  {Object of user type} commenterUser - user who comment in pin
+    * @param {String} comment - comment 
+    * @param {String} pinName - title of pin  
+    * @param {String} pinId - the id of this pin
+    * @param {String} imageId - the id of pin image
+    * @returns {Number} 1 
+    */
+  async commentPin(ownerUser, commenterUser, comment, pinName, pinId, imageId) {
+    let message: {
+      data: {
+        time: string;
+        commenterImageId: string;
+        commenterId: string;
+        google: string;
+        googleImage: string;
+        imageLink: string;
+        pinId: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } &#x3D; {
+      data: {
+        time: Date.now().toString(),
+        commenterImageId: String(commenterUser.profileImage),
+        google: String(commenterUser.google),
+        googleImage: String(commenterUser.googleImage),
+        commenterId: String(commenterUser._id),
+        imageLink: String(process.env.FRONT_BASE_URL) + &#x27;/image/&#x27; + imageId,
+        pinId: pinId,
+        title: &#x27;📝 Comment on your pin&#x27;,
+        body:
+          commenterUser.firstName +
+          &#x27; &#x27; +
+          commenterUser.lastName +
+          &#x27; has comment on your pin&#x27; +
+          &#x27;&quot;&#x27; +
+          pinName +
+          &#x27;&quot;&#x27; +
+          &#x27;say that&#x27; +
+          comment,
+      },
+    };
+    ownerUser.notificationCounter &#x3D; ownerUser.notificationCounter
+      ? ownerUser.notificationCounter + 1
+      : 1;
+    await ownerUser.save();
+    if (!ownerUser.notifications) ownerUser.notifications &#x3D; [];
+    ownerUser.notifications &#x3D; await this.addTolimitedArray(
+      ownerUser.notifications,
+      30,
+      message,
+    );
+
+    if (!ownerUser.fcmToken || ownerUser.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications &#x3D; [];
+      ownerUser.offlineNotifications &#x3D; await this.addTolimitedArray(
+        ownerUser.offlineNotifications,
+        30,
+        message,
+      );
+      await ownerUser.save();
+    } else {
+      message.tokens &#x3D; [ownerUser.fcmToken];
+      let checkFailed &#x3D; await this.sendNotification(
+        [ownerUser.fcmToken],
+        message,
+      );
+      if (checkFailed.length &gt; 0) {
+        message.tokens &#x3D; null;
+        ownerUser.offlineNotifications &#x3D; await this.addTolimitedArray(
+          ownerUser.offlineNotifications,
+          30,
+          message,
+        );
+      }
+      await ownerUser.save();
+    }
+    await ownerUser.save();
+    return 1;
+  }
+
+  /**
+     * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+     * @description notification to pin owner when someone react to pin
+     * @param {Object of user type} ownerUser - user who has pin 
+     * @param  {Object of user type} reactUser - user who react in pin
+     * @param {String} react - type of react
+     * @param {String} pinName - title of pin  
+     * @param {String} pinId - the id of this pin
+     * @param {String} imageId - the id of pin image
+     * @returns {Number} 1 
+     */
+  async reactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
+    if (react &#x3D;&#x3D; &#x27;Love&#x27;) react &#x3D; &#x27;💖&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Good idea&#x27;) react &#x3D; &#x27;👍&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Thanks&#x27;) react &#x3D; &#x27;🙆‍♀️&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Haha&#x27;) react &#x3D; &#x27;😄&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Wow&#x27;) react &#x3D; &#x27;😮&#x27;;
+
+    let message: {
+      data: {
+        time: string;
+        userImageId: string;
+        userId: string;
+        google: string;
+        googleImage: string;
+        imageLink: string;
+        pinId: string;
+        title: string;
+        body: string;
+      };
+      tokens?: [string];
+    } &#x3D; {
+      data: {
+        time: Date.now().toString(),
+        userImageId: String(reactUser.profileImage),
+        google: String(reactUser.google),
+        googleImage: String(reactUser.googleImage),
+        userId: String(reactUser._id),
+        imageLink: String(process.env.FRONT_BASE_URL) + &#x27;/image/&#x27; + imageId,
+        pinId: pinId,
+        title: react + &#x27; React on your pin&#x27;,
+        body:
+          reactUser.firstName +
+          &#x27; &#x27; +
+          reactUser.lastName +
+          &#x27; has react on your pin&#x27; +
+          &#x27;&quot;&#x27; +
+          pinName +
+          &#x27;&quot;&#x27;,
+      },
+    };
+    ownerUser.notificationCounter &#x3D; ownerUser.notificationCounter
+      ? ownerUser.notificationCounter + 1
+      : 1;
+    await ownerUser.save();
+    if (!ownerUser.notifications) ownerUser.notifications &#x3D; [];
+    ownerUser.notifications &#x3D; await this.addTolimitedArray(
+      ownerUser.notifications,
+      30,
+      message,
+    );
+
+    if (!ownerUser.fcmToken || ownerUser.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications &#x3D; [];
+      ownerUser.offlineNotifications &#x3D; await this.addTolimitedArray(
+        ownerUser.offlineNotifications,
+        30,
+        message,
+      );
+      await ownerUser.save();
+    } else {
+      message.tokens &#x3D; [ownerUser.fcmToken];
+      let checkFailed &#x3D; await this.sendNotification(
+        [ownerUser.fcmToken],
+        message,
+      );
+      if (checkFailed.length &gt; 0) {
+        message.tokens &#x3D; null;
+        ownerUser.offlineNotifications &#x3D; await this.addTolimitedArray(
+          ownerUser.offlineNotifications,
+          30,
+          message,
+        );
+      }
+      await ownerUser.save();
+    }
+    await ownerUser.save();
+    return 1;
+  }
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @description delete react from user history when unreact
+     * @param {Object of user type} ownerUser - user who has pin 
+     * @param  {Object of user type} reactUser - user who unreact in pin
+     * @param {String} react - type of react
+     * @param {String} pinName - title of pin  
+     * @param {String} pinId - the id of this pin
+     * @param {String} imageId - the id of pin image
+     * @returns {Number} 1 
+     */
+  async unreactPin(ownerUser, reactUser, pinName, pinId, react, imageId) {
+    if (react &#x3D;&#x3D; &#x27;Love&#x27;) react &#x3D; &#x27;💖&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Good idea&#x27;) react &#x3D; &#x27;👍&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Thanks&#x27;) react &#x3D; &#x27;🙆‍♀️&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Haha&#x27;) react &#x3D; &#x27;😄&#x27;;
+    else if (react &#x3D;&#x3D; &#x27;Wow&#x27;) react &#x3D; &#x27;😮&#x27;;
+
+    let notificationData &#x3D; ownerUser.offlineNotifications;
+    if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications &#x3D; [];
+
+    for (let i &#x3D; 0; i &lt; notificationData.length; i++) {
+      if (notificationData[i].data)
+        if (
+          notificationData[i].data.userId &#x3D;&#x3D; reactUser._id &amp;&amp;
+          notificationData[i].data.pinId &#x3D;&#x3D; pinId &amp;&amp;
+          notificationData[i].data.title &#x3D;&#x3D; react + &#x27; React on your pin&#x27;
+        ) {
+          ownerUser.offlineNotifications.splice(i, 1);
+          i--;
+        }
+    }
+    if (!ownerUser.notifications) ownerUser.notifications &#x3D; [];
+    notificationData &#x3D; ownerUser.notifications;
+    for (let i &#x3D; 0; i &lt; notificationData.length; i++) {
+      if (notificationData[i].data)
+        if (
+          notificationData[i].data.userId &#x3D;&#x3D; reactUser._id &amp;&amp;
+          notificationData[i].data.pinId &#x3D;&#x3D; pinId &amp;&amp;
+          notificationData[i].data.title &#x3D;&#x3D; react + &#x27; React on your pin&#x27;
+        ) {
+          ownerUser.notifications.splice(i, 1);
+          i--;
+        }
+    }
+    await ownerUser.save();
+    return 1;
+  }
+
+  async boardsForYou(user, boards, images) {
+    let arrayMessage &#x3D; {
+      boards: boards,
+      images: images,
+      time: Date.now(),
+      title: &#x27;Boards For You!&#x27;,
+      body: &#x27;we think that you may get interested in some of these boards&#x27;,
+    };
+    let message;
+    user.notificationCounter &#x3D; user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
+    if (!user.notifications) user.notifications &#x3D; [];
+    user.notifications &#x3D; await this.addTolimitedArray(
+      user.notifications,
+      30,
+      arrayMessage,
+    );
+    await user.save();
+
+    if (!user.fcmToken || user.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      return 0;
+    } else {
+      await user.save();
+      message &#x3D; {
+        data: {
+          title: &#x27;Boards For You!&#x27;,
+          body: &#x27;we think that you may get interested in some of these boards&#x27;,
+        },
+        tokens: [user.fcmToken],
+      };
+
+      let checkFailed &#x3D; await this.sendNotification([user.fcmToken], message);
+      if (checkFailed.length &gt; 0) {
+        let last &#x3D; user.notifications.pop();
+        if (String(last.title) !&#x3D; String(arrayMessage.title)) {
+          user.notifications &#x3D; await this.addTolimitedArray(
+            user.notifications,
+            30,
+            arrayMessage,
+          );
+        }
+        await user.save();
+        return 0;
+      }
+    }
+    await user.save();
+    return 1;
+  }
+
+  /**
+    * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt; 
+    * @descriptionsend popular pin notification to user 
+    * @param {Object of user type }user - user object 
+    * @param {Array&lt;Object&gt;} pins 
+    * @param {Array&lt;ids&gt;} images
+    * @returns {Number} 
+    */
+  async popularPins(user, pins, images) {
+    let arrayMessage &#x3D; {
+      pins: pins,
+      images: images,
+      title: &#x27;Popular Phantom Pins!&#x27;,
+      time: Date.now(),
+      body: &#x27;check out these popular pins on phantom&#x27;,
+    };
+    let message;
+    user.notificationCounter &#x3D; user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
+    if (!user.notifications) user.notifications &#x3D; [];
+    user.notifications &#x3D; await this.addTolimitedArray(
+      user.notifications,
+      30,
+      arrayMessage,
+    );
+    await user.save();
+    if (!user.fcmToken || user.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      return 0;
+    } else {
+      await user.save().catch(err &#x3D;&gt; {
+        //  console.log(err);
+      });
+      message &#x3D; {
+        data: {
+          title: &#x27;Popular Phantom Pins!&#x27;,
+          body: &#x27;check out these popular pins on phantom&#x27;,
+        },
+        tokens: [user.fcmToken],
+      };
+
+      let checkFailed &#x3D; await this.sendNotification([user.fcmToken], message);
+
+      if (checkFailed.length &gt; 0) {
+        let last &#x3D; user.notifications.pop();
+        if (String(last.title) !&#x3D; String(arrayMessage.title)) {
+          user.notifications &#x3D; await this.addTolimitedArray(
+            user.notifications,
+            30,
+            arrayMessage,
+          );
+        }
+        await user.save().catch(err &#x3D;&gt; {
+          // console.log(err);
+        });
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  /**
+  * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt; 
+  * @description  send pins for certan user notification to user 
+  * @param {Object of user type }user - user object 
+  * @param {Array&lt;Object&gt;} pins 
+  * @param {Array&lt;ids&gt;} images
+  * @returns {Number} 
+  */
+  async pinsForYou(user, pins, images) {
+    let arrayMessage &#x3D; {
+      pins: pins,
+      images: images,
+      time: Date.now(),
+      title: &#x27;Pins For You!&#x27;,
+      body: &#x27;We think that you may get instersted in some of these pins&#x27;,
+    };
+    let message;
+    user.notificationCounter &#x3D; user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
+    if (!user.notifications) user.notifications &#x3D; [];
+    user.notifications &#x3D; await this.addTolimitedArray(
+      user.notifications,
+      30,
+      arrayMessage,
+    );
+    await user.save();
+    if (!user.fcmToken || user.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      return 0;
+    } else {
+      await user.save();
+      message &#x3D; {
+        data: {
+          title: &#x27;Pins For You!&#x27;,
+          body: &#x27;We think that you may get instersted in some of these pins&#x27;,
+        },
+        tokens: [user.fcmToken],
+      };
+      let checkFailed &#x3D; await this.sendNotification([user.fcmToken], message);
+      if (checkFailed.length &gt; 0) {
+        let last &#x3D; user.notifications.pop();
+        if (String(last.title) !&#x3D; String(arrayMessage.title)) {
+          user.notifications &#x3D; await this.addTolimitedArray(
+            user.notifications,
+            30,
+            arrayMessage,
+          );
+        }
+        await user.save();
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  /**
+  * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt; 
+  * @description send popular inspired notification to user 
+  * @param {Object of user type }user - user object 
+  * @param {Array&lt;Object&gt;} pins 
+  * @param {Array&lt;ids&gt;} images
+  * @returns {Number} 
+  */
+  async pinsInspired(user, pins, images) {
+    let arrayMessage &#x3D; {
+      pins: pins,
+      images: images,
+      time: Date.now(),
+      title: &#x27;Pins Inspired By Your Recent Activity!&#x27;,
+      body: &#x27;check out these pins&#x27;,
+    };
+    let message;
+    user.notificationCounter &#x3D; user.notificationCounter
+      ? user.notificationCounter + 1
+      : 1;
+    if (!user.notifications) user.notifications &#x3D; [];
+    user.notifications &#x3D; await this.addTolimitedArray(
+      user.notifications,
+      30,
+      arrayMessage,
+    );
+    await user.save();
+    if (!user.fcmToken || user.fcmToken &#x3D;&#x3D; &#x27; &#x27;) {
+      return 0;
+    } else {
+      await user.save();
+      message &#x3D; {
+        data: {
+          title: &#x27;Pins Inspired By Your Recent Activity!&#x27;,
+          body: &#x27;check out these pins&#x27;,
+        },
+        tokens: [String(user.fcmToken)],
+      };
+      let checkFailed &#x3D; await this.sendNotification([user.fcmToken], message);
+      if (checkFailed.length &gt; 0) {
+        let last &#x3D; user.notifications.pop(message);
+        if (String(last.title) !&#x3D; String(arrayMessage.title)) {
+          user.notifications &#x3D; await this.addTolimitedArray(
+            user.notifications,
+            30,
+            arrayMessage,
+          );
+        }
+        await user.save();
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @descriptionthis function add to array but this array has limit
+    * @param {Array&lt;Object&gt;} notificationArray -array of data
+    * @param {Number} limit  - the limit should be
+    * @param {Object} pushedData Data should add to array
+    * @returns {Array&lt;Object&gt;} after delete 
+    */
+  async addTolimitedArray(
+    notificationArray: Array&lt;any&gt;,
+    limit: number,
+    pushedData: {},
+  ) {
+    if (notificationArray.length &gt;&#x3D; limit) {
+      notificationArray.splice(0, 1);
+    }
+    notificationArray.push(pushedData);
+    return notificationArray;
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'NotificationService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

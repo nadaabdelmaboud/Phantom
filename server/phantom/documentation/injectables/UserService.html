@@ -1,0 +1,3348 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>phantom documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">phantom documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>UserService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/user/user.service.ts</code>
+        </p>
+
+
+
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkCreateData">checkCreateData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkFollowUser">checkFollowUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkMAilExistAndFormat">checkMAilExistAndFormat</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkUpdateData">checkUpdateData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createUser">createUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteUser">deleteUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findByLogin">findByLogin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findUserAndGetData">findUserAndGetData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followingTopics">followingTopics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followUser">followUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserById">getUserById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserMe">getUserMe</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUserNotifications">getUserNotifications</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getViewState">getViewState</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#resetPassword">resetPassword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setEmail">setEmail</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setViewState">setViewState</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unfollowUser">unfollowUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateDataInUser">updateDataInUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateFCMTocken">updateFCMTocken</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateSettings">updateSettings</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateUserInfo">updateUserInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#userFollowers">userFollowers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#userFollowings">userFollowings</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(userModel: <a href="../interfaces/user.html">Model<user></a>, topicModel: <a href="../interfaces/topic.html">Model<topic></a>, pinModel: <a href="../interfaces/pin.html">Model<pin></a>, boardModel: <a href="../interfaces/board.html">Model<board></a>, notification: <a href="../injectables/NotificationService.html">NotificationService</a>, email: <a href="../injectables/Email.html">Email</a>, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/user/user.service.ts:29</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>userModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/user.html" target="_self" >Model&lt;user&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>topicModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/topic.html" target="_self" >Model&lt;topic&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>pinModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/pin.html" target="_self" >Model&lt;pin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>boardModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/board.html" target="_self" >Model&lt;board&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>notification</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NotificationService.html" target="_self" >NotificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>email</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/Email.html" target="_self" >Email</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>ValidationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkCreateData"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkCreateData
+                        </b>
+                        <a href="#checkCreateData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkCreateData(registerDto: <a href="../interfaces/RegisterDto.html">RegisterDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">src/user/user.service.ts:158</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>registerDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/RegisterDto.html" target="_self" >RegisterDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>data of created user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkFollowUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkFollowUser
+                        </b>
+                        <a href="#checkFollowUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkFollowUser(user, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="616"
+                            class="link-to-prism">src/user/user.service.ts:616</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user he follow</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user followed</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkMAilExistAndFormat"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkMAilExistAndFormat
+                        </b>
+                        <a href="#checkMAilExistAndFormat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkMAilExistAndFormat(email)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="358"
+                            class="link-to-prism">src/user/user.service.ts:358</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>email should check</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkUpdateData"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkUpdateData
+                        </b>
+                        <a href="#checkUpdateData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkUpdateData(updateDto: <a href="../interfaces/UpdateDto.html">UpdateDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="192"
+                            class="link-to-prism">src/user/user.service.ts:192</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>updateDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/UpdateDto.html" target="_self" >UpdateDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>data need to update</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            createUser
+                        </b>
+                        <a href="#createUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createUser(registerDto: <a href="../interfaces/RegisterDto.html">RegisterDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="266"
+                            class="link-to-prism">src/user/user.service.ts:266</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>registerDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/RegisterDto.html" target="_self" >RegisterDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-data to create user</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>_id ,email and profileImage of userS</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteUser
+                        </b>
+                        <a href="#deleteUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteUser(id)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="542"
+                            class="link-to-prism">src/user/user.service.ts:542</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-the id of user went to deleted</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findByLogin"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            findByLogin
+                        </b>
+                        <a href="#findByLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findByLogin(loginDto: <a href="../interfaces/LoginDto.html">LoginDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/user/user.service.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>loginDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/LoginDto.html" target="_self" >LoginDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>email of user &amp; password</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>object of _id :id of user , profileImage : user image &amp; email :user email</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findUserAndGetData"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            findUserAndGetData
+                        </b>
+                        <a href="#findUserAndGetData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findUserAndGetData(findData: literal type, data: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="124"
+                            class="link-to-prism">src/user/user.service.ts:124</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>findData</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user data wanted to get</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>data should get</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followingTopics"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            followingTopics
+                        </b>
+                        <a href="#followingTopics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followingTopics(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="252"
+                            class="link-to-prism">src/user/user.service.ts:252</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <ul>
+<li>following topic ids s</li>
+</ul>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            followUser
+                        </b>
+                        <a href="#followUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followUser(followerId, followingId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="634"
+                            class="link-to-prism">src/user/user.service.ts:634</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>followerId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user went to follow</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>followingId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user wented to be followed</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserById"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getUserById
+                        </b>
+                        <a href="#getUserById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserById(id)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/user/user.service.ts:46</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id wanted to get</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p><User>}</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserMe"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getUserMe
+                        </b>
+                        <a href="#getUserMe"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserMe(id)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/user/user.service.ts:59</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id wanted to get</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p><User>}</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUserNotifications"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getUserNotifications
+                        </b>
+                        <a href="#getUserNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUserNotifications(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/user/user.service.ts:101</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getViewState"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getViewState
+                        </b>
+                        <a href="#getViewState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getViewState(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="592"
+                            class="link-to-prism">src/user/user.service.ts:592</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>view state</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetPassword"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            resetPassword
+                        </b>
+                        <a href="#resetPassword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetPassword(userId, newPassword, oldPassword)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="393"
+                            class="link-to-prism">src/user/user.service.ts:393</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>newPassword</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>new password of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>oldPassword</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>old password of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setEmail"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setEmail
+                        </b>
+                        <a href="#setEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setEmail(userId, newEmail)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="528"
+                            class="link-to-prism">src/user/user.service.ts:528</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>newEmail</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>new email</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setViewState"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            setViewState
+                        </b>
+                        <a href="#setViewState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setViewState(userId, viewState)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="567"
+                            class="link-to-prism">src/user/user.service.ts:567</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>viewState</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>view state &#39;Default&#39; or &#39;Compact&#39;</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>view state</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unfollowUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            unfollowUser
+                        </b>
+                        <a href="#unfollowUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unfollowUser(followerId, followingId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="724"
+                            class="link-to-prism">src/user/user.service.ts:724</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>followerId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user went to unfollow</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>followingId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user wented to be unfollowed</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateDataInUser"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateDataInUser
+                        </b>
+                        <a href="#updateDataInUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateDataInUser(userId, data: literal type)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="709"
+                            class="link-to-prism">src/user/user.service.ts:709</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>data</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>object of data need to update in user model</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateFCMTocken"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateFCMTocken
+                        </b>
+                        <a href="#updateFCMTocken"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateFCMTocken(fcmToken, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="232"
+                            class="link-to-prism">src/user/user.service.ts:232</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>fcmToken</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>token for notification</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>id of user</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSettings"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateSettings
+                        </b>
+                        <a href="#updateSettings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateSettings(userId, settings: <a href="../interfaces/UpdateSettingsDto.html">UpdateSettingsDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="506"
+                            class="link-to-prism">src/user/user.service.ts:506</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-id of user</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>settings</td>
+                                    <td>
+                                                <code><a href="../interfaces/UpdateSettingsDto.html" target="_self" >UpdateSettingsDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateUserInfo"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateUserInfo
+                        </b>
+                        <a href="#updateUserInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateUserInfo(userId, updateDto: <a href="../interfaces/UpdateDto.html">UpdateDto</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="422"
+                            class="link-to-prism">src/user/user.service.ts:422</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-id of user</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>updateDto</td>
+                                    <td>
+                                                <code><a href="../interfaces/UpdateDto.html" target="_self" >UpdateDto</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-update data</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userFollowers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            userFollowers
+                        </b>
+                        <a href="#userFollowers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>userFollowers(userId, limit, offset)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="804"
+                            class="link-to-prism">src/user/user.service.ts:804</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the limit</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the start</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <ul>
+<li>has array of user object and real number of followers</li>
+</ul>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userFollowings"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            userFollowings
+                        </b>
+                        <a href="#userFollowings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>userFollowings(userId, limit, offset)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="845"
+                            class="link-to-prism">src/user/user.service.ts:845</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>user id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the limit</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the start</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <ul>
+<li>has array of user object and real number of followings</li>
+</ul>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  HttpException,
+  HttpStatus,
+} from &#x27;@nestjs/common&#x27;;
+import { Model } from &#x27;mongoose&#x27;;
+import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
+import * as mongoose from &#x27;mongoose&#x27;;
+import { sign } from &#x27;jsonwebtoken&#x27;;
+import { user } from &#x27;../types/user&#x27;;
+import { Email } from &#x27;../shared/send-email.service&#x27;;
+import { LoginDto } from &#x27;../auth/dto/login.dto&#x27;;
+import { RegisterDto } from &#x27;../auth/dto/register.dto&#x27;;
+import { UpdateDto } from &#x27;./dto/update-user.dto&#x27;;
+import { UpdateSettingsDto } from &#x27;./dto/update-user-settings.dto&#x27;;
+import * as Joi from &#x27;@hapi/joi&#x27;;
+import * as bcrypt from &#x27;bcrypt&#x27;;
+import { NotificationService } from &#x27;../shared/notification.service&#x27;;
+import { ValidationService } from &#x27;../shared/validation.service&#x27;;
+import { topic } from &#x27;../types/topic&#x27;;
+import { pin } from &#x27;../types/pin&#x27;;
+import { board } from &#x27;../types/board&#x27;;
+/**
+ * @module Users
+ */
+@Injectable()
+export class UserService {
+  constructor(
+    @InjectModel(&#x27;User&#x27;) private readonly userModel: Model&lt;user&gt;,
+    @InjectModel(&#x27;Topic&#x27;) private readonly topicModel: Model&lt;topic&gt;,
+    @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
+    @InjectModel(&#x27;Board&#x27;) private readonly boardModel: Model&lt;board&gt;,
+    private notification: NotificationService,
+    private email: Email,
+    private ValidationService: ValidationService,
+  ) { }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description get user by id
+   * @param {string} id - user id wanted to get
+   * @returns {object&lt;User&gt;}
+   */
+  async getUserById(id) {
+    const user &#x3D; await this.userModel.findById(id);
+    if (!user)
+      throw new HttpException(&#x27;Unauthorized access&#x27;, HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about &#x3D; &#x27;&#x27;;
+    return user;
+  }
+
+  /**
+   * @description Sget user by id  with profile data
+   * @param {string} id - user id wanted to get
+   * @returns {object&lt;User&gt;}
+   */
+  async getUserMe(id) {
+    let userId &#x3D; mongoose.Types.ObjectId(id);
+    let user &#x3D; await this.userModel.aggregate([
+      { $match: { _id: userId } },
+      {
+        $project: {
+          followers: { $size: &#x27;$followers&#x27; },
+          email: 1,
+          gender: 1,
+          country: 1,
+          firstName: 1,
+          lastName: 1,
+          location: 1,
+          activity: 1,
+          pinsForYou: 1,
+          pinsInspired: 1,
+          popularPins: 1,
+          boardsForYou: 1,
+          boardUpdate: 1,
+          invitation: 1,
+          pinsNotification: 1,
+          followNotification: 1,
+          userName: 1,
+          sortType: 1,
+          profileImage: 1,
+          google: 1,
+          googleImage: 1,
+        },
+      },
+    ]);
+    if (!user)
+      throw new HttpException(&#x27;Unauthorized access&#x27;, HttpStatus.UNAUTHORIZED);
+    if (!user[0].about) user[0].about &#x3D; &#x27;&#x27;;
+    return user[0];
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description get notification data from user
+   * @param {string} id - user id wanted to get
+   * @returns {object}
+   */
+  async getUserNotifications(userId) {
+    let user &#x3D; await this.userModel.findById(userId, {
+      notifications: 1,
+      notificationCounter: 1,
+    });
+    let offset: number &#x3D;
+      user.notifications.length &gt; 30 ? user.notifications.length - 30 : 0;
+    let limit: number &#x3D;
+      user.notifications.length &gt; 30 ? offset + 30 : user.notifications.length;
+    let ret &#x3D; {
+      notificationCounter: user.notificationCounter,
+      notifications: user.notifications.slice(offset, limit),
+    };
+    return ret;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description get user by findData and get only from user data
+   * @param {Object} findData - user data wanted to get
+   * @param {Object} data - data should get
+   * @returns {Object}
+   */
+  async findUserAndGetData(findData: {}, data: {}) {
+    const user &#x3D; await this.userModel.findOne(findData, data).lean();
+    if (!user)
+      throw new HttpException(&#x27;Unauthorized access&#x27;, HttpStatus.UNAUTHORIZED);
+    if (!user.about) user.about &#x3D; &#x27;&#x27;;
+    return user;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description get user by login
+   * @param {LoginDto} loginDto - email of user &amp; password
+   * @returns {object} object of _id :id of user , profileImage : user image &amp; email :user email
+   */
+  async findByLogin(loginDto: LoginDto) {
+    const user &#x3D; await this.findUserAndGetData(
+      { email: loginDto.email },
+      { password: 1, profileImage: 1, email: 1, _id: 1 },
+    ).catch(err &#x3D;&gt; {
+      console.log(err);
+    });
+    if (!user)
+      throw new HttpException(&#x27;not user by this email&#x27;, HttpStatus.FORBIDDEN);
+    if (await bcrypt.compare(loginDto.password, user.password)) {
+      return user;
+    }
+    throw new HttpException(&#x27;password is not correct&#x27;, HttpStatus.FORBIDDEN);
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description check data after create user
+   * @param {RegisterDto} registerDto - data of created user
+   */
+  async checkCreateData(registerDto: RegisterDto) {
+    const shcema &#x3D; Joi.object({
+      email: Joi.string()
+        .trim()
+        .email()
+        .required(),
+      password: Joi.string().required(),
+      birthday: Joi.date()
+        .raw()
+        .required(),
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      country: Joi.string().optional(),
+      gender: Joi.string().optional(),
+      bio: Joi.string().optional(),
+      iat: Joi.optional(),
+      exp: Joi.optional(),
+    });
+    const body &#x3D; registerDto;
+    const validate &#x3D; shcema.validate(body);
+    if (validate.error)
+      throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    if (await this.checkMAilExistAndFormat(registerDto.email))
+      throw new HttpException(
+        &#x27;&quot;email&quot; should not have acount&#x27;,
+        HttpStatus.FORBIDDEN,
+      );
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description check update data after update
+   * @param {UpdateDto} updateDto - data need to update
+   */
+  async checkUpdateData(updateDto: UpdateDto) {
+    const shcema &#x3D; Joi.object({
+      email: Joi.string()
+        .trim()
+        .email()
+        .optional(),
+      password: Joi.string().optional(),
+      birthDate: Joi.date()
+        .raw()
+        .optional(),
+      firstName: Joi.string().optional(),
+      lastName: Joi.string().optional(),
+      country: Joi.string().optional(),
+      location: Joi.string().optional(),
+      userName: Joi.string().optional(),
+      gender: Joi.string().optional(),
+      bio: Joi.string().optional(),
+      iat: Joi.optional(),
+      exp: Joi.optional(),
+      profileImage: Joi.string().optional(),
+    });
+    const body &#x3D; updateDto;
+    const validate &#x3D; shcema.validate(body);
+    if (validate.error)
+      throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    if (updateDto.email)
+      if (await this.checkMAilExistAndFormat(updateDto.email))
+        throw new HttpException(
+          &#x27;&quot;email&quot; should not have acount&#x27;,
+          HttpStatus.FORBIDDEN,
+        );
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description update FCM token value
+   * @param {String} fcmToken - token for notification
+   * @param {String} userId   - id of user
+   * @returns {Number} 1
+   */
+  async updateFCMTocken(fcmToken, userId) {
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { fcmToken: 1, _id: 1, email: 1 },
+    );
+    await this.userModel.update({ _id: userId }, { fcmToken: fcmToken });
+    if (fcmToken &amp;&amp; fcmToken !&#x3D; &#x27; &#x27;)
+      await this.notification.sendOfflineNotification(
+        user.offlineNotifications,
+        user.fcmToken,
+      );
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description get user following topics
+   * @param {String} userId - id of user
+   * @returns {Array&lt;String&gt;} - following topic ids s
+   */
+  async followingTopics(userId) {
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, email: 1, followingTopics: 1 },
+    );
+    return user.followingTopics;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description create new user
+   * @param {RegisterDto} registerDto -data to create user
+   * @returns {Object} _id ,email and profileImage of userS
+   */
+  async createUser(registerDto: RegisterDto) {
+    let hash,
+      googleImage &#x3D; null,
+      picture &#x3D; null;
+    if (registerDto.isGoogle) {
+      hash &#x3D; &#x27;&#x27;;
+      googleImage &#x3D; registerDto.profileImage;
+    } else {
+      await this.checkCreateData(registerDto);
+      const salt &#x3D; await bcrypt.genSalt(10);
+      hash &#x3D; await bcrypt.hash(registerDto.password, salt);
+    }
+    var newUser &#x3D; new this.userModel({
+      firstName: registerDto.firstName,
+      lastName: registerDto.lastName,
+      location: &#x27;&#x27;,
+      notificationCounter: 0,
+      profileImage: picture,
+      lastTopics: [],
+      userName: registerDto.firstName + &#x27; &#x27; + registerDto.lastName,
+      email: registerDto.email,
+      password: hash,
+      sortType: &#x27;Date&#x27;,
+      fcmToken: &#x27; &#x27;,
+      boardsForYou: true,
+      popularPins: true,
+      pinsForYou: true,
+      pinsInspired: true,
+      activity: true,
+      invitation: true,
+      boardUpdate: true,
+      history: [],
+      facebook: false,
+      googleImage: googleImage,
+      google: registerDto.isGoogle ? registerDto.isGoogle : false,
+      about: registerDto.bio ? registerDto.bio : &#x27;&#x27;,
+      gender: registerDto.gender,
+      country: registerDto.country,
+      birthDate: registerDto.birthday,
+      activateaccount: true,
+      followNotification: true,
+      pinsNotification: true,
+      pins: [],
+      homeFeed: [],
+      uploadedImages: [],
+      savedImages: [],
+      notifications: [],
+      offlineNotifications: [],
+      followers: [],
+      following: [],
+      followingTopics: [],
+      boards: [],
+      counts: {
+        likes: 0,
+        comments: 0,
+        repins: 0,
+        saves: 0,
+      },
+      createdAt: Date.now(),
+    });
+    await newUser.save();
+    newUser &#x3D; await this.userModel.findById(newUser._id, {
+      firstName: 1,
+      lastName: 1,
+    });
+    let topics &#x3D; await this.topicModel.find(
+      {},
+      { name: 1, recommendedUsers: 1 },
+    );
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      if (
+        newUser.firstName.includes(String(topics[i].name)) ||
+        newUser.lastName.includes(String(topics[i].name))
+      ) {
+        if (!topics[i].recommendedUsers) topics[i].recommendedUsers &#x3D; [];
+        if (!topics[i].recommendedUsers.includes(newUser._id)) {
+          topics[i].recommendedUsers.push(newUser._id);
+          await topics[i].save();
+          break;
+        }
+      }
+    }
+    await this.userModel.ensureIndexes();
+    return newUser;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description check email in formate and if exist
+   * @param {String} email - email should check
+   * @returns  {Object&lt;User&gt;}
+   */
+  async checkMAilExistAndFormat(email) {
+    const body &#x3D; { email: email };
+    const shcema &#x3D; Joi.object({
+      email: Joi.string()
+        .trim()
+        .email()
+        .required(),
+    });
+    const validate &#x3D; shcema.validate(body);
+    if (validate.error !&#x3D; null)
+      throw new HttpException(validate.error, HttpStatus.FORBIDDEN);
+    const user &#x3D; await this.userModel
+      .findOne(
+        { email: email },
+        {
+          password: 1,
+          _id: 1,
+          email: 1,
+          fcmToken: 1,
+          location: 1,
+          firstName: 1,
+        },
+      )
+      .lean();
+    return user;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description change user password
+   * @param {String} userId - user id
+   * @param {String} newPassword - new password of user
+   * @param {String} oldPassword - old password of user
+   * @returns {Number} 1
+   */
+  async resetPassword(userId, newPassword, oldPassword) {
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { email: 1, password: 1, _id: 1, fristName: 1 },
+    );
+    if (!user || !newPassword)
+      throw new HttpException(&#x27;there is no new password&#x27;, HttpStatus.FORBIDDEN);
+    if (oldPassword) {
+      if (!(await bcrypt.compare(oldPassword, user.password))) {
+        throw new HttpException(
+          &#x27;old password is not correct&#x27;,
+          HttpStatus.FORBIDDEN,
+        );
+      }
+    }
+    const salt &#x3D; await bcrypt.genSalt(10);
+    let hash &#x3D; await bcrypt.hash(newPassword, salt);
+    user.password &#x3D; hash;
+    await this.userModel.updateOne({ _id: userId }, { password: hash });
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description update information in user profile
+   * @param {String} userId -id of user
+   * @param {UpdateDto} updateDto -update data
+   * @returns {Number} 1
+   */
+  async updateUserInfo(userId, updateDto: UpdateDto) {
+    const user &#x3D; await this.getUserMe(userId);
+    if (!user) return 0;
+    if (updateDto.firstName)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { firstName: updateDto.firstName },
+      );
+    if (updateDto.lastName)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { lastName: updateDto.lastName },
+      );
+    if (updateDto.userName)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { userName: updateDto.userName },
+      );
+    if (updateDto.location)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { location: updateDto.location },
+      );
+    if (updateDto.bio)
+      await this.userModel.updateOne({ _id: userId }, { about: updateDto.bio });
+    if (updateDto.gender)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { gender: updateDto.gender },
+      );
+    if (updateDto.country)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { country: updateDto.country },
+      );
+    if (updateDto.profileImage) {
+      let profileImage &#x3D; mongoose.Types.ObjectId(updateDto.profileImage);
+      await this.userModel.updateOne(
+        { _id: userId },
+        { profileImage: profileImage },
+      );
+    }
+
+    if (
+      updateDto.email &amp;&amp;
+      !(await this.checkMAilExistAndFormat(updateDto.email))
+    ) {
+      var token &#x3D;
+        &#x27;Bearer &#x27; +
+        sign(
+          {
+            email: user.email,
+            _id: user._id,
+            newEmail: updateDto.email,
+            firstName: updateDto.firstName
+              ? updateDto.firstName
+              : user.firstName,
+          },
+          process.env.SECRET_KEY,
+          { expiresIn: &#x27;67472347632732h&#x27; },
+        );
+
+      await this.email.sendEmail(
+        user.email,
+        token,
+        &#x27;change email&#x27;,
+        updateDto.firstName ? updateDto.firstName : user.firstName,
+      );
+    }
+    if (updateDto.birthDate)
+      await this.userModel.updateOne(
+        { _id: userId },
+        { birthDate: updateDto.birthDate },
+      );
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description update settings in user profile
+   * @param {String} userId -id of user
+   * @param {UpdateSettings} updateSettings - settings data should update
+   * @returns {Number} 1
+   */
+  async updateSettings(userId, settings: UpdateSettingsDto) {
+    const user &#x3D; await this.getUserById(userId);
+    if (settings.deleteflag) {
+      for (let i &#x3D; 0; i &lt; user.followers.length; i++) {
+        await this.unfollowUser(user.followers[i], user._id);
+      }
+      for (let i &#x3D; 0; i &lt; user.following.length; i++) {
+        await this.unfollowUser(user._id, user.followers[i]);
+      }
+      return await this.deleteUser(userId);
+    }
+    await this.userModel.updateOne({ _id: userId }, settings);
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description set user email
+   * @param {string} userId - id of user
+   * @param {string} newEmail  - new email
+   * @returns {Number}
+   */
+  async setEmail(userId, newEmail) {
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { email: 1, _id: 1 },
+    );
+    if (!user || !newEmail) return 0;
+    await this.userModel.updateOne({ _id: userId }, { email: newEmail });
+    return 1;
+  }
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description delete user
+   * @param {string} id -the id of user went to deleted
+   */
+  async deleteUser(id) {
+    const user &#x3D; await this.getUserById(id);
+    // delete following
+    //delete followers
+    // delete pins saved created
+    // delete commints for pin
+    //delete react
+    //delete chat (in ask)
+    // delete following topic
+    await this.userModel.findByIdAndDelete(id);
+    await this.email.sendEmail(
+      user.email,
+      null,
+      &#x27;Delete account&#x27;,
+      user.firstName,
+    );
+  }
+
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description set view state of user
+   * @param {String} userId - the id of user
+   * @param  {String} viewState  - view state &#x27;Default&#x27; or &#x27;Compact&#x27;
+   * @returns {String} view state
+   */
+  async setViewState(userId, viewState) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, email: 1, viewState: 1 },
+    );
+    if (!user) throw new NotFoundException(&#x27;user not found&#x27;);
+    if (viewState !&#x3D; &#x27;Default&#x27; &amp;&amp; viewState !&#x3D; &#x27;Compact&#x27;) {
+      throw new BadRequestException(
+        &quot;view state must be &#x27;Default&#x27; or &#x27;Compact&#x27; only&quot;,
+      );
+    }
+    user.viewState &#x3D; viewState;
+    await this.userModel.update({ _id: userId }, { viewState: viewState });
+    return viewState;
+  }
+
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get view state of user
+   * @param {String} userId - the id of user
+   * @returns {String} view state
+   */
+  async getViewState(userId) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0) {
+      throw new BadRequestException(&#x27;not valid id&#x27;);
+    }
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, viewState: 1 },
+    );
+    if (!user) throw new NotFoundException(&#x27;user not found&#x27;);
+    if (!user.viewState) {
+      user.viewState &#x3D; &#x27;Default&#x27;;
+      await this.userModel.update({ _id: userId }, { viewState: &#x27;Default&#x27; });
+    }
+    if (user.viewState) return user.viewState;
+    return false;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description check if this user follow this user id
+   * @param {Object} user - user he follow
+   * @param {String} userId - id of user followed
+   * @returns {boolean}
+   */
+  async checkFollowUser(user, userId) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D;&#x3D; 0)
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    if (!user) throw new BadRequestException(&#x27;not user&#x27;);
+    if (!user.following)
+      await this.userModel.updateOne({ _id: user._id }, { following: [] });
+    for (let i &#x3D; 0; i &lt; user.following.length; i++)
+      if (String(userId) &#x3D;&#x3D;&#x3D; String(user.following[i])) return true;
+    return false;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description followUser:  make frist user id follow second user id
+   * @param {String} followerId - id of user went to follow
+   * @param {String} followingId  - id of user wented to be followed
+   * @returns {Number}
+   */
+  async followUser(followerId, followingId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        followerId,
+        followingId,
+      ])) &#x3D;&#x3D;&#x3D; 0
+    )
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    if (String(followerId) &#x3D;&#x3D; String(followingId))
+      throw new HttpException(
+        &#x27;You can not follow yourself &#x27;,
+        HttpStatus.FORBIDDEN,
+      );
+    let userFollow &#x3D; await this.findUserAndGetData(
+      { _id: followerId },
+      {
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
+        lastName: 1,
+        google: 1,
+        googleImage: 1,
+      },
+    );
+    let followedUser &#x3D; await this.findUserAndGetData(
+      { _id: followingId },
+      {
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
+        lastName: 1,
+        notifications: 1,
+        notificationCounter: 1,
+        offlineNotifications: 1,
+        profileImage: 1,
+        google: 1,
+        googleImage: 1,
+      },
+    );
+    if (!userFollow || !followedUser)
+      throw new BadRequestException(&#x27;one of users not correct&#x27;);
+    if (await this.checkFollowUser(userFollow, followingId))
+      throw new BadRequestException(&#x27;you followed this user before&#x27;);
+    userFollow.following.push(followingId);
+    await this.userModel.updateOne(
+      { _id: userFollow._id },
+      { following: userFollow.following },
+    );
+    if (!followedUser.followers) followedUser.followers &#x3D; [];
+    followedUser.followers.push(followerId);
+    await this.userModel.update(
+      { _id: followingId },
+      { followers: followedUser.followers },
+    );
+    if (
+      !followedUser.followNotification ||
+      followedUser.followNotification &#x3D;&#x3D; true
+    ) {
+      var newUserData &#x3D; await this.notification.followUser(
+        followedUser,
+        userFollow,
+      );
+      await this.updateDataInUser(followingId, newUserData);
+    }
+    return 1;
+  }
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description update data in user model
+   * @param {String} userId - user id
+   * @param {Object} data  - object of data need to update in user model
+   * @returns {Number} 1
+   */
+  async updateDataInUser(userId, data: {}) {
+    if (!(await this.findUserAndGetData({ _id: userId }, { _id: 1, email: 1 })))
+      throw new HttpException(&#x27;Unauthorized access&#x27;, HttpStatus.UNAUTHORIZED);
+    await this.userModel.updateOne({ _id: userId }, data);
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description unfollowUser:  make frist user id unfollow second user id
+   * @param {String} followerId - id of user went to unfollow
+   * @param {String} followingId  - id of user wented to be unfollowed
+   * @returns {Number}
+   */
+
+  async unfollowUser(followerId, followingId) {
+    if (
+      (await this.ValidationService.checkMongooseID([
+        followerId,
+        followingId,
+      ])) &#x3D;&#x3D;&#x3D; 0
+    )
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    let userFollow &#x3D; await this.findUserAndGetData(
+      { _id: followerId },
+      {
+        _id: 1,
+        followers: 1,
+        following: 1,
+        firstName: 1,
+        lastName: 1,
+        google: 1,
+        googleImage: 1,
+      },
+    );
+    let followedUser &#x3D; await this.findUserAndGetData(
+      { _id: followingId },
+      {
+        _id: 1,
+        followers: 1,
+        following: 1,
+        notifications: 1,
+        firstName: 1,
+        lastName: 1,
+        notificationCounter: 1,
+        offlineNotifications: 1,
+        profileImage: 1,
+        google: 1,
+        googleImage: 1,
+      },
+    );
+    if (!userFollow || !followedUser)
+      throw new BadRequestException(&#x27;one of users not correct&#x27;);
+    if (!(await this.checkFollowUser(userFollow, followingId)))
+      throw new BadRequestException(&#x27;you did not follow this user before&#x27;);
+    if (userFollow.following) {
+      for (let i &#x3D; 0; i &lt; userFollow.following.length; i++) {
+        if (String(userFollow.following[i]) &#x3D;&#x3D;&#x3D; String(followingId)) {
+          userFollow.following.splice(i, 1);
+          await this.userModel.updateOne(
+            { _id: userFollow._id },
+            { following: userFollow.following },
+          );
+          break;
+        }
+      }
+    } else throw new BadRequestException(&#x27;you did not follow this user before&#x27;);
+    if (followedUser.followers) {
+      for (let i &#x3D; 0; i &lt; followedUser.followers.length; i++) {
+        if (String(followedUser.followers[i]) &#x3D;&#x3D;&#x3D; String(followerId)) {
+          followedUser.followers.splice(i, 1);
+          await this.userModel.updateOne(
+            { _id: followedUser._id },
+            { followers: followedUser.followers },
+          );
+          var newUserData &#x3D; await this.notification.unfollowUser(
+            followedUser,
+            userFollow,
+          );
+          await this.updateDataInUser(followingId, newUserData);
+          return 1;
+        }
+      }
+    }
+    throw new BadRequestException(&#x27;you did not follow this user before&#x27;);
+  }
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description userFollowers: get user followers
+   * @param {string} userId - user id
+   * @param {Number} limit  - the limit
+   * @param {Number} offset - the start
+   * @returns {object} - has array of user object and real number of followers
+   */
+
+  async userFollowers(userId, limit, offset) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D;&#x3D; 0)
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { following: 1, _id: 1, followers: 1 },
+    );
+    if (!user) throw new HttpException(&#x27;not user &#x27;, HttpStatus.FORBIDDEN);
+    if (!user.followers || user.followers.length &#x3D;&#x3D; 0)
+      return { followers: [], numOfFollowers: 0 };
+    const followers &#x3D; this.ValidationService.limitOffset(
+      limit,
+      offset,
+      user.followers,
+    );
+    var followersInfo &#x3D; [];
+    for (let i &#x3D; 0; i &lt; followers.length; i++) {
+      var currentUser &#x3D; await this.findUserAndGetData(
+        { _id: followers[i] },
+        {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+          google: 1,
+          googleImage: 1,
+        },
+      );
+      if (currentUser) followersInfo.push(currentUser);
+    }
+    return { followers: followersInfo, numOfFollowers: user.followers.length };
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description userFollowings: get user following
+   * @param {string} userId - user id
+   * @param {Number} limit  - the limit
+   * @param {Number} offset - the start
+   * @returns {object} - has array of user object and real number of followings
+   */
+  async userFollowings(userId, limit, offset) {
+    if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D;&#x3D; 0)
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    const user &#x3D; await this.findUserAndGetData(
+      { _id: userId },
+      { following: 1, _id: 1, followers: 1 },
+    );
+    if (!user) throw new HttpException(&#x27;not user &#x27;, HttpStatus.FORBIDDEN);
+    if (!user.following || user.following.length &#x3D;&#x3D; 0)
+      return { followings: [], numOfFollowings: 0 };
+    const followings &#x3D; this.ValidationService.limitOffset(
+      limit,
+      offset,
+      user.following,
+    );
+    let followingsInfo &#x3D; [];
+    for (let i &#x3D; 0; i &lt; followings.length; i++) {
+      var currentUser &#x3D; await this.findUserAndGetData(
+        { _id: followings[i] },
+        {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+          profileImage: 1,
+          google: 1,
+          googleImage: 1,
+        },
+      );
+      if (currentUser) followingsInfo.push(currentUser);
+    }
+    return {
+      followings: followingsInfo,
+      numOfFollowings: user.following.length,
+    };
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
