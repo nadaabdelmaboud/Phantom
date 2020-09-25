@@ -1,0 +1,1451 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>phantom documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">phantom documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Injectables</li>
+  <li>TopicService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/topic/topic.service.ts</code>
+        </p>
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#addPinToTopic">addPinToTopic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkFollowTopic">checkFollowTopic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createTopic">createTopic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#editTopic">editTopic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followingTopics">followingTopics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#followTopic">followTopic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPinsOfTopic">getPinsOfTopic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTopicById">getTopicById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getTopics">getTopics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#topicsSeeds">topicsSeeds</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unfollowTopic">unfollowTopic</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(topicModel: <a href="../interfaces/topic.html">Model<topic></a>, pinModel: <a href="../interfaces/pin.html">Model<pin></a>, userModel: <a href="../interfaces/pin.html">Model<pin></a>, UserService: <a href="../injectables/UserService.html">UserService</a>, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/topic/topic.service.ts:16</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>topicModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/topic.html" target="_self" >Model&lt;topic&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>pinModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/pin.html" target="_self" >Model&lt;pin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/pin.html" target="_self" >Model&lt;pin&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>UserService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>ValidationService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addPinToTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            addPinToTopic
+                        </b>
+                        <a href="#addPinToTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addPinToTopic(topicName, pinId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/topic/topic.service.ts:90</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>topicName</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>pinId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkFollowTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            checkFollowTopic
+                        </b>
+                        <a href="#checkFollowTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkFollowTopic(userId, topicId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="135"
+                            class="link-to-prism">src/topic/topic.service.ts:135</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-user id  </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>topicId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>topic id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            createTopic
+                        </b>
+                        <a href="#createTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createTopic(imageId, description, imageWidth, imageHeight, name)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/topic/topic.service.ts:42</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>imageId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>description</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>imageWidth</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>imageHeight</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            editTopic
+                        </b>
+                        <a href="#editTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>editTopic(topics)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="31"
+                            class="link-to-prism">src/topic/topic.service.ts:31</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>topics</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followingTopics"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            followingTopics
+                        </b>
+                        <a href="#followingTopics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followingTopics(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="250"
+                            class="link-to-prism">src/topic/topic.service.ts:250</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-user id  </p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>-following topic object</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="followTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            followTopic
+                        </b>
+                        <a href="#followTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>followTopic(userId, topicId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="157"
+                            class="link-to-prism">src/topic/topic.service.ts:157</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-user id  </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>topicId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>topic id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPinsOfTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getPinsOfTopic
+                        </b>
+                        <a href="#getPinsOfTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPinsOfTopic(topicId, limit, offset, userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="110"
+                            class="link-to-prism">src/topic/topic.service.ts:110</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>topicId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../interfaces/pin.html" target="_self" >Promise&lt;pin[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTopicById"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getTopicById
+                        </b>
+                        <a href="#getTopicById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTopicById(topicId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/topic/topic.service.ts:61</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>topicId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTopics"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getTopics
+                        </b>
+                        <a href="#getTopics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTopics(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/topic/topic.service.ts:70</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="topicsSeeds"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            topicsSeeds
+                        </b>
+                        <a href="#topicsSeeds"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>topicsSeeds(topics)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/topic/topic.service.ts:25</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>topics</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="unfollowTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            unfollowTopic
+                        </b>
+                        <a href="#unfollowTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unfollowTopic(userId, topicId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="208"
+                            class="link-to-prism">src/topic/topic.service.ts:208</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-user id  </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>topicId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>topic id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
+} from &#x27;@nestjs/common&#x27;;
+import { Model } from &#x27;mongoose&#x27;;
+import * as mongoose from &#x27;mongoose&#x27;;
+import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
+import { topic } from &#x27;../types/topic&#x27;;
+import { ValidationService } from &#x27;../shared/validation.service&#x27;;
+import { UserService } from &#x27;../user/user.service&#x27;;
+import { pin } from &#x27;../types/pin&#x27;;
+
+@Injectable()
+export class TopicService {
+  constructor(
+    @InjectModel(&#x27;Topic&#x27;) private readonly topicModel: Model&lt;topic&gt;,
+    @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
+    @InjectModel(&#x27;User&#x27;) private readonly userModel: Model&lt;pin&gt;,
+
+    private UserService: UserService,
+    private ValidationService: ValidationService,
+  ) { }
+  async topicsSeeds(topics) {
+    for (var i &#x3D; 0; i &lt; topics.length; i++) {
+      await this.createTopic(topics[i].imageId, &#x27;&#x27;, 200, 200, topics[i].name);
+    }
+    return true;
+  }
+  async editTopic(topics) {
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      await this.topicModel
+        .findOneAndUpdate(
+          { name: topics[i].name },
+          { imageId: topics[i].imageId },
+        )
+        .lean();
+    }
+    return 1;
+  }
+  async createTopic(imageId, description, imageWidth, imageHeight, name) {
+    if (!this.ValidationService.checkMongooseID([imageId]))
+      throw new Error(&#x27;not mongoose id&#x27;);
+    let topicExist &#x3D; await this.topicModel
+      .findOne({ name: name }, &#x27;_id&#x27;)
+      .lean();
+    if (topicExist) throw new Error(&#x27;topic has been already exists&#x27;);
+    let topic &#x3D; new this.topicModel({
+      name: name,
+      imageId: imageId,
+      imageWidth: imageWidth,
+      imageHeight: imageHeight,
+      followers: [],
+      description: description,
+      pins: [],
+    });
+    await topic.save();
+    return topic;
+  }
+  async getTopicById(topicId) {
+    if (!this.ValidationService.checkMongooseID([topicId]))
+      throw new Error(&#x27;not mongoose id&#x27;);
+    const topic &#x3D; await this.topicModel.findById(topicId, &#x27;pins followers&#x27;, (err, topic) &#x3D;&gt; {
+      if (err) throw new Error(&#x27;topic not found&#x27;);
+      return topic;
+    });
+    return topic;
+  }
+  async getTopics(userId): Promise&lt;any&gt; {
+    let topics &#x3D; await this.topicModel.find(
+      {},
+      &#x27;name description imageId followers&#x27;,
+      (err, topic) &#x3D;&gt; {
+        if (err) throw new Error(&#x27;topic not found&#x27;);
+        return topic;
+      },
+    );
+    return topics.map(topic &#x3D;&gt; {
+      let isFollow &#x3D; topic.followers.includes(userId);
+      return {
+        isFollow,
+        _id: topic._id,
+        name: topic.name,
+        description: topic.description,
+        imageId: topic.imageId,
+      };
+    });
+  }
+  async addPinToTopic(topicName, pinId): Promise&lt;Boolean&gt; {
+    if (!this.ValidationService.checkMongooseID([pinId]))
+      throw new Error(&#x27;not mongoose id&#x27;);
+    let topic &#x3D; await this.topicModel.find({ name: topicName }, &#x27;pins&#x27;);
+    let id &#x3D; mongoose.Types.ObjectId(pinId);
+    const pin &#x3D; await this.pinModel.findById(id, &#x27;topic&#x27;);
+    if (!pin) throw new NotFoundException();
+    pin.topic &#x3D; topicName;
+    await pin.save().catch(err &#x3D;&gt; {
+      return err;
+    });
+    if (topic &amp;&amp; pin) {
+      topic[0].pins.push(pinId);
+      await topic[0].save().catch(err &#x3D;&gt; {
+        return err;
+      });
+      return true;
+    }
+    throw new NotFoundException();
+  }
+  async getPinsOfTopic(topicId, limit, offset, userId): Promise&lt;pin[]&gt; {
+    if (!this.ValidationService.checkMongooseID([topicId]))
+      throw new Error(&#x27;not mongoose id&#x27;);
+    const topic &#x3D; await this.getTopicById(topicId);
+    if (!topic.pins.length) return [];
+    let pinsIds &#x3D; this.ValidationService.limitOffset(
+      limit,
+      offset,
+      topic.pins,
+    );
+    let pins &#x3D; [];
+    for (let i &#x3D; 0; i &lt; pinsIds.length; i++) {
+      await this.pinModel.findById(pinsIds[i], &#x27;imageId&#x27;, (err, pin) &#x3D;&gt; {
+        if (pin) pins.push(pin);
+      });
+    }
+    return pins;
+  }
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @descriptioncheck if this user follow this topic 
+    * @param {String} userId -user id  
+    * @param {String} topicId - topic id
+    * @returns {Boolean}
+    */
+  async checkFollowTopic(userId, topicId) {
+    if (!this.ValidationService.checkMongooseID([userId, topicId]))
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    if (!(await this.UserService.getUserById(userId)))
+      throw new HttpException(
+        &#x27;user id is not correct&#x27;,
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic &#x3D; await this.getTopicById(topicId);
+    if (!topic)
+      throw new HttpException(&#x27;topic id is not correct&#x27;, HttpStatus.FORBIDDEN);
+    if (!topic.followers || topic.followers.length &#x3D;&#x3D; 0) return false;
+    return topic.followers.includes(userId);
+  }
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @description make user follow topic
+    * @param {String} userId -user id  
+    * @param {String} topicId - topic id
+    * @returns {Number} 1
+  */
+  async followTopic(userId, topicId) {
+    if (!this.ValidationService.checkMongooseID([userId, topicId]))
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    if (await this.checkFollowTopic(userId, topicId))
+      throw new HttpException(
+        &#x27;you are already follow this topic&#x27;,
+        HttpStatus.BAD_REQUEST,
+      );
+    const user &#x3D; await this.UserService.getUserById(userId);
+    if (!user)
+      throw new HttpException(
+        &#x27;user id is not correct&#x27;,
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic &#x3D; await this.topicModel.findById(topicId, {
+      pins: 1,
+      followers: 1,
+      name: 1,
+    });
+    if (!topic)
+      throw new HttpException(&#x27;topic id is not correct&#x27;, HttpStatus.FORBIDDEN);
+    if (!topic.followers) topic.followers &#x3D; [];
+    topic.followers.push(userId);
+    await topic.save();
+    if (!user.followingTopics) user.followingTopics &#x3D; [];
+    user.followingTopics.push(topicId);
+    if (!user.lastTopics) user.lastTopics &#x3D; [];
+    if (user.lastTopics.length &gt; 0) {
+      if (user.lastTopics[user.lastTopics.length - 1].topicName &#x3D;&#x3D; topic.name) {
+        await user.save();
+        return 1;
+      }
+    }
+    user.lastTopics.push({
+      topicName: topic.name,
+      pinsLength: topic.pins.length,
+    });
+    if (user.lastTopics.length &gt; 5) {
+      user.lastTopics &#x3D; user.lastTopics.slice(1, 5);
+    }
+    await user.save();
+    return 1;
+  }
+
+  /**
+  * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+  * @description make user unfollow topic
+  * @param {String} userId -user id  
+  * @param {String} topicId - topic id
+  * @returns {Number} 1
+  */
+  async unfollowTopic(userId, topicId) {
+    if (!this.ValidationService.checkMongooseID([userId, topicId]))
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    if (!(await this.checkFollowTopic(userId, topicId)))
+      throw new HttpException(
+        &#x27;you dont follow this topic&#x27;,
+        HttpStatus.BAD_REQUEST,
+      );
+    const user &#x3D; await this.UserService.getUserById(userId);
+    if (!user)
+      throw new HttpException(
+        &#x27;user id is not correct&#x27;,
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic &#x3D; await this.getTopicById(topicId);
+    if (!topic)
+      throw new HttpException(&#x27;topic id is not correct&#x27;, HttpStatus.FORBIDDEN);
+    if (!topic.followers)
+      throw new HttpException(
+        &#x27;you dont follow this topic&#x27;,
+        HttpStatus.BAD_REQUEST,
+      );
+    await this.topicModel
+      .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
+      .lean();
+    if (!user.followingTopics)
+      throw new HttpException(
+        &#x27;you dont follow this topic&#x27;,
+        HttpStatus.BAD_REQUEST,
+      );
+    await this.userModel
+      .findByIdAndUpdate(userId, { $pull: { followingTopics: { topicId } } })
+      .lean();
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @descriptionget user following topic
+   * @param {String} userId -user id  
+   * @returns {Array&lt;Object&gt;} -following topic object
+   */
+  async followingTopics(userId) {
+    return await this.topicModel.aggregate([
+      { $match: { followers: mongoose.Types.ObjectId(userId) } },
+      { $project: { followers: { $size: &#x27;$followers&#x27; }, imageId: 1, name: 1 } },
+    ]);
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'TopicService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

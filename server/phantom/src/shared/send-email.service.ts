@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+/**
+ * @module Email
+ */
 @Injectable()
 export class Email {
   constructor() { }
