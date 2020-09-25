@@ -9,11 +9,9 @@ import { Model } from 'mongoose';
 import { board } from '../types/board';
 import { pin } from '../types/pin';
 import { topic } from '../types/topic';
-import { UserService } from '../user/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
 import { NotificationService } from '../shared/notification.service';
-import * as mongoose from 'mongoose';
 
 @Injectable()
 export class RecommendationService {
@@ -61,7 +59,7 @@ export class RecommendationService {
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];
-    let ALLUSERS = await this.userModel.find({}, { firstName: 1 });
+
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
       .catch(err => {
@@ -213,7 +211,7 @@ export class RecommendationService {
         });
     }
 
-    if (homeFeedArr.length < 200) {
+    if (homeFeedArr.length < 400) {
       let allTopics = await this.topicModel.find({}, { pins: 1 }).lean();
       for (let i = 0; i < allTopics.length; i++) {
         let start = Math.floor(
@@ -945,6 +943,7 @@ export class RecommendationService {
           counts: 1,
           description: 1,
           coverImages: 1,
+          pins: 1,
           creator: 1,
         },
       )
@@ -996,11 +995,27 @@ export class RecommendationService {
                 let images = [];
                 let count: number = 0;
                 for (let i = 0; i < boards.length; i++) {
-                  if (count >= 5) break;
-                  if (boards[i].coverImages.length > 0) {
+                  count = 0;
+                  boards[i].coverImages = [];
+                  for (let k = 0; k < boards[i].pins.length; k++) {
+                    if (count >= 3) {
+                      break;
+                    }
+                    let image = await this.pinModel.findById(
+                      boards[i].pins[k].pinId,
+                      {
+                        imageId: 1,
+                      },
+                    );
                     count++;
-                    images.push(boards[i].coverImages[0]);
+                    boards[i].coverImages.push(image.imageId);
                   }
+                }
+                count = 0;
+                for (let i = 0; i < boards.length; i++) {
+                  if (count >= 5) break;
+                  count++;
+                  images.push(boards[i].coverImages[0]);
                 }
                 let res = await this.NotificationService.boardsForYou(
                   user,
@@ -1055,11 +1070,27 @@ export class RecommendationService {
               let images = [];
               let count: number = 0;
               for (let i = 0; i < boards.length; i++) {
-                if (count >= 5) break;
-                if (boards[i].coverImages.length > 0) {
+                count = 0;
+                boards[i].coverImages = [];
+                for (let k = 0; k < boards[i].pins.length; k++) {
+                  if (count >= 3) {
+                    break;
+                  }
+                  let image = await this.pinModel.findById(
+                    boards[i].pins[k].pinId,
+                    {
+                      imageId: 1,
+                    },
+                  );
                   count++;
-                  images.push(boards[i].coverImages[0]);
+                  boards[i].coverImages.push(image.imageId);
                 }
+              }
+              count = 0;
+              for (let i = 0; i < boards.length; i++) {
+                if (count >= 5) break;
+                count++;
+                images.push(boards[i].coverImages[0]);
               }
               let res = await this.NotificationService.boardsForYou(
                 user,
@@ -1088,6 +1119,7 @@ export class RecommendationService {
             description: 1,
             coverImages: 1,
             creator: 1,
+            pins: 1,
           })
           .lean();
         if (!boards.includes(board)) {
@@ -1113,11 +1145,27 @@ export class RecommendationService {
             let images = [];
             let count: number = 0;
             for (let i = 0; i < boards.length; i++) {
-              if (count >= 5) break;
-              if (boards[i].coverImages.length > 0) {
+              count = 0;
+              boards[i].coverImages = [];
+              for (let k = 0; k < boards[i].pins.length; k++) {
+                if (count >= 3) {
+                  break;
+                }
+                let image = await this.pinModel.findById(
+                  boards[i].pins[k].pinId,
+                  {
+                    imageId: 1,
+                  },
+                );
                 count++;
-                images.push(boards[i].coverImages[0]);
+                boards[i].coverImages.push(image.imageId);
               }
+            }
+            count = 0;
+            for (let i = 0; i < boards.length; i++) {
+              if (count >= 5) break;
+              count++;
+              images.push(boards[i].coverImages[0]);
             }
             let res = await this.NotificationService.boardsForYou(
               user,
@@ -1148,11 +1196,24 @@ export class RecommendationService {
     let images = [];
     let count: number = 0;
     for (let i = 0; i < boards.length; i++) {
-      if (count >= 5) break;
-      if (boards[i].coverImages.length > 0) {
+      count = 0;
+      boards[i].coverImages = [];
+      for (let k = 0; k < boards[i].pins.length; k++) {
+        if (count >= 3) {
+          break;
+        }
+        let image = await this.pinModel.findById(boards[i].pins[k].pinId, {
+          imageId: 1,
+        });
         count++;
-        images.push(boards[i].coverImages[0]);
+        boards[i].coverImages.push(image.imageId);
       }
+    }
+    count = 0;
+    for (let i = 0; i < boards.length; i++) {
+      if (count >= 5) break;
+      count++;
+      images.push(boards[i].coverImages[0]);
     }
     if (boards.length > 0) {
       let res = await this.NotificationService.boardsForYou(

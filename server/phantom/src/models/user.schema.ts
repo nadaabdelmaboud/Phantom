@@ -40,7 +40,7 @@ export const User = new Schema({
     pinId: mongoose.Types.ObjectId,
   }),
   googleImage: String,
-  profileImage: mongoose.Types.ObjectId,
+  profileImage: String,
   pins: Array({
     pinId: mongoose.Types.ObjectId,
     boardId: mongoose.Types.ObjectId,
