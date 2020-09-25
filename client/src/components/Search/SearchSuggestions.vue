@@ -61,7 +61,7 @@ export default {
         name: title
       });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
-      this.$router.replace("/search/allpins");
+      this.$router.replace("/search/allpins/" + title);
     }
   },
   mixins: [getImage]
@@ -73,7 +73,7 @@ export default {
 @import "../../scss/Mixins";
 #search {
   @include popUpBackground;
-  margin-top: 11vh;
+  margin-top: 80px;
 }
 
 .title {

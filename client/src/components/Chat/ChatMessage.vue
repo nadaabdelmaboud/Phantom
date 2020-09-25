@@ -1,7 +1,7 @@
 <template>
   <div class="msg" :class="{ mymsg: owner }">
     <img :src="getImage(imageId)" v-if="owner && last && seen" />
-    <img :src="getUserImage()" v-if="!owner && last" />
+    <img :src="getImage(imageId)" v-if="!owner && last" />
     <div class="status">
       <i
         class="fa fa-check-circle"

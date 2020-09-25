@@ -4,23 +4,23 @@ import SignUp from "../views/Auth/SignUp.vue";
 import PhantomHome from "../views/PhantomHome.vue";
 import UserHome from "../views/UserHome.vue";
 import Following from "../views/Following.vue";
-import PinBuilder from "../views/PinBuilder.vue";
+import PinBuilder from "../views/AddNewPin/PinBuilder.vue";
 import PostPage from "../views/PostPage.vue";
-import WelcomePage from "../views/SignUpPopUps/WelcomePage.vue";
+import WelcomePage from "../views//EmailManagement/WelcomePage.vue";
 import LoginView from "../views/Auth/LoginView.vue";
-import UserProfile from "../views/UserProfile";
-import UserBoards from "../views/UserBoards";
-import UserPins from "../views/UserPins";
+import UserProfile from "../views/UserProfileViews/UserProfile";
+import UserBoards from "../views/UserProfileViews/UserBoards";
+import UserPins from "../views/UserProfileViews/UserPins";
 import EditProfile from "../views/EditProfile";
 import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
 import AccountSettings from "../components/UserSettings/AccountSettings";
 import NotificationsSettings from "../components/UserSettings/NotificationsSettings";
-import EmailConfirm from "../views/SignUpPopUps/EmailConfirm";
+import EmailConfirm from "../views/EmailManagement/EmailConfirm";
 import ForgetPassword from "../views/PasswordManagement/ForgetPassword.vue";
 import ResetPassword from "../views/PasswordManagement/ResetPassword.vue";
-import BoardView from "../views/BoardView.vue";
-import BoardPins from "../components/BoardPins";
-import BoardMoreLike from "../components/BoardMoreLike";
+import BoardView from "../views/InBoardViews/BoardView.vue";
+import BoardPins from "../views/InBoardViews/BoardPins";
+import BoardMoreLike from "../views/InBoardViews/BoardMoreLike";
 import TopicsPage from "../views/TopicsPage.vue";
 import SectionView from "../views/SectionView";
 import NotidicationBoards from "../components/Notification/NotificationBoards";
@@ -31,6 +31,7 @@ import SearchMyPins from "../components/Search/SearchMyPins";
 import SearchPeople from "../components/Search/SearchPeople";
 import SearchBoards from "../components/Search/SearchBoards";
 import GoogleAuth from "../views/Auth/AuthRedirect.vue";
+import CurrentEmailConfirm from "../views/EmailManagement/ConfirmCurrentEmail";
 
 import isLoggedIn from "@/mixins/isLoggedIn";
 
@@ -305,6 +306,18 @@ const routes = [
       type: route.query.type
     }),
     component: GoogleAuth,
+    meta: {
+      allowAnonymous: true
+    }
+  },
+  {
+    path: "/changeEmail",
+    name: "ConfirmEmail",
+    component: CurrentEmailConfirm,
+    props: route => ({
+      token: route.query.token,
+      type: route.query.type
+    }),
     meta: {
       allowAnonymous: true
     }

@@ -3,8 +3,27 @@
     <router-link class="icons" to="/" tag="div">
       <i class="fa fa-pinterest"></i>
     </router-link>
+    <div
+      class="buttons small inRoute"
+      v-if="isLoggedIn() && searchSmall"
+      id="homeNavSmall"
+    >
+      {{ currentRoute }} <i class="fa fa-sort-down" id="homeNavSmall"></i>
+    </div>
+
+    <div class="create navList" v-if="navList">
+      <ul>
+        <router-link to="/" tag="li"
+          ><i v-if="inHome" class="fa fa-check"></i> Home</router-link
+        >
+        <router-link to="/following" tag="li"
+          ><i v-if="inFollowing" class="fa fa-check"></i> Following</router-link
+        >
+      </ul>
+    </div>
+
     <router-link
-      class="buttons"
+      class="buttons big"
       to="/"
       tag="div"
       :class="{ inRoute: inHome }"
@@ -13,7 +32,7 @@
       Home
     </router-link>
     <router-link
-      class="buttons"
+      class="buttons big"
       to="/following"
       tag="div"
       :class="{ inRoute: inFollowing }"
@@ -33,10 +52,12 @@
       class="fa fa-close clear-icon"
       @click="clearSearch"
       :class="{ lefted_icon: this.showFilter }"
-      v-if="isLoggedIn() && search"
+      v-if="isLoggedIn() && (search || !searchSmall)"
     ></i>
     <div class="bar" v-if="showFilter"></div>
-    <p class="filter" v-if="showFilter">{{ selectedFilter }}</p>
+    <p class="filter" v-if="showFilter" @click="expandMenu = !expandMenu">
+      {{ selectedFilter }}
+    </p>
     <i
       class="fa fa-angle-down expand-menu-icon"
       v-if="showFilter"
@@ -50,23 +71,31 @@
         <li @click="searchBoards">Boards</li>
       </ul>
     </div>
-    <div v-if="isLoggedIn()" class="icons" id="alertIcon">
+    <div class="icons rightIcon" v-if="isLoggedIn()" id="showList">
+      <i class="fa fa-angle-down" id="showList"></i>
+    </div>
+
+    <router-link
+      v-if="isLoggedIn()"
+      tag="div"
+      class="icons rightIcon"
+      to="/UserProfile/Boards"
+    >
+      <i class="fa fa-user-circle"></i>
+    </router-link>
+    <div v-if="isLoggedIn()" class="icons rightIcon" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
       <div class="count" id="alertIcon">
         {{ notification.notificationCounter }}
       </div>
     </div>
     <NotificationDropDown v-if="showNotifications" />
-    <router-link
-      v-if="isLoggedIn()"
-      tag="div"
-      class="icons"
-      to="/UserProfile/Boards"
+    <div
+      v-if="isLoggedIn() && searchSmall"
+      class="icons searchSmall rightIcon"
+      @click="showSearch"
     >
-      <i class="fa fa-user-circle"></i>
-    </router-link>
-    <div class="icons" v-if="isLoggedIn()" @click="showList = !showList">
-      <i class="fa fa-angle-down"></i>
+      <i class="fa fa-search"></i>
     </div>
     <router-link
       class="buttons right"
@@ -84,11 +113,6 @@
       >LogIn</router-link
     >
     <div class="create view" v-if="showList">
-      <p>Accounts</p>
-      <ul>
-        <li>Add another account</li>
-      </ul>
-      <p>More options</p>
       <ul>
         <li @click="toSetting">Settings</li>
         <li @click="toTopicsPage">tune your home feed</li>
@@ -148,6 +172,10 @@
     font-size: 20px;
   }
 }
+.rightIcon {
+  float: right;
+  margin-right: 10px;
+}
 .inRoute {
   background-color: $darkBlue;
   color: $lightPink;
@@ -160,6 +188,7 @@
   float: right;
   margin: 0px 10px;
 }
+
 .create {
   @include optionsList;
   padding: 10px;
@@ -170,7 +199,11 @@
   }
 }
 .view {
-  right: 40px;
+  right: 30px;
+}
+.navList {
+  left: 40px;
+  top: 70px;
 }
 .count {
   display: inline-block;
@@ -225,7 +258,7 @@
   cursor: pointer;
   position: relative;
   top: -2px;
-  left: -44px;
+  left: -20px;
 }
 
 .bar {
@@ -247,6 +280,7 @@
   position: relative;
   top: -1px;
   left: -100px;
+  cursor: pointer;
 }
 
 .expand-menu-icon {
@@ -265,12 +299,17 @@
   right: calc(100vw - 85vw);
   font-size: 12px;
 }
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 6500px) {
   .lefted_icon {
     left: -120px;
   }
 }
-
+.small {
+  display: none;
+}
+.searchSmall {
+  display: none;
+}
 @media screen and (max-width: 950px) {
   .lefted_icon {
     left: -44px;
@@ -278,8 +317,51 @@
 
   .bar,
   .filter,
-  .expand-menu-icon {
+  .expand-menu-icon,
+  .menu {
     display: none;
+  }
+  .big {
+    display: none;
+  }
+  .small {
+    display: inline-block;
+    font-size: 14px;
+    height: 40px;
+    padding: 8px;
+  }
+  .searchInput {
+    height: 40px;
+    width: calc(100vw - 290px);
+  }
+  .icons {
+    width: 40px;
+    height: 40px;
+    padding: 8px 4px;
+    i {
+      font-size: 16px;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .searchInput {
+    display: none;
+    width: calc(100vw - 180px);
+  }
+  .icons {
+    width: 30px;
+    height: 30px;
+    padding: 2px 4px;
+    i {
+      font-size: 16px;
+    }
+  }
+  .searchSmall {
+    display: inline-block;
+  }
+  .rightIcon {
+    margin-right: 7px;
   }
 }
 </style>
@@ -287,18 +369,19 @@
 import NotificationDropDown from "./Notification/NotificationDropdown";
 import isLoggedIn from "../mixins/isLoggedIn.js";
 import removeUser from "../mixins/removeUserData.js";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "HomeNavigationBar",
   data: function() {
     return {
       inHome: true,
       inFollowing: false,
-      showList: false,
       showFilter: false,
       search: "",
       selectedFilter: "All Pins",
-      expandMenu: false
+      expandMenu: false,
+      currentRoute: "Home",
+      searchSmall: true
     };
   },
   components: {
@@ -309,14 +392,11 @@ export default {
     logout() {
       this.removeUserData();
       console.log(this.isLoggedIn());
-      this.showList = false;
     },
     toSetting() {
-      this.showList = false;
       this.$router.push("/settings");
     },
     toTopicsPage() {
-      this.showList = false;
       this.$router.push("/TopicsPage");
     },
     searchInput() {
@@ -326,14 +406,25 @@ export default {
         this.$store.dispatch("search/searchKeywords", this.search);
         this.$store.dispatch("search/searchPeople", {
           name: this.search,
+          recentSearch: false,
           searchSuggestions: true
         });
       }
     },
     clearSearch() {
       this.search = "";
+      if (!this.searchSmall) {
+        this.searchSmall = true;
+        let searchInput = document.getElementsByClassName("searchInput")[0];
+        searchInput.style.display = "none";
+      }
       if (this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
+    },
+    showSearch() {
+      this.searchSmall = false;
+      let searchInput = document.getElementsByClassName("searchInput")[0];
+      searchInput.style.display = "table-cell";
     },
     searchEnter() {
       this.$store.commit("search/resetOffset");
@@ -385,9 +476,11 @@ export default {
         this.inFollowing = false;
         this.inHome = true;
         this.showFilter = false;
+        this.currentRoute = "Home";
       } else if (this.$route.path == "/following") {
         this.inHome = false;
         this.inFollowing = true;
+        this.currentRoute = "following";
       } else if (this.$route.name == "SearchPins" && this.isLoggedIn()) {
         this.showFilter = true;
         this.selectedFilter = "All Pins";
@@ -408,6 +501,7 @@ export default {
         this.inHome = false;
         this.inFollowing = false;
         this.showFilter = false;
+        this.currentRoute = "Home";
       }
     }
   },
@@ -415,6 +509,10 @@ export default {
     ...mapGetters({
       notification: "notifications/notifications",
       showNotifications: "notifications/show"
+    }),
+    ...mapState({
+      navList: state => state.popUpsState.navList,
+      showList: state => state.popUpsState.showList
     })
   },
   watch: {

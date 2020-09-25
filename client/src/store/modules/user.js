@@ -90,11 +90,11 @@ const actions = {
           }
         }
       )
-      .then(response => {
+      .then(async response => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
         commit("setStatus", true);
-        dispatch("getUserProfile");
+        await dispatch("getUserProfile");
       })
       .catch(error => {
         commit("setStatus", false);
@@ -106,10 +106,11 @@ const actions = {
     commit("setStatus", false);
     axios
       .post("login/", data)
-      .then(response => {
+      .then(async response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
         commit("setStatus", true);
+        await dispatch("getUserProfile");
         dispatch("notifications/notifyUser", null, { root: true });
         commit("setKey", 1);
       })
@@ -214,6 +215,24 @@ const actions = {
       })
       .then(response => {
         commit("setUserData", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+  confrimEmailUpdate({ commit }, payload) {
+    axios
+      .put(
+        "/me/confirm-update-email?type=" + payload.type,
+        {},
+        {
+          headers: {
+            Authorization: payload.token
+          }
+        }
+      )
+      .then(() => {
+        commit("setStatus", true);
       })
       .catch(error => {
         console.log(error);

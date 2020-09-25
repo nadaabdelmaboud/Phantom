@@ -1,46 +1,10 @@
-.masonry{
-    column-gap: 1em;
-  }
-  .masonryItem{
-    margin: 3px;
-    display: inline-block;
-    margin: 0 0 1em;
-    width: 100%;
-  }
-  
-  @media only screen and (min-width: 1024px) {
-    .masonry {
-      column-count: 6;
-    }
-  }
-  
-  /* Masonry on medium-sized screens */
-  @media only screen and (max-width: 1023px) and (min-width: 768px) {
-    .masonry {
-      column-count: 5;
-    }
-  }
-  
-  /* Masonry on small screens */
-  @media only screen and (max-width: 767px) and (min-width: 540px) {
-    .masonry {
-      column-count: 4;
-    }
-  }
-
-
-  @media only screen and (max-width: 540px) and (min-width: 300px) {
-    .masonry {
-      column-count: 3;
-    }
-  }
-
-  //new Grid
+//new Grid
 
   .flexWrap {
     margin: auto;
     width: 90%;
     padding-bottom: 70px;
+    min-height: 100vh;
   }
   .masonryGrid {
     display: grid;

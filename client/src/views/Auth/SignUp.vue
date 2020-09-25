@@ -46,7 +46,7 @@
           @input="validatePassword()"
         />
         <br />
-        <CheckPasswordFormat :password="this.password" />
+        <CheckPasswordFormat :password="this.password" class="validation" />
         <input
           type="password"
           id="passwordConfirm"
@@ -58,7 +58,7 @@
         <div v-if="!this.passwordMatching">
           <p style="color:red;">Password mismatching</p>
         </div>
-        <label for="birthDate">Date of birth</label><br />
+        <label for="birthDate" class="birth">Date of birth</label><br />
         <input
           type="date"
           id="birthDate"
@@ -192,6 +192,7 @@ button:focus {
 .signUpForm {
   margin: 0 auto;
   padding: 20px;
+  max-width: 400px;
 }
 
 .fields {
@@ -217,10 +218,6 @@ a {
 a:hover {
   text-decoration: none;
   color: black;
-}
-
-#signUp {
-  align-content: center;
 }
 
 #phantom {
@@ -254,13 +251,13 @@ a:hover {
 }
 
 label {
-  left: -145px;
+  left: -126px;
   position: relative;
 }
 
 .about {
   display: inline;
-  left: -115px;
+  left: -98px;
   position: relative;
 }
 </style>

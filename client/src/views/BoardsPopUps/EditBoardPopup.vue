@@ -135,7 +135,7 @@
       >
         {{ MergeTo }}
       </div>
-      <div class="boards" v-if="showBoard">
+      <div class="searchList" v-if="showBoard">
         <input type="text" v-model="searchBoard" placeholder="Search" />
         <ul v-for="(b, i) in userBoards" :key="i">
           <li
@@ -332,14 +332,6 @@ h3 {
 }
 .mergeOptions:hover {
   background-color: $lightPinkHover;
-}
-.boards {
-  @include optionsList;
-  width: 400px;
-  margin: 10px auto;
-  max-height: 400px;
-  overflow-y: auto;
-  max-width: 85vw;
 }
 .section {
   display: flex;
