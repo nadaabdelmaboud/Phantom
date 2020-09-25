@@ -35,7 +35,7 @@ export class UserService {
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -661,6 +661,7 @@ export class UserService {
       {
         _id: 1,
         followers: 1,
+        fcmToken: 1,
         following: 1,
         firstName: 1,
         lastName: 1,
