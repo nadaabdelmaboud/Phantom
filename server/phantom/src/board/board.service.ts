@@ -152,7 +152,7 @@ export class BoardService {
       }
     }
     await this.boardModel.ensureIndexes();
-    return true;
+    return {_id:board._id};
   }
   async sortBoardsAtoZ(userId) {
     userId = mongoose.Types.ObjectId(userId);
