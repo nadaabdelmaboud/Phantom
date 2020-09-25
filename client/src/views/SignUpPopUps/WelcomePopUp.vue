@@ -32,7 +32,6 @@ export default {
     };
   },
   created: function() {
-    this.$store.dispatch("user/getUserProfile");
     this.updateModels();
   },
   methods: {
