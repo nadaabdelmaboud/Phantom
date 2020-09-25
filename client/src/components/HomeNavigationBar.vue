@@ -71,7 +71,7 @@
         <li @click="searchBoards">Boards</li>
       </ul>
     </div>
-    <div class="icons rightIcon" v-if="isLoggedIn()" id="showList">
+    <div class="icons rightIcon arrow" v-if="isLoggedIn()" id="showList">
       <i class="fa fa-angle-down" id="showList"></i>
     </div>
 
@@ -332,7 +332,7 @@
   }
   .searchInput {
     height: 40px;
-    width: calc(100vw - 290px);
+    width: calc(100vw - 320px);
   }
   .icons {
     width: 40px;
@@ -361,7 +361,10 @@
     display: inline-block;
   }
   .rightIcon {
-    margin-right: 7px;
+    margin-right: 0px;
+  }
+  .arrow{
+    margin-right: 10px;
   }
 }
 </style>
