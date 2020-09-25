@@ -1,6 +1,9 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { UserService } from '../user/user.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { pin } from '../types/pin';
@@ -10,11 +13,12 @@ import { time } from 'console';
 const jwt = require('jsonwebtoken');
 @WebSocketGateway()
 export class SharedGateway {
+  @WebSocketServer() server;
   constructor(
     private ChatService: ChatService,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
-  ) { }
+  ) {}
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
     const token = data.token;
@@ -29,7 +33,7 @@ export class SharedGateway {
   }
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
-    socket.emit('sendComment', data);
+    this.server.emit('sendComment', data);
   }
   @SubscribeMessage('typing')
   async type(socket: Socket, data: any) {
@@ -116,7 +120,7 @@ export class SharedGateway {
 
   @SubscribeMessage('reply')
   async reply(socket: Socket, data: any) {
-    socket.emit('sendReply', data);
+    this.server.emit('sendReply', data);
   }
 
   @SubscribeMessage('reactPin')
@@ -130,7 +134,8 @@ export class SharedGateway {
       profileImage: 1,
     });
     let pin = await this.pinModel.findById(data.pinId, { counts: 1 });
-    socket.emit('sendPinReact', {
+    console.log('asasas');
+    this.server.emit('sendPinReact', {
       reactType: data.reactType,
       userName: user.firstName + ' ' + user.lastName,
       userImage: user.profileImage,
@@ -171,7 +176,7 @@ export class SharedGateway {
     let pin = await this.pinModel.findById(data.pinId, { comments: 1 });
     for (var i = 0; i < pin.comments.length; i++) {
       if (String(pin.comments[i]._id) == String(data.commentId)) {
-        socket.emit('sendLikeComment', {
+        this.server.emit('sendLikeComment', {
           userName: user.firstName + ' ' + user.lastName,
           userImage: user.profileImage,
           pinId: data.pinId,
@@ -198,7 +203,7 @@ export class SharedGateway {
       if (String(pin.comments[i]._id) == String(data.commentId)) {
         for (var j = 0; j < pin.comments[i].replies.length; j++) {
           if (String(pin.comments[i].replies[j]._id) == String(data.replyId)) {
-            socket.emit('sendLikeReply', {
+            this.server.emit('sendLikeReply', {
               userName: user.firstName + ' ' + user.lastName,
               userImage: user.profileImage,
               pinId: data.pinId,
