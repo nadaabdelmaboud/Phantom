@@ -1,22 +1,27 @@
 <template>
-  <div class="masonry">
-    <HomeCard
-      class="masonryItem"
-      v-for="p in pins"
-      :key="p._id"
-      :cardImage="p.imageId"
-      :postPageId="p._id"
-    />
+  <div>
+    <Loading v-if="loading" :loading="loading" />
+    <div class="masonryGrid">
+      <HomeCard
+        class="masonryGridItem"
+        v-for="p in pins"
+        :key="p._id"
+        :cardImage="p.imageId"
+        :postPageId="p._id"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import HomeCard from "../../components/HomeCard";
+import Loading from "../../components/GeneralComponents/Loading";
 export default {
   name: "UserPins",
   components: {
-    HomeCard
+    HomeCard,
+    Loading
   },
   created() {
     let myprofile = this.$route.path.includes("/UserProfile");
@@ -29,7 +34,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pins: "pins/pins"
+      pins: "pins/pins",
+      loading: "pins/loading"
     })
   }
 };

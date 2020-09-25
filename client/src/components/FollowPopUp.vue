@@ -62,7 +62,8 @@
             <li @click="getTopicName('Eyemakeup')">Eyemakeup</li>
           </ul>
         </div>
-        <div class="AllCards" v-if="showAll">
+        <Loading :loading="popupLoading" />
+        <div class="AllCards" v-if="showAll && !popupLoading">
           <div v-for="card in All" :key="card.user._id">
             <FollowCard
               :userId="card.user._id"
@@ -75,7 +76,7 @@
             />
           </div>
         </div>
-        <div class="Trending" v-if="showTrending">
+        <div class="Trending" v-if="showTrending && !popupLoading">
           <div v-for="card in Trending" :key="card.user._id">
             <FollowCard
               :userId="card.user._id"
@@ -88,7 +89,7 @@
             />
           </div>
         </div>
-        <div class="Topics" v-if="showTopics">
+        <div class="Topics" v-if="showTopics && !popupLoading">
           <div v-for="card in Topics" :key="card._id">
             <FollowCard
               :userId="card._id"
@@ -293,6 +294,7 @@ button:focus {
 </style>
 
 <script>
+import Loading from "../components/GeneralComponents/Loading";
 import FollowCard from "../components/FollowCard";
 import { mapGetters } from "vuex";
 export default {
@@ -307,13 +309,15 @@ export default {
     };
   },
   components: {
-    FollowCard
+    FollowCard,
+    Loading
   },
   computed: {
     ...mapGetters({
       All: "follow/All",
       Trending: "follow/Trending",
-      Topics: "follow/Topics"
+      Topics: "follow/Topics",
+      popupLoading: "follow/popupLoading"
     })
   },
   methods: {

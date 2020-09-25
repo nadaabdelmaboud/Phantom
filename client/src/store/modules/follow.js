@@ -3,7 +3,10 @@ import axios from "axios";
 const state = {
   All: [],
   Trending: [],
-  Topics: []
+  Topics: [],
+  following: [],
+  followPageLoading: false,
+  popupLoading: false
 };
 
 const mutations = {
@@ -33,35 +36,44 @@ const mutations = {
   },
   setunfollowInTopics(state, id) {
     state.Topics.find(x => x._id === id).followers--;
+  },
+  setFollowing(state, follow) {
+    state.following = follow;
   }
 };
 
 const actions = {
   allRecommendations({ commit }) {
+    state.popupLoading = true;
     axios
       .get("me/recommendation/follow")
       .then(response => {
         commit("setAllRecommend", response.data);
+        state.popupLoading = false;
       })
       .catch(error => {
         console.log(error);
       });
   },
   trendingRecommendations({ commit }) {
+    state.popupLoading = true;
     axios
       .get("me/recommendation/trending")
       .then(response => {
         commit("setTrendingRecommend", response.data);
+        state.popupLoading = false;
       })
       .catch(error => {
         console.log(error);
       });
   },
   async topicsRecommendations({ commit }, topicName) {
+    state.popupLoading = true;
     await axios
       .get("me/recommendation/topics/" + topicName)
       .then(response => {
         commit("setTopicsRecommend", response.data);
+        state.popupLoading = false;
       })
       .catch(error => {
         console.log(error);
@@ -96,13 +108,30 @@ const actions = {
       .catch(error => {
         console.log(error);
       });
+  },
+  followingPage({ commit }) {
+    state.followPageLoading = true;
+    axios
+      .get("me/followings/pins")
+      .then(response => {
+        console.log("data nihal", response.data);
+        commit("setFollowing", response.data);
+        state.followPageLoading = false;
+      })
+      .catch(error => {
+        console.log(error);
+        state.followPageLoading = false;
+      });
   }
 };
 
 const getters = {
   All: state => state.All,
   Trending: state => state.Trending,
-  Topics: state => state.Topics
+  Topics: state => state.Topics,
+  following: state => state.following,
+  followPageLoading: state => state.followPageLoading,
+  popupLoading: state => state.popupLoading
 };
 
 export default {

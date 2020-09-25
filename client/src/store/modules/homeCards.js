@@ -6,6 +6,7 @@ const state = {
   offset: 0,
   maxMore: false,
   inProgress: false,
+  homeLoading: false,
   postImage: "",
   userImage: "",
   postTitle: "",
@@ -161,10 +162,13 @@ const mutations = {
 
 const actions = {
   userHome({ state }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     state.homeCards = [];
     state.offset = 0;
     state.generating = true;
     state.maxMore = false;
+    state.homeLoading = true;
     axios
       .put("home/me")
       .then(response => {
@@ -182,6 +186,7 @@ const actions = {
         let home = await axios.get(
           "me/home?limit=" + limit + "&offset=" + state.offset
         );
+        state.homeLoading = false;
         state.inProgress = false;
         state.offset += 10;
         commit("sethomeCards", home.data);
@@ -195,6 +200,7 @@ const actions = {
         } else if (remaining > 0) {
           dispatch("userGenerateCards", remaining);
         } else {
+          state.homeLoading = false;
           state.maxMore = true;
         }
         console.log(error);
@@ -349,7 +355,8 @@ const getters = {
   numberofFollowers: state => state.numberofFollowers,
   pinCreatorId: state => state.pinCreatorId,
   finishCalling: state => state.finishCalling,
-  pinId: state => state.pinId
+  pinId: state => state.pinId,
+  homeLoading: state => state.homeLoading
 };
 
 export default {

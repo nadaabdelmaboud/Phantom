@@ -243,7 +243,7 @@
                       </div>
                       <div class="createReply">
                         <div class="userimage">
-                          <img :src="getImage(userImageId)" alt="User Image" />
+                          <img :src="getUserImage()" alt="User Image" />
                         </div>
                         <div class="repliesField">
                           <input
@@ -290,7 +290,7 @@
               </ul>
               <div class="displaycomments">
                 <div class="userimage">
-                  <img :src="getImage(this.userImageId)" alt="User Image" />
+                  <img :src="getUserImage()" alt="User Image" />
                 </div>
                 <div class="commentsfield">
                   <input
@@ -578,6 +578,11 @@ button:focus {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
 }
 .userinfo {
   margin: 10px;
@@ -925,6 +930,7 @@ li button {
 <script>
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
+import getUserImage from "../mixins/getUserImage.js";
 import io from "socket.io-client";
 export default {
   name: "postpagecard",
@@ -940,7 +946,7 @@ export default {
       index: 0
     };
   },
-  mixins: [getImage],
+  mixins: [getImage, getUserImage],
   methods: {
     showToast() {
       var mytoast = document.getElementById("toastId");
@@ -1093,6 +1099,7 @@ export default {
       console.log("after request", this.addCommentObject);
       socket.emit("comment", this.addCommentObject);
       socket.on("sendComment", data => {
+        console.log("is received")
         this.$store.commit("postPage/addNewComment", data);
       });
       inputField.value = "";

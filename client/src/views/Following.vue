@@ -6,10 +6,23 @@
         Find people to follow
       </button>
     </div>
+    <Loading :loading="followPageLoading" />
+    <div class="flexWrap" v-if="!followPageLoading">
+      <div class="masonryGrid">
+        <HomeCard
+          v-for="card in following"
+          :key="card._id"
+          class="masonryGridItem"
+          :cardImage="card.imageId"
+          :postPageId="card._id"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "../scss/MasonryGrid";
 @import "../scss/_Colors";
 @import "../scss/Mixins";
 .followingPage {
@@ -57,10 +70,24 @@ button:focus {
 </style>
 
 <script>
+import { mapGetters } from "vuex";
+import Loading from "../components/GeneralComponents/Loading";
+import HomeCard from "../components/HomeCard";
 export default {
   name: "Following",
+  components: {
+    HomeCard,
+    Loading
+  },
   created() {
+    this.$store.dispatch("follow/followingPage");
     this.$store.dispatch("follow/allRecommendations");
+  },
+  computed: {
+    ...mapGetters({
+      following: "follow/following",
+      followPageLoading: "follow/followPageLoading"
+    })
   },
   methods: {
     showRecommendationPopUp() {
