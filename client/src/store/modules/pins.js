@@ -100,12 +100,10 @@ const actions = {
     state.loading = false;
   },
   getUserPins({ commit, state }, userId) {
-    if (state.isMine || state.first) {
-      state.loading = true;
       state.pins = [];
+      state.loading = true;
       state.isMine = false;
       state.first = false;
-    }
     axios
       .get("user/" + userId + "/pins")
       .then(response => {

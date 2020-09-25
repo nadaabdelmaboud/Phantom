@@ -47,6 +47,7 @@ const actions = {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     let chat = [];
+    if(!state.currentChat.length)
     state.loading = true;
     try {
       chat = await axios.get(

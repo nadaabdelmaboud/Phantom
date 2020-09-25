@@ -77,7 +77,8 @@ const actions = {
         state.offset += 10;
         commit("setSearchPins", pins.data.result);
         state.totalResult = pins.data.length;
-      } catch {
+      } catch (error){
+        if(error.response.status ==404){
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
         commit("setLoading", false);
@@ -86,6 +87,7 @@ const actions = {
         } else {
           state.endReuslt = true;
         }
+      }
       }
     }
   },
@@ -111,7 +113,8 @@ const actions = {
         state.offset += 10;
         commit("setSearchMyPins", pins.data.result);
         state.totalResult = pins.data.length;
-      } catch {
+      } catch (error){
+        if(error.response.status ==404){
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
         commit("setLoading", false);
@@ -120,6 +123,7 @@ const actions = {
         } else {
           state.endReuslt = true;
         }
+      }
       }
     }
   },
@@ -155,7 +159,8 @@ const actions = {
           commit("setSearchSuggestions", suggestions);
         } else commit("setSearchPeople", people.data.result);
         state.totalResult = people.data.length;
-      } catch {
+      } catch (error){
+        if(error.response.status ==404){
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
         commit("setLoading", false);
@@ -164,6 +169,7 @@ const actions = {
         } else {
           state.endReuslt = true;
         }
+      }
       }
     }
   },
@@ -189,7 +195,8 @@ const actions = {
         commit("setLoading", false);
         commit("setSearchBoards", boards.data.result);
         state.totalResult = boards.data.length;
-      } catch {
+      } catch(error) {  
+        if(error.response.status ==404){
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
         commit("setLoading", false);
@@ -198,6 +205,7 @@ const actions = {
         } else {
           state.endReuslt = true;
         }
+      }
       }
     }
   },

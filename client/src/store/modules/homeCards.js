@@ -157,6 +157,13 @@ const mutations = {
   },
   imageDownloaded(state, value) {
     state.imageDownloaded = value;
+  },
+  resetHome(state){
+    state.homeCards= [];
+    state.generating= false,
+    state.generatedCount=0,
+    state.offset= 0,
+    state.maxMore= false;
   }
 };
 
@@ -180,6 +187,8 @@ const actions = {
       });
   },
   async userGenerateCards({ state, commit, dispatch }, limit) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     if (!state.maxMore && !state.inProgress) {
       state.inProgress = true;
       try {
@@ -191,17 +200,19 @@ const actions = {
         state.offset += 10;
         commit("sethomeCards", home.data);
       } catch (error) {
-        let remaining = state.generatedCount - state.offset;
-        state.inProgress = false;
-        if (state.generating) {
-          setTimeout(() => {
-            dispatch("userGenerateCards", 10);
-          }, 1000);
-        } else if (remaining > 0) {
-          dispatch("userGenerateCards", remaining);
-        } else {
-          state.homeLoading = false;
-          state.maxMore = true;
+        if(error.response.status ==404){
+          let remaining = state.generatedCount - state.offset;
+          state.inProgress = false;
+          if (state.generating) {
+            setTimeout(() => {
+              dispatch("userGenerateCards", 10);
+            }, 1000);
+          } else if (remaining > 0) {
+            dispatch("userGenerateCards", remaining);
+          } else {
+            state.homeLoading = false;
+            state.maxMore = true;
+          }
         }
         console.log(error);
       }

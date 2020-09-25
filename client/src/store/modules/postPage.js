@@ -54,6 +54,8 @@ const mutations = {
 
 const actions = {
   moreLikeThisPin({ state }, pinId) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     state.morePins = [];
     state.offset = 0;
     state.generating = true;
@@ -70,6 +72,8 @@ const actions = {
       });
   },
   async generateMorePins({ state, commit, dispatch }, { pinId, limit }) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     if (!state.maxMore && !state.inProgress) {
       state.inProgress = true;
       try {
@@ -81,6 +85,7 @@ const actions = {
         state.offset += 10;
         commit("setmorePins", morePins.data);
       } catch (error) {
+        if(error.response.status ==404){
         let remaining = state.generatedCount - state.offset;
         state.inProgress = false;
         if (state.generating) {
@@ -93,6 +98,7 @@ const actions = {
           state.moreLoading = false;
           state.maxMore = true;
         }
+      }
         console.log(error);
       }
     }
