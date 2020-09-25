@@ -83,6 +83,7 @@ p {
 .unfollowButton {
   display: none;
   width: 87px;
+  height: 42px;
   padding: 4px;
   margin-right: 3px;
 }
