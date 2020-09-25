@@ -18,6 +18,7 @@ const mutations = {
 
 const actions = {
   createPin({ state, commit, dispatch }, { pin, label }) {
+    commit("popUpsState/toggleLoadingPopup", null, { root: true });
     const file = new FormData();
     file.append("file", pin.imageId);
     axios({
@@ -35,10 +36,12 @@ const actions = {
             pinId: state.pin._id,
             topicName: label
           });
+          commit("popUpsState/toggleLoadingPopup", null, { root: true });
           commit("popUpsState/toggleNewPin", null, { root: true });
         });
       })
       .catch(error => {
+        commit("popUpsState/toggleLoadingPopup", null, { root: true });
         console.log(error);
       });
   },

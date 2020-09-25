@@ -8,7 +8,6 @@
 
 <script>
 import Loading from "./Loading"
-import { mapState } from "vuex";
 export default {
   name: "LoadingPopup",
   data:function(){
@@ -41,6 +40,7 @@ export default {
   background-color: white;
   width: 450px;
   padding: 20px;
+  padding-top: 50px;
   border-radius: 32px;
 }
 @media screen and (max-width: 500px) {
