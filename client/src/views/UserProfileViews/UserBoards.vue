@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import Board from "../components/Board";
+import Board from "../../components/Board";
 import { mapGetters, mapState } from "vuex";
 import draggable from "vuedraggable";
 

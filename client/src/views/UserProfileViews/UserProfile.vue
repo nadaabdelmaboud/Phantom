@@ -119,7 +119,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
-import getImage from "../mixins/getImage.js";
+import getImage from "../../mixins/getImage.js";
 export default {
   name: "UserProfile",
   data: function() {
@@ -213,8 +213,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 
 .profileInfo {
   margin-bottom: 40px;

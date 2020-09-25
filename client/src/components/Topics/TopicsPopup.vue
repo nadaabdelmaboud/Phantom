@@ -9,7 +9,8 @@
         <i class="fa fa-circle"></i>
       </div>
       <h2>Last step! Tell us what you're interested in</h2>
-      <div class="topicsContainer">
+      <Loading :loading="!topics.length" />
+      <div v-if="topics.length" class="topicsContainer">
         <div v-for="t in topics" :key="t.name" @click="addTopic(t._id)">
           <TopicsCard
             :isFollowed="t.isFollow"
@@ -31,6 +32,7 @@
 
 <script>
 import TopicsCard from "./TopicsCards";
+import Loading from "../GeneralComponents/Loading";
 import { mapGetters } from "vuex";
 
 export default {
@@ -41,16 +43,16 @@ export default {
     };
   },
   components: {
-    TopicsCard
+    TopicsCard,
+    Loading
   },
   methods: {
     addTopic(id) {
       let findtopic = this.picked.indexOf(id);
-      console.log("find",findtopic)
-      if (findtopic == -1){
+      console.log("find", findtopic);
+      if (findtopic == -1) {
         this.picked.push(id);
-      } 
-      else {
+      } else {
         this.picked.splice(findtopic, 1);
       }
     },
@@ -65,16 +67,21 @@ export default {
   },
   mounted() {
     this.$store.dispatch("topics/getTopics");
+    this.topics.forEach(topic => {
+      if (topic.isFollow && this.picked.indexOf(topic._id) == -1) {
+        this.picked.push(topic._id);
+      }
+    });
   },
-  watch:{
-    topics:{
-       handler(topics){
-       topics.forEach(topic => {
-         if(topic.isFollow){
-           this.picked.push(topic._id)
-         }
-       });
-       }
+  watch: {
+    topics: {
+      handler(topics) {
+        topics.forEach(topic => {
+          if (topic.isFollow && this.picked.indexOf(topic._id) == -1) {
+            this.picked.push(topic._id);
+          }
+        });
+      }
     }
   }
 };

@@ -46,10 +46,10 @@
             <div v-for="(s, i) in peopleSearch" :key="i">
               <div
                 v-if="
-                  !collaborators.some((c) => c.id === s._id) &&
-                    !followers.some((follower) => follower._id === s._id) &&
+                  !collaborators.some(c => c.id === s._id) &&
+                    !followers.some(follower => follower._id === s._id) &&
                     !(board.board.creator.id === s._id) &&
-                    !following.some((f) => f._id === s._id)
+                    !following.some(f => f._id === s._id)
                 "
               >
                 <CollaboratorsToAdd
@@ -66,7 +66,7 @@
         <div v-for="follower in followers" :key="follower._id">
           <div
             v-if="
-              !collaborators.some((c) => c.id === follower._id) &&
+              !collaborators.some(c => c.id === follower._id) &&
                 !(board.board.creator.id === follower._id)
             "
           >
@@ -82,8 +82,8 @@
         <div v-for="(f, i) in following" :key="i">
           <div
             v-if="
-              !collaborators.some((c) => c.id === f._id) &&
-                !followers.some((follower) => follower._id === f._id) &&
+              !collaborators.some(c => c.id === f._id) &&
+                !followers.some(follower => follower._id === f._id) &&
                 !(board.board.creator.id === f._id)
             "
           >
@@ -110,12 +110,12 @@ export default {
   data: function() {
     return {
       copied: false,
-      searchWord: "",
+      searchWord: ""
     };
   },
   components: {
     CallaboratorsCard,
-    CollaboratorsToAdd,
+    CollaboratorsToAdd
   },
   methods: {
     editPopup(event) {
@@ -139,7 +139,7 @@ export default {
         this.$store.commit("search/resetOffset");
         this.$store.dispatch("search/searchPeople", {
           name: this.searchWord,
-          recentSearch: false,
+          recentSearch: false
         });
       } else {
         this.$store.commit("search/resetOffset");
@@ -150,21 +150,21 @@ export default {
       if (searchBox.scrollTop == searchBox.scrollHeight - 300) {
         this.$store.dispatch("search/searchPeople", {
           name: this.searchWord,
-          recentSearch: false,
+          recentSearch: false
         });
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       collaborators: "boards/collaborators",
       followers: "followers/userFollowers",
       following: "followers/userFollowing",
-      board: "boards/currentBoard",
+      board: "boards/currentBoard"
     }),
     ...mapState({
-      peopleSearch: (state) => state.search.people,
-    }),
+      peopleSearch: state => state.search.people
+    })
   },
   mounted() {
     this.$store.dispatch("boards/getCollaborators");
@@ -172,7 +172,7 @@ export default {
     this.$store.dispatch("followers/getFollowing");
     this.$store.commit("search/resetOffset");
   },
-  created() {},
+  created() {}
 };
 </script>
 

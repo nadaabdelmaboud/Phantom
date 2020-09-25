@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { default as getImage } from "../mixins/getImage";
+import { default as getImage } from "../../mixins/getImage";
 import { mapState } from "vuex";
 export default {
   name: "newPinPopup",
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
+@import "../../scss/Colors";
 
 #newPin {
   background-color: rgba(0, 0, 0, 0.5);

@@ -19,7 +19,7 @@
                   toChat({
                     name: s.firstName + ' ' + s.lastName,
                     id: s._id,
-                    imageId: s.profileImage,
+                    imageId: s.profileImage
                   })
                 "
               >
@@ -39,7 +39,7 @@
             toChat({
               name: r.userName,
               id: r._id,
-              imageId: r.profileImage,
+              imageId: r.profileImage
             })
           "
         >
@@ -53,12 +53,12 @@
         <div v-for="(f, i) in following" :key="i">
           <div
             class="userInfo"
-            v-if="!recentChats.some((r) => r._id === f._id)"
+            v-if="!recentChats.some(r => r._id === f._id)"
             @click="
               toChat({
                 name: f.firstName + ' ' + f.lastName,
                 id: f._id,
-                imageId: f.profileImage,
+                imageId: f.profileImage
               })
             "
           >
@@ -73,7 +73,8 @@
         <i class="fa fa-arrow-left" @click="toChatters"></i>
         <p>{{ chatWith.name }}</p>
       </div>
-      <div class="msgBox" v-if="inchat">
+      <Loading :loading="loading" v-if="loading" />
+      <div class="msgBox" v-if="inchat && !loading">
         <ChatMessage
           v-for="(msg, i) in chat"
           :key="i"
@@ -106,6 +107,7 @@
 
 <script>
 import ChatMessage from "./ChatMessage";
+import Loading from "../GeneralComponents/Loading";
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../../mixins/getImage";
 import io from "socket.io-client";
@@ -119,18 +121,19 @@ export default {
       chatWith: {
         name: "",
         imageId: "",
-        id: "",
+        id: ""
       },
       socket: "",
       allowNotify: false,
       typing: false,
       meTyping: false,
-      searchWord: "",
+      searchWord: ""
     };
   },
   mixins: [getImage],
   components: {
     ChatMessage,
+    Loading
   },
   methods: {
     sendMsg() {
@@ -138,13 +141,10 @@ export default {
         let msg = {
           owner: true,
           message: this.currentMsg,
-          date: Date.now(),
+          date: Date.now()
         };
         this.$store.commit("chat/addMsg", msg);
-        this.$nextTick(() => {
-          let msgBox = document.getElementsByClassName("msgBox")[0];
-          msgBox.scrollTop = msgBox.scrollHeight;
-        });
+        this.scrollDown();
         this.socket.emit("message", {
           recieverImage: this.getImage(this.myData.profileImage),
           senderImage: this.getImage(this.myData.profileImage),
@@ -153,7 +153,7 @@ export default {
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
-          date: Date.now(),
+          date: Date.now()
         });
         this.currentMsg = "";
       }
@@ -162,27 +162,20 @@ export default {
       this.chatWith = chatWith;
       let payload = {
         senderId: this.myData._id,
-        recieverId: chatWith.id,
+        recieverId: chatWith.id
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.inchat = !this.inchat;
-      this.$nextTick(() => {
-        let msgBox = document.getElementsByClassName("msgBox")[0];
-        msgBox.scrollTop = msgBox.scrollHeight;
-      });
-      setTimeout(() => {
-        let msgBox = document.getElementsByClassName("msgBox")[0];
-        msgBox.scrollTop = msgBox.scrollHeight;
-      }, 3000);
     },
     toChatters() {
-      // this.$store.dispatch("followers/getFollowing");
+      //this.$store.dispatch("followers/getFollowing");
+      this.$store.commit("chat/setChat", []);
       this.chatWith.id = "";
       this.$store.dispatch("chat/getRecentChats", this.myData._id);
       this.inchat = !this.inchat;
     },
     messageListener() {
-      this.socket.on("sendMessage", (data) => {
+      this.socket.on("sendMessage", data => {
         this.typing = false;
         let ping = new Audio();
         ping.src = require("../../assets/Ping.mp3");
@@ -195,24 +188,21 @@ export default {
             seen: false,
             deliver: false,
             last: true,
-            _id: data.messageId,
+            _id: data.messageId
           };
           this.$store.commit("chat/addMsg", msg);
-          this.$nextTick(() => {
-            let msgBox = document.getElementsByClassName("msgBox")[0];
-            msgBox.scrollTop = msgBox.scrollHeight;
-          });
+          this.scrollDown();
 
           //if in same chat set as seen
           this.socket.emit("seen", {
             recieverId: data.senderId,
             senderId: this.myData._id,
-            messageId: data.messageId,
+            messageId: data.messageId
           });
         }
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
-          silent: true,
+          silent: true
         };
 
         if (this.allowNotify) {
@@ -227,18 +217,15 @@ export default {
         this.socket.emit("delivered", {
           recieverId: data.senderId,
           senderId: this.myData._id,
-          messageId: data.messageId,
+          messageId: data.messageId
         });
       });
     },
     typingLisener() {
-      this.socket.on("isTyping", (data) => {
+      this.socket.on("isTyping", data => {
         if (data.senderId == this.chatWith.id) {
           this.typing = true;
-          this.$nextTick(() => {
-            let msgBox = document.getElementsByClassName("msgBox")[0];
-            msgBox.scrollTop = msgBox.scrollHeight;
-          });
+          this.scrollDown();
         }
         setTimeout(() => {
           this.typing = false;
@@ -250,7 +237,7 @@ export default {
         this.meTyping = true;
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
-          senderId: this.myData._id,
+          senderId: this.myData._id
         });
         setTimeout(() => {
           this.meTyping = false;
@@ -258,26 +245,26 @@ export default {
       }
     },
     deliveredListener() {
-      this.socket.on("setDelivered", (data) => {
+      this.socket.on("setDelivered", data => {
         let payload = {
           senderId: this.myData._id,
-          recieverId: [this.chatWith.id],
+          recieverId: [this.chatWith.id]
         };
         console.log("oh1");
         console.log("oh2", data);
         if (data.senderId == this.chatWith.id) {
           console.log("oh3");
-          setTimeout(()=>{
-             this.$store.dispatch("chat/getChat", payload);
-          },10000)
+          setTimeout(() => {
+            this.$store.dispatch("chat/getChat", payload);
+          }, 10000);
         }
       });
     },
     seenListener() {
-      this.socket.on("setSeen", (data) => {
+      this.socket.on("setSeen", data => {
         let payload = {
           senderId: this.myData._id,
-          recieverId: [this.chatWith.id],
+          recieverId: [this.chatWith.id]
         };
         console.log("oh1 seeen", data);
         this.$store.dispatch("chat/getChat", payload);
@@ -293,7 +280,7 @@ export default {
         this.$store.commit("chat/resetOffset");
         this.$store.dispatch("chat/searchPeople", {
           name: this.searchWord,
-          recentSearch: false,
+          recentSearch: false
         });
       } else {
         this.$store.commit("chat/resetOffset");
@@ -304,10 +291,16 @@ export default {
       if (searchBox.scrollTop == searchBox.scrollHeight - 300) {
         this.$store.dispatch("chat/searchPeople", {
           name: this.searchWord,
-          recentSearch: false,
+          recentSearch: false
         });
       }
     },
+    scrollDown() {
+      this.$nextTick(() => {
+        let msgBox = document.getElementsByClassName("msgBox")[0];
+        msgBox.scrollTop = msgBox.scrollHeight;
+      });
+    }
   },
   computed: {
     ...mapGetters({
@@ -315,10 +308,11 @@ export default {
       recentChats: "chat/recentChats",
       chat: "chat/currentChat",
       peopleSearch: "chat/people",
+      loading: "chat/loading"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
+      myData: state => state.user.userData
+    })
   },
   created() {
     this.$store.dispatch("followers/getFollowing");
@@ -331,10 +325,10 @@ export default {
     token = token.substring(7);
     //personalise connection
     this.socket.emit("setUserId", {
-      token: token,
+      token: token
     });
     //ensure notification is enabled
-    Notification.requestPermission().then((permission) => {
+    Notification.requestPermission().then(permission => {
       if (permission == "granted") {
         this.allowNotify = true;
       } else {
@@ -355,8 +349,17 @@ export default {
       if (typeof value == "undefined") return "no msg";
       if (value.length < 25) return value;
       return value.slice(0, 25) + "...";
-    },
+    }
   },
+  watch: {
+    loading: {
+      handler(loading) {
+        if (!loading) {
+          this.scrollDown();
+        }
+      }
+    }
+  }
 };
 </script>
 

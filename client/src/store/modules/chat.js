@@ -1,5 +1,5 @@
 import axios from "axios";
- 
+
 const state = {
   currentChat: [],
   recentChats: [],
@@ -7,7 +7,8 @@ const state = {
   offset: 0,
   inProgress: false,
   totalResult: 50,
-  endResult: false
+  endResult: false,
+  loading: false
 };
 
 const mutations = {
@@ -42,13 +43,14 @@ const mutations = {
 };
 
 const actions = {
-  async getChat({ commit }, payload) {
+  async getChat({ commit, state }, payload) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     let chat = [];
+    state.loading = true;
     try {
       chat = await axios.get(
-        "/getMessagesSent/" + payload.recieverId+"/"+ payload.senderId
+        "/getMessagesSent/" + payload.recieverId + "/" + payload.senderId
       );
       chat = chat.data;
       let lastin = [false, false];
@@ -70,6 +72,7 @@ const actions = {
         msg.deliver = msg.deliverStatus.length > 0;
       });
       chat = chat.reverse();
+      state.loading = false;
     } catch (err) {
       console.log(err);
     }
@@ -151,7 +154,8 @@ const actions = {
 const getters = {
   currentChat: state => state.currentChat,
   recentChats: state => state.recentChats,
-  people:state=>state.people
+  people: state => state.people,
+  loading: state => state.loading
 };
 
 export default {

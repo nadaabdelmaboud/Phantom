@@ -12,7 +12,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HomeCard from "../components/HomeCard";
+import HomeCard from "../../components/HomeCard";
 export default {
   name: "UserPins",
   components: {
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/MasonryGrid";
+@import "../../scss/MasonryGrid";
 .masonry {
   width: 95%;
   margin: auto;

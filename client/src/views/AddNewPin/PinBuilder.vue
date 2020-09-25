@@ -107,8 +107,8 @@
 </template>
 
 <style scoped lang="scss">
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 
 .addPin {
   background-color: white;

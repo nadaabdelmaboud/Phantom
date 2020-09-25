@@ -35,8 +35,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HomeCard from "../components/HomeCard";
-import Board from "../components/Board";
+import HomeCard from "../../components/HomeCard";
+import Board from "../../components/Board";
 
 export default {
   name: "BoardPins",
@@ -62,5 +62,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/MasonryGrid";
+@import "../../scss/MasonryGrid";
 </style>

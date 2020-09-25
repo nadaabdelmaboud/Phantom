@@ -20,23 +20,23 @@ export default {
   },
   props: {
     id: {
-      type: String,
+      type: String
     },
     firstName: {
-      type: String,
+      type: String
     },
     lastName: {
-      type: String,
+      type: String
     },
     imageId: {
-      type: String,
-    },
+      type: String
+    }
   },
   methods: {
     addCollaborator(id) {
       this.$store.dispatch("boards/editBoard", { collaboratores: id });
-    },
-  },
+    }
+  }
 };
 </script>
 

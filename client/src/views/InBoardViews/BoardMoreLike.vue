@@ -14,7 +14,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HomeCard from "../components/HomeCard";
+import HomeCard from "../../components/HomeCard";
 export default {
   name: "BoardMoreLike",
   data: function() {
@@ -34,19 +34,16 @@ export default {
   created: function() {
     this.boardId = this.$route.params.boardId;
     this.$store.dispatch("boards/generateMoreLike", this.boardId);
-  //  setTimeout(() => {
-      this.$store.dispatch("boards/moreLike", {
-        boardId: this.boardId,
-        limit: 8
-      });
-   // }, 3000);
+    //  setTimeout(() => {
+    this.$store.dispatch("boards/moreLike", {
+      boardId: this.boardId,
+      limit: 8
+    });
+    // }, 3000);
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/MasonryGrid";
-.flexWrap{
-  min-height: 100vh;
-}
+@import "../../scss/MasonryGrid";
 </style>

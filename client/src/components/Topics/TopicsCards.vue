@@ -81,8 +81,8 @@ export default {
     topicName: {
       type: String
     },
-    isFollowed:{
-      type:Boolean
+    isFollowed: {
+      type: Boolean
     }
   },
   computed: {
@@ -91,19 +91,18 @@ export default {
       return "http://localhost:3000/api/image/" + "%20" + "?topic=" + name;
     }
   },
-  methods:{
-    alterFollow(){
-    this.clicked =!this.clicked;
-     if (this.clicked){
+  methods: {
+    alterFollow() {
+      this.clicked = !this.clicked;
+      if (this.clicked) {
         this.$store.dispatch("topics/followTopic", this.topicId);
-      } 
-      else {
-         this.$store.dispatch("topics/unfollowTopic", this.topicId);
+      } else {
+        this.$store.dispatch("topics/unfollowTopic", this.topicId);
       }
     }
   },
-  mounted(){
-    this.clicked=this.isFollowed;
+  mounted() {
+    this.clicked = this.isFollowed;
   }
 };
 </script>

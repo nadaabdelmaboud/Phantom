@@ -19,8 +19,8 @@ const state = {
   searchSuggestions: false,
   editPinPopUp: false,
   showFollowPopup: false,
-  navList:false,
-  showList:false
+  navList: false,
+  showList: false
 };
 
 const mutations = {
@@ -88,7 +88,7 @@ const mutations = {
   toggleNavList(state, show) {
     if (show == false) state.navList = show;
     else state.navList = !state.navList;
-  },
+  }
 };
 export default {
   namespaced: true,

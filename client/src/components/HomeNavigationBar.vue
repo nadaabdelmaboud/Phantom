@@ -83,14 +83,18 @@
     >
       <i class="fa fa-user-circle"></i>
     </router-link>
-        <div v-if="isLoggedIn()" class="icons rightIcon" id="alertIcon">
+    <div v-if="isLoggedIn()" class="icons rightIcon" id="alertIcon">
       <i class="fa fa-bell" id="alertIcon"></i>
       <div class="count" id="alertIcon">
         {{ notification.notificationCounter }}
       </div>
     </div>
     <NotificationDropDown v-if="showNotifications" />
-    <div v-if="isLoggedIn() && searchSmall" class="icons searchSmall rightIcon" @click="showSearch">
+    <div
+      v-if="isLoggedIn() && searchSmall"
+      class="icons searchSmall rightIcon"
+      @click="showSearch"
+    >
       <i class="fa fa-search"></i>
     </div>
     <router-link
@@ -168,9 +172,9 @@
     font-size: 20px;
   }
 }
-.rightIcon{
+.rightIcon {
   float: right;
-  margin-right:10px;
+  margin-right: 10px;
 }
 .inRoute {
   background-color: $darkBlue;
@@ -356,9 +360,9 @@
   .searchSmall {
     display: inline-block;
   }
-  .rightIcon{
-  margin-right:7px;
-}
+  .rightIcon {
+    margin-right: 7px;
+  }
 }
 </style>
 <script>
@@ -377,11 +381,11 @@ export default {
       selectedFilter: "All Pins",
       expandMenu: false,
       currentRoute: "Home",
-      searchSmall: true,
+      searchSmall: true
     };
   },
   components: {
-    NotificationDropDown,
+    NotificationDropDown
   },
   mixins: [isLoggedIn, removeUser],
   methods: {
@@ -405,7 +409,7 @@ export default {
           recentSearch: false,
           searchSuggestions: true
         });
-      } 
+      }
     },
     clearSearch() {
       this.search = "";
@@ -417,17 +421,17 @@ export default {
       if (this.$store.state.popUpsState.searchSuggestions)
         this.$store.commit("popUpsState/toggleSearchSuggestions");
     },
-    showSearch(){
-        this.searchSmall = false;
-        let searchInput = document.getElementsByClassName("searchInput")[0];
-        searchInput.style.display = "table-cell";
+    showSearch() {
+      this.searchSmall = false;
+      let searchInput = document.getElementsByClassName("searchInput")[0];
+      searchInput.style.display = "table-cell";
     },
     searchEnter() {
       this.$store.commit("search/resetOffset");
       if (this.search) {
         this.$store.dispatch("search/searchPins", {
           limit: 10,
-          name: this.search,
+          name: this.search
         });
         this.$router.replace(`/search/allpins/${this.search}`);
         if (this.$store.state.popUpsState.searchSuggestions)
@@ -439,7 +443,7 @@ export default {
       this.$router.replace(`/search/allpins/${this.search}`);
       this.$store.dispatch("search/searchPins", {
         limit: 10,
-        name: this.search,
+        name: this.search
       });
     },
     searchMyPins() {
@@ -447,7 +451,7 @@ export default {
       this.$router.replace(`/search/mypins/${this.search}`);
       this.$store.dispatch("search/searchMyPins", {
         limit: 10,
-        name: this.search,
+        name: this.search
       });
     },
     searchPeople() {
@@ -455,7 +459,7 @@ export default {
       this.$router.replace(`/search/people/${this.search}`);
       this.$store.dispatch("search/searchPeople", {
         limit: 10,
-        name: this.search,
+        name: this.search
       });
     },
     searchBoards() {
@@ -464,7 +468,7 @@ export default {
       this.$store.dispatch("search/searchBoards", {
         limit: 20,
         offset: 0,
-        name: this.search,
+        name: this.search
       });
     },
     handleRoute() {
@@ -499,25 +503,25 @@ export default {
         this.showFilter = false;
         this.currentRoute = "Home";
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       notification: "notifications/notifications",
-      showNotifications: "notifications/show",
+      showNotifications: "notifications/show"
     }),
     ...mapState({
-      navList: (state) => state.popUpsState.navList,
-      showList: (state) => state.popUpsState.showList,
-    }),
+      navList: state => state.popUpsState.navList,
+      showList: state => state.popUpsState.showList
+    })
   },
   watch: {
     $route: function() {
       this.handleRoute();
-    },
+    }
   },
   mounted: function() {
     this.handleRoute();
-  },
+  }
 };
 </script>

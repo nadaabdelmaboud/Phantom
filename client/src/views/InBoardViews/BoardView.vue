@@ -56,7 +56,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import getUserImage from "../mixins/getUserImage.js";
+import getUserImage from "../../mixins/getUserImage.js";
 export default {
   name: "BoardView",
   data: function() {
@@ -123,8 +123,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 .boardInfo {
   margin-bottom: 40px;
   img {

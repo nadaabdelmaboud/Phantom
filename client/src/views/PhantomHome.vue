@@ -173,7 +173,7 @@ import { default as getImage } from "../mixins/getImage";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 import HomeNavigationBar from "../components/HomeNavigationBar";
 import CreateBoardPopup from "../views/BoardsPopUps/CreateBoardPopup";
-import NewPinPopup from "../views/NewPinPopup";
+import NewPinPopup from "../views/AddNewPin/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";
 import CollaboratorsPopup from "../views/BoardsPopUps/CollaboratorsPopup";
 import AddSectionPopup from "../views/BoardsPopUps/AddSection";
