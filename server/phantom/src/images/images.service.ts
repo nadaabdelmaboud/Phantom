@@ -58,7 +58,7 @@ export class ImagesService {
       fields: 'id',
     });
     if (res) {
-      return { id: res.data.id };
+      return [{ id: res.data.id }];
     } else {
       throw new BadRequestException();
     }
