@@ -29,6 +29,7 @@ export class SharedGateway {
   }
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
+    console.log("hi")
     socket.emit('sendComment', data);
   }
   @SubscribeMessage('typing')
