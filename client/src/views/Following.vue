@@ -7,16 +7,16 @@
       </button>
     </div>
     <div class="flexWrap">
-        <div class="masonryGrid">
-          <HomeCard
-            v-for="card in following"
-            :key="card._id"
-            class="masonryGridItem"
-            :cardImage="card.imageId"
-            :postPageId="card._id"
-          />
-        </div>
+      <div class="masonryGrid">
+        <HomeCard
+          v-for="card in following"
+          :key="card._id"
+          class="masonryGridItem"
+          :cardImage="card.imageId"
+          :postPageId="card._id"
+        />
       </div>
+    </div>
   </div>
 </template>
 
@@ -73,17 +73,17 @@ import { mapGetters } from "vuex";
 import HomeCard from "../components/HomeCard";
 export default {
   name: "Following",
-      components: {
+  components: {
     HomeCard
   },
   created() {
-        this.$store.dispatch("follow/followingPage");
+    this.$store.dispatch("follow/followingPage");
     this.$store.dispatch("follow/allRecommendations");
   },
-      computed: {
+  computed: {
     ...mapGetters({
-      following: "follow/following",
-    }),
+      following: "follow/following"
+    })
   },
   methods: {
     showRecommendationPopUp() {

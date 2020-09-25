@@ -4,7 +4,7 @@ const state = {
   All: [],
   Trending: [],
   Topics: [],
-  following:[]
+  following: []
 };
 
 const mutations = {
@@ -35,7 +35,7 @@ const mutations = {
   setunfollowInTopics(state, id) {
     state.Topics.find(x => x._id === id).followers--;
   },
-  setFollowing(state , follow){
+  setFollowing(state, follow) {
     state.following = follow;
   }
 };
@@ -105,13 +105,13 @@ const actions = {
     axios
       .get("me/followings/pins")
       .then(response => {
-        console.log("data nihal" , response.data)
+        console.log("data nihal", response.data);
         commit("setFollowing", response.data);
       })
       .catch(error => {
         console.log(error);
       });
-  },
+  }
 };
 
 const getters = {
