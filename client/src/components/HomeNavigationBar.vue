@@ -363,7 +363,7 @@
   .rightIcon {
     margin-right: 0px;
   }
-  .arrow{
+  .arrow {
     margin-right: 10px;
   }
 }

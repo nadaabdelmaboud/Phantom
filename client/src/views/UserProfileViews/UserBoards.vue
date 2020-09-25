@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Loading v-if="loading" :loading="loading"/>
+    <Loading v-if="loading" :loading="loading" />
     <div class="row m-0">
       <div
         class="boardsDefault"
@@ -78,7 +78,7 @@ export default {
     ...mapGetters({
       boards: "boards/userBoards",
       viewState: "boards/viewState",
-      loading:"boards/loading"
+      loading: "boards/loading"
     }),
     ...mapState({
       myData: state => state.user.userData

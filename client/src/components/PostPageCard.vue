@@ -243,7 +243,7 @@
                       </div>
                       <div class="createReply">
                         <div class="userimage">
-                          <img :src="getImage(userImageId)" alt="User Image" />
+                          <img :src="getUserImage()" alt="User Image" />
                         </div>
                         <div class="repliesField">
                           <input
@@ -290,7 +290,7 @@
               </ul>
               <div class="displaycomments">
                 <div class="userimage">
-                  <img :src="getImage(this.userImageId)" alt="User Image" />
+                  <img :src="getUserImage()" alt="User Image" />
                 </div>
                 <div class="commentsfield">
                   <input
@@ -930,6 +930,7 @@ li button {
 <script>
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
+import getUserImage from "../mixins/getUserImage.js";
 import io from "socket.io-client";
 export default {
   name: "postpagecard",
@@ -945,7 +946,7 @@ export default {
       index: 0
     };
   },
-  mixins: [getImage],
+  mixins: [getImage, getUserImage],
   methods: {
     showToast() {
       var mytoast = document.getElementById("toastId");

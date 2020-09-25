@@ -146,7 +146,7 @@
 .pin {
   background-color: $offWhite;
   height: calc(100vh - 120px);
-  min-height:600px ;
+  min-height: 600px;
   border-radius: 16px;
   animation: appear 0.2s linear 1 both;
 }

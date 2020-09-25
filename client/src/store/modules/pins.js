@@ -4,10 +4,10 @@ const state = {
   pin: "",
   demo: "",
   pins: [],
-  first:true,
+  first: true,
   savePin: false,
-  loading:false,
-  isMine:true
+  loading: false,
+  isMine: true
 };
 
 const mutations = {
@@ -67,12 +67,12 @@ const actions = {
   getmyCreatedPins() {
     return axios.get("me/pins");
   },
-  async getMyPins({ dispatch, commit ,state}) {
-    if(!state.isMine || state.first){
-      state.loading=true;
-      state.pins=[];
-      state.isMine=true;
-      state.first=false;
+  async getMyPins({ dispatch, commit, state }) {
+    if (!state.isMine || state.first) {
+      state.loading = true;
+      state.pins = [];
+      state.isMine = true;
+      state.first = false;
     }
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
@@ -97,23 +97,23 @@ const actions = {
     });
 
     commit("setPins", pins);
-    state.loading=false;
+    state.loading = false;
   },
-  getUserPins({ commit,state }, userId) {
-    if(state.isMine || state.first){
-      state.loading=true;
-      state.pins=[];
-      state.isMine=false;
-      state.first=false;
+  getUserPins({ commit, state }, userId) {
+    if (state.isMine || state.first) {
+      state.loading = true;
+      state.pins = [];
+      state.isMine = false;
+      state.first = false;
     }
     axios
       .get("user/" + userId + "/pins")
       .then(response => {
         commit("setPins", response.data);
-        state.loading=false;
+        state.loading = false;
       })
       .catch(error => {
-        state.loading=false
+        state.loading = false;
         console.log(error);
       });
   },
@@ -152,7 +152,7 @@ const actions = {
 
 const getters = {
   pins: state => state.pins,
-  loading:state=>state.loading
+  loading: state => state.loading
 };
 
 export default {
