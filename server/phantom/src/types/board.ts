@@ -8,7 +8,7 @@ export interface section extends Document {
     topic: String;
   }>;
   creatorId: mongoose.Types.ObjectId;
-  coverImages: Array<mongoose.Types.ObjectId>;
+  coverImages: Array<String>;
 }
 export interface board extends Document {
   url: String;
@@ -26,7 +26,7 @@ export interface board extends Document {
     id: mongoose.Types.ObjectId;
     profileUrl: String;
   };
-  coverImages: Array<mongoose.Types.ObjectId>;
+  coverImages: Array<String>;
   collaborators: Array<{
     collaboratorId: mongoose.Types.ObjectId;
     savePin: Boolean;

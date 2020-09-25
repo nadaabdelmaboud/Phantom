@@ -28,7 +28,7 @@ export interface user extends Document {
   sortType: String;
   socketId: string;
   notificationCounter: Number;
-  profileImage: mongoose.Types.ObjectId | String;
+  profileImage: String;
   lastTopics: Array<{
     topicName: String;
     pinsLength: Number;

@@ -9,11 +9,9 @@ import { Model } from 'mongoose';
 import { board } from '../types/board';
 import { pin } from '../types/pin';
 import { topic } from '../types/topic';
-import { UserService } from '../user/user.service';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
 import { NotificationService } from '../shared/notification.service';
-import * as mongoose from 'mongoose';
 
 @Injectable()
 export class RecommendationService {
@@ -61,7 +59,7 @@ export class RecommendationService {
     let pinExist = {};
     let isPinInHome = {};
     let topics = [];
-    let ALLUSERS = await this.userModel.find({}, { firstName: 1 });
+
     await this.userModel
       .update({ _id: userId }, { homeFeed: [] })
       .catch(err => {

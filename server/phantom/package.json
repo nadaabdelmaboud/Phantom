@@ -45,6 +45,7 @@
     "firebase-admin": "^9.1.1",
     "fuzzy-search": "^3.2.1",
     "googleapis": "^60.0.1",
+    "graceful-fs": "^4.2.4",
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
     "mongo-gridfs": "^1.1.0",

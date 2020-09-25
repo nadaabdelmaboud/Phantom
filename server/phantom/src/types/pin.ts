@@ -20,7 +20,8 @@ export interface comment extends Document {
   };
 }
 export interface pin extends Document {
-  imageId: mongoose.Types.ObjectId;
+  imageId: String;
+  driveImageId: String;
   imageWidth: Number;
   imageHeight: Number;
   url: String;

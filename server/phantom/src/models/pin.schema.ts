@@ -2,7 +2,8 @@ import * as mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 export const Pin = new Schema({
-  imageId: mongoose.Types.ObjectId,
+  imageId: String,
+  driveImageId: String,
   imageWidth: Number,
   imageHeight: Number,
   url: String,

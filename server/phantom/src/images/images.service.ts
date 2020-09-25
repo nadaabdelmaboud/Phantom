@@ -1,60 +1,66 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
-import { MongoGridFS } from 'mongo-gridfs';
-import { GridFSBucketReadStream } from 'mongodb';
-import { ValidationService } from '../shared/validation.service';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
+import * as credentials from './credentials.json';
+import { Readable } from 'stream';
+
+const scopes = ['https://www.googleapis.com/auth/drive'];
+const fs = require('fs');
+const gracefulFs = require('graceful-fs');
+gracefulFs.gracefulify(fs);
+const { google } = require('googleapis');
 
 @Injectable()
 export class ImagesService {
-  private fileModel: MongoGridFS;
-
-  constructor(
-    @InjectConnection() private readonly connection: Connection,
-    private ValidationService: ValidationService,
-  ) {
-    this.fileModel = new MongoGridFS(this.connection.db, 'images');
+  public drive;
+  constructor() {
+    const auth = new google.auth.JWT(
+      credentials.client_email,
+      null,
+      credentials.private_key,
+      scopes,
+    );
+    this.drive = google.drive({ version: 'v3', auth });
+  }
+  async deleteFile(id) {
+    this.drive.files
+      .delete({
+        fileId: id,
+      })
+      .then(
+        async function(response) {
+          return { status: 'success' };
+        },
+        function(err) {
+          throw new NotFoundException();
+        },
+      );
   }
 
-  async readStream(id: string): Promise<GridFSBucketReadStream> {
-    return await this.fileModel.readFileStream(id);
-  }
-  async checkImage(id: string): Promise<Boolean> {
-    if ((await this.ValidationService.checkMongooseID([id])) == 0) {
-      return false;
-    }
-    let isFound = true;
-    let im = await this.fileModel.findById(id).catch(err => {
-      isFound = false;
-    });
-    if (isFound) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  async findInfo2() {
-    const result = await this.fileModel.find({});
-    if (!result || result == undefined) {
-      return;
-    }
-    return result;
-  }
-  async findInfo(id: string) {
-    const result = await this.fileModel.findById(id);
-    if (!result || result == undefined) {
-      return;
-    }
-    return {
-      filename: result.filename,
-      length: result.length,
-      chunkSize: result.chunkSize,
-      md5: result.md5,
-      contentType: result.contentType,
+  async uploadFile(fileName, mimeType, stream) {
+    const readable = new Readable();
+    readable._read = () => {};
+    readable.push(stream);
+    readable.push(null);
+    var fileMetadata = {
+      name: fileName,
     };
-  }
-
-  async deleteFile(id: string): Promise<boolean> {
-    return await this.fileModel.delete(id);
+    var media = {
+      mimeType: mimeType,
+      body: readable,
+    };
+    let res = await this.drive.files.create({
+      resource: fileMetadata,
+      media: media,
+      fields: 'id',
+    });
+    if (res) {
+      return { id: res.data.id };
+    } else {
+      throw new BadRequestException();
+    }
   }
 }

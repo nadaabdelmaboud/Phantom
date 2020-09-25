@@ -28,14 +28,6 @@ const data = [
     path: './messages.json',
     collection: 'messages',
   },
-  {
-    path: './images.files.json',
-    collection: 'images.files',
-  },
-  {
-    path: './images.chunks.json',
-    collection: 'images.chunks',
-  },
 ];
 
 console.log('Please Wait this might take few minutes');
