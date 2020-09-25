@@ -42,7 +42,8 @@ const state = {
   sectionId: "",
   unsavePin: false,
   editpincase: false,
-  imageDownloaded: false
+  imageDownloaded: false,
+  postPageLoading: false
 };
 
 const mutations = {
@@ -157,6 +158,13 @@ const mutations = {
   },
   imageDownloaded(state, value) {
     state.imageDownloaded = value;
+  },
+  resetHome(state) {
+    state.homeCards = [];
+    (state.generating = false),
+      (state.generatedCount = 0),
+      (state.offset = 0),
+      (state.maxMore = false);
   }
 };
 
@@ -180,6 +188,8 @@ const actions = {
       });
   },
   async userGenerateCards({ state, commit, dispatch }, limit) {
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     if (!state.maxMore && !state.inProgress) {
       state.inProgress = true;
       try {
@@ -191,17 +201,19 @@ const actions = {
         state.offset += 10;
         commit("sethomeCards", home.data);
       } catch (error) {
-        let remaining = state.generatedCount - state.offset;
-        state.inProgress = false;
-        if (state.generating) {
-          setTimeout(() => {
-            dispatch("userGenerateCards", 10);
-          }, 1000);
-        } else if (remaining > 0) {
-          dispatch("userGenerateCards", remaining);
-        } else {
-          state.homeLoading = false;
-          state.maxMore = true;
+        if (error.response.status == 404) {
+          let remaining = state.generatedCount - state.offset;
+          state.inProgress = false;
+          if (state.generating) {
+            setTimeout(() => {
+              dispatch("userGenerateCards", 10);
+            }, 1000);
+          } else if (remaining > 0) {
+            dispatch("userGenerateCards", remaining);
+          } else {
+            state.homeLoading = false;
+            state.maxMore = true;
+          }
         }
         console.log(error);
       }
@@ -210,6 +222,7 @@ const actions = {
   async Postpage({ commit }, postPageID) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
+    state.postPageLoading = true;
     await axios
       .get("/pins/" + postPageID)
       .then(response => {
@@ -230,9 +243,11 @@ const actions = {
         commit("setNumReactGoodIdea", res.pin.counts.goodIdeaReacts);
         commit("setNumReactThanks", res.pin.counts.thanksReacts);
         commit("setPinType", res.type);
+        state.postPageLoading = false;
       })
       .catch(error => {
         console.log(error);
+        state.postPageLoading = false;
       });
   },
   deletePin({ commit }, pinId) {
@@ -333,14 +348,19 @@ const actions = {
   downloadImage({ commit }, imageId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
-      .get("download/" + imageId)
-      .then(() => {
-        commit("imageDownloaded", true);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    commit("imageDownloaded", true);
+    axios({
+      url: "http://localhost:3000/api/image/" + imageId,
+      method: "GET",
+      responseType: "blob"
+    }).then(response => {
+      var imageUrl = window.URL.createObjectURL(new Blob([response.data]));
+      var imageLink = document.createElement("a");
+      imageLink.href = imageUrl;
+      imageLink.setAttribute("download", imageId + ".jpg");
+      document.body.appendChild(imageLink);
+      imageLink.click();
+    });
   }
 };
 
@@ -356,7 +376,8 @@ const getters = {
   pinCreatorId: state => state.pinCreatorId,
   finishCalling: state => state.finishCalling,
   pinId: state => state.pinId,
-  homeLoading: state => state.homeLoading
+  homeLoading: state => state.homeLoading,
+  postPageLoading: state => state.postPageLoading
 };
 
 export default {

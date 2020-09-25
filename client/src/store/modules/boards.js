@@ -279,18 +279,20 @@ const actions = {
         state.offset += 8;
         commit("setMoreLike", more.data);
       } catch (error) {
-        let remaining = state.generatedCount - state.offset;
-        state.inProgress = false;
-        if (state.generating) {
-          setTimeout(() => {
-            dispatch("moreLike", { boardId: boardId, limit: 8 });
-          }, 1000);
-        } else if (remaining > 0) {
-          console.log("remaining ", remaining);
-          dispatch("moreLike", { boardId: boardId, limit: remaining });
-        } else {
-          state.loadingMore = false;
-          state.maxMore = true;
+        if (error.response.status == 404) {
+          let remaining = state.generatedCount - state.offset;
+          state.inProgress = false;
+          if (state.generating) {
+            setTimeout(() => {
+              dispatch("moreLike", { boardId: boardId, limit: 8 });
+            }, 1000);
+          } else if (remaining > 0) {
+            console.log("remaining ", remaining);
+            dispatch("moreLike", { boardId: boardId, limit: remaining });
+          } else {
+            state.loadingMore = false;
+            state.maxMore = true;
+          }
         }
         console.log(error);
       }

@@ -47,7 +47,7 @@ const actions = {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     let chat = [];
-    state.loading = true;
+    if (!state.currentChat.length) state.loading = true;
     try {
       chat = await axios.get(
         "/getMessagesSent/" + payload.recieverId + "/" + payload.senderId
@@ -77,6 +77,7 @@ const actions = {
       console.log(err);
     }
     commit("setChat", chat);
+    state.loading = false;
   },
   sendMsg({ dispatch }, msg) {
     axios
