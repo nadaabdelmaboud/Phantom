@@ -165,8 +165,6 @@ export default {
         savePost.style = "default";
         shareIcon.style = "default";
       }
-      // Remaining
-      // shift list 180 degree for the most right card in the page
     },
     showReportPin() {
       this.$store.commit("homeCards/setCardId", this.postPageId);

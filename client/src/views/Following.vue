@@ -6,10 +6,22 @@
         Find people to follow
       </button>
     </div>
+    <div class="flexWrap">
+      <div class="masonryGrid">
+        <HomeCard
+          v-for="card in following"
+          :key="card._id"
+          class="masonryGridItem"
+          :cardImage="card.imageId"
+          :postPageId="card._id"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "../scss/MasonryGrid";
 @import "../scss/_Colors";
 @import "../scss/Mixins";
 .followingPage {
@@ -57,10 +69,21 @@ button:focus {
 </style>
 
 <script>
+import { mapGetters } from "vuex";
+import HomeCard from "../components/HomeCard";
 export default {
   name: "Following",
+  components: {
+    HomeCard
+  },
   created() {
+    this.$store.dispatch("follow/followingPage");
     this.$store.dispatch("follow/allRecommendations");
+  },
+  computed: {
+    ...mapGetters({
+      following: "follow/following"
+    })
   },
   methods: {
     showRecommendationPopUp() {
