@@ -6,7 +6,8 @@
         Find people to follow
       </button>
     </div>
-    <div class="flexWrap">
+    <Loading :loading="followPageLoading" />
+    <div class="flexWrap" v-if="!followPageLoading">
       <div class="masonryGrid">
         <HomeCard
           v-for="card in following"
@@ -70,11 +71,13 @@ button:focus {
 
 <script>
 import { mapGetters } from "vuex";
+import Loading from "../components/GeneralComponents/Loading";
 import HomeCard from "../components/HomeCard";
 export default {
   name: "Following",
   components: {
-    HomeCard
+    HomeCard,
+    Loading
   },
   created() {
     this.$store.dispatch("follow/followingPage");
@@ -82,7 +85,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      following: "follow/following"
+      following: "follow/following",
+      followPageLoading: "follow/followPageLoading"
     })
   },
   methods: {
