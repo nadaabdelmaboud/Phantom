@@ -9,7 +9,7 @@ const state = {
   offset: 0,
   inProgress: false,
   totalResult: 50,
-  endResult: false,
+  endReuslt: false,
   pinsLoading: false,
   mypinsLoading: false,
   boardsLoading: false,
@@ -44,6 +44,7 @@ const mutations = {
   resetOffset(state) {
     state.offset = 0;
     state.inProgress = false;
+    state.endReuslt = false;
     state.pins = [];
     state.people = [];
     state.myPins = [];
@@ -67,7 +68,7 @@ const mutations = {
 };
 
 const actions = {
-  async searchPins({ state, commit, dispatch }, payload) {
+  async searchPins({ state, commit }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
       commit("setpinsLoading", true);
@@ -89,19 +90,16 @@ const actions = {
         state.inProgress = false;
         state.offset += 10;
         commit("setSearchPins", pins.data.result);
-        state.totalResult = pins.data.length;
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          state.inProgress = false;
-          commit("setpinsLoading", false);
-        } else {
-          dispatch("searchPins", { name: payload.name });
         }
+        commit("setpinsLoading", false);
+        state.inProgress = false;
       }
     }
   },
-  async searchMyPins({ state, commit, dispatch }, payload) {
+  async searchMyPins({ state, commit }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
       commit("setmyPinsLoading", true);
@@ -122,19 +120,16 @@ const actions = {
         commit("setmyPinsLoading", false);
         state.offset += 10;
         commit("setSearchMyPins", pins.data.result);
-        state.totalResult = pins.data.length;
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          state.inProgress = false;
           commit("setmyPinsLoading", false);
-        } else {
-          dispatch("searchMyPins", { name: payload.name });
+          state.inProgress = false;
         }
       }
     }
   },
-  async searchPeople({ state, commit, dispatch }, payload) {
+  async searchPeople({ state, commit }, payload) {
     if ((!state.inProgress && !state.endReuslt) || payload.searchSuggestions) {
       state.inProgress = true;
       commit("setpeopleLoading", true);
@@ -165,19 +160,16 @@ const actions = {
           });
           commit("setSearchSuggestions", suggestions);
         } else commit("setSearchPeople", people.data.result);
-        state.totalResult = people.data.length;
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          state.inProgress = false;
           commit("setpeopleLoading", false);
-        } else {
-          dispatch("searchPeople", { name: payload.name });
+          state.inProgress = false;
         }
       }
     }
   },
-  async searchBoards({ state, commit, dispatch }, payload) {
+  async searchBoards({ state, commit }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
       commit("setboardsLoading", true);
@@ -198,14 +190,11 @@ const actions = {
         state.offset += 10;
         commit("setboardsLoading", false);
         commit("setSearchBoards", boards.data.result);
-        state.totalResult = boards.data.length;
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          state.inProgress = false;
           commit("setboardsLoading", false);
-        } else {
-          dispatch("searchBoards", { name: payload.name });
+          state.inProgress = false;
         }
       }
     }
