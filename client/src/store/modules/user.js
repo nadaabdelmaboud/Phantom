@@ -93,8 +93,8 @@ const actions = {
       .then(async response => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
-        commit("setStatus", true);
         await dispatch("getUserProfile");
+        commit("setStatus", true);
       })
       .catch(error => {
         commit("setStatus", false);
@@ -109,8 +109,8 @@ const actions = {
       .then(async response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
-        commit("setStatus", true);
         await dispatch("getUserProfile");
+        commit("setStatus", true);
         dispatch("notifications/notifyUser", null, { root: true });
         commit("setKey", 1);
       })
