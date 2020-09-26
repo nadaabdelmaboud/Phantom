@@ -55,7 +55,12 @@ export class PinsController {
   @Get('/me/pins')
   async getCurrentUserPins(@Request() req) {
     let userId = req.user._id;
-    let pins = await this.PinsService.getCurrentUserPins(userId, true, null);
+    let pins = await this.PinsService.getCurrentUserPins(
+      userId,
+      true,
+      null,
+      false,
+    );
     if (pins && pins.length != 0) {
       return pins;
     } else {
@@ -66,7 +71,12 @@ export class PinsController {
   @UseGuards(AuthGuard('jwt'))
   @Get('/user/:userId/pins')
   async getSomeUserPins(@Request() req, @Param('userId') userId: string) {
-    let pins = await this.PinsService.getCurrentUserPins(userId, false, null);
+    let pins = await this.PinsService.getCurrentUserPins(
+      userId,
+      false,
+      null,
+      false,
+    );
     if (pins && pins.length != 0) {
       return pins;
     } else {
