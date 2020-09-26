@@ -8,5 +8,5 @@ export const Topic = new Schema({
   imageWidth: Number,
   imageHeight: Number,
   recommendedUsers: [mongoose.Types.ObjectId],
-  imageId: mongoose.Types.ObjectId,
+  imageId: String,
 });

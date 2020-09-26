@@ -23,6 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
+import { selectFields } from 'express-validator/src/select-fields';
 const path = require('path');
 
 @Controller()
@@ -47,6 +48,7 @@ export class ImagesController {
     @Query('topic') topic: string,
     @Request() req,
   ) {
+   
     if (topic && topic != '') {
       var filePath = './src/static/' + topic + '.jpg';
       var resolvedPath = await path.resolve(filePath);
