@@ -124,19 +124,18 @@ import { default as socketChat } from "../../mixins/socketChat";
 export default {
   name: "BoardPins",
   data: function() {
-    return {
-    }
+    return {};
   },
   mixins: [socketChat],
   components: {
     ChatMessage,
     Loading
   },
-  created(){
+  created() {
     this.$store.dispatch("followers/getFollowing");
     this.$store.dispatch("chat/getRecentChats", this.myData._id);
     this.$store.commit("chat/resetOffset");
-  //  this.inChat();
+    //  this.inChat();
   }
 };
 </script>

@@ -100,19 +100,19 @@ p {
   flex-direction: column-reverse;
 }
 
- @media screen and (max-width: 360px) {
-   .msg {
-  margin: 3px 0;
-  img {
-    width: 30px;
-    height: 30px;
+@media screen and (max-width: 360px) {
+  .msg {
+    margin: 3px 0;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  p {
+    font-size: 14px;
+    min-height: 30px;
+    padding: 8px;
+    border-radius: 16px;
   }
 }
-p {
-  font-size: 14px;
-  min-height: 30px;
-  padding: 8px;
-  border-radius: 16px;
-}
-  }
 </style>

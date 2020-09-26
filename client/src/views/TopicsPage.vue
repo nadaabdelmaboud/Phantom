@@ -18,7 +18,7 @@
           />
         </div>
       </div>
-      <Loading :loading="topicsLoading" />
+      <Loading :loading="topicsLoading" v-if="topicsLoading" />
       <div class="callingTopicsCards" v-if="!topicsLoading">
         <div v-for="topic in topics" :key="topic.name">
           <TopicsPageCard

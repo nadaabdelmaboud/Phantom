@@ -17,21 +17,22 @@ const mutations = {
   },
   addMsg(state, msg) {
     let len = state.currentChat.length;
-    if (len && state.currentChat[len - 1].owner==msg.owner ) state.currentChat[len - 1].last = false;
+    if (len && state.currentChat[len - 1].owner == msg.owner)
+      state.currentChat[len - 1].last = false;
     state.currentChat.push(msg);
   },
   setRecentChats(state, chats) {
     state.recentChats = chats;
   },
   setState(state, newState) {
-    let newChat=state.currentChat;
-    newChat=newChat.reverse();
+    let newChat = state.currentChat;
+    newChat = newChat.reverse();
     let lastin = [false, false];
     newChat.forEach(msg => {
-      msg.last=false;
+      msg.last = false;
       if (msg.owner) {
-        if(newState=="seen") msg.seen=true;
-        else msg.deliver=true;
+        if (newState == "seen") msg.seen = true;
+        else msg.deliver = true;
         if (!lastin[0]) {
           msg.last = true;
           lastin[0] = true;
@@ -42,7 +43,7 @@ const mutations = {
           lastin[1] = true;
         }
       }
-    })
+    });
     state.currentChat = newChat.reverse();
   },
   resetOffset(state) {

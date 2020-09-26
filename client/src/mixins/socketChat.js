@@ -12,13 +12,13 @@ export default {
         imageId: "",
         id: "",
         google: false,
-        googleImage: "",
+        googleImage: ""
       },
       socket: "",
       allowNotify: false,
       typing: false,
       meTyping: false,
-      searchWord: "",
+      searchWord: ""
     };
   },
   mixins: [getImage],
@@ -28,7 +28,7 @@ export default {
         let msg = {
           owner: true,
           message: this.currentMsg,
-          date: Date.now(),
+          date: Date.now()
         };
         this.$store.commit("chat/addMsg", msg);
         this.scrollDown();
@@ -38,7 +38,7 @@ export default {
           senderName: this.myData.firstName + " " + this.myData.lastName,
           message: this.currentMsg,
           senderId: this.myData._id,
-          date: Date.now(),
+          date: Date.now()
         });
         this.currentMsg = "";
       }
@@ -47,13 +47,13 @@ export default {
       this.chatWith = chatWith;
       let payload = {
         senderId: chatWith.id,
-        recieverId: this.myData._id,
+        recieverId: this.myData._id
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.inchat = !this.inchat;
-      setTimeout(()=>{
+      setTimeout(() => {
         this.scrollDown();
-      },1000)
+      }, 1000);
     },
     toChatters() {
       this.$store.commit("chat/setChat", []);
@@ -62,7 +62,7 @@ export default {
       this.inchat = !this.inchat;
     },
     messageListener() {
-      this.socket.on("sendMessage", (data) => {
+      this.socket.on("sendMessage", data => {
         if (document.getElementsByClassName("msgWindow").length) {
           if (data.senderId == this.chatWith.id) {
             let msg = {
@@ -72,7 +72,7 @@ export default {
               seen: false,
               deliver: false,
               last: true,
-              _id: data.messageId,
+              _id: data.messageId
             };
             this.$store.commit("chat/addMsg", msg);
             this.scrollDown();
@@ -81,18 +81,18 @@ export default {
             this.socket.emit("seen", {
               recieverId: this.myData._id,
               senderId: data.senderId,
-              messageId: data.messageId,
+              messageId: data.messageId
             });
           }
         }
         this.typing = false;
         let ping = new Audio();
-        ping.autoplay=true;
+        ping.autoplay = true;
         ping.src = require("../assets/Ping.mp3");
         ping.play();
         let options = {
           body: data.senderName + " has sent you a new msg \n" + data.message,
-          silent: true,
+          silent: true
         };
 
         if (this.allowNotify) {
@@ -107,12 +107,12 @@ export default {
         this.socket.emit("delivered", {
           recieverId: this.myData._id,
           senderId: data.senderId,
-          messageId: data.messageId,
+          messageId: data.messageId
         });
       });
     },
     typingLisener() {
-      this.socket.on("isTyping", (data) => {
+      this.socket.on("isTyping", data => {
         if (data.senderId == this.chatWith.id) {
           this.typing = true;
           this.scrollDown();
@@ -127,7 +127,7 @@ export default {
         this.meTyping = true;
         this.socket.emit("typing", {
           recieverId: this.chatWith.id,
-          senderId: this.myData._id,
+          senderId: this.myData._id
         });
         setTimeout(() => {
           this.meTyping = false;
@@ -135,14 +135,14 @@ export default {
       }
     },
     deliveredListener() {
-      this.socket.on("setDelivered", (data) => {
+      this.socket.on("setDelivered", data => {
         if (data.senderId == this.myData._id) {
           this.$store.commit("chat/setState", "deliver");
         }
       });
     },
     seenListener() {
-      this.socket.on("setSeen", (data) => {
+      this.socket.on("setSeen", data => {
         if (data.senderId == this.myData._id) {
           this.$store.commit("chat/setState", "seen");
         }
@@ -153,7 +153,7 @@ export default {
         this.$store.commit("chat/resetOffset");
         this.$store.dispatch("chat/searchPeople", {
           name: this.searchWord,
-          recentSearch: false,
+          recentSearch: false
         });
       } else {
         this.$store.commit("chat/resetOffset");
@@ -164,7 +164,7 @@ export default {
       if (searchBox && searchBox.scrollTop == searchBox.scrollHeight - 300) {
         this.$store.dispatch("chat/searchPeople", {
           name: this.searchWord,
-          recentSearch: false,
+          recentSearch: false
         });
       }
     },
@@ -173,7 +173,7 @@ export default {
         let msgBox = document.getElementsByClassName("msgBox")[0];
         if (msgBox) msgBox.scrollTop = msgBox.scrollHeight;
       });
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -181,11 +181,11 @@ export default {
       recentChats: "chat/recentChats",
       chat: "chat/currentChat",
       peopleSearch: "chat/people",
-      loading: "chat/loading",
+      loading: "chat/loading"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
+      myData: state => state.user.userData
+    })
   },
   created() {
     //starting socket connection
@@ -194,10 +194,10 @@ export default {
     token = token.substring(7);
     //personalise connection
     this.socket.emit("setUserId", {
-      token: token,
+      token: token
     });
     //ensure notification is enabled
-    Notification.requestPermission().then((permission) => {
+    Notification.requestPermission().then(permission => {
       if (permission == "granted") {
         this.allowNotify = true;
       } else {
@@ -219,7 +219,7 @@ export default {
       if (typeof value == "undefined") return "no msg";
       if (value.length < 25) return value;
       return value.slice(0, 25) + "...";
-    },
+    }
   },
   watch: {
     loading: {
@@ -227,7 +227,7 @@ export default {
         if (!loading) {
           this.scrollDown();
         }
-      },
-    },
-  },
+      }
+    }
+  }
 };
