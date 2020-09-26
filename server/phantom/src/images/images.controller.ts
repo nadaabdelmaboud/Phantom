@@ -23,7 +23,6 @@ import {
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
-import { selectFields } from 'express-validator/src/select-fields';
 const path = require('path');
 
 @Controller()
