@@ -34,7 +34,7 @@ export default {
       return this.$store.state.search.myPins;
     },
     loading() {
-      return this.$store.state.search.loading;
+      return this.$store.state.search.mypinsLoading;
     }
   },
   mounted: function() {
@@ -42,9 +42,6 @@ export default {
     this.$store.dispatch("search/searchMyPins", {
       name: this.$route.params.name
     });
-  },
-  created: function() {
-    this.$store.commit("search/resetOffset");
   }
 };
 </script>

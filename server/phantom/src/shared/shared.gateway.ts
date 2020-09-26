@@ -19,6 +19,10 @@ export class SharedGateway {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
   ) {}
+  async handleConnection(client: Socket) {
+    console.log('client connected', client.id);
+  }
+
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
     const token = data.token;
@@ -31,8 +35,13 @@ export class SharedGateway {
       await user.save();
     }
   }
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
+    // socket.broadcast.emit('sendComment', data);
+    //  this.server.sockets.emit('sendComment', data);
     this.server.emit('sendComment', data);
   }
   @SubscribeMessage('typing')

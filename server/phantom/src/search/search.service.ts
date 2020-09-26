@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { board } from '../types/board';
@@ -20,6 +20,12 @@ export class SearchService {
       sort: true,
     });
     let result = searcher.search(name);
+    if(result.length==0){
+      throw new NotFoundException()
+    }
+    if(Number(Number(offset)+Number(limit))>result.length){
+      limit=result.length-Number(offset);
+    }
     let limitOffsetResult = this.ValidationService.limitOffset(
       limit,
       offset,

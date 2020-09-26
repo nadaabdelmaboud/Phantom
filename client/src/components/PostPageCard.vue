@@ -262,7 +262,7 @@
                       <div class="createReply">
                         <div class="userimage">
                           <img
-                            v-if="this.showGoogleImage"
+                            v-if="showGoogleImage"
                             :src="
                               getImage(
                                 userData.profileImage,
@@ -319,7 +319,7 @@
               <div class="displaycomments">
                 <div class="userimage">
                   <img
-                    v-if="this.showGoogleImage"
+                    v-if="showGoogleImage"
                     :src="
                       getImage(
                         userData.profileImage,
@@ -985,7 +985,8 @@ export default {
       reactType: "",
       showcomments: false,
       index: 0,
-      showGoogleImage: false
+      showGoogleImage: false,
+      socket: ""
     };
   },
   mixins: [getImage],
@@ -1128,9 +1129,7 @@ export default {
       inputField.value = "";
     },
     async addComment() {
-      const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      console.log("before request", this.addCommentObject);
       let commentTextObject = {
         commentText: inputField.value
       };
@@ -1138,19 +1137,12 @@ export default {
         postPageId: this.$route.params.postPageId,
         comment: commentTextObject
       });
-      console.log("after request", this.addCommentObject);
-      socket.emit("comment", this.addCommentObject);
-      socket.on("sendComment", data => {
-        console.log("is received");
-        this.$store.commit("postPage/addNewComment", data);
-      });
+      this.socket.emit("comment", this.addCommentObject);
       inputField.value = "";
       this.showcomments = true;
     },
     async addReply(commentId, inputId) {
-      const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById(inputId);
-      console.log("before reply request", this.addReplyObject);
       let replyTextObject = {
         replyText: inputField.value
       };
@@ -1159,14 +1151,7 @@ export default {
         commentId: commentId,
         reply: replyTextObject
       });
-      console.log("after reply request", this.addReplyObject);
-      socket.emit("reply", this.addReplyObject);
-      socket.on("sendReply", data => {
-        this.$store.commit("postPage/addNewReply", {
-          reply: data,
-          commentId: commentId
-        });
-      });
+      this.socket.emit("reply", this.addReplyObject);
       inputField.value = "";
     },
     showCommentsList() {
@@ -1256,6 +1241,16 @@ export default {
   },
   created: function() {
     window.addEventListener("click", this.hideList);
+    this.socket = io.connect("http://localhost:3000");
+    this.socket.on("sendComment", data => {
+      this.$store.commit("postPage/addNewComment", data);
+    });
+    this.socket.on("sendReply", data => {
+      this.$store.commit("postPage/addNewReply", {
+        reply: data,
+        commentId: data.commentId
+      });
+    });
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);

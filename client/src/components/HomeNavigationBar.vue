@@ -431,10 +431,6 @@ export default {
     searchEnter() {
       this.$store.commit("search/resetOffset");
       if (this.search) {
-        this.$store.dispatch("search/searchPins", {
-          limit: 10,
-          name: this.search
-        });
         this.$router.replace(`/search/allpins/${this.search}`);
         if (this.$store.state.popUpsState.searchSuggestions)
           this.$store.commit("popUpsState/toggleSearchSuggestions");
@@ -443,35 +439,18 @@ export default {
     searchPins() {
       this.expandMenu = false;
       this.$router.replace(`/search/allpins/${this.search}`);
-      this.$store.dispatch("search/searchPins", {
-        limit: 10,
-        name: this.search
-      });
     },
     searchMyPins() {
       this.expandMenu = false;
       this.$router.replace(`/search/mypins/${this.search}`);
-      this.$store.dispatch("search/searchMyPins", {
-        limit: 10,
-        name: this.search
-      });
     },
     searchPeople() {
       this.expandMenu = false;
       this.$router.replace(`/search/people/${this.search}`);
-      this.$store.dispatch("search/searchPeople", {
-        limit: 10,
-        name: this.search
-      });
     },
     searchBoards() {
       this.expandMenu = false;
       this.$router.replace(`/search/boards/${this.search}`);
-      this.$store.dispatch("search/searchBoards", {
-        limit: 20,
-        offset: 0,
-        name: this.search
-      });
     },
     handleRoute() {
       if (this.$route.path == "/") {

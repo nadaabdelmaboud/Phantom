@@ -39,20 +39,15 @@ export class ImagesController {
       files[0].buffer,
     );
   }
-
+ 
   @Get('/image/:id')
   async getImage(
     @Param('id') id: string,
     @Res() response,
-    @Query('topic') topic: string,
     @Request() req,
   ) {
-    if (topic && topic != '') {
-      var filePath = './src/static/' + topic + '.jpg';
-      var resolvedPath = await path.resolve(filePath);
-      return response.sendFile(resolvedPath);
-    }
-    console.log(id);
+  
+    
     if (!id || id == ' ' || id == '' || id == 'none' || id == 'null') {
       var filePath = './src/static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
@@ -79,9 +74,5 @@ export class ImagesController {
     );
   }
 
-  @Delete('image/:id')
-  @ApiBadRequestResponse({ type: BadRequestException })
-  async deleteFile(@Param('id') id: string) {
-    return await this.ImagesService.deleteFile(id);
-  }
+ 
 }
