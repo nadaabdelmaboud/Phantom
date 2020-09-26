@@ -11,7 +11,7 @@
         </div>
         <div class="userImage">
           <img
-            :src="getUserImage()"
+            :src="getUserImage(userData.google, userData.googleImage)"
             class="userImage"
             alt="User Image"
             @click="toUserPage"
@@ -128,7 +128,8 @@ export default {
   },
   computed: {
     ...mapState({
-      topics: state => state.topics.topics
+      topics: state => state.topics.topics,
+      userData: state => state.user.userData
     }),
     ...mapGetters({
       topicsLoading: "topics/topicsLoading"

@@ -87,7 +87,12 @@
             </div>
             <div class="followuserbox">
               <div class="userimage">
-                <img :src="getImage(this.userImageId)" alt="User Image" />
+                <img
+                  :src="
+                    getImage(this.userImageId, this.google, this.googleImage)
+                  "
+                  alt="User Image"
+                />
               </div>
               <div class="userinfo">
                 <h5 class="username">
@@ -140,7 +145,6 @@
                 id="commentsList"
                 v-if="this.pinComments.length != 0 && this.showcomments == true"
               >
-                <!-- //////////keep in mind tha displaycomments was inside li////// -->
                 <li
                   v-for="pinComment in pinComments"
                   :key="pinComment.comment.id"
@@ -149,7 +153,13 @@
                     <div class="displaycomments">
                       <div class="userimage">
                         <img
-                          :src="getImage(pinComment.comment.commenter)"
+                          :src="
+                            getImage(
+                              pinComment.comment.commenterImage,
+                              pinComment.comment.google,
+                              pinComment.comment.googleImage
+                            )
+                          "
                           alt="User Image"
                         />
                       </div>
@@ -205,7 +215,13 @@
                       >
                         <div class="userimage">
                           <img
-                            :src="getImage(replies.replierImage)"
+                            :src="
+                              getImage(
+                                replies.replierImage,
+                                replies.google,
+                                replies.googleImage
+                              )
+                            "
                             alt="User Image"
                           />
                         </div>
@@ -245,7 +261,15 @@
                       </div>
                       <div class="createReply">
                         <div class="userimage">
-                          <img :src="getUserImage()" alt="User Image" />
+                          <img
+                            :src="
+                              getUserImage(
+                                userData.google,
+                                userData.googleImage
+                              )
+                            "
+                            alt="User Image"
+                          />
                         </div>
                         <div class="repliesField">
                           <input
@@ -292,7 +316,10 @@
               </ul>
               <div class="displaycomments">
                 <div class="userimage">
-                  <img :src="getUserImage()" alt="User Image" />
+                  <img
+                    :src="getUserImage(userData.google, userData.googleImage)"
+                    alt="User Image"
+                  />
                 </div>
                 <div class="commentsfield">
                   <input
@@ -1255,7 +1282,8 @@ export default {
       addReplyObject: state => state.postPage.addReplyObject,
       pinType: state => state.homeCards.pinType,
       postTitle: state => state.homeCards.postTitle,
-      postDescribtion: state => state.homeCards.postDescribtion
+      postDescribtion: state => state.homeCards.postDescribtion,
+      userData: state => state.user.userData
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
@@ -1266,7 +1294,9 @@ export default {
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
       pinId: "homeCards/pinId",
-      postPageLoading: "homeCards/postPageLoading"
+      postPageLoading: "homeCards/postPageLoading",
+      google: "homeCards/google",
+      googleImage: "homeCards/googleImage"
     })
   }
 };
