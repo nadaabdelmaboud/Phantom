@@ -6,6 +6,10 @@ import {
 
 import * as credentials from './credentials.json';
 import { Readable } from 'stream';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { topic } from 'src/types/topic';
+import { user } from 'src/types/user';
 
 const scopes = ['https://www.googleapis.com/auth/drive'];
 const fs = require('fs');
@@ -16,7 +20,8 @@ const { google } = require('googleapis');
 @Injectable()
 export class ImagesService {
   public drive;
-  constructor() {
+  constructor(   
+  ) {
     const auth = new google.auth.JWT(
       credentials.client_email,
       null,
@@ -64,4 +69,5 @@ export class ImagesService {
       throw new BadRequestException();
     }
   }
+ 
 }

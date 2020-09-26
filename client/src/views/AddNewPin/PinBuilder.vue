@@ -345,13 +345,11 @@ export default {
       event.preventDefault();
 
       this.imageFile = event.dataTransfer.files[0];
-      console.log("dfghjkpoi", this.imageFile);
       if (this.imageFile) {
         const reader = new FileReader();
         var image = new Image();
         reader.addEventListener("load", function() {
           var img = document.getElementById("imgPreview");
-          console.log(this.result);
           img.setAttribute("src", this.result);
           img.style.display = "block";
           image.setAttribute("src", this.result);
@@ -361,14 +359,11 @@ export default {
           this.classifier.classify(this.$refs.image, this.gotResult);
           this.width = image.width;
           this.height = image.height;
-          console.log(this.height, "   ", this.width);
         }, 500);
       }
     },
     onFileSelected: function(event) {
-      console.log("event", event);
       this.imageFile = event.target.files[0];
-      console.log("dfghjkpoi", this.imageFile);
 
       if (this.imageFile) {
         const reader = new FileReader();
@@ -385,8 +380,6 @@ export default {
           this.classifier.classify(this.$refs.image, this.gotResult);
           this.width = image.width;
           this.height = image.height;
-          console.log(this.height, "   ", this.width);
-          console.log("imageFilehh", this.imageFile);
         }, 500);
       }
     },
@@ -411,7 +404,6 @@ export default {
       this.showBoard = false;
     },
     chooseBoard(boardName, boardId, event) {
-      console.log("event", event.target.id);
       let sectionId = "";
       if (event.target.id != "openArrow") {
         this.showBoard = false;
@@ -442,7 +434,6 @@ export default {
       } else {
         if (this.title == "" || !this.imageFile) this.validate = true;
         else {
-          console.log("nnn", this.width, "   ", this.height);
           let pin = {
             title: this.title,
             board: this.chosenBoardId,

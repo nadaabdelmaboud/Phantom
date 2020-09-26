@@ -93,8 +93,8 @@ const actions = {
       .then(async response => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
-        commit("setStatus", true);
         await dispatch("getUserProfile");
+        commit("setStatus", true);
       })
       .catch(error => {
         commit("setStatus", false);
@@ -109,8 +109,8 @@ const actions = {
       .then(async response => {
         let token = response.data.token;
         localStorage.setItem("userToken", token);
-        commit("setStatus", true);
         await dispatch("getUserProfile");
+        commit("setStatus", true);
         dispatch("notifications/notifyUser", null, { root: true });
         commit("setKey", 1);
       })
@@ -152,6 +152,8 @@ const actions = {
   },
   async getUserProfile({ commit }) {
     commit("setLoading");
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     await axios
       .get("users/me", {
         headers: {
@@ -183,7 +185,6 @@ const actions = {
       });
   },
   async uploadImg({ commit }, img) {
-    console.log(img);
     await axios({
       method: "post",
       url: "me/uploadImage",

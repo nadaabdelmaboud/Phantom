@@ -87,7 +87,12 @@
             </div>
             <div class="followuserbox">
               <div class="userimage">
-                <img :src="getImage(this.userImageId)" alt="User Image" />
+                <img
+                  :src="
+                    getImage(this.userImageId, this.google, this.googleImage)
+                  "
+                  alt="User Image"
+                />
               </div>
               <div class="userinfo">
                 <h5 class="username">
@@ -140,7 +145,6 @@
                 id="commentsList"
                 v-if="this.pinComments.length != 0 && this.showcomments == true"
               >
-                <!-- //////////keep in mind tha displaycomments was inside li////// -->
                 <li
                   v-for="pinComment in pinComments"
                   :key="pinComment.comment.id"
@@ -149,7 +153,13 @@
                     <div class="displaycomments">
                       <div class="userimage">
                         <img
-                          :src="getImage(pinComment.comment.commenter)"
+                          :src="
+                            getImage(
+                              pinComment.comment.commenterImage,
+                              pinComment.comment.google,
+                              pinComment.comment.googleImage
+                            )
+                          "
                           alt="User Image"
                         />
                       </div>
@@ -205,7 +215,13 @@
                       >
                         <div class="userimage">
                           <img
-                            :src="getImage(replies.replierImage)"
+                            :src="
+                              getImage(
+                                replies.replierImage,
+                                replies.google,
+                                replies.googleImage
+                              )
+                            "
                             alt="User Image"
                           />
                         </div>
@@ -245,7 +261,17 @@
                       </div>
                       <div class="createReply">
                         <div class="userimage">
-                          <img :src="getUserImage()" alt="User Image" />
+                          <img
+                            v-if="showGoogleImage"
+                            :src="
+                              getImage(
+                                userData.profileImage,
+                                userData.google,
+                                userData.googleImage
+                              )
+                            "
+                            alt="User Image"
+                          />
                         </div>
                         <div class="repliesField">
                           <input
@@ -292,7 +318,17 @@
               </ul>
               <div class="displaycomments">
                 <div class="userimage">
-                  <img :src="getUserImage()" alt="User Image" />
+                  <img
+                    v-if="showGoogleImage"
+                    :src="
+                      getImage(
+                        userData.profileImage,
+                        userData.google,
+                        userData.googleImage
+                      )
+                    "
+                    alt="User Image"
+                  />
                 </div>
                 <div class="commentsfield">
                   <input
@@ -932,7 +968,6 @@ li button {
 <script>
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
-import getUserImage from "../mixins/getUserImage.js";
 import Loading from "../components/GeneralComponents/Loading";
 import io from "socket.io-client";
 export default {
@@ -949,10 +984,12 @@ export default {
       showReacts: false,
       reactType: "",
       showcomments: false,
-      index: 0
+      index: 0,
+      showGoogleImage: false,
+      socket: ""
     };
   },
-  mixins: [getImage, getUserImage],
+  mixins: [getImage],
   methods: {
     showToast() {
       var mytoast = document.getElementById("toastId");
@@ -1092,9 +1129,7 @@ export default {
       inputField.value = "";
     },
     async addComment() {
-      const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById("inputfield-comments");
-      console.log("before request", this.addCommentObject);
       let commentTextObject = {
         commentText: inputField.value
       };
@@ -1102,19 +1137,12 @@ export default {
         postPageId: this.$route.params.postPageId,
         comment: commentTextObject
       });
-      console.log("after request", this.addCommentObject);
-      socket.emit("comment", this.addCommentObject);
-      socket.on("sendComment", data => {
-        console.log("is received");
-        this.$store.commit("postPage/addNewComment", data);
-      });
+      this.socket.emit("comment", this.addCommentObject);
       inputField.value = "";
       this.showcomments = true;
     },
     async addReply(commentId, inputId) {
-      const socket = io.connect("http://localhost:3000");
       var inputField = document.getElementById(inputId);
-      console.log("before reply request", this.addReplyObject);
       let replyTextObject = {
         replyText: inputField.value
       };
@@ -1123,14 +1151,7 @@ export default {
         commentId: commentId,
         reply: replyTextObject
       });
-      console.log("after reply request", this.addReplyObject);
-      socket.emit("reply", this.addReplyObject);
-      socket.on("sendReply", data => {
-        this.$store.commit("postPage/addNewReply", {
-          reply: data,
-          commentId: commentId
-        });
-      });
+      this.socket.emit("reply", this.addReplyObject);
       inputField.value = "";
     },
     showCommentsList() {
@@ -1220,6 +1241,16 @@ export default {
   },
   created: function() {
     window.addEventListener("click", this.hideList);
+    this.socket = io.connect("http://localhost:3000");
+    this.socket.on("sendComment", data => {
+      this.$store.commit("postPage/addNewComment", data);
+    });
+    this.socket.on("sendReply", data => {
+      this.$store.commit("postPage/addNewReply", {
+        reply: data,
+        commentId: data.commentId
+      });
+    });
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
@@ -1240,6 +1271,7 @@ export default {
       "postPage/getPinComments",
       this.$route.params.postPageId
     );
+    if (this.userData != null) this.showGoogleImage = true;
   },
   computed: {
     ...mapState({
@@ -1255,7 +1287,8 @@ export default {
       addReplyObject: state => state.postPage.addReplyObject,
       pinType: state => state.homeCards.pinType,
       postTitle: state => state.homeCards.postTitle,
-      postDescribtion: state => state.homeCards.postDescribtion
+      postDescribtion: state => state.homeCards.postDescribtion,
+      userData: state => state.user.userData
     }),
     ...mapGetters({
       postImage: "homeCards/postImage",
@@ -1266,8 +1299,16 @@ export default {
       pinCreatorId: "homeCards/pinCreatorId",
       isFollowed: "phantomUser/isFollowed",
       pinId: "homeCards/pinId",
-      postPageLoading: "homeCards/postPageLoading"
+      postPageLoading: "homeCards/postPageLoading",
+      google: "homeCards/google",
+      googleImage: "homeCards/googleImage"
     })
+  },
+  watch: {
+    userData() {
+      if (this.userData == null) this.showGoogleImage = false;
+      else this.showGoogleImage = true;
+    }
   }
 };
 </script>

@@ -43,7 +43,9 @@ const state = {
   unsavePin: false,
   editpincase: false,
   imageDownloaded: false,
-  postPageLoading: false
+  postPageLoading: false,
+  google: false,
+  googleImage: ""
 };
 
 const mutations = {
@@ -165,6 +167,12 @@ const mutations = {
       (state.generatedCount = 0),
       (state.offset = 0),
       (state.maxMore = false);
+  },
+  setGoogleFlag(state, flag) {
+    state.google = flag;
+  },
+  setGoogleImage(state, image) {
+    state.googleImage = image;
   }
 };
 
@@ -227,6 +235,7 @@ const actions = {
       .get("/pins/" + postPageID)
       .then(response => {
         let res = response.data;
+        console.log("nana", response.data);
         commit("setpostImage", res.pin.imageId);
         commit("setpinCreatorId", res.pin.creator.id);
         commit("setpostTitle", res.pin.title);
@@ -235,6 +244,8 @@ const actions = {
         commit("setuserLastName", res.pin.creator.lastName);
         commit("setuserImage", res.creatorInfo.creatorImage);
         commit("setnumberofFollowers", res.creatorInfo.followers);
+        commit("setGoogleFlag", res.creatorInfo.google);
+        commit("setGoogleImage", res.creatorInfo.googleImage);
         commit("setPinId", res.pin._id);
         commit("setReactThisPin", res.react);
         commit("setNumReactHaha", res.pin.counts.hahaReacts);
@@ -377,7 +388,9 @@ const getters = {
   finishCalling: state => state.finishCalling,
   pinId: state => state.pinId,
   homeLoading: state => state.homeLoading,
-  postPageLoading: state => state.postPageLoading
+  postPageLoading: state => state.postPageLoading,
+  google: state => state.google,
+  googleImage: state => state.googleImage
 };
 
 export default {

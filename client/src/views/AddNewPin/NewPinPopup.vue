@@ -40,7 +40,6 @@ export default {
       }
     },
     closePopup() {
-      console.log("sdfghjk");
       this.$store.commit("popUpsState/toggleNewPin");
     }
   },

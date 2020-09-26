@@ -57,6 +57,38 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-right: 5px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .UserInfo {
+    padding: 2px;
+    margin: 4px 0;
+    font-size: 12px;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 2px;
+    }
+  }
+  @media screen and (max-width: 360px) {
+    .UserInfo {
+      padding: 2px;
+      margin: 4px 0;
+      font-size: 12px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 2px;
+      }
+    }
+    .editButton {
+      padding: 4px;
+      height: 30px;
+    }
   }
 }
 </style>

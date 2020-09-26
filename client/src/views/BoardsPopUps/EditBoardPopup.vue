@@ -247,7 +247,6 @@ export default {
       }
     },
     hideBoard(event) {
-      console.log(event.target.id);
       if (event.target.id != "showControl") this.showBoard = false;
     },
     deleteSection(sectionId) {
