@@ -610,7 +610,7 @@ export class PinsService {
           googleImage: user.googleImage,
           date: 'just now',
           commenterName: user.firstName + ' ' + user.lastName,
-          commenterImage: userId.profileImage,
+          commenterImage: user.profileImage,
           pinId: pinId,
           likes: newComment.likes,
 
@@ -633,7 +633,7 @@ export class PinsService {
             google: user.google,
             googleImage: user.googleImage,
             commenterName: user.firstName + ' ' + user.lastName,
-            commenterImage: userId.profileImage,
+            commenterImage: user.profileImage,
             pinId: pinId,
             likes: pin.comments[i].likes,
             isLiked: false,
@@ -708,7 +708,7 @@ export class PinsService {
             commentId: commentId,
             pinId: pinId,
             replierName: user.firstName + ' ' + user.lastName,
-            replierImage: userId.profileImage,
+            replierImage: user.profileImage,
             likes: pin.comments[i].replies[j].likes,
             isLiked: false,
           };
@@ -728,7 +728,7 @@ export class PinsService {
               commentId: commentId,
               pinId: pinId,
               replierName: user.firstName + ' ' + user.lastName,
-              replierImage: userId.profileImage,
+              replierImage: user.profileImage,
               likes: pin.comments[i].replies[j].likes,
               isLiked: false,
             };
