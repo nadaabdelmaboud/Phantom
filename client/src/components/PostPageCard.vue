@@ -262,8 +262,10 @@
                       <div class="createReply">
                         <div class="userimage">
                           <img
+                            v-if="this.showGoogleImage"
                             :src="
-                              getUserImage(
+                              getImage(
+                                userData.profileImage,
                                 userData.google,
                                 userData.googleImage
                               )
@@ -317,7 +319,14 @@
               <div class="displaycomments">
                 <div class="userimage">
                   <img
-                    :src="getUserImage(userData.google, userData.googleImage)"
+                    v-if="this.showGoogleImage"
+                    :src="
+                      getImage(
+                        userData.profileImage,
+                        userData.google,
+                        userData.googleImage
+                      )
+                    "
                     alt="User Image"
                   />
                 </div>
@@ -959,7 +968,6 @@ li button {
 <script>
 import { mapGetters, mapState } from "vuex";
 import { default as getImage } from "../mixins/getImage";
-import getUserImage from "../mixins/getUserImage.js";
 import Loading from "../components/GeneralComponents/Loading";
 import io from "socket.io-client";
 export default {
@@ -976,10 +984,11 @@ export default {
       showReacts: false,
       reactType: "",
       showcomments: false,
-      index: 0
+      index: 0,
+      showGoogleImage: false
     };
   },
-  mixins: [getImage, getUserImage],
+  mixins: [getImage],
   methods: {
     showToast() {
       var mytoast = document.getElementById("toastId");
@@ -1267,6 +1276,7 @@ export default {
       "postPage/getPinComments",
       this.$route.params.postPageId
     );
+    if (this.userData != null) this.showGoogleImage = true;
   },
   computed: {
     ...mapState({
@@ -1298,6 +1308,12 @@ export default {
       google: "homeCards/google",
       googleImage: "homeCards/googleImage"
     })
+  },
+  watch: {
+    userData() {
+      if (this.userData == null) this.showGoogleImage = false;
+      else this.showGoogleImage = true;
+    }
   }
 };
 </script>
