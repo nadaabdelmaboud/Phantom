@@ -42,6 +42,8 @@
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+              :google="card.user.google"
+              :googleImage="card.user.googleImage"
               typeOfCard="All"
             />
           </div>
@@ -55,6 +57,8 @@
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+              :google="card.user.google"
+              :googleImage="card.user.googleImage"
               typeOfCard="Trending"
             />
           </div>
@@ -68,6 +72,8 @@
               :lastName="card.lastName"
               :cardImage="card.profileImage"
               :type="nameOfTopic"
+              :google="card.google"
+              :googleImage="card.googleImage"
               typeOfCard="Topics"
             />
           </div>

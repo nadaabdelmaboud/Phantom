@@ -94,10 +94,10 @@ export default {
     })
   },
   created() {
-      this.$store.dispatch("homeCards/userHome");
-      setTimeout(() => {
-        this.$store.dispatch("homeCards/userGenerateCards", 10);
-      }, 3000);
+    this.$store.dispatch("homeCards/userHome");
+    setTimeout(() => {
+      this.$store.dispatch("homeCards/userGenerateCards", 10);
+    }, 3000);
   },
   methods: {
     showTopics() {
