@@ -8,7 +8,7 @@
     background-color: #fff;
     position: fixed;
     border-radius: 16px;
-    // top: 160px;
+    max-height: 700px;
     right: 70px;
     bottom: 10px;
     animation: dropDown 0.1s linear forwards;
@@ -81,8 +81,6 @@
     border-radius: 16px;
     cursor: pointer;
     height: 54px;
-    //max-width: 200px;
-    //overflow-x:auto;
     img {
       width: 40px;
       height: 40px;
@@ -194,4 +192,38 @@
   .searchChat {
     max-height: 300px;
     overflow-y: auto;
+  }
+  @media screen and (max-width: 360px) {
+    .userInfo {
+      padding: 4px;
+      margin: 4px 0;
+      height: 54px;
+      font-size: 12px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 5px;
+      }
+    }
+    .inlineDiv {
+      p:nth-child(2) {
+        font-size: 8px;
+      }
+    }
+    .searchList {
+      padding: 2px;
+  }
+
+  .currentUser {
+    i {
+      font-size: 12px;
+      width: 18px;
+      height: 18px;
+      padding: 3px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
   }

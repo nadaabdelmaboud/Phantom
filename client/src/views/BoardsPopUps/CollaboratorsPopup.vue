@@ -142,7 +142,6 @@ export default {
       }, 3000);
     },
     searchFor() {
-      console.log("innnn");
       if (this.searchWord) {
         this.$store.commit("search/resetOffset");
         this.$store.dispatch("search/searchPeople", {

@@ -1,7 +1,11 @@
 <template>
   <div class="followCard">
     <div class="cardImageDiv">
-      <img v-lazy="getImage(cardImage)" class="cardImg" alt="Card image" />
+      <img
+        v-lazy="getImage(cardImage, google, googleImage)"
+        class="cardImg"
+        alt="Card image"
+      />
     </div>
     <div class="cardContent">
       <div class="cardInfo">
@@ -129,6 +133,12 @@ export default {
       type: String
     },
     typeOfCard: {
+      type: String
+    },
+    google: {
+      type: Boolean
+    },
+    googleImage: {
       type: String
     }
   },

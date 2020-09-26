@@ -250,7 +250,6 @@ const actions = {
     axios
       .get("me/followings/pins")
       .then(response => {
-        console.log("data nihal", response.data);
         commit("setFollowing", response.data);
         state.followPageLoading = false;
       })

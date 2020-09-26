@@ -277,9 +277,9 @@
   display: inline-block;
   font-weight: bold;
   font-size: 12px;
-  position: relative;
-  top: -1px;
-  left: -100px;
+  position: fixed;
+  top: 36px;
+  right: 255px;
   cursor: pointer;
 }
 
@@ -287,9 +287,9 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
-  position: relative;
-  top: 0px;
-  left: -95px;
+  position: fixed;
+  top: 36px;
+  right: 235px;
 }
 
 .menu {
@@ -394,7 +394,6 @@ export default {
   methods: {
     logout() {
       this.removeUserData();
-      console.log(this.isLoggedIn());
     },
     toSetting() {
       this.$router.push("/settings");

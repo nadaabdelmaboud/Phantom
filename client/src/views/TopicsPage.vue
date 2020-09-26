@@ -11,14 +11,21 @@
         </div>
         <div class="userImage">
           <img
-            :src="getUserImage()"
+            v-if="this.showGoogleImage"
+            :src="
+              getImage(
+                userData.profileImage,
+                userData.google,
+                userData.googleImage
+              )
+            "
             class="userImage"
             alt="User Image"
             @click="toUserPage"
           />
         </div>
       </div>
-      <Loading :loading="topicsLoading" />
+      <Loading :loading="topicsLoading" v-if="topicsLoading" />
       <div class="callingTopicsCards" v-if="!topicsLoading">
         <div v-for="topic in topics" :key="topic.name">
           <TopicsPageCard
@@ -110,17 +117,22 @@ h3 {
 </style>
 
 <script>
-import { default as getUserImage } from "../mixins/getUserImage";
+import { default as getImage } from "../mixins/getImage";
 import TopicsPageCard from "../components/TopicsPageCard";
 import Loading from "../components/GeneralComponents/Loading";
 import { mapState, mapGetters } from "vuex";
 export default {
   name: "TopicsPage",
+  data: function() {
+    return {
+      showGoogleImage: false
+    };
+  },
   components: {
     TopicsPageCard,
     Loading
   },
-  mixins: [getUserImage],
+  mixins: [getImage],
   methods: {
     toUserPage() {
       this.$router.push("/UserProfile/Boards");
@@ -128,7 +140,8 @@ export default {
   },
   computed: {
     ...mapState({
-      topics: state => state.topics.topics
+      topics: state => state.topics.topics,
+      userData: state => state.user.userData
     }),
     ...mapGetters({
       topicsLoading: "topics/topicsLoading"
@@ -136,6 +149,13 @@ export default {
   },
   mounted() {
     this.$store.dispatch("topics/getTopics");
+    if (this.userData != null) this.showGoogleImage = true;
+  },
+  watch: {
+    userData() {
+      if (this.userData == null) this.showGoogleImage = false;
+      else this.showGoogleImage = true;
+    }
   }
 };
 </script>

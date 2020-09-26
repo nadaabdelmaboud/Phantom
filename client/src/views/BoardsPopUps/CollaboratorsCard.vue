@@ -119,38 +119,38 @@ export default {
   mixins: [getImage],
   props: {
     id: {
-      type: String
+      type: String,
     },
     imageId: {
-      type: String
+      type: String,
     },
     collabName: {
-      type: String
+      type: String,
     },
     savePin: {
-      type: Boolean
+      type: Boolean,
     },
     createPin: {
-      type: Boolean
+      type: Boolean,
     },
     editTitle: {
-      type: Boolean
+      type: Boolean,
     },
     personalization: {
-      type: Boolean
+      type: Boolean,
     },
     editDescription: {
-      type: Boolean
+      type: Boolean,
     },
     addCollaborators: {
-      type: Boolean
+      type: Boolean,
     },
     google: {
-      type: Boolean
+      type: Boolean,
     },
     googleImage: {
-      type: String
-    }
+      type: String,
+    },
   },
   data: function() {
     return {
@@ -161,9 +161,9 @@ export default {
         canEditTitle: this.editTitle ? "1" : "0",
         canPersonalize: this.personalization ? "1" : "0",
         canEditDescription: this.editDescription ? "1" : "0",
-        canAddCollaborators: this.addCollaborators ? "1" : "0"
+        canAddCollaborators: this.addCollaborators ? "1" : "0",
       },
-      edit: false
+      edit: false,
     };
   },
   methods: {
@@ -177,22 +177,22 @@ export default {
         editDescription:
           this.collaborator.canEditDescription == "1" ? true : false,
         addCollaborators:
-          this.collaborator.canAddCollaborators == "1" ? true : false
+          this.collaborator.canAddCollaborators == "1" ? true : false,
       };
       this.$store.dispatch("boards/editCollaborators", collab),
         (this.edit = false);
     },
     deleteCollab() {
       this.$store.dispatch("boards/deletaCollaborator", {
-        data: { collaboratorId: this.id }
+        data: { collaboratorId: this.id },
       });
-    }
+    },
   },
   computed: {
     ...mapGetters({
-      board: "boards/currentBoard"
-    })
-  }
+      board: "boards/currentBoard",
+    }),
+  },
 };
 </script>
 
@@ -225,5 +225,62 @@ label {
 }
 .collab {
   margin: 5px 0;
+}
+
+.userInfo {
+  padding: 7px;
+  margin: 4px 0;
+  color: $darkBlue;
+  transition: linear 0.2s;
+  border-radius: 16px;
+  cursor: pointer;
+  height: 54px;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .userInfo {
+    padding: 4px;
+    margin: 4px 0;
+    height: 54px;
+    font-size: 12px;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  }
+  @media screen and (max-width: 360px) {
+    .UserInfo {
+      padding: 2px;
+      margin: 4px 0;
+      font-size: 12px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 2px;
+      }
+    }
+    .editButton {
+      padding: 4px;
+      height: 30px;
+    }
+  }
+  label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  margin: 10px 20px 10px 0;
+}
+.slider{
+  position: fixed;
+  margin: 7px 0;
+  right: 30px;
+}
 }
 </style>

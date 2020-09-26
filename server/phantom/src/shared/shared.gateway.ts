@@ -71,7 +71,7 @@ export class SharedGateway {
     console.log('deliver event');
     if (sender && reciever) {
       console.log(reciever.socketId, 'to emiit');
-      socket.to(reciever.socketId).emit('setDelivered', {
+      socket.to(sender.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
@@ -79,7 +79,8 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      await this.ChatService.deliver(recieverId, messageId, true);
+      let x=await this.ChatService.deliver(recieverId, messageId, true);
+      console.log(x)
     }
   }
   @SubscribeMessage('seen')
@@ -90,7 +91,7 @@ export class SharedGateway {
     let reciever = await this.userModel.findById(recieverId);
     let messageId = data.messageId;
     if (sender && reciever) {
-      socket.to(reciever.socketId).emit('setSeen', {
+      socket.to(sender.socketId).emit('setSeen', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,

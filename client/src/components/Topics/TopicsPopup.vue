@@ -49,7 +49,6 @@ export default {
   methods: {
     addTopic(id) {
       let findtopic = this.picked.indexOf(id);
-      console.log("find", findtopic);
       if (findtopic == -1) {
         this.picked.push(id);
       } else {

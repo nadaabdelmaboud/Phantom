@@ -1,6 +1,6 @@
 <template>
   <div class="board" @click="toBoard">
-    <div style="height:250px">
+    <div class="boardInner">
       <div class="image">
         <img v-if="pinsImages.length" :src="getImage(pinsImages[0])" />
       </div>
@@ -66,6 +66,24 @@ export default {
   margin-top: 20px;
   display: inline-block;
   cursor: pointer;
+}
+.boardInner{
+  height:250px
+}
+@media screen and (max-width: 950px) and (min-width: 500px) {
+.boardInner{
+  height:160px
+}
+}
+@media screen and (min-width: 2100px) {
+.boardInner{
+  height:350px
+}
+}
+@media screen and (max-width: 6500px) {
+  .lefted_icon {
+    left: -120px;
+  }
 }
 .image {
   background-color: white;
