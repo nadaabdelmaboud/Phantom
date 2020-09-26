@@ -185,7 +185,6 @@ const actions = {
       });
   },
   async uploadImg({ commit }, img) {
-    console.log(img);
     await axios({
       method: "post",
       url: "me/uploadImage",

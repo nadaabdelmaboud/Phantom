@@ -39,7 +39,6 @@ export default {
     })
   },
   created() {
-    console.log("sss", this.$route.params);
     this.boardId = this.$route.params.boardId;
     this.sectionId = this.$route.params.sectionId;
     this.$store.dispatch("boards/getFullSection", {

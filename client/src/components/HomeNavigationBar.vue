@@ -394,7 +394,6 @@ export default {
   methods: {
     logout() {
       this.removeUserData();
-      console.log(this.isLoggedIn());
     },
     toSetting() {
       this.$router.push("/settings");

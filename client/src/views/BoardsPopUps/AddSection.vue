@@ -37,7 +37,6 @@ export default {
       } else this.$store.commit("popUpsState/toggleAddSection");
     },
     closeAdd(event) {
-      console.log(event.target.id);
       if (event.target.id == "add")
         this.$store.commit("popUpsState/toggleAddSection");
     }

@@ -26,7 +26,6 @@ export default {
         ) <= 2
       ) {
         if (this.$route.path.includes("/More")) {
-          console.log("scroloo");
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {
             boardId: boardId,
@@ -72,7 +71,6 @@ export default {
   },
   methods: {
     checkLists(event) {
-      console.log(event.target.id);
       this.$store.commit(
         "notifications/alterShow",
         event.target.id == "alertIcon"
