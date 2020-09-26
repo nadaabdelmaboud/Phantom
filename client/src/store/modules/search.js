@@ -92,14 +92,11 @@ const actions = {
         state.totalResult = pins.data.length;
       } catch (error) {
         if (error.response.status == 404) {
-          let remaining = state.totalResult - state.offset;
+          state.endReuslt = true;
           state.inProgress = false;
           commit("setpinsLoading", false);
-          if (remaining > 0) {
-            dispatch("searchPins", { name: payload.name });
-          } else {
-            state.endReuslt = true;
-          }
+        } else {
+          dispatch("searchPins", { name: payload.name });
         }
       }
     }
@@ -128,14 +125,11 @@ const actions = {
         state.totalResult = pins.data.length;
       } catch (error) {
         if (error.response.status == 404) {
-          let remaining = state.totalResult - state.offset;
+          state.endReuslt = true;
           state.inProgress = false;
           commit("setmyPinsLoading", false);
-          if (remaining > 0) {
-            dispatch("searchMyPins", { name: payload.name });
-          } else {
-            state.endReuslt = true;
-          }
+        } else {
+          dispatch("searchMyPins", { name: payload.name });
         }
       }
     }
@@ -174,14 +168,11 @@ const actions = {
         state.totalResult = people.data.length;
       } catch (error) {
         if (error.response.status == 404) {
-          let remaining = state.totalResult - state.offset;
+          state.endReuslt = true;
           state.inProgress = false;
           commit("setpeopleLoading", false);
-          if (remaining > 0) {
-            dispatch("searchPeople", { name: payload.name });
-          } else {
-            state.endReuslt = true;
-          }
+        } else {
+          dispatch("searchPeople", { name: payload.name });
         }
       }
     }
@@ -210,14 +201,11 @@ const actions = {
         state.totalResult = boards.data.length;
       } catch (error) {
         if (error.response.status == 404) {
-          let remaining = state.totalResult - state.offset;
+          state.endReuslt = true;
           state.inProgress = false;
           commit("setboardsLoading", false);
-          if (remaining > 0) {
-            dispatch("searchBoards", { name: payload.name });
-          } else {
-            state.endReuslt = true;
-          }
+        } else {
+          dispatch("searchBoards", { name: payload.name });
         }
       }
     }

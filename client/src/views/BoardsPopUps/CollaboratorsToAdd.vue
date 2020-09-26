@@ -20,29 +20,29 @@ export default {
   },
   props: {
     id: {
-      type: String,
+      type: String
     },
     firstName: {
-      type: String,
+      type: String
     },
     lastName: {
-      type: String,
+      type: String
     },
     imageId: {
-      type: String,
+      type: String
     },
     google: {
-      type: Boolean,
+      type: Boolean
     },
     googleImage: {
-      type: String,
-    },
+      type: String
+    }
   },
   methods: {
     addCollaborator(id) {
       this.$store.dispatch("boards/editBoard", { collaboratores: id });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -74,21 +74,21 @@ export default {
     }
   }
   @media screen and (max-width: 360px) {
-  .UserInfo {
-    padding: 2px;
-    margin: 4px 0;
-    font-size: 12px;
-    img {
-      width: 30px;
+    .UserInfo {
+      padding: 2px;
+      margin: 4px 0;
+      font-size: 12px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 2px;
+      }
+    }
+    .editButton {
+      padding: 4px;
       height: 30px;
-      border-radius: 50%;
-      margin-right: 2px;
     }
   }
-  .editButton{
-    padding: 4px;
-    height: 30px;
-  }
-}
 }
 </style>

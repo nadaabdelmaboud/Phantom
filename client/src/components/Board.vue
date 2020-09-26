@@ -67,18 +67,18 @@ export default {
   display: inline-block;
   cursor: pointer;
 }
-.boardInner{
-  height:250px
+.boardInner {
+  height: 250px;
 }
 @media screen and (max-width: 950px) and (min-width: 500px) {
-.boardInner{
-  height:160px
-}
+  .boardInner {
+    height: 160px;
+  }
 }
 @media screen and (min-width: 2100px) {
-.boardInner{
-  height:350px
-}
+  .boardInner {
+    height: 350px;
+  }
 }
 @media screen and (max-width: 6500px) {
   .lefted_icon {

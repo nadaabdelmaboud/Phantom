@@ -43,11 +43,9 @@ export function initializeFirebase() {
         axios.defaults.headers.common["Authorization"] = localStorage.getItem(
           "userToken"
         );
-        axios
-          .put("me/" + token)
-          .catch(error => {
-            console.log("Error Occurred", error);
-          });
+        axios.put("me/" + token).catch(error => {
+          console.log("Error Occurred", error);
+        });
       })
       .catch(error => {
         if (error.code === "messaging/permission-blocked") {

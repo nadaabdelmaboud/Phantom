@@ -6,7 +6,9 @@
         {{ board.board.pins.length }} pins
         {{ board.board.sections.length }} section
       </p>
-      <img :src="getImage(myData.profileImage, myData.google, myData.googleImage)"/>
+      <img
+        :src="getImage(myData.profileImage, myData.google, myData.googleImage)"
+      />
       <i
         class="fa fa-plus globalIcons"
         v-if="
@@ -110,7 +112,7 @@ export default {
       board: "boards/currentBoard"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
+      myData: state => state.user.userData
     })
   },
   mounted() {
