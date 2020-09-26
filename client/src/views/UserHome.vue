@@ -76,7 +76,6 @@ export default {
   name: "UserHome",
   data: function() {
     return {
-      //userKey:false
     };
   },
   components: {
@@ -93,7 +92,7 @@ export default {
       userKey: state => state.user.userKey
     })
   },
-  created() {
+  mounted() {
     this.$store.dispatch("homeCards/userHome");
     setTimeout(() => {
       this.$store.dispatch("homeCards/userGenerateCards", 10);

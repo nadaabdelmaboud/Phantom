@@ -8,7 +8,8 @@ const state = {
   inProgress: false,
   totalResult: 50,
   endResult: false,
-  loading: false
+  loading: false,
+  firstCreate: 0
 };
 
 const mutations = {
@@ -54,6 +55,9 @@ const mutations = {
     people.forEach(person => {
       state.people.push(person);
     });
+  },
+  socketCreated(state){
+    state.firstCreate=1;
   }
 };
 
