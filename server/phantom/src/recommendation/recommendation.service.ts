@@ -1337,6 +1337,9 @@ export class RecommendationService {
       pins: 1,
       savedPins: 1,
       popularPins: 1,
+      notificationCounter:1,
+      notifications:1,
+      fcmToken:1
     });
     if (!user.popularPins) {
       throw new BadRequestException('user should allow popular pins first');
@@ -1392,6 +1395,9 @@ export class RecommendationService {
       savedPins: 1,
       followingTopics: 1,
       pinsForYou: 1,
+      notificationCounter:1,
+      notifications:1,
+      fcmToken:1
     });
     if (!user.pinsForYou) {
       throw new BadRequestException('user should allow pins for you first');
@@ -1498,7 +1504,15 @@ export class RecommendationService {
   async pinsInspired(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
-    let user = await this.userModel.findById(userId);
+    let user = await this.userModel.findById(userId,{
+      pinsInspired:1,
+      notificationCounter:1,
+      notifications:1,
+      fcmToken:1,
+      lastTopics:1,
+      savedPins:1,
+      pins:1
+    });
     if (!user.pinsInspired) {
       throw new BadRequestException(
         'user should allow pins inspired by activity first',
