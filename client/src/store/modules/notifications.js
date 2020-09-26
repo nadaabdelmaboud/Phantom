@@ -30,7 +30,6 @@ const mutations = {
   setCounter(state, add) {
     if (!add) state.notifications.notificationCounter = 0;
     else {
-      console.log("nnn");
       state.notifications.notificationCounter += 1;
     }
   }

@@ -19,8 +19,8 @@
             v-for="board in boards"
             :class="[
               {
-                'col-sm-2': viewState == 'Compact',
-                'col-sm-3': !myprofile || viewState == 'Default'
+                'col-sm-3': viewState == 'Compact',
+                'col-sm-2': !myprofile || viewState == 'Default'
               }
             ]"
             :key="board.board._id"
@@ -95,7 +95,7 @@ export default {
   width: 100%;
 }
 .boards {
-  width: 70%;
+  width: 85%;
   margin: 0 auto;
 }
 </style>

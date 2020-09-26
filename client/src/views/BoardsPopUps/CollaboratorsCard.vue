@@ -226,4 +226,61 @@ label {
 .collab {
   margin: 5px 0;
 }
+
+.userInfo {
+  padding: 7px;
+  margin: 4px 0;
+  color: $darkBlue;
+  transition: linear 0.2s;
+  border-radius: 16px;
+  cursor: pointer;
+  height: 54px;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .userInfo {
+    padding: 4px;
+    margin: 4px 0;
+    height: 54px;
+    font-size: 12px;
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  }
+  @media screen and (max-width: 360px) {
+    .UserInfo {
+      padding: 2px;
+      margin: 4px 0;
+      font-size: 12px;
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 2px;
+      }
+    }
+    .editButton {
+      padding: 4px;
+      height: 30px;
+    }
+  }
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin: 10px 20px 10px 0;
+  }
+  .slider {
+    position: fixed;
+    margin: 7px 0;
+    right: 30px;
+  }
+}
 </style>

@@ -277,9 +277,9 @@
   display: inline-block;
   font-weight: bold;
   font-size: 12px;
-  position: relative;
-  top: -1px;
-  left: -100px;
+  position: fixed;
+  top: 36px;
+  right: 255px;
   cursor: pointer;
 }
 
@@ -287,9 +287,9 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
-  position: relative;
-  top: 0px;
-  left: -95px;
+  position: fixed;
+  top: 36px;
+  right: 235px;
 }
 
 .menu {
@@ -394,7 +394,6 @@ export default {
   methods: {
     logout() {
       this.removeUserData();
-      console.log(this.isLoggedIn());
     },
     toSetting() {
       this.$router.push("/settings");
@@ -443,34 +442,33 @@ export default {
     },
     searchPins() {
       this.expandMenu = false;
+      this.$store.commit("search/resetOffset");
       this.$router.replace(`/search/allpins/${this.search}`);
       this.$store.dispatch("search/searchPins", {
-        limit: 10,
         name: this.search
       });
     },
     searchMyPins() {
       this.expandMenu = false;
+      this.$store.commit("search/resetOffset");
       this.$router.replace(`/search/mypins/${this.search}`);
       this.$store.dispatch("search/searchMyPins", {
-        limit: 10,
         name: this.search
       });
     },
     searchPeople() {
       this.expandMenu = false;
+      this.$store.commit("search/resetOffset");
       this.$router.replace(`/search/people/${this.search}`);
       this.$store.dispatch("search/searchPeople", {
-        limit: 10,
         name: this.search
       });
     },
     searchBoards() {
       this.expandMenu = false;
+      this.$store.commit("search/resetOffset");
       this.$router.replace(`/search/boards/${this.search}`);
       this.$store.dispatch("search/searchBoards", {
-        limit: 20,
-        offset: 0,
         name: this.search
       });
     },

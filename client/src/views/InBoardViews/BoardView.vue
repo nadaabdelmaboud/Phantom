@@ -6,7 +6,9 @@
         {{ board.board.pins.length }} pins
         {{ board.board.sections.length }} section
       </p>
-      <img :src="getUserImage()" />
+      <img
+        :src="getImage(myData.profileImage, myData.google, myData.googleImage)"
+      />
       <i
         class="fa fa-plus globalIcons"
         v-if="
@@ -59,8 +61,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import getUserImage from "../../mixins/getUserImage.js";
+import { mapGetters, mapState } from "vuex";
+import getImage from "../../mixins/getImage.js";
 export default {
   name: "BoardView",
   data: function() {
@@ -72,7 +74,7 @@ export default {
       boardId: ""
     };
   },
-  mixins: [getUserImage],
+  mixins: [getImage],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
@@ -108,6 +110,9 @@ export default {
   computed: {
     ...mapGetters({
       board: "boards/currentBoard"
+    }),
+    ...mapState({
+      myData: state => state.user.userData
     })
   },
   mounted() {

@@ -101,7 +101,6 @@ export default {
   },
   methods: {
     showTopics() {
-      console.log("PPPPPPP");
       this.$store.commit("popUpsState/toggleTopicsPopup");
     }
   }
