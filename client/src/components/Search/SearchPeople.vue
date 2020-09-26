@@ -38,10 +38,11 @@ export default {
       return this.$store.state.search.people;
     },
     loading() {
-      return this.$store.state.search.loading;
+      return this.$store.state.search.peopleLoading;
     }
   },
   mounted: function() {
+    this.$store.commit("search/resetOffset");
     this.$store.dispatch("search/searchPeople", {
       name: this.$route.params.name
     });

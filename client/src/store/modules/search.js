@@ -10,7 +10,10 @@ const state = {
   inProgress: false,
   totalResult: 50,
   endResult: false,
-  loading: false,
+  pinsLoading: false,
+  mypinsLoading: false,
+  boardsLoading: false,
+  peopleLoading: false,
   searchSuggestions: null
 };
 
@@ -45,8 +48,17 @@ const mutations = {
     state.myPins = [];
     state.boards = [];
   },
-  setLoading(state, payload) {
-    state.loading = payload;
+  setpinsLoading(state, payload) {
+    state.pinsLoading = payload;
+  },
+  setmyPinsLoading(state, payload) {
+    state.mypinsLoadingpins = payload;
+  },
+  setpeopleLoading(state, payload) {
+    state.peopleLoading = payload;
+  },
+  setboardsLoading(state, payload) {
+    state.boardsLoading = payload;
   },
   setSearchSuggestions(state, payload) {
     state.searchSuggestions = payload;
@@ -57,7 +69,7 @@ const actions = {
   async searchPins({ state, commit, dispatch }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
-      commit("setLoading", true);
+      commit("setpinsLoading", true);
       try {
         let pins = await axios.get(
           "/search/allPins?limit=" +
@@ -72,7 +84,7 @@ const actions = {
             }
           }
         );
-        commit("setLoading", false);
+        commit("setpinsLoading", false);
         state.inProgress = false;
         state.offset += 10;
         commit("setSearchPins", pins.data.result);
@@ -80,7 +92,7 @@ const actions = {
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
-        commit("setLoading", false);
+        commit("setpinsLoading", false);
         if (remaining > 0) {
           dispatch("searchPins", { name: payload.name });
         } else {
@@ -92,7 +104,7 @@ const actions = {
   async searchMyPins({ state, commit, dispatch }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
-      commit("setLoading", true);
+      commit("setmyPinsLoading", true);
       try {
         let pins = await axios.get(
           "/search/myPins?limit=10" +
@@ -107,14 +119,14 @@ const actions = {
           }
         );
         state.inProgress = false;
-        commit("setLoading", false);
+        commit("setmyPinsLoading", false);
         state.offset += 10;
         commit("setSearchMyPins", pins.data.result);
         state.totalResult = pins.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
-        commit("setLoading", false);
+        commit("setmyPinsLoading", false);
         if (remaining > 0) {
           dispatch("searchMyPins", { name: payload.name });
         } else {
@@ -126,7 +138,7 @@ const actions = {
   async searchPeople({ state, commit, dispatch }, payload) {
     if ((!state.inProgress && !state.endReuslt) || payload.searchSuggestions) {
       state.inProgress = true;
-      commit("setLoading", true);
+      commit("setpeopleLoading", true);
       try {
         let people = await axios.get(
           "/search/people?limit=10" +
@@ -141,7 +153,7 @@ const actions = {
           }
         );
         state.inProgress = false;
-        commit("setLoading", false);
+        commit("setpeopleLoading", false);
         state.offset += 10;
         if (payload.searchSuggestions) {
           let suggestions = [];
@@ -158,7 +170,7 @@ const actions = {
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
-        commit("setLoading", false);
+        commit("setpeopleLoading", false);
         if (remaining > 0) {
           dispatch("searchPeople", { name: payload.name });
         } else {
@@ -170,7 +182,7 @@ const actions = {
   async searchBoards({ state, commit, dispatch }, payload) {
     if (!state.inProgress && !state.endReuslt) {
       state.inProgress = true;
-      commit("setLoading", true);
+      commit("setboardsLoading", true);
       try {
         let boards = await axios.get(
           "/search/board?limit=10" +
@@ -186,13 +198,13 @@ const actions = {
         );
         state.inProgress = false;
         state.offset += 10;
-        commit("setLoading", false);
+        commit("setboardsLoading", false);
         commit("setSearchBoards", boards.data.result);
         state.totalResult = boards.data.length;
       } catch {
         let remaining = state.totalResult - state.offset;
         state.inProgress = false;
-        commit("setLoading", false);
+        commit("setboardsLoading", false);
         if (remaining > 0) {
           dispatch("searchBoards", { name: payload.name });
         } else {

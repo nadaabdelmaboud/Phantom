@@ -36,7 +36,7 @@ export default {
       return this.$store.state.search.boards;
     },
     loading() {
-      return this.$store.state.search.loading;
+      return this.$store.state.search.boardsLoading;
     }
   },
   components: {
@@ -44,6 +44,7 @@ export default {
     Loading
   },
   mounted: function() {
+    this.$store.commit("search/resetOffset");
     this.$store.dispatch("search/searchBoards", {
       name: this.$route.params.name
     });
