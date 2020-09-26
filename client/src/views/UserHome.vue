@@ -1,7 +1,7 @@
 <template>
   <div class="home" :key="userKey">
     <div v-if="isLoggedIn() == false">
-      <Loading :loading="homeLoading" />
+      <Loading :loading="homeLoading && isLoggedIn()" />
       <p>Home Page ,Signup or Login</p>
     </div>
     <div v-if="isLoggedIn() == true">
@@ -94,16 +94,13 @@ export default {
     })
   },
   created() {
-    if (localStorage.getItem("userToken") != "") {
-      this.$store.dispatch("homeCards/userHome");
-      setTimeout(() => {
-        this.$store.dispatch("homeCards/userGenerateCards", 10);
-      }, 3000);
-    }
+    this.$store.dispatch("homeCards/userHome");
+    setTimeout(() => {
+      this.$store.dispatch("homeCards/userGenerateCards", 10);
+    }, 3000);
   },
   methods: {
     showTopics() {
-      console.log("PPPPPPP");
       this.$store.commit("popUpsState/toggleTopicsPopup");
     }
   }

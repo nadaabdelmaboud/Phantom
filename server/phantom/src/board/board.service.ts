@@ -42,9 +42,17 @@ export class BoardService {
       throw new Error('not found');
     }
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description add created or saved pin to board
+   * @param {string} pinId - the id of the pin
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<boolean>}
+   */
   async addPintoBoard(pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([pinId, boardId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     if (sectionId) {
       if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
@@ -59,13 +67,13 @@ export class BoardService {
       pins: 1,
       counts: 1,
     });
-    if (!board) return false;
+    if (!board) throw new NotFoundException();
     let pin = await this.pinModel.findById(pinId, {
       topic: 1,
       imageId: 1,
     });
 
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException();
 
     if (sectionId) {
       for (let i = 0; i < board.sections.length; i++) {
@@ -87,6 +95,15 @@ export class BoardService {
     });
     return true;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new board
+   * @param {string} name - the name of the created board
+   * @param {string} startDate - the startDate of the created board
+   * @param {string} endDate - the endDate of the created board
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
   async createBoard(name: string, startDate: string, endDate: string, userId) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -153,6 +170,12 @@ export class BoardService {
     await this.boardModel.ensureIndexes();
     return { _id: board._id };
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description sort user boards alphabetacilly
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async sortBoardsAtoZ(userId) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -169,7 +192,12 @@ export class BoardService {
     await user.save();
     return true;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description sort user boards by date
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async sortBoardsDate(userId) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -193,7 +221,14 @@ export class BoardService {
     await user.save();
     return true;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description reorder user boards
+   * @param {string} userId - the id of the user
+   * @param {number} startIndex - the index of the element needed to be reordered
+   * @param {number} positionIndex - the index of the new element position in the array
+   * @returns  {Promise<boolean>}
+   */
   async reorderBoards(userId, startIndex, positionIndex) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -220,11 +255,18 @@ export class BoardService {
     await user.save();
     return true;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description add board to user
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<boolean>}
+   */
   async addBoardtoUser(userId, boardId) {
     if (
       (await this.ValidationService.checkMongooseID([userId, boardId])) == 0
     ) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     boardId = mongoose.Types.ObjectId(boardId);
     userId = mongoose.Types.ObjectId(userId);
@@ -236,8 +278,8 @@ export class BoardService {
       boards: 1,
       sortType: 1,
     });
-    if (!board) return false;
-    if (!user) return false;
+    if (!board) throw new NotFoundException();
+    if (!user) throw new NotFoundException();
     let id = mongoose.Types.ObjectId(boardId);
     user.boards.push({
       boardId: id,
@@ -251,15 +293,21 @@ export class BoardService {
     });
     return true;
   }
-  async getCurrentUserBoards(userId, ifMe: Boolean) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get current user boards
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
+  async getCurrentUserBoards(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
-      return false;
+      throw new BadRequestException("not valid id")
     }
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(userId, {
       boards: 1,
     });
-    if (!user) return false;
+    if (!user) throw new NotFoundException()
 
     let retBoards = [];
     let permissions = {};
@@ -308,6 +356,13 @@ export class BoardService {
     }
     return retBoards;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get user authorized boards
+   * @param {string} userId - the id of the current user
+   * @param {string} boardUserId - the id of the boards user
+   * @returns  {Promise<Array<object>>}
+   */
   async getSomeUserBoards(userId, boardUserId) {
     if (
       (await this.ValidationService.checkMongooseID([userId, boardUserId])) == 0
@@ -321,7 +376,7 @@ export class BoardService {
       boards: 1,
       email: 1,
     });
-    if (!boardUser) return false;
+    if (!boardUser) throw new NotFoundException();
     if (boardUser.email == process.env.ADMIN_EMAIL) {
       throw new UnauthorizedException();
     }
@@ -369,6 +424,13 @@ export class BoardService {
     }
     return retBoards;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description check if user is authorized to edit this board
+   * @param {board} board
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async authorizedBoard(board, userId) {
     if (!board) return false;
     if (String(board.creator.id) == String(userId)) return true;
@@ -383,19 +445,38 @@ export class BoardService {
     }
     return false;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description check if a board is public
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<boolean>}
+   */
   async isPublicBoard(boardId) {
-    let board = await this.boardModel.findById(boardId);
+    let board = await this.boardModel.findById(boardId,{status:1});
     if (!board) return false;
     if (!board.status || board.status == '' || board.status == 'public')
       return true;
     return false;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description check if a user is the creator of a board
+   * @param {board} board
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async isCreator(board, userId) {
     if (!board) return false;
     if (String(board.creator.id) == String(userId)) return true;
     return false;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description check if a user is a collaborator of a board
+   * @param {board} board
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async isCollaborator(board, userId) {
     if (!board) return false;
     if (!board.collaborators) {
@@ -409,6 +490,14 @@ export class BoardService {
     }
     return false;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description Edit board by creator or collaborator
+   * @param {string} boardId - the id of the board
+   * @param {string} userId - the id of the user
+   * @param {EditBoardDto} editBoardDto - the board new data object
+   * @returns  {Promise<board>}
+   */
   async editBoard(boardId, userId, editBoardDto: EditBoardDto) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -540,6 +629,13 @@ export class BoardService {
     await board.save();
     return board;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get collaborators of a board
+   * @param {string} boardId - the id of the board
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
   async getCollaboratoresPermissions(userId, boardId) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -593,6 +689,14 @@ export class BoardService {
     }
     return retCollaborators;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description edit collaborators permission of a board by the board creator
+   * @param {string} boardId - the id of the board
+   * @param {string} userId - the id of the usersa
+   * @param {EditCollaboratoresPermissionsDto} editCollaboratoresPermissionsDto - the new permissions object
+   * @returns  {Promise<object>}
+   */
   async editCollaboratoresPermissions(
     userId,
     boardId,
@@ -661,9 +765,16 @@ export class BoardService {
         };
       }
     }
-    return false;
+    throw new Error();
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete collaborator from a board by the board creator
+   * @param {string} boardId - the id of the board
+   * @param {string} userId - the id of the user
+   * @param {string} collaboratorId - the id of the collaborator
+   * @returns  {Promise<boolean>}
+   */
   async deleteCollaborator(userId, boardId, collaboratorId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -721,6 +832,13 @@ export class BoardService {
       throw new NotAcceptableException('collaborator not found');
     }
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete pin from a board
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async deletePin(pinId, userId) {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
@@ -845,6 +963,15 @@ export class BoardService {
     await this.pinModel.deleteOne({ _id: pinId });
     return true;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete pin from a board/section in delete board/section
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<boolean>}
+   */
   async deletePinFromBoardSection(pinId, userId, boardId, sectionId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -906,6 +1033,14 @@ export class BoardService {
     }
     return found;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete board
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<boolean>}
+   */
+
   async deleteBoard(userId, boardId) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -983,7 +1118,13 @@ export class BoardService {
     if (isBoardDeleted) return true;
     return false;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete board while merging it
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<boolean>}
+   */
   async deleteBoardInMerge(userId, boardId) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -1034,6 +1175,14 @@ export class BoardService {
     if (isBoardDeleted) return true;
     return false;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new section in a board
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionName - the name of the section
+   * @returns  {Promise<section>}
+   */
   async createSection(boardId, sectionName, userId) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -1069,6 +1218,13 @@ export class BoardService {
     await board.save();
     return section;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description check if board has section
+   * @param {board} board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<boolean>}
+   */
   async checkBoardHasSection(board, sectionId): Promise<Boolean> {
     if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
       throw new BadRequestException('not valid section id');
@@ -1080,6 +1236,14 @@ export class BoardService {
     }
     return false;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description merge two boards into one board
+   * @param {string} userId - the id of the user
+   * @param {string} boardOriginalId - the id of the board that will contain the 2 merged boards
+   * @param {string} boardMergedId - the id of the board that will be merged then deleted
+   * @returns  {Promise<board>}
+   */
   async merge(boardOriginalId, boardMergedId, userId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -1159,6 +1323,14 @@ export class BoardService {
     await boardOriginal.save();
     return boardOriginal;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete section
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<boolean>}
+   */
   async deleteSection(boardId, sectionId, userId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -1208,6 +1380,16 @@ export class BoardService {
     }
     return false;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description unsave pin from a board/section
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @param {boolean} isDelete - flag indicates if the unsave is performed in the delete board/section method
+   * @returns  {Promise<boolean>}
+   */
   async unsavePin(pinId, boardId, sectionId, userId, isDelete) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -1291,6 +1473,15 @@ export class BoardService {
 
     return found;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description edit pin's board/section in the merge boards process
+   * @param {string} pinId - the id of the pin
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the new pin's board
+   * @param {string} sectionId - the id of the new pin's section
+   * @returns  {Promise<boolean>}
+   */
   async editPin(pinId, boardId, sectionId, userId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -1398,7 +1589,13 @@ export class BoardService {
 
     return true;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get full detailed board object
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<object>}
+   */
   async getBoardFull(boardId, userId) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, userId])) == 0
@@ -1488,6 +1685,14 @@ export class BoardService {
     }
     return { board: board, pins: pins, type: type, permissions: permissions };
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get full detailed section object
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<object>}
+   */
   async getSectionFull(boardId, sectionId, userId) {
     if (
       (await this.ValidationService.checkMongooseID([

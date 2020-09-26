@@ -19,6 +19,10 @@ export class SharedGateway {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
   ) {}
+  async handleConnection(client: Socket) {
+    console.log('client connected', client.id);
+  }
+
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
     const token = data.token;
@@ -31,8 +35,13 @@ export class SharedGateway {
       await user.save();
     }
   }
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
+    // socket.broadcast.emit('sendComment', data);
+    //  this.server.sockets.emit('sendComment', data);
     this.server.emit('sendComment', data);
   }
   @SubscribeMessage('typing')
@@ -62,7 +71,7 @@ export class SharedGateway {
     console.log('deliver event');
     if (sender && reciever) {
       console.log(reciever.socketId, 'to emiit');
-      socket.to(reciever.socketId).emit('setDelivered', {
+      socket.to(sender.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
@@ -70,7 +79,8 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      await this.ChatService.deliver(recieverId, messageId, true);
+      let x=await this.ChatService.deliver(recieverId, messageId, true);
+      console.log(x)
     }
   }
   @SubscribeMessage('seen')
@@ -81,7 +91,7 @@ export class SharedGateway {
     let reciever = await this.userModel.findById(recieverId);
     let messageId = data.messageId;
     if (sender && reciever) {
-      socket.to(reciever.socketId).emit('setSeen', {
+      socket.to(sender.socketId).emit('setSeen', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,

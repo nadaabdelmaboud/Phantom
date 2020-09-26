@@ -31,10 +31,6 @@
     width: 100%;
     text-align: center;
   }
-  .collabCard {
-    max-height: 550px;
-    overflow-y: auto;
-  }
   #boardLink {
     width: 65%;
     height: 48px;
@@ -52,6 +48,7 @@
     width: 33%;
     padding: 5px;
     transition: background-color linear 0.5s;
+    min-height: 48px;
   }
   #copyLink:hover {
     background-color: $lightBlue;

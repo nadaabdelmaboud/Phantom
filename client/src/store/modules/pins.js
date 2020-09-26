@@ -33,7 +33,6 @@ const actions = {
         pin.imageId = response.data[0].id;
         axios.post("me/pins", pin).then(response => {
           state.pin = response.data;
-          console.log("here i get image id", pin.imageId);
           state.pin.imageId = pin.imageId;
           dispatch("addPinToTopic", {
             pinId: state.pin._id,
@@ -100,12 +99,10 @@ const actions = {
     state.loading = false;
   },
   getUserPins({ commit, state }, userId) {
-    if (state.isMine || state.first) {
-      state.loading = true;
-      state.pins = [];
-      state.isMine = false;
-      state.first = false;
-    }
+    state.pins = [];
+    state.loading = true;
+    state.isMine = false;
+    state.first = false;
     axios
       .get("user/" + userId + "/pins")
       .then(response => {

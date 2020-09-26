@@ -48,12 +48,12 @@ export class ImagesController {
     @Request() req,
   ) {
     if (topic && topic != '') {
-      var filePath = './static/' + topic + '.jpg';
+      var filePath = './src/static/' + topic + '.jpg';
       var resolvedPath = await path.resolve(filePath);
       return response.sendFile(resolvedPath);
     }
-    if (!id || id == ' ' || id == '' || id == 'none') {
-      var filePath = './static/default.jpg';
+    if (!id || id == ' ' || id == '' || id == 'none' || id == 'null') {
+      var filePath = './src/static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
       return response.sendFile(resolvedPath);
     }
@@ -62,14 +62,14 @@ export class ImagesController {
       { responseType: 'stream' },
       function(err, res) {
         if (err) {
-          var filePath = './static/default.jpg';
+          var filePath = './src/static/default.jpg';
           var resolvedPath = path.resolve(filePath);
           return response.sendFile(resolvedPath);
         }
         res.data
           .on('end', () => {})
           .on('error', err => {
-            var filePath = './static/default.jpg';
+            var filePath = './src/static/default.jpg';
             var resolvedPath = path.resolve(filePath);
             return response.sendFile(resolvedPath);
           })
@@ -78,9 +78,5 @@ export class ImagesController {
     );
   }
 
-  @Delete('image/:id')
-  @ApiBadRequestResponse({ type: BadRequestException })
-  async deleteFile(@Param('id') id: string) {
-    return await this.ImagesService.deleteFile(id);
-  }
+ 
 }

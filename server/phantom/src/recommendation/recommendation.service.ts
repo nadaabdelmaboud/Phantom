@@ -24,7 +24,14 @@ export class RecommendationService {
 
     private ValidationService: ValidationService,
   ) {}
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get homefeed pins of a user
+   * @param {string} userId - the id of the user
+   * @param {number} limit - the limit of pins returned
+   * @param {number} offset - the offset of pins returned
+   * @returns  {Promise<Array<pin>>}
+   */
   async getHomeFeed(userId, limit: number, offset: number) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
@@ -35,12 +42,20 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
+
     const part = await user.homeFeed.slice(
       Number(offset),
       Number(Number(offset) + Number(limit)),
     );
     return part;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description check if there dublicates in an array
+   * @param {Array<object>} values - the Array being checked
+   * @returns  {Promise<boolean>}
+   */
+  
   async checkDublicates(values) {
     for (let i = 0; i < values.length; i++) {
       for (let j = i + 1; j < values.length; j++) {
@@ -51,7 +66,12 @@ export class RecommendationService {
     }
     return false;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description generate homefeed pins of a user
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>} - total pins generated
+   */
   async homeFeed(userId): Promise<Object> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
@@ -245,7 +265,12 @@ export class RecommendationService {
     }
     return { total: homeFeedArr.length };
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description shuffle an array
+   * @param {Array} a - the Array being shuffled
+   * @returns  {Promise<Array>}
+   */
   async shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -253,6 +278,13 @@ export class RecommendationService {
     }
     return a;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get recommendations of users to follow for a given topic
+   * @param {string} userId - the id of the user
+   * @param {string} topicName - the name of the given topic
+   * @returns  {Promise<Array<user>>}
+   */
   async topicRecommendation(topicName, userId) {
     let followers = [];
     let topic = await this.topicModel
@@ -294,6 +326,13 @@ export class RecommendationService {
     });
     return followers;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get popular recommendations of users to follow
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<user>>}
+   */
+  
   async trendingRecommendation(userId) {
     let followers = [];
     let user = await this.userModel.findById(userId, { following: 1 }).lean();
@@ -328,6 +367,13 @@ export class RecommendationService {
     }
     return followers;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get recommendations of users to follow for the current user based on {recent activity-topics he's following - people he's following - popular users on phantom}
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
+  
   async followAllRecommendation(userId) {
     let followers = [];
     let user = await this.userModel.findById(userId, {
@@ -542,6 +588,13 @@ export class RecommendationService {
     }
     return followers;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description generate pin recommendations
+   * @param {string} userId - the id of the user
+   * @param {string} pinId - the id of the pin
+   * @returns  {Promise<object>} total length of pins generated
+   */
   async pinMoreLike(userId, pinId) {
     if ((await this.ValidationService.checkMongooseID([userId, pinId])) == 0)
       throw new Error('not valid id');
@@ -615,6 +668,13 @@ export class RecommendationService {
     }
     return { total: pins.length };
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description generate pin recommendations for a board
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the pin
+   * @returns  {Promise<object>} total length of pins generated
+   */
   async boardMoreLike(userId, boardId) {
     if ((await this.ValidationService.checkMongooseID([userId, boardId])) == 0)
       throw new Error('not valid id');
@@ -739,6 +799,14 @@ export class RecommendationService {
     }
     return { total: pins.length };
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description generate pin recommendations for a section
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<object>} total length of pins generated
+   */
   async sectionMoreLike(userId, boardId, sectionId) {
     if (
       (await this.ValidationService.checkMongooseID([
@@ -863,6 +931,14 @@ export class RecommendationService {
     }
     return { total: pins.length };
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get pin recommendations of a pin
+   * @param {string} pinId - the id of the pin
+   * @param {number} limit - the limit of pins returned
+   * @param {number} offset - the offset of pins returned
+   * @returns  {Promise<Array<object>>}
+   */
   async getPinMoreLike(pinId, limit, offset) {
     if ((await this.ValidationService.checkMongooseID([pinId])) == 0)
       throw new Error('not valid id');
@@ -878,6 +954,14 @@ export class RecommendationService {
       Number(Number(offset) + Number(limit)),
     );
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get pin recommendations of a board
+   * @param {string} boardId - the id of the board
+   * @param {number} limit - the limit of pins returned
+   * @param {number} offset - the offset of pins returned
+   * @returns  {Promise<Array<object>>}
+   */
   async getBoardMoreLike(boardId, offset, limit) {
     if ((await this.ValidationService.checkMongooseID([boardId])) == 0)
       throw new Error('not valid id');
@@ -893,6 +977,15 @@ export class RecommendationService {
       Number(Number(offset) + Number(limit)),
     );
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get pin recommendations of a section
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @param {number} limit - the limit of pins returned
+   * @param {number} offset - the offset of pins returned
+   * @returns  {Promise<Array<object>>}
+   */
   async getSectionMoreLike(boardId, sectionId, offset, limit) {
     if (
       (await this.ValidationService.checkMongooseID([boardId, sectionId])) == 0
@@ -918,6 +1011,13 @@ export class RecommendationService {
       }
     }
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get recommendations of boards for a user
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<board>>}
+   */
+  
   async boardsForYou(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
@@ -1224,7 +1324,13 @@ export class RecommendationService {
     }
     return 1;
   }
-  async popularPins(userId, isSearch) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description send popular pin recommendations notification for a user
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
+  async popularPins(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let user = await this.userModel.findById(userId, {
@@ -1254,7 +1360,7 @@ export class RecommendationService {
         }
       }
     }
-    if (!isSearch) {
+    
       let images = [];
       let count: number = 0;
       for (let i = 0; i < allPins.length; i++) {
@@ -1271,14 +1377,14 @@ export class RecommendationService {
         images,
       );
       return true;
-    }
-    let random = Math.floor(Math.random() * 100 + 1);
-    if (random + 5 >= 100) {
-      random = random - 5;
-    }
-    return allPins.slice(random, random + 5);
   }
-  async pinsForYou(userId, isSearch) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description send pin recommendations notification for a user
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
+  async pinsForYou(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let user = await this.userModel.findById(userId, {
@@ -1368,7 +1474,7 @@ export class RecommendationService {
         }
       }
     }
-    if (!isSearch) {
+    
       pins = await this.shuffle(pins);
       let images = [];
       let count: number = 0;
@@ -1381,14 +1487,15 @@ export class RecommendationService {
       }
       await this.NotificationService.pinsForYou(user, pins, images);
       return true;
-    }
-    let random = Math.floor(Math.random() * pins.length + 1);
-    if (random + 5 >= pins.length) {
-      random = random - 5;
-    }
-    return pins.slice(random, random + 5);
+  
   }
-  async pinsInspired(userId, isSearch) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description send recent activity pin recommendations notification for a user
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
+  async pinsInspired(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
     let user = await this.userModel.findById(userId);
@@ -1444,7 +1551,7 @@ export class RecommendationService {
         }
       }
     }
-    if (!isSearch && pins.length > 0) {
+    
       let images = [];
       let count: number = 0;
       for (let i = 0; i < pins.length; i++) {
@@ -1456,11 +1563,5 @@ export class RecommendationService {
       }
       await this.NotificationService.pinsInspired(user, pins, images);
       return true;
-    }
-    let random = Math.floor(Math.random() * pins.length + 1);
-    if (random + 5 >= pins.length) {
-      random = random - 5;
-    }
-    return pins.slice(random, random + 5);
   }
 }

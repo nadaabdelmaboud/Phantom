@@ -152,6 +152,8 @@ const actions = {
   },
   async getUserProfile({ commit }) {
     commit("setLoading");
+    let token = localStorage.getItem("userToken");
+    axios.defaults.headers.common["Authorization"] = token;
     await axios
       .get("users/me", {
         headers: {
@@ -183,7 +185,6 @@ const actions = {
       });
   },
   async uploadImg({ commit }, img) {
-    console.log(img);
     await axios({
       method: "post",
       url: "me/uploadImage",

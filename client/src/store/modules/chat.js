@@ -17,19 +17,34 @@ const mutations = {
   },
   addMsg(state, msg) {
     let len = state.currentChat.length;
-    if (len) state.currentChat[len - 1].last = false;
+    if (len && state.currentChat[len - 1].owner == msg.owner)
+      state.currentChat[len - 1].last = false;
     state.currentChat.push(msg);
   },
   setRecentChats(state, chats) {
     state.recentChats = chats;
   },
-  setSeen(state, id) {
-    let index = state.currentChat.findIndex(c => c._id == id);
-    if (index != -1) state.currentChat[index].seen = true;
-  },
-  setDeliver(state, id) {
-    let index = state.currentChat.findIndex(c => c._id == id);
-    if (index != -1) state.currentChat[index].seen = true;
+  setState(state, newState) {
+    let newChat = state.currentChat;
+    newChat = newChat.reverse();
+    let lastin = [false, false];
+    newChat.forEach(msg => {
+      msg.last = false;
+      if (msg.owner) {
+        if (newState == "seen") msg.seen = true;
+        else msg.deliver = true;
+        if (!lastin[0]) {
+          msg.last = true;
+          lastin[0] = true;
+        }
+      } else {
+        if (!lastin[1]) {
+          msg.last = true;
+          lastin[1] = true;
+        }
+      }
+    });
+    state.currentChat = newChat.reverse();
   },
   resetOffset(state) {
     state.offset = 0;
@@ -47,7 +62,7 @@ const actions = {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     let chat = [];
-    state.loading = true;
+    if (!state.currentChat.length) state.loading = true;
     try {
       chat = await axios.get(
         "/getMessagesSent/" + payload.recieverId + "/" + payload.senderId
@@ -55,7 +70,7 @@ const actions = {
       chat = chat.data;
       let lastin = [false, false];
       chat.forEach(msg => {
-        if (msg.senderId == payload.senderId) {
+        if (msg.senderId == payload.recieverId) {
           msg.owner = true;
           if (!lastin[0]) {
             msg.last = true;
@@ -77,6 +92,7 @@ const actions = {
       console.log(err);
     }
     commit("setChat", chat);
+    state.loading = false;
   },
   sendMsg({ dispatch }, msg) {
     axios

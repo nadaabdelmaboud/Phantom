@@ -51,10 +51,8 @@ const mutations = {
 
 const actions = {
   createBoard({ dispatch, state }, boardData) {
-    // localStorage.setItem("x-auth-token", token);
     state.chosenBoardName = boardData.name;
     let token = localStorage.getItem("userToken");
-    console.log(token);
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .post("me/boards", boardData)
@@ -74,12 +72,10 @@ const actions = {
       state.first = false;
     }
     let token = localStorage.getItem("userToken");
-    console.log(token);
     axios.defaults.headers.common["Authorization"] = token;
     axios
       .get("me/boards")
       .then(response => {
-        console.log(response.data);
         commit("setBoards", response.data);
         state.loading = false;
       })
@@ -279,18 +275,19 @@ const actions = {
         state.offset += 8;
         commit("setMoreLike", more.data);
       } catch (error) {
-        let remaining = state.generatedCount - state.offset;
-        state.inProgress = false;
-        if (state.generating) {
-          setTimeout(() => {
-            dispatch("moreLike", { boardId: boardId, limit: 8 });
-          }, 1000);
-        } else if (remaining > 0) {
-          console.log("remaining ", remaining);
-          dispatch("moreLike", { boardId: boardId, limit: remaining });
-        } else {
-          state.loadingMore = false;
-          state.maxMore = true;
+        if (error.response.status == 404) {
+          let remaining = state.generatedCount - state.offset;
+          state.inProgress = false;
+          if (state.generating) {
+            setTimeout(() => {
+              dispatch("moreLike", { boardId: boardId, limit: 8 });
+            }, 1000);
+          } else if (remaining > 0) {
+            dispatch("moreLike", { boardId: boardId, limit: remaining });
+          } else {
+            state.loadingMore = false;
+            state.maxMore = true;
+          }
         }
         console.log(error);
       }

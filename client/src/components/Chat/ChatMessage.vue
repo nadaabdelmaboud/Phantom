@@ -1,7 +1,10 @@
 <template>
   <div class="msg" :class="{ mymsg: owner }">
-    <img :src="getImage(imageId)" v-if="owner && last && seen" />
-    <img :src="getImage(imageId)" v-if="!owner && last" />
+    <img
+      :src="getImage(imageId, google, googleImage)"
+      v-if="owner && last && seen"
+    />
+    <img :src="getImage(imageId, google, googleImage)" v-if="!owner && last" />
     <div class="status">
       <i
         class="fa fa-check-circle"
@@ -43,6 +46,12 @@ export default {
     },
     delivered: {
       type: Boolean
+    },
+    google: {
+      type: Boolean
+    },
+    googleImage: {
+      type: String
     }
   }
 };
@@ -57,17 +66,10 @@ export default {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    align-self: start;
   }
 }
 .mymsg {
   flex-direction: row-reverse;
-}
-img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  align-self: start;
 }
 p {
   margin: 0;
@@ -80,14 +82,6 @@ p {
   word-break: break-all;
   position: relative;
   color: $darkBlue;
-}
-.fa-check {
-  position: absolute;
-  right: 12px;
-  font-size: 10px;
-  bottom: 12px;
-  font-weight: 200;
-  color: $lightBlue;
 }
 .fa-check-circle {
   color: white;
@@ -104,5 +98,21 @@ p {
 .status {
   display: flex;
   flex-direction: column-reverse;
+}
+
+@media screen and (max-width: 360px) {
+  .msg {
+    margin: 3px 0;
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+  p {
+    font-size: 14px;
+    min-height: 30px;
+    padding: 8px;
+    border-radius: 16px;
+  }
 }
 </style>

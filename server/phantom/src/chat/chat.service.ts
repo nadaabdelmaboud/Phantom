@@ -80,6 +80,7 @@ export class ChatService {
     return result;
   }
   async deliver(userId: String, messageId: string, isDelivered: boolean) {
+    console.log(userId,"   ",messageId)
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
 
@@ -88,7 +89,7 @@ export class ChatService {
         {
           _id: messageId,
           senderId: { $ne: userId },
-          deliverStatus: { $not: { $elemMatch: { userId: userId } } },
+         deliverStatus: { $not: { $elemMatch: { userId: userId } } },
         },
         {
           $push: {
@@ -96,6 +97,8 @@ export class ChatService {
           },
         },
       );
+     return await this.messageModel.find(
+        { _id: messageId})
     return 1;
   }
   async seen(userId: String, messageId: string, isSeen: boolean) {

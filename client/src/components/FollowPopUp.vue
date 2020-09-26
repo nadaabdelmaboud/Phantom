@@ -14,55 +14,25 @@
       <div class="cardsDiv">
         <div class="restTopicsListDiv" v-if="showTopicslist">
           <ul class="restTopicsList">
-            <li @click="getTopicName('Travel')">Travel</li>
-            <li @click="getTopicName('Anime')">Anime</li>
-            <li @click="getTopicName('Babies')">Babies</li>
-            <li @click="getTopicName('Photography')">Photography</li>
-            <li @click="getTopicName('Kpop')">Kpop</li>
-            <li @click="getTopicName('The Witcher')">The Witcher</li>
-            <li @click="getTopicName('Design')">Design</li>
-            <li @click="getTopicName('Books')">Books</li>
-            <li @click="getTopicName('Flowers')">Flowers</li>
-            <li @click="getTopicName('Men Style')">Men Style</li>
-            <li @click="getTopicName('Nutrition')">Nutrition</li>
-            <li @click="getTopicName('Desserts')">Desserts</li>
-            <li @click="getTopicName('Nature')">Nature</li>
-            <li @click="getTopicName('Memes')">Memes</li>
-            <li @click="getTopicName('Quran')">Quran</li>
-            <li @click="getTopicName('Sewing')">Sewing</li>
-            <li @click="getTopicName('Skin Care')">Skin Care</li>
-            <li @click="getTopicName('Education')">Education</li>
-            <li @click="getTopicName('Peircing')">Peircing</li>
-            <li @click="getTopicName('Prom Dresses')">Prom Dresses</li>
-            <li @click="getTopicName('Love Quotes')">Love Quotes</li>
-            <li @click="getTopicName('Dresses Gowns')">Dresses Gowns</li>
+            <li
+              v-for="list in firstList"
+              :key="list.name"
+              @click="getTopicName(list.name)"
+            >
+              {{ list.name }}
+            </li>
           </ul>
           <ul class="restTopicsList">
-            <li @click="getTopicName('Anime Girls')">Anime Girls</li>
-            <li @click="getTopicName('Animation')">Animation</li>
-            <li @click="getTopicName('Braids')">Braids</li>
-            <li @click="getTopicName('Baking')">Baking</li>
-            <li @click="getTopicName('Recipes')">Recipes</li>
-            <li @click="getTopicName('Makeup')">Makeup</li>
-            <li @click="getTopicName('Beauty')">Beauty</li>
-            <li @click="getTopicName('Hairstyles')">Hairstyles</li>
-            <li @click="getTopicName('Cooking')">Cooking</li>
-            <li @click="getTopicName('Astronomy')">Astronomy</li>
-            <li @click="getTopicName('Disney')">Disney</li>
-            <li @click="getTopicName('Writing')">Writing</li>
-            <li @click="getTopicName('Animals')">Animals</li>
-            <li @click="getTopicName('Cats')">Cats</li>
-            <li @click="getTopicName('Nails')">Nails</li>
-            <li @click="getTopicName('Shoes')">Shoes</li>
-            <li @click="getTopicName('Road Trips')">Road Trips</li>
-            <li @click="getTopicName('Gardening')">Gardening</li>
-            <li @click="getTopicName('Tatto')">Tatto</li>
-            <li @click="getTopicName('Men Fitness')">Men Fitness</li>
-            <li @click="getTopicName('Harry Potter')">Harry Potter</li>
-            <li @click="getTopicName('Eyemakeup')">Eyemakeup</li>
+            <li
+              v-for="list in secondList"
+              :key="list.name"
+              @click="getTopicName(list.name)"
+            >
+              {{ list.name }}
+            </li>
           </ul>
         </div>
-        <Loading :loading="popupLoading" />
+        <Loading :loading="popupLoading" v-if="popupLoading" />
         <div class="AllCards" v-if="showAll && !popupLoading">
           <div v-for="card in All" :key="card.user._id">
             <FollowCard
@@ -72,6 +42,8 @@
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+              :google="card.user.google"
+              :googleImage="card.user.googleImage"
               typeOfCard="All"
             />
           </div>
@@ -85,6 +57,8 @@
               :lastName="card.user.lastName"
               :cardImage="card.user.profileImage"
               :type="card.recommendType"
+              :google="card.user.google"
+              :googleImage="card.user.googleImage"
               typeOfCard="Trending"
             />
           </div>
@@ -98,6 +72,8 @@
               :lastName="card.lastName"
               :cardImage="card.profileImage"
               :type="nameOfTopic"
+              :google="card.google"
+              :googleImage="card.googleImage"
               typeOfCard="Topics"
             />
           </div>
@@ -317,7 +293,9 @@ export default {
       All: "follow/All",
       Trending: "follow/Trending",
       Topics: "follow/Topics",
-      popupLoading: "follow/popupLoading"
+      popupLoading: "follow/popupLoading",
+      firstList: "follow/firstList",
+      secondList: "follow/secondList"
     })
   },
   methods: {
