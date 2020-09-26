@@ -185,6 +185,7 @@ const actions = {
     state.generating = true;
     state.maxMore = false;
     state.homeLoading = true;
+    state.inProgress = false;
     axios
       .put("home/me")
       .then(response => {
@@ -209,9 +210,9 @@ const actions = {
         state.offset += 10;
         commit("sethomeCards", home.data);
       } catch (error) {
+        state.inProgress=false
         if (error.response.status == 404) {
           let remaining = state.generatedCount - state.offset;
-          state.inProgress = false;
           if (state.generating) {
             setTimeout(() => {
               dispatch("userGenerateCards", 10);

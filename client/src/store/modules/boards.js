@@ -248,6 +248,7 @@ const actions = {
     state.generating = true;
     state.maxMore = false;
     state.loadingMore = true;
+    state.inProgress = false;
     axios
       .put("more/boards/" + boardId)
       .then(reponse => {
@@ -275,9 +276,9 @@ const actions = {
         state.offset += 8;
         commit("setMoreLike", more.data);
       } catch (error) {
+        state.inProgress=false
         if (error.response.status == 404) {
           let remaining = state.generatedCount - state.offset;
-          state.inProgress = false;
           if (state.generating) {
             setTimeout(() => {
               dispatch("moreLike", { boardId: boardId, limit: 8 });

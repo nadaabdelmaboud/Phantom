@@ -121,10 +121,11 @@ const actions = {
         state.offset += 10;
         commit("setSearchMyPins", pins.data.result);
       } catch (error) {
+        state.inProgress = false;
         if (error.response.status == 404) {
           state.endReuslt = true;
           commit("setmyPinsLoading", false);
-          state.inProgress = false;
+         
         }
       }
     }
@@ -161,10 +162,10 @@ const actions = {
           commit("setSearchSuggestions", suggestions);
         } else commit("setSearchPeople", people.data.result);
       } catch (error) {
+        state.inProgress = false;
         if (error.response.status == 404) {
           state.endReuslt = true;
           commit("setpeopleLoading", false);
-          state.inProgress = false;
         }
       }
     }
@@ -191,10 +192,10 @@ const actions = {
         commit("setboardsLoading", false);
         commit("setSearchBoards", boards.data.result);
       } catch (error) {
+        state.inProgress = false;
         if (error.response.status == 404) {
           state.endReuslt = true;
           commit("setboardsLoading", false);
-          state.inProgress = false;
         }
       }
     }
