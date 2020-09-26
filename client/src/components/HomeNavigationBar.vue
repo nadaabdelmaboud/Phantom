@@ -431,9 +431,6 @@ export default {
     searchEnter() {
       this.$store.commit("search/resetOffset");
       if (this.search) {
-        this.$store.dispatch("search/searchPins", {
-          name: this.search
-        });
         this.$router.replace(`/search/allpins/${this.search}`);
         if (this.$store.state.popUpsState.searchSuggestions)
           this.$store.commit("popUpsState/toggleSearchSuggestions");
