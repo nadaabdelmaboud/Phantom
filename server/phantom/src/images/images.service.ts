@@ -25,6 +25,7 @@ export class ImagesService {
     );
     this.drive = google.drive({ version: 'v3', auth });
   }
+
   async deleteFile(id) {
     this.drive.files
       .delete({

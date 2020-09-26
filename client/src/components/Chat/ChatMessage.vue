@@ -1,7 +1,10 @@
 <template>
   <div class="msg" :class="{ mymsg: owner }">
-    <img :src="getImage(imageId,google,googleImage)" v-if="owner && last && seen" />
-    <img :src="getImage(imageId,google,googleImage)" v-if="!owner && last" />
+    <img
+      :src="getImage(imageId, google, googleImage)"
+      v-if="owner && last && seen"
+    />
+    <img :src="getImage(imageId, google, googleImage)" v-if="!owner && last" />
     <div class="status">
       <i
         class="fa fa-check-circle"
@@ -44,11 +47,11 @@ export default {
     delivered: {
       type: Boolean
     },
-    google:{
-      type:Boolean
+    google: {
+      type: Boolean
     },
-    googleImage:{
-      type:String
+    googleImage: {
+      type: String
     }
   }
 };

@@ -379,7 +379,7 @@ export class PinsService {
    * @param {number} limit - the limit of user pins returned
    * @returns  {Promise<Array<object>}
    */
-  async getCurrentUserPins(userId, ifMe, limit): Promise<Array<pin>> {
+  async getCurrentUserPins(userId, ifMe, limit, isFollow): Promise<Array<pin>> {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
       throw new BadRequestException('not valid Id');
     }
@@ -389,7 +389,7 @@ export class PinsService {
     else user = await this.userModel.findById(userId, { pins: 1, email: 1 });
 
     if (!user) throw new BadRequestException('no such user');
-    if (!ifMe && user.email == process.env.ADMIN_EMAIL) {
+    if (!ifMe && !isFollow && user.email == process.env.ADMIN_EMAIL) {
       return [];
     }
     let retPins = [];
@@ -1624,10 +1624,12 @@ export class PinsService {
           },
         )
         .lean();
+
       let userPins = await this.getCurrentUserPins(
         user.following[i],
         false,
         limitOfPinsForUser,
+        true,
       );
       if (followedUser && userPins)
         for (let i = 0; i < userPins.length; i++) {

@@ -42,9 +42,17 @@ export class BoardService {
       throw new Error('not found');
     }
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description add created or saved pin to board
+   * @param {string} pinId - the id of the pin
+   * @param {string} boardId - the id of the board
+   * @param {string} sectionId - the id of the section
+   * @returns  {Promise<boolean>}
+   */
   async addPintoBoard(pinId, boardId, sectionId) {
     if ((await this.ValidationService.checkMongooseID([pinId, boardId])) == 0) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     if (sectionId) {
       if ((await this.ValidationService.checkMongooseID([sectionId])) == 0) {
@@ -59,13 +67,13 @@ export class BoardService {
       pins: 1,
       counts: 1,
     });
-    if (!board) return false;
+    if (!board) throw new NotFoundException();
     let pin = await this.pinModel.findById(pinId, {
       topic: 1,
       imageId: 1,
     });
 
-    if (!pin) return false;
+    if (!pin) throw new NotFoundException();
 
     if (sectionId) {
       for (let i = 0; i < board.sections.length; i++) {
@@ -87,6 +95,15 @@ export class BoardService {
     });
     return true;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description create new board
+   * @param {string} name - the name of the created board
+   * @param {string} startDate - the startDate of the created board
+   * @param {string} endDate - the endDate of the created board
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<object>}
+   */
   async createBoard(name: string, startDate: string, endDate: string, userId) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -153,6 +170,12 @@ export class BoardService {
     await this.boardModel.ensureIndexes();
     return { _id: board._id };
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description sort user boards alphabetacilly
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async sortBoardsAtoZ(userId) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -169,7 +192,12 @@ export class BoardService {
     await user.save();
     return true;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description sort user boards by date
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<boolean>}
+   */
   async sortBoardsDate(userId) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -193,7 +221,14 @@ export class BoardService {
     await user.save();
     return true;
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description reorder user boards
+   * @param {string} userId - the id of the user
+   * @param {number} startIndex - the index of the element needed to be reordered
+   * @param {number} positionIndex - the index of the new element position in the array
+   * @returns  {Promise<boolean>}
+   */
   async reorderBoards(userId, startIndex, positionIndex) {
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(
@@ -220,11 +255,18 @@ export class BoardService {
     await user.save();
     return true;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description add board to user
+   * @param {string} userId - the id of the user
+   * @param {string} boardId - the id of the board
+   * @returns  {Promise<boolean>}
+   */
   async addBoardtoUser(userId, boardId) {
     if (
       (await this.ValidationService.checkMongooseID([userId, boardId])) == 0
     ) {
-      return false;
+      throw new BadRequestException('not valid id');
     }
     boardId = mongoose.Types.ObjectId(boardId);
     userId = mongoose.Types.ObjectId(userId);
@@ -236,8 +278,8 @@ export class BoardService {
       boards: 1,
       sortType: 1,
     });
-    if (!board) return false;
-    if (!user) return false;
+    if (!board) throw new NotFoundException();
+    if (!user) throw new NotFoundException();
     let id = mongoose.Types.ObjectId(boardId);
     user.boards.push({
       boardId: id,
@@ -251,15 +293,21 @@ export class BoardService {
     });
     return true;
   }
-  async getCurrentUserBoards(userId, ifMe: Boolean) {
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get current user boards
+   * @param {string} userId - the id of the user
+   * @returns  {Promise<Array<object>>}
+   */
+  async getCurrentUserBoards(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0) {
-      return false;
+      throw new BadRequestException("not valid id")
     }
     userId = mongoose.Types.ObjectId(userId);
     let user = await this.userModel.findById(userId, {
       boards: 1,
     });
-    if (!user) return false;
+    if (!user) throw new NotFoundException()
 
     let retBoards = [];
     let permissions = {};
@@ -308,6 +356,13 @@ export class BoardService {
     }
     return retBoards;
   }
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get user authorized boards
+   * @param {string} userId - the id of the current user
+   * @param {string} boardUserId - the id of the boards user
+   * @returns  {Promise<Array<object>>}
+   */
   async getSomeUserBoards(userId, boardUserId) {
     if (
       (await this.ValidationService.checkMongooseID([userId, boardUserId])) == 0
@@ -321,7 +376,7 @@ export class BoardService {
       boards: 1,
       email: 1,
     });
-    if (!boardUser) return false;
+    if (!boardUser) throw new NotFoundException();
     if (boardUser.email == process.env.ADMIN_EMAIL) {
       throw new UnauthorizedException();
     }

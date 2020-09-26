@@ -3,7 +3,7 @@
     <div class="cardContent">
       <div class="cardView">
         <img
-          :src="getImage(imageId,false,imageId, topicName)"
+          :src="getImage(imageId, this.google, this.imgSrc, topicName)"
           class="card-img"
           alt="Card image"
           @click="toTopicsPage"
@@ -96,6 +96,12 @@ button:focus {
 import { default as getImage } from "../mixins/getImage";
 export default {
   name: "TopicsPageCard",
+  data: function() {
+    return {
+      google: false,
+      imgSrc: ""
+    };
+  },
   mixins: [getImage],
   props: {
     topicId: {

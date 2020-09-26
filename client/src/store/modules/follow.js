@@ -6,7 +6,143 @@ const state = {
   Topics: [],
   following: [],
   followPageLoading: false,
-  popupLoading: false
+  popupLoading: false,
+  firstList: [
+    {
+      name: "Travel"
+    },
+    {
+      name: "Anime"
+    },
+    {
+      name: "Babies"
+    },
+    {
+      name: "Photography"
+    },
+    {
+      name: "Kpop"
+    },
+    {
+      name: "The Witcher"
+    },
+    {
+      name: "Design"
+    },
+    {
+      name: "Books"
+    },
+    {
+      name: "Flowers"
+    },
+    {
+      name: "Men Style"
+    },
+    {
+      name: "Nutrition"
+    },
+    {
+      name: "Desserts"
+    },
+    {
+      name: "Nature"
+    },
+    {
+      name: "Memes"
+    },
+    {
+      name: "Quran"
+    },
+    {
+      name: "Sewing"
+    },
+    {
+      name: "Skin Care"
+    },
+    {
+      name: "Education"
+    },
+    {
+      name: "Peircing"
+    },
+    {
+      name: "Prom Dresses"
+    },
+    {
+      name: "Love Quotes"
+    },
+    {
+      name: "Dresses Gowns"
+    }
+  ],
+  secondList: [
+    {
+      name: "Anime Girls"
+    },
+    {
+      name: "Animation"
+    },
+    {
+      name: "Braids"
+    },
+    {
+      name: "Baking"
+    },
+    {
+      name: "Recipes"
+    },
+    {
+      name: "Makeup"
+    },
+    {
+      name: "Beauty"
+    },
+    {
+      name: "Hairstyles"
+    },
+    {
+      name: "Cooking"
+    },
+    {
+      name: "Astronomy"
+    },
+    {
+      name: "Disney"
+    },
+    {
+      name: "Writing"
+    },
+    {
+      name: "Animals"
+    },
+    {
+      name: "Cats"
+    },
+    {
+      name: "Nails"
+    },
+    {
+      name: "Shoes"
+    },
+    {
+      name: "Road Trips"
+    },
+    {
+      name: "Gardening"
+    },
+    {
+      name: "Tatto"
+    },
+    {
+      name: "Men Fitness"
+    },
+    {
+      name: "Harry Potter"
+    },
+    {
+      name: "Eyemakup"
+    }
+  ]
 };
 
 const mutations = {
@@ -131,7 +267,9 @@ const getters = {
   Topics: state => state.Topics,
   following: state => state.following,
   followPageLoading: state => state.followPageLoading,
-  popupLoading: state => state.popupLoading
+  popupLoading: state => state.popupLoading,
+  firstList: state => state.firstList,
+  secondList: state => state.secondList
 };
 
 export default {

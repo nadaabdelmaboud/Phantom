@@ -20,12 +20,12 @@
                     name: s.firstName + ' ' + s.lastName,
                     id: s._id,
                     imageId: s.profileImage,
-                    google:s.google,
-                    googleImage:s.googleImage
+                    google: s.google,
+                    googleImage: s.googleImage
                   })
                 "
               >
-                <img :src="getImage(s.profileImage,s.google,s.googleImage)" />
+                <img :src="getImage(s.profileImage, s.google, s.googleImage)" />
                 <span>{{ s.firstName }}</span>
                 <span> {{ s.lastName }}</span>
               </div>
@@ -42,12 +42,15 @@
               name: r.userName,
               id: r._id,
               imageId: r.profileImage,
-              google:r.google,
-              googleImage:r.googleImage
+              google: r.google,
+              googleImage: r.googleImage
             })
           "
         >
-          <img style=" margin-top: -25px;" :src="getImage(r.profileImage,r.google,r.googleImage)" />
+          <img
+            style=" margin-top: -25px;"
+            :src="getImage(r.profileImage, r.google, r.googleImage)"
+          />
           <div class="inlineDiv">
             <p>{{ r.userName }}</p>
             <p>{{ r.lastMessage.message | sliceMsg }}</p>
@@ -63,12 +66,12 @@
                 name: f.firstName + ' ' + f.lastName,
                 id: f._id,
                 imageId: f.profileImage,
-                google:f.google,
-                googleImage:f.googleImage
+                google: f.google,
+                googleImage: f.googleImage
               })
             "
           >
-            <img :src="getImage(f.profileImage,f.google,f.googleImage)" />
+            <img :src="getImage(f.profileImage, f.google, f.googleImage)" />
             <span>{{ f.firstName }}</span>
             <span> {{ f.lastName }}</span>
           </div>

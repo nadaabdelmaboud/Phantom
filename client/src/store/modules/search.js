@@ -40,7 +40,7 @@ const mutations = {
   },
   resetOffset(state) {
     state.offset = 0;
-    state.inProgress=false;
+    state.inProgress = false;
     state.pins = [];
     state.people = [];
     state.myPins = [];
