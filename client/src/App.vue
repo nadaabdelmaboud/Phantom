@@ -18,12 +18,6 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-    setTimeout(() => {
-      if (localStorage.getItem("userToken")) {
-        console.log("initial socket");
-        this.socketInit();
-      }
-    }, 3000);
     initializeFirebase();
     window.addEventListener("scroll", () => {
       if (

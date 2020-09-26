@@ -51,6 +51,9 @@ export default {
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.inchat = !this.inchat;
+      setTimeout(()=>{
+        this.scrollDown();
+      },1000)
     },
     toChatters() {
       this.$store.commit("chat/setChat", []);
@@ -84,6 +87,7 @@ export default {
         }
         this.typing = false;
         let ping = new Audio();
+        ping.autoplay=true;
         ping.src = require("../assets/Ping.mp3");
         ping.play();
         let options = {
@@ -139,7 +143,6 @@ export default {
     },
     seenListener() {
       this.socket.on("setSeen", (data) => {
-        console.log("d", data);
         if (data.senderId == this.myData._id) {
           this.$store.commit("chat/setState", "seen");
         }
