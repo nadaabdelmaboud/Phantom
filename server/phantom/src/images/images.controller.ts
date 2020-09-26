@@ -52,7 +52,6 @@ export class ImagesController {
       var resolvedPath = await path.resolve(filePath);
       return response.sendFile(resolvedPath);
     }
-    console.log(id);
     if (!id || id == ' ' || id == '' || id == 'none' || id == 'null') {
       var filePath = './src/static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
@@ -79,9 +78,5 @@ export class ImagesController {
     );
   }
 
-  @Delete('image/:id')
-  @ApiBadRequestResponse({ type: BadRequestException })
-  async deleteFile(@Param('id') id: string) {
-    return await this.ImagesService.deleteFile(id);
-  }
+ 
 }

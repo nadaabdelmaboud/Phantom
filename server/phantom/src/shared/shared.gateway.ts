@@ -42,7 +42,7 @@ export class SharedGateway {
   async comment(socket: Socket, data: any) {
     // socket.broadcast.emit('sendComment', data);
     //  this.server.sockets.emit('sendComment', data);
-    this.server.sockets.emit('sendComment', data);
+    this.server.emit('sendComment', data);
   }
   @SubscribeMessage('typing')
   async type(socket: Socket, data: any) {
