@@ -12,6 +12,7 @@
 </template>
 
 <script>
+//import { initializeFirebase } from "../../messaging/init";
 export default {
   created() {
     this.$store.dispatch("user/confirmEmail", this.$route.query.token);
@@ -19,6 +20,7 @@ export default {
   methods: {
     goToHome: function() {
       this.$store.commit("popUpsState/toggleWelcomeState");
+      //initializeFirebase();
       this.$router.push("/");
     }
   }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { initializeFirebase } from "../../messaging/init";
 const state = {
   status: null,
   validPasswordLength: null,
@@ -93,6 +94,7 @@ const actions = {
       .then(async response => {
         localStorage.setItem("userToken", response.data.token);
         localStorage.setItem("imgProfileID", response.data.profileImage);
+        initializeFirebase();
         await dispatch("getUserProfile");
         commit("setStatus", true);
       })

@@ -51,6 +51,8 @@ export default {
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.inchat = !this.inchat;
+
+      this.socket.emit("seen",payload);
       setTimeout(() => {
         this.scrollDown();
       }, 1000);
@@ -218,7 +220,7 @@ export default {
         this.deliveredListener();
         //seen
         this.seenListener();
-     // }
+ //    }
     }, 3000);
   },
   filters: {

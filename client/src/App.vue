@@ -5,7 +5,6 @@
 </template>
 
 <script>
-//import { initializeFirebase } from "../src/messaging/init";
 import axios from "axios";
 import { default as masonryGrid } from "./mixins/masonryGrid";
 import { default as socketChat } from "./mixins/socketChat";
@@ -18,8 +17,8 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-   // initializeFirebase();
     window.addEventListener("scroll", () => {
+      console.log("scroll height ", window.innerHeight + window.scrollY," screen height", document.body.offsetHeight)
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
