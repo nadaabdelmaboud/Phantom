@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { initializeFirebase } from "../src/messaging/init";
+//import { initializeFirebase } from "../src/messaging/init";
 import axios from "axios";
 import { default as masonryGrid } from "./mixins/masonryGrid";
 import { default as socketChat } from "./mixins/socketChat";
@@ -18,7 +18,7 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-    initializeFirebase();
+    // initializeFirebase();
     window.addEventListener("scroll", () => {
       if (
         Math.abs(

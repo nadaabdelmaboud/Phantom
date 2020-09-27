@@ -13,5 +13,6 @@ export const Message = new Schema({
     seenStatus: Array({
         userId: String,
         time: Date
-    })
+    }),
+    senderDelete: Boolean
 });

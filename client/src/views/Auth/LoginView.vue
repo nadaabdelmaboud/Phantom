@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { initializeFirebase } from "../../messaging/init";
 export default {
   methods: {
     login() {
@@ -81,7 +82,10 @@ export default {
   },
   watch: {
     loginState: function() {
-      if (this.loginState) this.$router.push("/");
+      if (this.loginState) {
+        initializeFirebase();
+        this.$router.push("/");
+      }
     }
   },
   created: function() {

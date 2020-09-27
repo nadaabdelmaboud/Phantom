@@ -13,31 +13,62 @@ export class SearchService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private ValidationService: ValidationService,
-  ) {}
-  async Fuzzy(model, params, name, limit: number, offset: number) {
+  ) { }
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget fuzzy search
+* @param {Array<Object>} model -model
+* @param {String} name -name
+* @param {Array<string>} params -params
+* @param {Number} limit -limit
+* @param {Number} offset -offset
+* @returns {Object} -result: model objects, length
+*/
+  async Fuzzy(
+    model, params: Array<string>,
+    name: string,
+    limit: number,
+    offset: number) {
     const searcher = new search(model, params, {
       caseSensitive: false,
       sort: true,
     });
     let result = searcher.search(name);
-    if(result.length==0){
+    if (result.length == 0) {
       throw new NotFoundException()
     }
-    if(Number(Number(offset)+Number(limit))>result.length){
-      limit=result.length-Number(offset);
+    if (Number(Number(offset) + Number(limit)) > result.length) {
+      limit = result.length - Number(offset);
     }
-    let limitOffsetResult = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      result,
-    );
-    return { result: limitOffsetResult, length: limitOffsetResult.length };
+    return {
+      result: this.ValidationService.limitOffset(
+        limit,
+        offset,
+        result,
+      ), length: result.length
+    };
   }
-  async getAllPins(name, limit, offset) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get all pins
+* @param {String} name -name
+* @param {Number} limit -limit
+* @param {Number} offset -offset
+* @returns {Object} -result:pin objects, length
+*/
+  async getAllPins(name, limit, offset): Promise<Object> {
     let pin = await this.pinModel.find({}, 'title note imageId').lean();
     return await this.Fuzzy(pin, ['title', 'note'], name, limit, offset);
   }
-  async getMyPins(name, userId, limit, offset) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get my pins
+* @param {String} name -name
+* @param {Number} limit -limit
+* @param {Number} offset -offset
+* @returns {Object} -result: pin objects, length
+*/
+  async getMyPins(name, userId, limit, offset): Promise<Object> {
     if (!(await this.ValidationService.checkMongooseID([userId])))
       throw new Error('not mongoose id');
     let pin = await this.pinModel
@@ -45,6 +76,13 @@ export class SearchService {
       .lean();
     return await this.Fuzzy(pin, ['title', 'note'], name, limit, offset);
   }
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget add to recent search
+* @param {String} userId -user id
+* @param {String} name -name
+* @returns {Object} -user object
+*/
   async addToRecentSearch(userId, name) {
     let user = await this.userModel.findByIdAndUpdate(userId, {
       $pull: { recentSearch: name },
@@ -57,7 +95,15 @@ export class SearchService {
       .findByIdAndUpdate(userId, { $push: { recentSearch: name } })
       .lean();
   }
-  async getPeople(name, limit, offset) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get people
+* @param {String} name -name
+* @param {Number} limit -limit
+* @param {Number} offset -offset
+* @returns {Object} result: user objects, length
+*/
+  async getPeople(name, limit, offset): Promise<Object> {
     let user = await this.userModel.aggregate([
       { $match: {} },
       {
@@ -81,6 +127,12 @@ export class SearchService {
       offset,
     );
   }
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get keys
+* @param {String} name -name
+* @returns {Array<Object>}
+*/
   async getKeys(name: string) {
     await this.userModel.syncIndexes();
     let keysPin = await this.pinModel
@@ -109,16 +161,31 @@ export class SearchService {
     let KeysPeople = [];
     return KeysPeople;
   }
-  async getRecentSearch(userId) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get recent search
+* @param {String} userId -user id
+* @returns {Array<String>}  
+*/
+  async getRecentSearch(userId): Promise<Array<String>> {
     let user = await this.userModel.findById(userId, 'recentSearch');
     if (!user.recentSearch) {
       user.recentSearch = [];
+      await user.save();
     }
-    return { recentSearch: user.recentSearch };
+    return user.recentSearch;
   }
-  async getBoards(name, limit, offset) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get all boards
+* @param {String} name -name
+* @param {Number} limit -limit
+* @param {Number} offset -offset
+* @returns {Object} -result: board objects, length
+*/
+  async getBoards(name, limit, offset): Promise<Object> {
     let board = await this.boardModel.aggregate([
-      { $match: { } },
+      { $match: {} },
       {
         $project: {
           pins: 1,
