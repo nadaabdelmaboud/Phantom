@@ -206,39 +206,7 @@ export class TopicService {
   * @returns {Number} 1
   */
   async unfollowTopic(userId, topicId) {
-    if (!this.ValidationService.checkMongooseID([userId, topicId]))
-      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    if (!(await this.checkFollowTopic(userId, topicId)))
-      throw new HttpException(
-        'you dont follow this topic',
-        HttpStatus.BAD_REQUEST,
-      );
-    const user = await this.UserService.getUserById(userId);
-    if (!user)
-      throw new HttpException(
-        'user id is not correct',
-        HttpStatus.UNAUTHORIZED,
-      );
-    const topic = await this.getTopicById(topicId);
-    if (!topic)
-      throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
-    if (!topic.followers)
-      throw new HttpException(
-        'you dont follow this topic',
-        HttpStatus.BAD_REQUEST,
-      );
-    await this.topicModel
-      .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
-      .lean();
-    if (!user.followingTopics)
-      throw new HttpException(
-        'you dont follow this topic',
-        HttpStatus.BAD_REQUEST,
-      );
-    await this.userModel
-      .findByIdAndUpdate(userId, { $pull: { followingTopics: { topicId } } })
-      .lean();
-    return 1;
+    return this.UserService.unfollowUser(userId, topicId);
   }
 
   /**

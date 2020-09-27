@@ -86,9 +86,11 @@ export class UserController {
         notificationCounter: 0,
       });
     await this.userService.updateSettings(req.user._id, updateData);
-    const user = await this.userService.getUserById(req.user._id);
-    user.password = null;
-    return user;
+    if (!updateData.deleteFlag) {
+      const user = await this.userService.getUserById(req.user._id);
+      user.password = null;
+      return user;
+    }
   }
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/confirm-update-email')

@@ -4,7 +4,7 @@ export interface UpdateSettingsDto {
   invitation?: Boolean;
   boardUpdate?: Boolean;
   google?: Boolean;
-  deleteflag?: Boolean;
+  deleteFlag?: Boolean;
   boardsForYou?: Boolean;
   popularPins?: Boolean;
   pinsForYou?: Boolean;
