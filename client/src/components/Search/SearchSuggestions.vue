@@ -57,9 +57,6 @@ export default {
       this.$store.commit("popUpsState/toggleSearchSuggestions");
     },
     searchFor(title) {
-      this.$store.dispatch("search/searchPins", {
-        name: title
-      });
       this.$store.commit("popUpsState/toggleSearchSuggestions");
       this.$router.replace("/search/allpins/" + title);
     }

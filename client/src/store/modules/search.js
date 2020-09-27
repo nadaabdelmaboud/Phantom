@@ -123,9 +123,9 @@ const actions = {
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          commit("setmyPinsLoading", false);
-          state.inProgress = false;
         }
+        commit("setmyPinsLoading", false);
+        state.inProgress = false;
       }
     }
   },
@@ -163,9 +163,9 @@ const actions = {
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          commit("setpeopleLoading", false);
-          state.inProgress = false;
         }
+        commit("setpeopleLoading", false);
+        state.inProgress = false;
       }
     }
   },
@@ -193,9 +193,9 @@ const actions = {
       } catch (error) {
         if (error.response.status == 404) {
           state.endReuslt = true;
-          commit("setboardsLoading", false);
-          state.inProgress = false;
         }
+        commit("setboardsLoading", false);
+        state.inProgress = false;
       }
     }
   },
