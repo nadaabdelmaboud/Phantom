@@ -1106,12 +1106,11 @@ export class UserService {
    * @returns {Array<pin>}
    */
   async getPublicHome(index: number) {
-    let topics = await this.topicModel.find({}, { pins: 1 }).skip(Number(index)).limit(10);
-    let pins = [];
-    for (let i = 0; i < topics.length; i++) {
-      let pin = await this.pinModel.findById(topics[i].pins[0], { imageId: 1 });
-      pins.push(pin);
-    }
+    index = Math.floor(
+      Math.random() * 1000 + 1,
+    );
+    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(10);
+
     return pins;
   }
 }
