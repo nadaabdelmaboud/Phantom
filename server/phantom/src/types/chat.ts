@@ -9,7 +9,8 @@ export interface chat extends Document {
         date: Date
 
     }
-    date: Date
+    date: Date,
+    deletedUserIds: Array<String>,
 
 };
 
