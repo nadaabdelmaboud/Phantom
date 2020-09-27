@@ -117,7 +117,9 @@ export class NotificationService {
       30,
       message,
     );
+    console.log("sendingqe")
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
+        console.log("brg3")
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
       followedUser.offlineNotifications = await this.addTolimitedArray(
@@ -127,6 +129,7 @@ export class NotificationService {
       );
     } else {
       message.tokens = [followedUser.fcmToken];
+      console.log("sendingwe")
       let checkFailed = await this.sendNotification(
         [followedUser.fcmToken],
         message,
@@ -520,8 +523,11 @@ export class NotificationService {
       30,
       arrayMessage,
     );
+    console.log("sendingqe")
     await user.save();
+    console.log("sendingwe")
     if (!user.fcmToken || user.fcmToken == ' ') {
+      console.log("brg3")
       return 0;
     } else {
       await user.save().catch(err => {
@@ -534,10 +540,11 @@ export class NotificationService {
         },
         tokens: [user.fcmToken],
       };
-
+      console.log("sending")
       let checkFailed = await this.sendNotification([user.fcmToken], message);
-
+      console.log("sending2")
       if (checkFailed.length > 0) {
+        console.log("sending3")
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
           user.notifications = await this.addTolimitedArray(
@@ -552,6 +559,7 @@ export class NotificationService {
         return 0;
       }
     }
+    console.log("sending4")
     return 1;
   }
 

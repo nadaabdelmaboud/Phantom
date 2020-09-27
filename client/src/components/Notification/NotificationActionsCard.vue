@@ -2,7 +2,6 @@
   <div class="card" @click="toPage">
     <div class="flex">
       <img v-lazy="getImage(imageId, google, googleImage)" />
-      <img v-lazy="getImage(imageId, google, googleImage)" />
       <div>
         <label>{{ title }}</label>
         <p>{{ body }}</p>

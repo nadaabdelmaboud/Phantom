@@ -184,35 +184,42 @@ export default {
       loading: "chat/loading"
     }),
     ...mapState({
-      myData: state => state.user.userData
+      myData: state => state.user.userData,
+      firstCreate: state => state.chat.firstCreate
     })
   },
   created() {
-    //starting socket connection
-    this.socket = io.connect("http://localhost:3000");
-    let token = localStorage.getItem("userToken");
-    token = token.substring(7);
-    //personalise connection
-    this.socket.emit("setUserId", {
-      token: token
-    });
-    //ensure notification is enabled
-    Notification.requestPermission().then(permission => {
-      if (permission == "granted") {
-        this.allowNotify = true;
-      } else {
-        console.log("notification disabled");
-      }
-    });
+    setTimeout(() => {
+      // if (!this.firstCreate) {
+      console.log("creating connection");
+      this.$store.commit("chat/socketCreated");
+      //starting socket connection
+      this.socket = io.connect("http://localhost:3000");
+      let token = localStorage.getItem("userToken");
+      token = token.substring(7);
+      //personalise connection
+      this.socket.emit("setUserId", {
+        token: token
+      });
+      //ensure notification is enabled
+      Notification.requestPermission().then(permission => {
+        if (permission == "granted") {
+          this.allowNotify = true;
+        } else {
+          console.log("notification disabled");
+        }
+      });
 
-    //messageListener
-    this.messageListener();
-    //typing
-    this.typingLisener();
-    //delivered
-    this.deliveredListener();
-    //seen
-    this.seenListener();
+      //messageListener
+      this.messageListener();
+      //typing
+      this.typingLisener();
+      //delivered
+      this.deliveredListener();
+      //seen
+      this.seenListener();
+      // }
+    }, 3000);
   },
   filters: {
     sliceMsg: function(value) {
@@ -229,5 +236,9 @@ export default {
         }
       }
     }
+  },
+  destroyed() {
+    console.log("disconnecting socket");
+    // this.socket.disconnect();
   }
 };

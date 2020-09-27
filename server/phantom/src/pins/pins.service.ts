@@ -558,6 +558,9 @@ export class PinsService {
       profileImage: 1,
       google: 1,
       googleImage: 1,
+      notificationCounter:1,
+      notifications:1,
+      fcmToken:1,
     });
     let pin = await this.pinModel.findById(pinId, {
       title: 1,

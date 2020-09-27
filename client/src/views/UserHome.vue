@@ -75,9 +75,7 @@ import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {
   name: "UserHome",
   data: function() {
-    return {
-      //userKey:false
-    };
+    return {};
   },
   components: {
     HomeCard,
@@ -93,11 +91,13 @@ export default {
       userKey: state => state.user.userKey
     })
   },
-  created() {
-    this.$store.dispatch("homeCards/userHome");
+  mounted() {
     setTimeout(() => {
-      this.$store.dispatch("homeCards/userGenerateCards", 10);
-    }, 3000);
+      this.$store.dispatch("homeCards/userHome");
+      setTimeout(() => {
+        this.$store.dispatch("homeCards/userGenerateCards", 10);
+      }, 3000);
+    }, 1000);
   },
   methods: {
     showTopics() {
