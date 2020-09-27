@@ -880,4 +880,19 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
+/**
+ * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+ * @description get public home for unauthorized users
+ * @param {number} index - start index of topics returned
+ * @returns {Array<pin>}
+ */
+  async getPublicHome(index:number){
+    let topics = await this.topicModel.find({},{pins:1}).skip(Number(index)).limit(10);
+    let pins=[];
+    for(let i=0;i<topics.length;i++){
+      let pin = await this.pinModel.findById(topics[i].pins[0],{imageId:1});
+      pins.push(pin);
+    }
+    return pins;
+  }
 }

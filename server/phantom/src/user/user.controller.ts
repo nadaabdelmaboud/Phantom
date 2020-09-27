@@ -243,4 +243,10 @@ export class UserController {
   ) {
     return await this.userService.userFollowings(params.userId, limit, offset);
   }
+
+  @Get('/Home/:index')
+  async getPublicHome(@Param('index') index:number){
+    let pins = await this.userService.getPublicHome(index);
+    return pins;
+  }
 }
