@@ -17,7 +17,7 @@
           :pinId="n.pinId"
           :title="n.title"
           :body="n.body"
-          :google="n.google"
+          :google="n.google=='true'"
           :googleImage="n.googleImage"
         />
       </div>
