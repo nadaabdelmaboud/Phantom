@@ -127,10 +127,13 @@ export class UserService {
    * @returns {Object}
    */
   async findUserAndGetData(findData: {}, data: {}) {
-    const user = await this.userModel.findOne(findData, data).lean();
+    let user = await this.userModel.findOne(findData, data)
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
-    if (!user.about) user.about = '';
+    if (!user.about) {
+      user.about = '';
+      await user.save()
+    }
     return user;
   }
 
