@@ -22,7 +22,7 @@
 		* Run
 		* Env Variables
 6. [Contributing](#Contributing)
-7. [Contributores](#Stay)
+7. [Contributores](#Stay-in-touch)
 8. [License](#lisence)
 
 
