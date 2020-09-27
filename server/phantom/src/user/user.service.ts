@@ -755,6 +755,7 @@ export class UserService {
         lastName: 1,
         notificationCounter: 1,
         offlineNotifications: 1,
+        fcmToken: 1,
         profileImage: 1,
         google: 1,
         googleImage: 1,

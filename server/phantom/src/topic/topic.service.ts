@@ -39,7 +39,23 @@ export class TopicService {
     }
     return 1;
   }
-  async createTopic(imageId, description, imageWidth, imageHeight, name) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget create topic
+* @param {String} imageId -image id  
+* @param {String} description -description 
+* @param {String} name -name
+* @param {Number} imageHeight -image height
+* @param {Number} imageWidth -image width
+* @returns {Object} -topic object
+*/
+  async createTopic(
+    imageId: string,
+    description: string,
+    imageWidth: number,
+    imageHeight: number,
+    name: string
+  ): Promise<topic> {
     if (!this.ValidationService.checkMongooseID([imageId]))
       throw new Error('not mongoose id');
     let topicExist = await this.topicModel
@@ -58,7 +74,13 @@ export class TopicService {
     await topic.save();
     return topic;
   }
-  async getTopicById(topicId) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get topic by id
+* @param {String} topicId -topic id  
+* @returns {Object} -topic object
+*/
+  async getTopicById(topicId): Promise<topic> {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
     const topic = await this.topicModel.findById(topicId, 'pins followers', (err, topic) => {
@@ -67,7 +89,13 @@ export class TopicService {
     });
     return topic;
   }
-  async getTopics(userId): Promise<any> {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get topics
+* @param {String} userId -user id  
+* @returns {Array<Object>} -topic objects
+*/
+  async getTopics(userId): Promise<Array<Object>> {
     let topics = await this.topicModel.find(
       {},
       'name description imageId followers',
@@ -87,6 +115,13 @@ export class TopicService {
       };
     });
   }
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget add pin to topic
+* @param {String} topicId -topic id  
+* @param {Number} pinId -pin id
+* @returns {Boolean}
+*/
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error('not mongoose id');
@@ -107,7 +142,15 @@ export class TopicService {
     }
     throw new NotFoundException();
   }
-  async getPinsOfTopic(topicId, limit, offset, userId): Promise<pin[]> {
+  /**
+ * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+ * @descriptionget get pins of a topic
+ * @param {String} topicId -topic id  
+ * @param {Number} limit -limit
+ * @param {Number} offset -offset
+ * @returns {Array<Object>} -pin objects
+ */
+  async getPinsOfTopic(topicId: string, limit: number, offset: number): Promise<pin[]> {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
     const topic = await this.getTopicById(topicId);
@@ -129,7 +172,7 @@ export class TopicService {
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @descriptioncheck if this user follow this topic 
     * @param {String} userId -user id  
-    * @param {String} topicId - topic id
+    * @param {String} topicId -topic id
     * @returns {Boolean}
     */
   async checkFollowTopic(userId, topicId) {

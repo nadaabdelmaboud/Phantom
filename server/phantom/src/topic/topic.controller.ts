@@ -43,15 +43,13 @@ export class TopicController {
   async getPinsOfAtopic(
     @Request() req,
     @Param('topicId') topicId: string,
-    @Query('limit') limit: Number,
-    @Query('offset') offset: Number,
+    @Query('limit') limit: number,
+    @Query('offset') offset: number,
   ) {
-    let userId = req.user._id;
     let pins = await this.TopicService.getPinsOfTopic(
       topicId,
       limit,
       offset,
-      userId,
     );
     if (pins && pins.length != 0) return pins;
     return new NotFoundException();
