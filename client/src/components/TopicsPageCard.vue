@@ -3,7 +3,7 @@
     <div class="cardContent">
       <div class="cardView">
         <img
-          :src="getImage(imageId, this.google, this.imgSrc, topicName)"
+          :src="getImage(imageId)"
           class="card-img"
           alt="Card image"
           @click="toTopicsPage"

@@ -1,7 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
 import { user } from '../types/user';
 import { chat } from '../types/chat';
 import { ValidationService } from '../shared/validation.service';
@@ -14,8 +13,16 @@ export class ChatService {
     @InjectModel('Message') private readonly messageModel: Model<message>,
 
     private ValidationService: ValidationService,
-  ) {}
-  async sendMessage(senderId: String, recieverIds: String[], text: String) {
+  ) { }
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget send message
+* @param {String} senderId -sender id 
+* @param {Array<String>} recieverIds -reciever ids
+* @param {String} text -name
+* @returns {String} -message id
+*/
+  async sendMessage(senderId: String, recieverIds: String[], text: String): Promise<String> {
     if (!this.ValidationService.checkMongooseID([senderId, recieverIds[0]]))
       throw new Error('not mongoose id');
     let mess = { userId: senderId, message: text, date: new Date() };
@@ -41,12 +48,18 @@ export class ChatService {
     await message.save();
     return message._id;
   }
-  async getMessage(userIds: String[], senderId: String) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get messages
+* @param {String} senderId -sender id 
+* @param {Array<String>} userIds -user ids
+* @returns {Array<Object>|0} -message objects | 0
+*/
+  async getMessage(userIds: String[], senderId: String): Promise<Array<message> | 0> {
     if (!this.ValidationService.checkMongooseID(userIds))
       throw new Error('not mongoose id');
     let ids = userIds.concat(senderId);
-    let chat = await this.chatModel.findOne({ usersIds: { $all: ids } }, '_id');
-
+    let chat = await this.chatModel.findOne({ usersIds: { $all: ids, $size: ids.length } }, '_id');
     if (!chat) return 0;
     return await this.messageModel.find(
       { chatId: chat._id },
@@ -54,8 +67,13 @@ export class ChatService {
       { sort: { date: -1 } },
     );
   }
-  //id userName imageId
-  async getChats(userId: String) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget get chats
+* @param {String} userId -user id 
+* @returns {Array<Object>} -chat objects
+*/
+  async getChats(userId: String): Promise<Array<Object>> {
     if (!this.ValidationService.checkMongooseID([userId]))
       throw new Error('not mongoose id');
     let chat = await this.chatModel.find(
@@ -79,119 +97,86 @@ export class ChatService {
       });
     return result;
   }
-  async deliver(userId: String, messageId: string, isDelivered: boolean) {
-    console.log(userId,"   ",messageId)
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget deliver message
+* @param {String} userId -user id 
+* @param {String} messageId -message id
+* @returns {Object} -message object
+*/
+  async deliver(userId: String, messageId: string): Promise<message> {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
-
-    if (isDelivered)
-      await this.messageModel.findOneAndUpdate(
-        {
-          _id: messageId,
-          senderId: { $ne: userId },
-         deliverStatus: { $not: { $elemMatch: { userId: userId } } },
+    return await this.messageModel.findOneAndUpdate(
+      {
+        _id: messageId,
+        senderId: { $ne: userId },
+        deliverStatus: { $not: { $elemMatch: { userId: userId } } },
+      },
+      {
+        $push: {
+          deliverStatus: { userId: userId, time: new Date() },
         },
-        {
-          $push: {
-            deliverStatus: { userId: userId, time: new Date() },
-          },
-        },
-      );
-     return await this.messageModel.find(
-        { _id: messageId})
-    return 1;
+      },
+    );
   }
-  async seen(userId: String, messageId: string, isSeen: boolean) {
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget seen message
+* @param {String} userId -user id 
+* @param {String} messageId -message id
+* @returns {Object} -message object
+*/
+  async seen(userId: String, messageId: string): Promise<message> {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
 
-    if (isSeen)
-      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId }, seenStatus: { $not: { $elemMatch: { userId: userId } } } }, {
+    return await this.messageModel.findOneAndUpdate(
+      {
+        _id: messageId,
+        senderId: { $ne: userId },
+        seenStatus: { $not: { $elemMatch: { userId: userId } } }
+      },
+      {
         $push: {
           seenStatus: { userId: userId, time: new Date() }
         }
       });
-    return 1;
   }
+  /**
+* @author Dina Alaa <dinaalaaaahmed@gmail.com>
+* @descriptionget seen messages before timeStamp
+* @param {String} senderId -sender id 
+* @param {String} recieverId -reciever id 
+* @param {String} time -time
+* @returns {Boolean} 
+*/
   async seenMessage(
     senderId: String,
     recieverId: String,
-    time: string,
-    isSeen: boolean,
-  ) {
+    time: string
+  ): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([senderId, recieverId]))
       throw new Error('not mongoose id');
     let chat = await this.chatModel.findOne(
-      { usersIds: { $all: [senderId, recieverId] } },
+      { usersIds: { $all: [senderId, recieverId], $size: 2 } },
       '_id',
     );
-
-    if (isSeen)
-      return await this.messageModel.updateMany(
-        {
-          chatId: chat._id,
-          date: { $lt: new Date(time) },
-          senderId: { $ne: recieverId },
-          seenStatus: { $not: { $elemMatch: { userId: recieverId } } },
+    await this.messageModel.updateMany(
+      {
+        chatId: chat._id,
+        date: { $lt: new Date(time) },
+        senderId: { $ne: recieverId },
+        seenStatus: { $not: { $elemMatch: { userId: recieverId } } },
+      },
+      {
+        $push: {
+          seenStatus: { userId: recieverId, time: new Date() },
         },
-        {
-          $push: {
-            seenStatus: { userId: recieverId, time: new Date() },
-          },
-        },
-      );
-  }
-
-  async findUsers(userId: string) {
-    if (!this.ValidationService.checkMongooseID([userId]))
-      throw new Error('not mongoose id');
-    return await this.userModel.find(
-      { _id: userId, 'sentMessages.userId': mongoose.Types.ObjectId(userId) },
-      'userName profileImage sentMessages.message',
+      },
     );
-  }
-  async getMessagesSent(firstUserId: string, secondUserId: string) {
-    if (!this.ValidationService.checkMongooseID([firstUserId, secondUserId]))
-      throw new Error('not mongoose id');
-    const toUser = await this.userModel.findById(firstUserId, {
-      sentMessages: 1,
-    });
-    const fromUser = await this.userModel.findById(secondUserId, {
-      userName: 1,
-    });
-    if (!toUser || !fromUser) throw new UnauthorizedException();
-    if (!toUser.sentMessages) toUser.sentMessages = [];
-    for (let i = 0; i < toUser.sentMessages.length; i++) {
-      if (String(toUser.sentMessages[i].userId) == String(secondUserId)) {
-        return toUser.sentMessages[i].message;
-      }
-    }
+    return true;
   }
 
-  async sentMessage(senderId, recieverId, message) {
-    if (!this.ValidationService.checkMongooseID([senderId, recieverId]))
-      throw new Error('not mongoose id');
-    const sender = await this.userModel.findById(senderId);
-    const reciever = await this.userModel.findById(recieverId);
-    if (!sender || !reciever) throw new UnauthorizedException();
-    if (!sender.sentMessages) {
-      sender.sentMessages = [];
-    }
-    for (let i = 0; i < sender.sentMessages.length; i++) {
-      if (String(sender.sentMessages[i].userId) == String(recieverId)) {
-        sender.sentMessages[i].message.push({
-          note: message,
-          time: new Date(),
-        });
-        await sender.save();
-        return 1;
-      }
-    }
-    sender.sentMessages.push({
-      message: [{ note: message, time: new Date() }],
-      userId: recieverId,
-    });
-    await sender.save();
-    return 1;
-  }
+
 }

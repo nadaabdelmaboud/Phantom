@@ -30,7 +30,7 @@ import getCountriesName from "../../mixins/getCountriesName";
 export default {
   data: function() {
     return {
-      country: null
+      country: "Egypt"
     };
   },
   methods: {

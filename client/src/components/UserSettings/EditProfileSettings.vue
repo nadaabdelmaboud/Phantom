@@ -132,6 +132,7 @@ export default {
       if (this.userData.lastName !== this.lname) return true;
       if (this.userData.userName !== this.username) return true;
       if (this.userData.location !== this.location) return true;
+      if (this.userData.about !== this.about) return true;
       return false;
     }
   },

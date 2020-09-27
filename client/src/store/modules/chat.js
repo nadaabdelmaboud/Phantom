@@ -56,8 +56,8 @@ const mutations = {
       state.people.push(person);
     });
   },
-  socketCreated(state){
-    state.firstCreate=1;
+  socketCreated(state) {
+    state.firstCreate = 1;
   }
 };
 

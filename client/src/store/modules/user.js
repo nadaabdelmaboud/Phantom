@@ -1,20 +1,29 @@
 import axios from "axios";
 import { initializeFirebase } from "../../messaging/init";
 const state = {
-  status: null,
+  //Flags for password validation
   validPasswordLength: null,
   containCapitalChar: null,
   containSpecialChar: null,
   containNumber: null,
   validPassword: null,
+  //////////////////////////////
+  //Requests Status
+  status: null,
   errorMessage: null,
-  userData: null,
   isLoading: false,
+  //////////////////////////////
+  //User Data (Name,Gender,....)
+  userData: null,
+  ///////////////////////////////
+  //User Uploaded Image ID
   imgID: null,
+  ///////////////////////////////
   userKey: 0
 };
 
 const mutations = {
+  //Status for requests (Pass - Fail)
   setStatus(state, payload) {
     state.status = payload;
   },
@@ -44,12 +53,12 @@ const mutations = {
       state.validPassword = true;
     else state.validPassword = false;
   },
-  setErrorMessage(state, message) {
-    state.errorMessage = message;
-  },
   setUserData(state, payload) {
     state.userData = payload;
     state.isLoading = false;
+  },
+  setErrorMessage(state, message) {
+    state.errorMessage = message;
   },
   setLoading() {
     state.isLoading = true;

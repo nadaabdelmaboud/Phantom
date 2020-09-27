@@ -210,7 +210,7 @@ const actions = {
         state.offset += 10;
         commit("sethomeCards", home.data);
       } catch (error) {
-        state.inProgress=false
+        state.inProgress = false;
         if (error.response.status == 404) {
           let remaining = state.generatedCount - state.offset;
           if (state.generating) {
@@ -362,7 +362,7 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     commit("imageDownloaded", true);
     axios({
-      url: "http://localhost:3000/api/image/" + imageId,
+      url: process.env.VUE_APP_baseURL + "/image/" + imageId,
       method: "GET",
       responseType: "blob"
     }).then(response => {

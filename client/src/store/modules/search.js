@@ -8,7 +8,6 @@ const state = {
   boards: [],
   offset: 0,
   inProgress: false,
-  totalResult: 50,
   endReuslt: false,
   pinsLoading: false,
   mypinsLoading: false,
@@ -124,9 +123,9 @@ const actions = {
         state.inProgress = false;
         if (error.response.status == 404) {
           state.endReuslt = true;
-          commit("setmyPinsLoading", false);
-         
         }
+        commit("setmyPinsLoading", false);
+        state.inProgress = false;
       }
     }
   },
@@ -165,8 +164,9 @@ const actions = {
         state.inProgress = false;
         if (error.response.status == 404) {
           state.endReuslt = true;
-          commit("setpeopleLoading", false);
         }
+        commit("setpeopleLoading", false);
+        state.inProgress = false;
       }
     }
   },
@@ -195,8 +195,9 @@ const actions = {
         state.inProgress = false;
         if (error.response.status == 404) {
           state.endReuslt = true;
-          commit("setboardsLoading", false);
         }
+        commit("setboardsLoading", false);
+        state.inProgress = false;
       }
     }
   },
