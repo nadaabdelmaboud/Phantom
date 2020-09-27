@@ -90,7 +90,6 @@ export default {
   },
   data: function() {
     return {
-      showPhantomEdit: true,
       showPushEdit: true,
       pinsForYou: false,
       pinsInspired: false,
@@ -107,7 +106,6 @@ export default {
       this.pinsInspired = this.userData.pinsInspired;
       this.popularPins = this.userData.popularPins;
       this.boardsForYou = this.userData.boardsForYou;
-      this.boardUpdate = this.userData.boardUpdate;
       this.pinsNotification = this.userData.pinsNotification;
       this.followNotification = this.userData.followNotification;
     },

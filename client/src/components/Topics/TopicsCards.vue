@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     getImg() {
-      return process.env.VUE_APP_baseURL+"/image/"+this.imageId;
+      return process.env.VUE_APP_baseURL + "/image/" + this.imageId;
     }
   },
   methods: {

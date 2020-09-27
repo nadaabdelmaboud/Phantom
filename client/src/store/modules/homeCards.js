@@ -362,7 +362,7 @@ const actions = {
     axios.defaults.headers.common["Authorization"] = token;
     commit("imageDownloaded", true);
     axios({
-      url: process.env.VUE_APP_baseURL+"/image/" + imageId,
+      url: process.env.VUE_APP_baseURL + "/image/" + imageId,
       method: "GET",
       responseType: "blob"
     }).then(response => {

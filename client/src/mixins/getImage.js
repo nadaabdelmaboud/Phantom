@@ -4,9 +4,9 @@ export default {
       if (google) {
         return googleImage;
       } else if (imageId == "") {
-        return process.env.VUE_APP_baseURL+"/image/%20";
+        return process.env.VUE_APP_baseURL + "/image/%20";
       }
-      return process.env.VUE_APP_baseURL+"/image/" + imageId;
+      return process.env.VUE_APP_baseURL + "/image/" + imageId;
     }
   }
 };
