@@ -5,8 +5,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/_Colors";
-@import "../scss/Mixins";
+@import "../../scss/_Colors";
+@import "../../scss/Mixins";
 .phantomCard {
   width: 252px;
   background-color: $blue;
@@ -27,7 +27,7 @@
 </style>
 
 <script>
-import { default as getImage } from "../mixins/getImage";
+import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "PhantomCard",
   mixins: [getImage],

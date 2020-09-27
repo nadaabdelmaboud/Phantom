@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import HomeCard from "../HomeCard";
+import HomeCard from "../Home/HomeCard";
 import Loading from "../GeneralComponents/Loading";
 
 export default {
