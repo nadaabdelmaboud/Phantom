@@ -1254,6 +1254,7 @@ export default {
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
+    this.socket.disconnect();
   },
   mounted() {
     const heart = document.getElementById("heart-icon");
