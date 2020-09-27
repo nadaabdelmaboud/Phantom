@@ -194,7 +194,7 @@ export default {
       console.log("creating connection");
       this.$store.commit("chat/socketCreated");
       //starting socket connection
-      this.socket = io.connect("http://localhost:3000");
+      this.socket = io.connect(process.env.VUE_APP_base);
       let token = localStorage.getItem("userToken");
       token = token.substring(7);
       //personalise connection

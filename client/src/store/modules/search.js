@@ -8,7 +8,6 @@ const state = {
   boards: [],
   offset: 0,
   inProgress: false,
-  totalResult: 50,
   endReuslt: false,
   pinsLoading: false,
   mypinsLoading: false,

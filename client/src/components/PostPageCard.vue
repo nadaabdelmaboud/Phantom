@@ -1241,7 +1241,7 @@ export default {
   },
   created: function() {
     window.addEventListener("click", this.hideList);
-    this.socket = io.connect("http://localhost:3000");
+    this.socket = io.connect(process.env.VUE_APP_base);
     this.socket.on("sendComment", data => {
       this.$store.commit("postPage/addNewComment", data);
     });
