@@ -87,8 +87,7 @@ export default {
   },
   computed: {
     getImg() {
-      let name = this.topicName.replace(/ /g, "%20");
-      return process.env.VUE_APP_baseURL+"/image/" + "%20" + "?topic=" + name;
+      return process.env.VUE_APP_baseURL+"/image/"+this.imageId;
     }
   },
   methods: {
