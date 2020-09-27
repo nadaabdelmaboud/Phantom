@@ -18,7 +18,7 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-   // initializeFirebase();
+    // initializeFirebase();
     window.addEventListener("scroll", () => {
       if (
         Math.abs(

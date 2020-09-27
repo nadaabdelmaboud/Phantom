@@ -34,7 +34,8 @@ export function initializeFirebase() {
       .then(() => {
         console.log("Permission granted");
         var token = messaging.getToken({
-          vapidKey:"BFz16iixT56m8aolUWzgrMMZN2Ybw_mOvNbnYb6e7-OlhpDSL6OPQr__fTWK_c6bBEhjcsrLrV34izdQhKDkGvY"
+          vapidKey:
+            "BFz16iixT56m8aolUWzgrMMZN2Ybw_mOvNbnYb6e7-OlhpDSL6OPQr__fTWK_c6bBEhjcsrLrV34izdQhKDkGvY"
         });
         return token;
       })
@@ -42,13 +43,15 @@ export function initializeFirebase() {
         axios.defaults.headers.common["Authorization"] = localStorage.getItem(
           "userToken"
         );
-        axios.put("me/" + token)
-        .then(()=>{
-          console.log("token is senttt")
-          store.dispatch("notifications/notifyUser");
-        }).catch(error => {
-          console.log("Error Occurred while sending token", error);
-        });
+        axios
+          .put("me/" + token)
+          .then(() => {
+            console.log("token is senttt");
+            store.dispatch("notifications/notifyUser");
+          })
+          .catch(error => {
+            console.log("Error Occurred while sending token", error);
+          });
       })
       .catch(error => {
         if (error.code === "messaging/permission-blocked") {

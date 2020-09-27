@@ -37,7 +37,7 @@ export default {
 }
 
 .user-card:hover {
-  background-color: $queenPink;
+  background-color: $lightPink;
   border-radius: 10px;
 }
 
