@@ -26,7 +26,7 @@ let app = firebase.initializeApp({
  */
 @Injectable()
 export class NotificationService {
-  constructor() {}
+  constructor() { }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -191,9 +191,9 @@ export class NotificationService {
       if (followedUser.offlineNotifications[i].data)
         if (
           followedUser.offlineNotifications[i].data.title ==
-            'your follower increase ' &&
+          'your follower increase ' &&
           message.data.followerId ==
-            followedUser.offlineNotifications[i].data.followerId
+          followedUser.offlineNotifications[i].data.followerId
         ) {
           followedUser.offlineNotifications.splice(i, 1);
           i--;
@@ -207,9 +207,9 @@ export class NotificationService {
       if (followedUser.notifications[i].data)
         if (
           followedUser.notifications[i].data.title ==
-            'your follower increase ' &&
+          'your follower increase ' &&
           message.data.followerId ==
-            followedUser.notifications[i].data.followerId
+          followedUser.notifications[i].data.followerId
         ) {
           followedUser.notifications.splice(i, 1);
           i--;
@@ -686,10 +686,13 @@ export class NotificationService {
     limit: number,
     pushedData: {},
   ) {
+    console.log(notificationArray)
     if (notificationArray.length >= limit) {
       notificationArray.splice(0, 1);
+      console.log(notificationArray)
     }
     notificationArray.push(pushedData);
+    console.log(notificationArray)
     return notificationArray;
   }
 }

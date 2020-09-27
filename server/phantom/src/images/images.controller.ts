@@ -58,6 +58,7 @@ export class ImagesController {
       { responseType: 'stream' },
       function(err, res) {
         if (err) {
+          console.log(err)
           var filePath = './src/static/default.jpg';
           var resolvedPath = path.resolve(filePath);
           return response.sendFile(resolvedPath);

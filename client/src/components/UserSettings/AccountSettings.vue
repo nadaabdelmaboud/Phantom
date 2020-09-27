@@ -85,8 +85,6 @@ export default {
     return {
       email: null,
       gender: null,
-      facebook: false,
-      google: false,
       country: "Egypt"
     };
   },
@@ -95,8 +93,6 @@ export default {
       this.email = this.userData.email;
       this.gender = this.userData.gender;
       this.country = this.userData.country;
-      this.facebook = this.userData.facebook;
-      this.google = this.userData.google;
     },
     cancelChanges: function() {
       this.updateModels();
@@ -136,8 +132,6 @@ export default {
       if (this.userData.email !== this.email) return true;
       if (this.userData.gender !== this.gender) return true;
       if (this.userData.country !== this.country) return true;
-      if (this.userData.facebook !== this.facebook) return true;
-      if (this.userData.google !== this.google) return true;
       return false;
     }
   },

@@ -8,6 +8,7 @@ import { Topic } from '../models/topic.schema';
 import { UserService } from './user.service';
 import { User } from 'src/models/user.schema';
 import { Message } from 'src/models/message.schema';
+import { BoardService } from '../board/board.service';
 import { Chat } from 'src/models/chat.schema';
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Chat } from 'src/models/chat.schema';
     ]),
   ],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, BoardService],
   exports: [UserService],
 })
 export class UserModule { }

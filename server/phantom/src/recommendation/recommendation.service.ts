@@ -1,7 +1,6 @@
 import {
   Injectable,
   NotFoundException,
-  NotAcceptableException,
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -23,7 +22,7 @@ export class RecommendationService {
     private NotificationService: NotificationService,
 
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get homefeed pins of a user
@@ -55,7 +54,7 @@ export class RecommendationService {
    * @param {Array<object>} values - the Array being checked
    * @returns  {Promise<boolean>}
    */
-  
+
   async checkDublicates(values) {
     for (let i = 0; i < values.length; i++) {
       for (let j = i + 1; j < values.length; j++) {
@@ -196,7 +195,7 @@ export class RecommendationService {
       sortedTopics.push([item, freq[item]]);
       allHome += freq[item];
     }
-    sortedTopics.sort(function(a, b) {
+    sortedTopics.sort(function (a, b) {
       return b[1] - a[1];
     });
 
@@ -315,7 +314,7 @@ export class RecommendationService {
         followers.push(recomUser[0]);
       }
     }
-    followers = followers.sort(function(a, b) {
+    followers = followers.sort(function (a, b) {
       if (a.followers > b.followers) {
         return -1;
       } else if (a.followers < b.followers) {
@@ -332,7 +331,7 @@ export class RecommendationService {
    * @param {string} userId - the id of the user
    * @returns  {Promise<Array<user>>}
    */
-  
+
   async trendingRecommendation(userId) {
     let followers = [];
     let user = await this.userModel.findById(userId, { following: 1 }).lean();
@@ -373,7 +372,7 @@ export class RecommendationService {
    * @param {string} userId - the id of the user
    * @returns  {Promise<Array<object>>}
    */
-  
+
   async followAllRecommendation(userId) {
     let followers = [];
     let user = await this.userModel.findById(userId, {
@@ -1017,7 +1016,7 @@ export class RecommendationService {
    * @param {string} userId - the id of the user
    * @returns  {Promise<Array<board>>}
    */
-  
+
   async boardsForYou(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
@@ -1028,6 +1027,7 @@ export class RecommendationService {
       following: 1,
       followingTopics: 1,
       notificationCounter: 1,
+      offlineNotifications: 1,
       fcmToken: 1,
       boardsForYou: 1,
     });
@@ -1337,9 +1337,10 @@ export class RecommendationService {
       pins: 1,
       savedPins: 1,
       popularPins: 1,
-      notificationCounter:1,
-      notifications:1,
-      fcmToken:1
+      notificationCounter: 1,
+      notifications: 1,
+      offlineNotifications: 1,
+      fcmToken: 1
     });
     if (!user.popularPins) {
       throw new BadRequestException('user should allow popular pins first');
@@ -1363,23 +1364,23 @@ export class RecommendationService {
         }
       }
     }
-    
-      let images = [];
-      let count: number = 0;
-      for (let i = 0; i < allPins.length; i++) {
-        if (count >= 5) break;
-        if (allPins[i].imageId) {
-          count++;
-          images.push(allPins[i].imageId);
-        }
-      }
 
-      let res = await this.NotificationService.popularPins(
-        user,
-        allPins,
-        images,
-      );
-      return true;
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < allPins.length; i++) {
+      if (count >= 5) break;
+      if (allPins[i].imageId) {
+        count++;
+        images.push(allPins[i].imageId);
+      }
+    }
+
+    let res = await this.NotificationService.popularPins(
+      user,
+      allPins,
+      images,
+    );
+    return true;
   }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
@@ -1395,9 +1396,10 @@ export class RecommendationService {
       savedPins: 1,
       followingTopics: 1,
       pinsForYou: 1,
-      notificationCounter:1,
-      notifications:1,
-      fcmToken:1
+      notificationCounter: 1,
+      offlineNotifications: 1,
+      notifications: 1,
+      fcmToken: 1
     });
     if (!user.pinsForYou) {
       throw new BadRequestException('user should allow pins for you first');
@@ -1480,20 +1482,20 @@ export class RecommendationService {
         }
       }
     }
-    
-      pins = await this.shuffle(pins);
-      let images = [];
-      let count: number = 0;
-      for (let i = 0; i < pins.length; i++) {
-        if (count >= 5) break;
-        if (pins[i].imageId) {
-          count++;
-          images.push(pins[i].imageId);
-        }
+
+    pins = await this.shuffle(pins);
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < pins.length; i++) {
+      if (count >= 5) break;
+      if (pins[i].imageId) {
+        count++;
+        images.push(pins[i].imageId);
       }
-      await this.NotificationService.pinsForYou(user, pins, images);
-      return true;
-  
+    }
+    await this.NotificationService.pinsForYou(user, pins, images);
+    return true;
+
   }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
@@ -1504,14 +1506,15 @@ export class RecommendationService {
   async pinsInspired(userId) {
     if ((await this.ValidationService.checkMongooseID([userId])) == 0)
       throw new Error('not valid id');
-    let user = await this.userModel.findById(userId,{
-      pinsInspired:1,
-      notificationCounter:1,
-      notifications:1,
-      fcmToken:1,
-      lastTopics:1,
-      savedPins:1,
-      pins:1
+    let user = await this.userModel.findById(userId, {
+      pinsInspired: 1,
+      notificationCounter: 1,
+      offlineNotifications: 1,
+      notifications: 1,
+      fcmToken: 1,
+      lastTopics: 1,
+      savedPins: 1,
+      pins: 1
     });
     if (!user.pinsInspired) {
       throw new BadRequestException(
@@ -1565,17 +1568,17 @@ export class RecommendationService {
         }
       }
     }
-    
-      let images = [];
-      let count: number = 0;
-      for (let i = 0; i < pins.length; i++) {
-        if (count >= 5) break;
-        if (pins[i].imageId) {
-          count++;
-          images.push(pins[i].imageId);
-        }
+
+    let images = [];
+    let count: number = 0;
+    for (let i = 0; i < pins.length; i++) {
+      if (count >= 5) break;
+      if (pins[i].imageId) {
+        count++;
+        images.push(pins[i].imageId);
       }
-      await this.NotificationService.pinsInspired(user, pins, images);
-      return true;
+    }
+    await this.NotificationService.pinsInspired(user, pins, images);
+    return true;
   }
 }
