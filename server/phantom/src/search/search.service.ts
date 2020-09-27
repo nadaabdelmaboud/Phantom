@@ -37,9 +37,6 @@ export class SearchService {
     if (result.length == 0) {
       throw new NotFoundException()
     }
-    if (Number(Number(offset) + Number(limit)) > result.length) {
-      limit = result.length - Number(offset);
-    }
     return {
       result: this.ValidationService.limitOffset(
         limit,
@@ -57,6 +54,12 @@ export class SearchService {
 * @returns {Object} -result:pin objects, length
 */
   async getAllPins(name, limit, offset): Promise<Object> {
+    let pinFullMatch = await this.pinModel.find({ $text: { $search: name, $caseSensitive: false } }, 'imageId');
+    if (pinFullMatch.length > 0)
+      return {
+        result: this.ValidationService.limitOffset(limit, offset, pinFullMatch),
+        length: pinFullMatch.length
+      }
     let pin = await this.pinModel.find({}, 'title note imageId').lean();
     return await this.Fuzzy(pin, ['title', 'note'], name, limit, offset);
   }
@@ -87,7 +90,7 @@ export class SearchService {
     let user = await this.userModel.findByIdAndUpdate(userId, {
       $pull: { recentSearch: name },
     });
-    if (user.recentSearch.length >= 5) {
+    if (user.recentSearch.length > 4) {
       user.recentSearch = user.recentSearch.slice(0, 4);
       await user.save();
     }
@@ -121,7 +124,7 @@ export class SearchService {
     ]);
     return await this.Fuzzy(
       user,
-      ['firstName', 'lastName', 'userName'],
+      ['userName'],
       name,
       limit,
       offset,
@@ -134,32 +137,12 @@ export class SearchService {
 * @returns {Array<Object>}
 */
   async getKeys(name: string) {
-    await this.userModel.syncIndexes();
-    let keysPin = await this.pinModel
-      .aggregate([
-        {
-          $addFields: {
-            results: { $regexMatch: { input: '$category', regex: /f/ } },
-          },
-        },
-      ])
+    let keysPin = await this.pinModel.find({ $text: { $search: name, $caseSensitive: false } })
       .limit(5);
-    if (keysPin.length > 0)
-      return keysPin.map(pin => {
-        return { name: pin.title };
-      });
-    let keysBoard = await this.boardModel
-      .find(
-        {
-          $text: { $search: name },
-        },
-        { name: 1, _id: 0 },
-      )
-      .limit(5)
-      .lean();
-    if (keysBoard.length > 0) return keysBoard;
-    let KeysPeople = [];
-    return KeysPeople;
+    return keysPin.map(pin => {
+      return { name: pin.title };
+    });
+
   }
   /**
 * @author Dina Alaa <dinaalaaaahmed@gmail.com>
@@ -184,6 +167,25 @@ export class SearchService {
 * @returns {Object} -result: board objects, length
 */
   async getBoards(name, limit, offset): Promise<Object> {
+    let boardFullMatch = await this.boardModel.aggregate([
+      { $match: { $text: { $search: name } } },
+      {
+        $project: {
+          pins: 1,
+          sections: { $size: '$sections' },
+          coverImages: 1,
+          topic: 1,
+          description: 1,
+          name: 1,
+          creator: 1,
+        },
+      },
+    ]);
+    if (boardFullMatch.length > 0)
+      return {
+        result: this.ValidationService.limitOffset(limit, offset, boardFullMatch),
+        length: boardFullMatch
+      }
     let board = await this.boardModel.aggregate([
       { $match: {} },
       {

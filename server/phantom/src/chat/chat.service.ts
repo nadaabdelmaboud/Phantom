@@ -94,6 +94,7 @@ export class ChatService {
           .findOne({ _id: arr[i] }, 'profileImage userName google googleImage')
           .lean()),
         lastMessage: chat[i].lastMessage,
+        
       });
     return result;
   }
