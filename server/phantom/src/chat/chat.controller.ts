@@ -4,10 +4,8 @@ import {
   Body,
   Param,
   Get,
-  Request,
   NotFoundException,
   UseGuards,
-  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ChatService } from './chat.service';
@@ -35,14 +33,13 @@ export class ChatController {
     throw new NotFoundException();
   }
   @UseGuards(AuthGuard('jwt'))
-  @Post('/seenDeliver')
+  @Post('/seen')
   async seenDeliver(
     @Body('senderId') senderId: string,
     @Body('recieverId') recieverId: string,
     @Body('time') time: string,
-    @Body('isSeen') isSeen: boolean,
   ) {
-    let messages = await this.ChatService.seenMessage(senderId, recieverId, time, isSeen);
+    let messages = await this.ChatService.seenMessage(senderId, recieverId, time);
     if (messages) return messages;
     throw new NotFoundException();
   }
