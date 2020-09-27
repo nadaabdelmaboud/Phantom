@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <PhantomPopup v-if="phantomPopup" />
     <EditPin v-if="editPinPopUp" />
     <ReportPin v-if="showReportPin" />
     <SavePin v-if="showSavePin" />
@@ -194,6 +195,7 @@ import ReportPin from "../components/ReportPin";
 import EditPin from "../components/EditPin";
 import FollowPopUp from "../components/FollowPopUp";
 import LoadingPopup from "../components/GeneralComponents/LoadingPopup";
+import PhantomPopup from "../components/PhantomPopup";
 
 import { mapState } from "vuex";
 export default {
@@ -227,7 +229,8 @@ export default {
     ReportPin,
     EditPin,
     FollowPopUp,
-    LoadingPopup
+    LoadingPopup,
+    PhantomPopup
   },
   methods: {
     toggleChat() {
@@ -274,7 +277,8 @@ export default {
       ChoosenBoardName: state => state.homeCards.ChoosenBoardName,
       editPinPopUp: state => state.popUpsState.editPinPopUp,
       showFollowPopup: state => state.popUpsState.showFollowPopup,
-      LoadingPopup: state => state.popUpsState.loadingPopup
+      LoadingPopup: state => state.popUpsState.loadingPopup,
+      phantomPopup: state => state.popUpsState.phantomPopup
     })
   },
   watch: {
