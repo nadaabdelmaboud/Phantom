@@ -61,7 +61,7 @@
 
 
 
-## Contibuting
+## Contributing
 
   
 
