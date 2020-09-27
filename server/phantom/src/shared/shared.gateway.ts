@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 import { pin } from '../types/pin';
 import { user } from '../types/user';
 import { ChatService } from 'src/chat/chat.service';
-import { time } from 'console';
 const jwt = require('jsonwebtoken');
 @WebSocketGateway()
 export class SharedGateway {
@@ -18,7 +17,7 @@ export class SharedGateway {
     private ChatService: ChatService,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
-  ) {}
+  ) { }
   async handleConnection(client: Socket) {
     console.log('client connected', client.id);
   }
@@ -79,8 +78,7 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      let x=await this.ChatService.deliver(recieverId, messageId, true);
-      console.log(x)
+      await this.ChatService.deliver(recieverId, messageId);
     }
   }
   @SubscribeMessage('seen')
@@ -99,7 +97,8 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      await this.ChatService.seen(recieverId, messageId, true);
+      if (data.messageId)
+        await this.ChatService.seen(recieverId, messageId);
     }
   }
   @SubscribeMessage('message')

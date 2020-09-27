@@ -48,21 +48,7 @@ export interface user extends Document {
     sectionId: mongoose.Types.ObjectId;
     note: String;
   }>;
-  sentMessages: Array<{
-    message: Array<{
-      note: String;
-      time: Date;
-    }>;
-    userId: mongoose.Types.ObjectId;
-  }>;
   recentSearch: Array<String>;
-  recievedMessages: Array<{
-    message: Array<{
-      note: String;
-      time: Date;
-    }>;
-    userId: mongoose.Types.ObjectId;
-  }>;
   confirm: Boolean;
   fcmToken: String;
   homeFeed: Array<Object>;

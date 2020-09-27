@@ -83,7 +83,7 @@ export default {
   watch: {
     loginState: function() {
       if (this.loginState) {
-        initializeFirebase()
+        initializeFirebase();
         this.$router.push("/");
       }
     }

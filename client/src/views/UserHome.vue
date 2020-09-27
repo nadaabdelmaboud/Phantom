@@ -79,17 +79,17 @@ export default {
   },
   components: {
     HomeCard,
-    Loading,
+    Loading
   },
   mixins: [isLoggedIn],
   computed: {
     ...mapGetters({
       cards: "homeCards/userHomePage",
-      homeLoading: "homeCards/homeLoading",
+      homeLoading: "homeCards/homeLoading"
     }),
     ...mapState({
-      userKey: (state) => state.user.userKey,
-    }),
+      userKey: state => state.user.userKey
+    })
   },
   mounted() {
     setTimeout(() => {
@@ -102,7 +102,7 @@ export default {
   methods: {
     showTopics() {
       this.$store.commit("popUpsState/toggleTopicsPopup");
-    },
-  },
+    }
+  }
 };
 </script>

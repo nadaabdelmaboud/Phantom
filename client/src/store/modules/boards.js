@@ -276,7 +276,7 @@ const actions = {
         state.offset += 8;
         commit("setMoreLike", more.data);
       } catch (error) {
-        state.inProgress=false
+        state.inProgress = false;
         if (error.response.status == 404) {
           let remaining = state.generatedCount - state.offset;
           if (state.generating) {
