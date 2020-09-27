@@ -4,24 +4,27 @@ import {
   NotFoundException,
   HttpException,
   HttpStatus,
+  NotAcceptableException,
+  UnauthorizedException
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import { user } from '../types/user';
+import { board } from '../types/board';
 import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { UpdateDto } from './dto/update-user.dto';
 import { UpdateSettingsDto } from './dto/update-user-settings.dto';
+import { BoardService } from '../board/board.service';
 import * as Joi from '@hapi/joi';
 import * as bcrypt from 'bcrypt';
 import { NotificationService } from '../shared/notification.service';
 import { ValidationService } from '../shared/validation.service';
 import { topic } from '../types/topic';
 import { pin } from '../types/pin';
-import { board } from '../types/board';
 /**
  * @module Users
  */
@@ -32,10 +35,12 @@ export class UserService {
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
+
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
-  ) {}
+    private boardService: BoardService,
+  ) { }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -504,14 +509,17 @@ export class UserService {
    */
   async updateSettings(userId, settings: UpdateSettingsDto) {
     const user = await this.getUserById(userId);
-    if (settings.deleteflag) {
-      for (let i = 0; i < user.followers.length; i++) {
-        await this.unfollowUser(user.followers[i], user._id);
-      }
-      for (let i = 0; i < user.following.length; i++) {
-        await this.unfollowUser(user._id, user.followers[i]);
-      }
-      return await this.deleteUser(userId);
+    if (settings.deleteFlag) {
+      console.log(1);
+      await this.deleteAllFollowers(userId);
+      await this.deleteAllFollowings(userId);
+      await this.deleteAllFollowingsTopics(userId);
+      await this.deleteAllPins(userId);
+      await this.deleteAllBoards(userId);
+      await this.deleteAllRecomendation(userId);
+      await this.deleteAllReatsAndComments(userId);
+      await this.deleteUser(userId);
+      return 1;
     }
     await this.userModel.updateOne({ _id: userId }, settings);
     return 1;
@@ -540,13 +548,6 @@ export class UserService {
    */
   async deleteUser(id) {
     const user = await this.getUserById(id);
-    // delete following
-    //delete followers
-    // delete pins saved created
-    // delete commints for pin
-    //delete react
-    //delete chat (in ask)
-    // delete following topic
     await this.userModel.findByIdAndDelete(id);
     await this.email.sendEmail(
       user.email,
@@ -668,7 +669,7 @@ export class UserService {
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
-        fcmToken:1,
+        fcmToken: 1,
         google: 1,
         googleImage: 1,
       },
@@ -754,7 +755,7 @@ export class UserService {
         lastName: 1,
         notificationCounter: 1,
         offlineNotifications: 1,
-        fcmToken:1,
+        fcmToken: 1,
         profileImage: 1,
         google: 1,
         googleImage: 1,
@@ -880,17 +881,232 @@ export class UserService {
       numOfFollowings: user.following.length,
     };
   }
-/**
- * @author Nada AbdElmaboud <nada5aled52@gmail.com>
- * @description get public home for unauthorized users
- * @param {number} index - start index of topics returned
- * @returns {Array<pin>}
+
+  /**
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description to delete all followers of user
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1" 
+   */
+  async deleteAllFollowers(userId) {
+    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followers: 1 });
+    if (!user || !user.followers) return 1;
+    for (let i = 0; i < user.followers.length; i++) {
+      await this.unfollowUser(user.followers[i], userId);
+    }
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description to delete all followings of user
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1" 
+   */
+  async deleteAllFollowings(userId) {
+    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, following: 1 });
+    if (!user || !user.following) return 1;
+    for (let i = 0; i < user.following.length; i++) {
+      await this.unfollowUser(userId, user.following[i]);
+    }
+    return 1;
+  }
+
+
+  /**
+  * @author Aya Abohadima <ayasabohadima@gmail.com>
+  * @description make user unfollow topic
+  * @param {String} userId -user id  
+  * @param {String} topicId - topic id
+  * @returns {Number} 1
+  */
+  async unfollowTopic(userId, topicId) {
+    if (!this.ValidationService.checkMongooseID([userId, topicId]))
+      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
+    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
+    if (!user)
+      throw new HttpException(
+        'user id is not correct',
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic = await this.topicModel.findOne({ _id: topicId }, { _id: 1, followers: 1 });
+    if (!topic)
+      throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
+    if (!topic.followers)
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    if (!topic.followers.includes(userId)) throw new HttpException(
+      'you dont follow this topic',
+      HttpStatus.BAD_REQUEST,
+    );
+    await this.topicModel
+      .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
+      .lean();
+    if (!user.followingTopics)
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
+    await this.userModel
+      .findByIdAndUpdate(userId, { $pull: { followingTopics: topicId } })
+      .lean();
+
+    return 1;
+  }
+
+
+  /**
+     * @author Aya Abohadima <ayasabohadima@gmail.com>
+     * @description to unfollow all topics
+     * @param {String} userId - the id of user in mongoose formate
+     * @returns {Number} "1" 
+     */
+  async deleteAllFollowingsTopics(userId) {
+    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
+    if (!user || !user.followingTopics) return 1;
+    for (let i = 0; i < user.followingTopics.length; i++) {
+      await this.unfollowTopic(userId, user.followingTopics[i]);
+    }
+    return 1;
+  }
+
+
+  /**
+    * @author Aya Abohadima <ayasabohadima@gmail.com>
+    * @description to remove all reacts user done 
+    * @param {String} userId - the id of user in mongoose formate
+    * @returns {Number} "1" 
+    */
+  async deleteAllReatsAndComments(userId) {
+    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1 });
+    if (!user) return 1;
+    /* await this.pinModel.update({ "reacts": { reactType: 'Wow', userId: userId } }, { $pull: { reacts: { reactType: 'Wow', userId: userId } }, $inc: { "counts.wowReacts": -1 } },
+       { multi: true });
+     await this.pinModel.update({ "reacts": { reactType: 'Love', userId: userId } }, { $pull: { reacts: { reactType: 'Love', userId: userId } }, $inc: { "counts.loveReacts": -1 } },
+       { multi: true });
+     await this.pinModel.update({ "reacts": { reactType: 'Haha', userId: userId } }, { $pull: { reacts: { reactType: 'Haha', userId: userId } }, $inc: { "counts.hahaReacts": -1 } },
+       { multi: true });
+     await this.pinModel.update({ "reacts": { reactType: 'Thanks', userId: userId } }, { $pull: { reacts: { reactType: 'Thanks', userId: userId } }, $inc: { "counts.thanksReacts": -1 } },
+       { multi: true });
+     await this.pinModel.update({ "reacts": { reactType: 'Good idea', userId: userId } }, { $pull: { reacts: { reactType: 'Good idea', userId: userId } }, $inc: { "counts.goodIdeaReacts": -1 } },
+       { multi: true });*/
+    let pins = await this.pinModel.find({ "reacts.userId": userId }, { _id: 1, counts: 1, reacts: 1 })
+    for (let i = 0; i < pins.length; i++) {
+      console.log('In');
+      for (let j = 0; j < pins[i].reacts.length; j++) {
+        if (String(pins[i].reacts[j].userId) == String(userId))
+          if (pins[i].reacts[j].reactType == 'Wow') {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.wowReacts = Number(pins[i].counts.wowReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType == 'Good idea') {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.goodIdeaReacts = Number(pins[i].counts.goodIdeaReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType == 'Thanks') {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.thanksReacts = Number(pins[i].counts.thanksReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType == 'Haha') {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.hahaReacts = Number(pins[i].counts.hahaReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType == 'Love') {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.loveReacts = Number(pins[i].counts.loveReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          }
+      }
+
+    }
+    pins = await this.pinModel.find({ "comments.commenter": userId }, { _id: 1, comments: 1, counts: 1 });
+    for (let i = 0; i < pins.length; i++) {
+      for (let j = 0; j < pins[i].comments.length; j++) {
+        if (String(pins[i].comments[j].commenter) == String(userId))
+          pins[i].comments.splice(j, 1);
+        pins[i].counts.comments = Number(pins[i].counts.comments) - 1;
+        break;
+      }
+      await this.pinModel.updateOne({ _id: pins[i]._id }, { comments: pins[i].comments, counts: pins[i].counts });
+    }
+    return 1;
+  }
+
+
+  /**
+     * @author Aya Abohadima <ayasabohadima@gmail.com>
+     * @description delete all pins created and saved by this user
+     * @param {String} userId - the id of user in mongoose formate
+     * @returns {Number} "1" 
+     */
+  async deleteAllPins(userId) {
+    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, pins: 1, savedPins: 1 });
+    if (!user) return 1;
+    for (let i = 0; i < user.pins.length; i++) {
+      await this.boardService.deletePin(user.pins[i].pinId, userId);
+    }
+    for (let i = 0; i < user.savedPins.length; i++) {
+      await this.boardService.unsavePin(user.savedPins[i].pinId, user.savedPins[i].boardId, user.savedPins[i].sectionId, userId, false);
+    }
+  }
+
+  /**
+     * @author Aya Abohadima <ayasabohadima@gmail.com>
+     * @description delete all boards created 
+     * @param {String} userId - the id of user in mongoose formate
+     * @returns {Number} "1" 
+     */
+  async deleteAllBoards(userId) {
+    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, boards: 1 });
+    if (!user) return 1;
+    for (let i = 0; i < user.boards.length; i++) {
+      await this.boardService.deleteBoard(userId, user.boards[i].boardId);
+    }
+    let boards = await this.boardModel.find({ "collaborators.collaboratorId": userId }, { collaborators: 1, _id: 1, creator: 1 })
+    for (let i = 0; i < boards.length; i++) {
+      await this.boardService.deleteCollaborator(boards[i].creator.id, boards[i]._id, userId);
+    }
+  }
+  /**
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description delete user from all notification
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1" 
+   */
+  async deleteAllRecomendation(userId) {
+    const topics = await this.topicModel.find({ "recommendedUsers": userId }, { _id: 1, recommendedUsers: 1 });
+    for (let i = 0; i < topics.length; i++) {
+      for (let j = 0; j < topics[i].recommendedUsers.length; j++) {
+        if (String(topics[i].recommendedUsers[j]) == String(userId))
+          topics[i].recommendedUsers.splice(j, 1);
+      }
+      await this.topicModel.updateOne({ _id: topics[i]._id }, { recommendedUsers: topics[i].recommendedUsers })
+    }
+  }
+
+  /**
+ * @author Aya Abohadima <ayasabohadima@gmail.com>
+ * @description delete chat
+ * @param {String} userId - the id of user in mongoose formate
+ * @returns {Number} "1" 
  */
-  async getPublicHome(index:number){
-    let topics = await this.topicModel.find({},{pins:1}).skip(Number(index)).limit(10);
-    let pins=[];
-    for(let i=0;i<topics.length;i++){
-      let pin = await this.pinModel.findById(topics[i].pins[0],{imageId:1});
+  async deleteAllChats(userId) {
+
+  }
+
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description get public home for unauthorized users
+   * @param {number} index - start index of topics returned
+   * @returns {Array<pin>}
+   */
+  async getPublicHome(index: number) {
+    let topics = await this.topicModel.find({}, { pins: 1 }).skip(Number(index)).limit(10);
+    let pins = [];
+    for (let i = 0; i < topics.length; i++) {
+      let pin = await this.pinModel.findById(topics[i].pins[0], { imageId: 1 });
       pins.push(pin);
     }
     return pins;
