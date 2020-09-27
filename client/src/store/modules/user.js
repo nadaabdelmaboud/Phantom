@@ -111,7 +111,6 @@ const actions = {
         localStorage.setItem("userToken", token);
         await dispatch("getUserProfile");
         commit("setStatus", true);
-        dispatch("notifications/notifyUser", null, { root: true });
         commit("setKey", 1);
       })
       .catch(error => {

@@ -21,9 +21,6 @@ export function initializeFirebase() {
       firebase.initializeApp(firebaseConfig);
     }
     messaging = firebase.messaging();
-    // messaging.usePublicVapidKey(
-    //   "BEAsYWCI71bBMrKccjVrdKuz9Scwe-rfz4LJp21Q3AdKANNczGBnsb-CbeY_BHA6gq8wPyehUpWBUvpLhQqG28w"
-    // );
     messaging.onMessage(payload => {
       console.log("Message received. ", payload);
       store.commit("notifications/setCounter", 1);
@@ -36,9 +33,6 @@ export function initializeFirebase() {
     Notification.requestPermission()
       .then(() => {
         console.log("Permission granted");
-         // messaging.usePublicVapidKey(
-    //   "BEAsYWCI71bBMrKccjVrdKuz9Scwe-rfz4LJp21Q3AdKANNczGBnsb-CbeY_BHA6gq8wPyehUpWBUvpLhQqG28w"
-    //   );
         var token = messaging.getToken({
           vapidKey:"BFz16iixT56m8aolUWzgrMMZN2Ybw_mOvNbnYb6e7-OlhpDSL6OPQr__fTWK_c6bBEhjcsrLrV34izdQhKDkGvY"
         });
@@ -51,6 +45,7 @@ export function initializeFirebase() {
         axios.put("me/" + token)
         .then(()=>{
           console.log("token is senttt")
+          store.dispatch("notifications/notifyUser");
         }).catch(error => {
           console.log("Error Occurred while sending token", error);
         });
