@@ -173,7 +173,7 @@
 <script>
 import { default as getImage } from "../mixins/getImage";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
-import HomeNavigationBar from "../components/HomeNavigationBar";
+import HomeNavigationBar from "../components/Home/HomeNavigationBar";
 import CreateBoardPopup from "../views/BoardsPopUps/CreateBoardPopup";
 import NewPinPopup from "../views/AddNewPin/NewPinPopup";
 import EditBoardPopup from "../views/BoardsPopUps/EditBoardPopup";

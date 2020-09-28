@@ -1,5 +1,6 @@
 import io from "socket.io-client";
 import { mapGetters, mapState } from "vuex";
+import { default as isLoggedIn } from "./isLoggedIn";
 import { default as getImage } from "./getImage";
 
 export default {
@@ -21,7 +22,7 @@ export default {
       searchWord: ""
     };
   },
-  mixins: [getImage],
+  mixins: [getImage, isLoggedIn],
   methods: {
     sendMsg() {
       if (this.currentMsg != "") {
@@ -51,6 +52,8 @@ export default {
       };
       this.$store.dispatch("chat/setAsSeen", payload);
       this.inchat = !this.inchat;
+
+      this.socket.emit("seen", payload);
       setTimeout(() => {
         this.scrollDown();
       }, 1000);
@@ -143,6 +146,7 @@ export default {
     },
     seenListener() {
       this.socket.on("setSeen", data => {
+        console.log("seen");
         if (data.senderId == this.myData._id) {
           this.$store.commit("chat/setState", "seen");
         }
@@ -190,35 +194,35 @@ export default {
   },
   created() {
     setTimeout(() => {
-      // if (!this.firstCreate) {
-      console.log("creating connection");
-      this.$store.commit("chat/socketCreated");
-      //starting socket connection
-      this.socket = io.connect(process.env.VUE_APP_base);
-      let token = localStorage.getItem("userToken");
-      token = token.substring(7);
-      //personalise connection
-      this.socket.emit("setUserId", {
-        token: token
-      });
-      //ensure notification is enabled
-      Notification.requestPermission().then(permission => {
-        if (permission == "granted") {
-          this.allowNotify = true;
-        } else {
-          console.log("notification disabled");
-        }
-      });
+      if (this.isLoggedIn()) {
+        console.log("creating connection");
+        this.$store.commit("chat/socketCreated");
+        //starting socket connection
+        this.socket = io.connect(process.env.VUE_APP_base);
+        let token = localStorage.getItem("userToken");
+        token = token.substring(7);
+        //personalise connection
+        this.socket.emit("setUserId", {
+          token: token
+        });
+        //ensure notification is enabled
+        Notification.requestPermission().then(permission => {
+          if (permission == "granted") {
+            this.allowNotify = true;
+          } else {
+            console.log("notification disabled");
+          }
+        });
 
-      //messageListener
-      this.messageListener();
-      //typing
-      this.typingLisener();
-      //delivered
-      this.deliveredListener();
-      //seen
-      this.seenListener();
-      // }
+        //messageListener
+        this.messageListener();
+        //typing
+        this.typingLisener();
+        //delivered
+        this.deliveredListener();
+        //seen
+        this.seenListener();
+      }
     }, 3000);
   },
   filters: {
@@ -239,6 +243,5 @@ export default {
   },
   destroyed() {
     console.log("disconnecting socket");
-    // this.socket.disconnect();
   }
 };

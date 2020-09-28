@@ -124,11 +124,10 @@ const actions = {
   },
   setAsSeen({ dispatch }, payload) {
     axios
-      .post("seenDeliver", {
+      .post("seen", {
         senderId: payload.senderId,
         recieverId: payload.recieverId,
-        time: Date.now(),
-        isSeen: true
+        time: Date.now()
       })
       .then(() => {
         dispatch("getChat", payload);
