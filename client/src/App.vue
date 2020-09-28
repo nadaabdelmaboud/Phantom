@@ -63,9 +63,9 @@ export default {
         }
       }
     });
-    setInterval(() => {
-      this.waitForImages();
-    }, 500);
+    // setInterval(() => {
+    //   this.waitForImages();
+    // }, 500);
   },
   methods: {
     checkLists(event) {
