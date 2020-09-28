@@ -29,7 +29,6 @@ export class SharedGateway {
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, { socketId: 1 });
     if (user) {
-      console.log('user', socket.id);
       user.socketId = socket.id;
       await user.save();
     }
@@ -50,8 +49,7 @@ export class SharedGateway {
     let recieverId = data.recieverId;
     let reciever = await this.userModel.findById(recieverId);
     if (sender && reciever) {
-      console.log('sending');
-      socket.to(reciever.socketId).emit('isTyping', {
+      this.server.to(reciever.socketId).emit('isTyping', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
@@ -69,8 +67,7 @@ export class SharedGateway {
     let messageId = data.messageId;
     console.log('deliver event');
     if (sender && reciever) {
-      console.log(reciever.socketId, 'to emiit');
-      socket.to(sender.socketId).emit('setDelivered', {
+      this.server.to(sender.socketId).emit('setDelivered', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
@@ -89,7 +86,7 @@ export class SharedGateway {
     let reciever = await this.userModel.findById(recieverId);
     let messageId = data.messageId;
     if (sender && reciever) {
-      socket.to(sender.socketId).emit('setSeen', {
+      this.server.to(sender.socketId).emit('setSeen', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
@@ -114,7 +111,7 @@ export class SharedGateway {
       messageText,
     );
     if (sender && reciever && messageText) {
-      socket.to(reciever.socketId).emit('sendMessage', {
+      this.server.to(reciever.socketId).emit('sendMessage', {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + ' ' + reciever.lastName,
@@ -134,7 +131,7 @@ export class SharedGateway {
 
   @SubscribeMessage('reactPin')
   async reactPin(socket: Socket, data: any) {
-    const token = data.token;
+    const token = data.token;8
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, {
