@@ -20,13 +20,12 @@
 
 <script>
 import { default as getImage } from "../../mixins/getImage";
-import { default as getUserImage } from "../../mixins/getUserImage";
 export default {
   name: "BoardPins",
   data: function() {
     return {};
   },
-  mixins: [getImage, getUserImage],
+  mixins: [getImage],
   props: {
     imageId: {
       type: String

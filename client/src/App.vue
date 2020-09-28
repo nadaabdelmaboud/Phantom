@@ -1,5 +1,5 @@
 <template>
-  <div @click="checkLists">
+  <div @click="checkLists" id="app">
     <router-view></router-view>
   </div>
 </template>
@@ -18,12 +18,12 @@ export default {
       this.$store.dispatch("user/getUserProfile");
     }
     window.addEventListener("scroll", () => {
-      console.log("scroll height ", window.innerHeight + window.scrollY," screen height", document.body.offsetHeight)
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
-        ) <= 2
+        ) <= 10
       ) {
+        // document.body.style.height=document.body.offsetHeight+300+"px"
         if (this.$route.path.includes("/More")) {
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {
