@@ -41,7 +41,7 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-
+    
     const part = await user.homeFeed.slice(
       Number(offset),
       Number(Number(offset) + Number(limit)),
