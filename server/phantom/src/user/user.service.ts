@@ -518,21 +518,18 @@ export class UserService {
    */
   async updateSettings(userId, settings: UpdateSettingsDto) {
     const user = await this.getUserById(userId);
-    if (settings.deleteFlag) {
-      await this.deleteAllFollowers(userId);
-      await this.deleteAllFollowings(userId);
-      await this.deleteAllFollowingsTopics(userId);
-      await this.deleteUserUpdateChats(userId)
-      await this.deleteUser(userId);
-      await this.deleteAllRecomendation(userId);
-      await this.deleteAllReatsAndComments(userId);
+    await this.deleteAllFollowers(userId);
+    await this.deleteAllFollowings(userId);
+    await this.deleteAllFollowingsTopics(userId);
+    await this.deleteUserUpdateChats(userId)
+    await this.deleteAllRecomendation(userId);
+    await this.deleteAllReatsAndComments(userId);
+    await this.deleteAllPins(userId);
+    await this.deleteAllBoards(userId);
+    await this.deleteUser(userId);
 
+    return 1;
 
-      await this.deleteAllPins(userId);
-      await this.deleteAllBoards(userId);
-
-      return 1;
-    }
     await this.userModel.updateOne({ _id: userId }, settings);
     return 1;
   }
@@ -1006,8 +1003,6 @@ export class UserService {
     * @returns {Number} "1" 
     */
   async deleteAllReatsAndComments(userId) {
-    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1 });
-    if (!user) return 1;
     await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Wow', userId: userId } }, $inc: { "counts.wowReacts": -1 } },
     );
     await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Love', userId: userId } }, $inc: { "counts.loveReacts": -1 } },
@@ -1019,7 +1014,6 @@ export class UserService {
     await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Good idea', userId: userId } }, $inc: { "counts.goodIdeaReacts": -1 } },
     );
     await this.pinModel.updateMany({}, { $pull: { comments: { commenter: userId }, $inc: { "counts.comments": -1 } } });
-
     return 1;
   }
 

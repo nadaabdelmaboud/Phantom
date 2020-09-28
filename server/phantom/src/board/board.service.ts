@@ -25,7 +25,7 @@ export class BoardService {
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private ValidationService: ValidationService,
-  ) {}
+  ) { }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get board document
@@ -208,7 +208,7 @@ export class BoardService {
         sortType: 1,
       },
     );
-    await user.boards.sort(function(a, b) {
+    await user.boards.sort(function (a, b) {
       if (a.createdAt > b.createdAt) {
         return -1;
       }
@@ -452,7 +452,7 @@ export class BoardService {
    * @returns  {Promise<boolean>}
    */
   async isPublicBoard(boardId) {
-    let board = await this.boardModel.findById(boardId,{status:1});
+    let board = await this.boardModel.findById(boardId, { status: 1 });
     if (!board) return false;
     if (!board.status || board.status == '' || board.status == 'public')
       return true;
@@ -1066,29 +1066,14 @@ export class BoardService {
         'this user is unauthorized to delete this board ',
       );
     }
-    for (var i = 0; i < user.boards.length; i++) {
-      if (String(user.boards[i].boardId) == String(boardId)) {
-        user.boards.splice(i, 1);
-        await user.save();
-        break;
-      }
-    }
+    await this.userModel.findByIdAndUpdate(userId, { $pull: { boards: { boardId: boardId } } })
     for (var k = 0; k < board.collaborators.length; k++) {
-      let collaborator = await this.userModel.findById(
+      await this.userModel.findByIdAndUpdate(
         board.collaborators[k].collaboratorId,
         {
-          boards: 1,
+          $pull: { 'collaborator.boards': { boardId: boardId } }
         },
       );
-      if (collaborator) {
-        for (var i = 0; i < collaborator.boards.length; i++) {
-          if (String(collaborator.boards[i].boardId) == String(boardId)) {
-            collaborator.boards.splice(i, 1);
-            await collaborator.save();
-            break;
-          }
-        }
-      }
     }
     for (let i = 0; i < board.pins.length; i++) {
       let isDeleted = await this.deletePinFromBoardSection(
