@@ -10,7 +10,6 @@
 .phantomCard {
   width: 252px;
   background-color: $blue;
-  // background: transparent;
   border: transparent;
   border-radius: 25px;
   &:hover {

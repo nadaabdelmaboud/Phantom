@@ -97,7 +97,6 @@ const mutations = {
     state.cardImageId = id;
   },
   setCardId(state, id) {
-    console.log("Home id", id);
     state.CardId = id;
   },
   reportPin(state, check) {
@@ -107,7 +106,6 @@ const mutations = {
     state.pinId = id;
   },
   setNumReactHaha(state, react) {
-    console.log("mutation react", react);
     state.numReactHaha = react;
   },
   setNumReactWow(state, react) {
@@ -123,7 +121,12 @@ const mutations = {
     state.numReactThanks = react;
   },
   setReactThisPin(state, react) {
-    console.log("react", react);
+    if (react == "none") react = "black";
+    else if (react == "Haha") react = "yellow";
+    else if (react == "Wow") react = "green";
+    else if (react == "Love") react = "red";
+    else if (react == "Good Idea") react = "blue";
+    else if (react == "Thanks") react = "pink";
     state.reactThisPin = react;
   },
   setChoosenBoardName(state, name) {
@@ -251,7 +254,6 @@ const actions = {
       .get("/pins/" + postPageID)
       .then(response => {
         let res = response.data;
-        console.log("nana", response.data);
         commit("setpostImage", res.pin.imageId);
         commit("setpinCreatorId", res.pin.creator.id);
         commit("setpostTitle", res.pin.title);
@@ -292,7 +294,6 @@ const actions = {
   reportPin({ commit }, { pinId, reportReason }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    console.log("ReportReason", reportReason);
     axios
       .post("pins/" + pinId + "/report", reportReason)
       .then(() => {

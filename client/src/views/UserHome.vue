@@ -1,7 +1,6 @@
 <template>
   <div class="home" :key="userKey">
     <div v-if="isLoggedIn() == false">
-      <!-- <Loading :loading="homeLoading && isLoggedIn()" v-if="homeLoading" /> -->
       <HomeLogout />
     </div>
     <div v-if="isLoggedIn() == true">

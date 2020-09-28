@@ -23,9 +23,12 @@
               <i class="fa fa-pencil" id="edit-icon"></i>
             </button>
             <button class="heart-icon" id="heartIcon" @click="showReactsList">
-              <i class="fa fa-heart" id="heart-icon"></i>
+              <i
+                class="fa fa-heart"
+                id="heart-icon"
+                v-bind:style="{ color: this.reactThisPin }"
+              ></i>
             </button>
-            <!-- //////////////////////////////// -->
             <div class="reactsList" id="reactsList" v-if="showReacts">
               <ul>
                 <li>
@@ -65,7 +68,6 @@
                 </li>
               </ul>
             </div>
-            <!-- //////////////////////// -->
             <button
               class="added-list"
               id="added-list"
@@ -140,7 +142,6 @@
             </div>
             <div class="AddComments">
               <p>Share feedback, ask a question or give a high five</p>
-              <!-- ////////////////////////////////////// -->
               <ul
                 id="commentsList"
                 v-if="this.pinComments.length != 0 && this.showcomments == true"
@@ -203,7 +204,6 @@
                         </p>
                       </div>
                     </div>
-                    <!-- /////////////////////////////////Replies//////////////// -->
                     <div
                       class="containReplies"
                       v-bind:id="pinComment.comment.id + 0"
@@ -312,7 +312,6 @@
                         Cancel
                       </button>
                     </div>
-                    <!-- ////////////////////////////////////// -->
                   </div>
                 </li>
               </ul>
@@ -422,7 +421,6 @@
 }
 .box {
   width: 50%;
-  //margin:top right bottom left
   margin: 20px 20px 40px 5px;
   box-sizing: border-box;
   position: relative;
@@ -1015,7 +1013,6 @@ export default {
     },
     showReactsList() {
       const heart = document.getElementById("heart-icon");
-      console.log("heartColor", heart.style.color);
       if (heart.style.color !== "black") {
         if (heart.style.color === "yellow")
           this.$store.commit(
@@ -1259,15 +1256,6 @@ export default {
   mounted() {
     const heart = document.getElementById("heart-icon");
     heart.style.color = "black";
-    setTimeout(() => {
-      console.log("this.reactThisPin", this.reactThisPin);
-      if (this.reactThisPin == "none") heart.style.color = "black";
-      else if (this.reactThisPin == "Haha") heart.style.color = "yellow";
-      else if (this.reactThisPin == "Wow") heart.style.color = "green";
-      else if (this.reactThisPin == "Love") heart.style.color = "red";
-      else if (this.reactThisPin == "Good Idea") heart.style.color = "blue";
-      else if (this.reactThisPin == "Thanks") heart.style.color = "pink";
-    }, 2000);
     this.$store.dispatch(
       "postPage/getPinComments",
       this.$route.params.postPageId

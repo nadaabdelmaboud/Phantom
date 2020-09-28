@@ -31,7 +31,6 @@ const mutations = {
     state.react = react;
   },
   setPinComments(state, comment) {
-    console.log("Array in mutation", comment);
     state.pinComments = comment;
   },
   addNewComment(state, comment) {
