@@ -42,7 +42,6 @@
 @import "../../scss/Mixins";
 .card {
   width: 252px;
-  // min-height: 200px;
   background-color: $blue;
   border: transparent;
   border-radius: 25px;

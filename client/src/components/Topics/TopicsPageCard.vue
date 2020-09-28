@@ -2,12 +2,7 @@
   <div class="topicsCard">
     <div class="cardContent">
       <div class="cardView">
-        <img
-          :src="getImage(imageId)"
-          class="card-img"
-          alt="Card image"
-          @click="toTopicsPage"
-        />
+        <img :src="getImage(imageId)" class="card-img" alt="Card image" />
         <div class="topicsName">
           {{ topicName }}
         </div>
@@ -118,10 +113,6 @@ export default {
     }
   },
   methods: {
-    toTopicsPage() {
-      //add router link
-      //this.$router.push("/TopicsPage");
-    },
     followTopic() {
       this.$store.dispatch("topics/followTopic", this.topicId);
     },

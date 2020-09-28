@@ -386,8 +386,6 @@ export default {
   async mounted() {
     this.$store.dispatch("boards/userBoards");
     await this.$store.dispatch("homeCards/getPinType", this.CardId);
-    console.log("this.boardId", this.boardId);
-    console.log("this.sectionId", this.sectionId);
   },
   methods: {
     closePopUp() {
