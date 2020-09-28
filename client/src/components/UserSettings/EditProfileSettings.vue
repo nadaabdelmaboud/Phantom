@@ -29,10 +29,11 @@
       <label for="profile-image">Photo</label><br />
       <img
         id="profile-image"
-        :src="userData.googleImage"
-        v-if="userData.google"
+        v-if="this.showGoogleImage"
+        :src="
+          getImage(userData.profileImage, userData.google, userData.googleImage)
+        "
       />
-      <img id="profile-image" :src="getUserImage()" v-else />
 
       <button id="change-photo" @click="openPopUp" v-if="!userData.google">
         Change
@@ -79,12 +80,13 @@
 </template>
 
 <script>
-import getUserImage from "../../mixins/getUserImage";
+import getImage from "../../mixins/getImage";
 
 export default {
   created: async function() {
     this.$store.dispatch("user/getUserProfile");
     this.updateModels();
+    if (this.userData != null) this.showGoogleImage = true;
   },
   data: function() {
     return {
@@ -92,7 +94,8 @@ export default {
       lname: null,
       username: null,
       location: null,
-      about: null
+      about: null,
+      showGoogleImage: false
     };
   },
   methods: {
@@ -139,9 +142,11 @@ export default {
   watch: {
     userData: function() {
       this.updateModels();
+      if (this.userData == null) this.showGoogleImage = false;
+      else this.showGoogleImage = true;
     }
   },
-  mixins: [getUserImage]
+  mixins: [getImage]
 };
 </script>
 
