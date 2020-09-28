@@ -1,4 +1,5 @@
 
+
 <p  align="center">
 
 <a align="center" href="https://phantomclient.herokuapp.com/"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
@@ -6,30 +7,30 @@
 </p>
 
 
-##### Table of Contents  
+### Table of Contents  
 1. [Description](#Description)  
 2. [Screenshots](#Screenshots)  
 3. [Links](#Links) 
 4. [Tools](#Tools)  
 5. [Installation](#Installation) 
-	* Server
-		* Run
-		* Env Variables
-		* Database Seeds
-		* Api Documentation
-		* JsDoc
-	* Frontend
-		* Run
-		* Env Variables
+	* [Server](#Server)
+		* [Run](#Run)
+		* [Env Variables](#Env-Variables)
+		* [Database Seeds](#Database-Seeds)
+		* [Api Documentation](#Api-Documentation)
+		* [JsDoc](#JsDoc)
+	* [Frontend](#Frontend)
+		* [Run](#Frontend-Run)
+		* [Env Variables](#Frontend-Env-Variables)
 6. [Contributing](#Contributing)
-7. [Contributores](#Stay)
-8. [License](#lisence)
+7. [Contributors](#Stay-in-touch)
+8. [License](#Lisence)
 
 
 ## Description
 
 
-[Phantom](https://github.com/nadaabdelmaboud/Phantom) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas  .
+[Phantom](https://phantomrequiem.herokuapp.com) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas  .
 
   
 ## Screenshots
@@ -63,7 +64,7 @@
 
 * **Don't Miss A Thing And Keep Up With Your Notifications**
 
-	![Notifications](https://i.ibb.co/fp72jQS/Screenshot-613.png)
+	![Notifications](https://i.ibb.co/G0hcmzj/Screenshot-627.png)
 
 * **Chat With Others And Make New Friends Who Share You Some Interests**
 
@@ -91,6 +92,28 @@
 
 	![Reacts](https://i.ibb.co/YZkSdTr/Screenshot-622.png)
 
+
+
+
+
+## Links
+* #### [Website Url](https://phantomrequiem.herokuapp.com)
+* #### Api Base Url : (https://daniphantom.herokuapp.com)
+
+## Tools
+1. Frontend
+	* Vue
+	* Vue lazyload
+	* Bootstrap
+	* Firebase
+	* Socket io
+1. Backend
+	* Nestjs
+	* Mongodb
+	* Firebase
+	* WebSockets
+	* Google Api
+
 ## Installation
 * ## Server
 	* ####  Run
@@ -111,14 +134,51 @@
 
 		```
 	*	#### Env Variables
-		1.
-	
+		* refer to [.env.example](server/phantom/.env.example)
+	*	#### Database Seeds
+		```bash
+		$ cd server/phantom
+		
+		$ npm install mongonaut
+		
+		#seeds will be added to a new mongo local db
+		$ npm run seeds
 
+		```
+		*	#### Api Documentation
+			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10486077/TVKHVb91)
+		*	#### JsDoc
+		```bash
+		$ cd server/phantom
+		
+		$ npm install @combodoc/combodoc
+		
+		$ npm run combodoc
+		# then open documentation/index.html
+
+		```
+* ## Frontend
+	* ####  Frontend Run
+		```bash
+		$ cd client
+		
+		# install
+		$ npm install
+		
+		# development
+		$ npm run serve
+
+		# production mode
+		$ npm run build
+
+		```
+	*	#### Frontend Env Variables
+		* refer to [.env.example](client/.env.example)
   
 
 
 
-## Contibuting
+## Contributing
 
   
 

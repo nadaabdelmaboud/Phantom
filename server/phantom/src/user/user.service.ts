@@ -1103,7 +1103,7 @@ export class UserService {
     index = Math.floor(
       Math.random() * 1000 + 1,
     );
-    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(10);
+    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(15);
 
     return pins;
   }
