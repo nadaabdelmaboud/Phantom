@@ -21,7 +21,8 @@ const state = {
   showFollowPopup: false,
   navList: false,
   showList: false,
-  loadingPopup: false
+  loadingPopup: false,
+  phantomPopup: false
 };
 
 const mutations = {
@@ -92,6 +93,9 @@ const mutations = {
   },
   toggleLoadingPopup(state) {
     state.loadingPopup = !state.loadingPopup;
+  },
+  togglePhantomPopup(state) {
+    state.phantomPopup = !state.phantomPopup;
   }
 };
 export default {

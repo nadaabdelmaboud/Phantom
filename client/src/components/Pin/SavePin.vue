@@ -70,8 +70,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 .savePin {
   @include popUpBackground;
 }
@@ -277,7 +277,7 @@ input:focus {
 </style>
 
 <script>
-import { default as getImage } from "../mixins/getImage";
+import { default as getImage } from "../../mixins/getImage";
 import { mapState } from "vuex";
 export default {
   name: "SavePin",

@@ -247,9 +247,9 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/RadioButtons";
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/RadioButtons";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 .reportPin {
   @include popUpBackground;
 }

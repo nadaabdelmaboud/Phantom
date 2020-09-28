@@ -804,7 +804,7 @@ li button {
   }
 }
 .previousrepliesfield {
-  width: 280px;
+  width: 245px;
   height: auto;
   box-shadow: none;
   border: 1px solid rgba(189, 186, 186, 0.5);
@@ -829,7 +829,7 @@ li button {
   word-wrap: break-word;
 }
 #replyTextStyle {
-  width: 250px;
+  width: 225px;
 }
 .liDiv {
   display: block;
@@ -948,15 +948,15 @@ li button {
     }
   }
   .previousrepliesfield {
-    width: 240px;
+    width: 180px;
   }
   #replyTextStyle {
-    width: 180px;
+    width: 160px;
   }
   .repliesField {
     width: 220px;
     input {
-      width: 180px;
+      width: 150px;
     }
   }
   .createReply {
@@ -1254,6 +1254,7 @@ export default {
   },
   beforeDestroy: function() {
     window.removeEventListener("click", this.hideList);
+    this.socket.disconnect();
   },
   mounted() {
     const heart = document.getElementById("heart-icon");

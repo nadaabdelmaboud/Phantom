@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import { user } from '../types/user';
+import { chat } from '../types/chat';
 import { board } from '../types/board';
 import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
@@ -35,7 +36,7 @@ export class UserService {
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
-
+    @InjectModel('Chat') private readonly chatModel: Model<chat>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
@@ -127,10 +128,13 @@ export class UserService {
    * @returns {Object}
    */
   async findUserAndGetData(findData: {}, data: {}) {
-    const user = await this.userModel.findOne(findData, data).lean();
+    let user = await this.userModel.findOne(findData, data)
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
-    if (!user.about) user.about = '';
+    if (!user.about) {
+      user.about = '';
+      await user.save()
+    }
     return user;
   }
 
@@ -510,7 +514,6 @@ export class UserService {
   async updateSettings(userId, settings: UpdateSettingsDto) {
     const user = await this.getUserById(userId);
     if (settings.deleteFlag) {
-      console.log(1);
       await this.deleteAllFollowers(userId);
       await this.deleteAllFollowings(userId);
       await this.deleteAllFollowingsTopics(userId);
@@ -518,6 +521,7 @@ export class UserService {
       await this.deleteAllBoards(userId);
       await this.deleteAllRecomendation(userId);
       await this.deleteAllReatsAndComments(userId);
+      await this.deleteUserUpdateChats(userId)
       await this.deleteUser(userId);
       return 1;
     }
@@ -676,7 +680,7 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (await this.checkFollowUser(userFollow, followingId))
+    if (userFollow.following.includes(followingId))
       throw new BadRequestException('you followed this user before');
     userFollow.following.push(followingId);
     await this.userModel.updateOne(
@@ -763,39 +767,27 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (!(await this.checkFollowUser(userFollow, followingId)))
+    if (!userFollow.following.includes(followingId))
       throw new BadRequestException('you did not follow this user before');
     if (userFollow.following) {
-      for (let i = 0; i < userFollow.following.length; i++) {
-        if (String(userFollow.following[i]) === String(followingId)) {
-          userFollow.following.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: userFollow._id },
-            { following: userFollow.following },
-          );
-          break;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followerId, { $pull: { following: followingId } })
+        .lean();
     } else throw new BadRequestException('you did not follow this user before');
     if (followedUser.followers) {
-      for (let i = 0; i < followedUser.followers.length; i++) {
-        if (String(followedUser.followers[i]) === String(followerId)) {
-          followedUser.followers.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: followedUser._id },
-            { followers: followedUser.followers },
-          );
-          var newUserData = await this.notification.unfollowUser(
-            followedUser,
-            userFollow,
-          );
-          await this.updateDataInUser(followingId, newUserData);
-          return 1;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followingId, { $pull: { followers: followerId } })
+        .lean();
+      var newUserData = await this.notification.unfollowUser(
+        followedUser,
+        userFollow,
+      );
+      await this.updateDataInUser(followingId, newUserData);
+      return 1;
     }
     throw new BadRequestException('you did not follow this user before');
   }
+
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description userFollowers: get user followers
@@ -994,7 +986,6 @@ export class UserService {
        { multi: true });*/
     let pins = await this.pinModel.find({ "reacts.userId": userId }, { _id: 1, counts: 1, reacts: 1 })
     for (let i = 0; i < pins.length; i++) {
-      console.log('In');
       for (let j = 0; j < pins[i].reacts.length; j++) {
         if (String(pins[i].reacts[j].userId) == String(userId))
           if (pins[i].reacts[j].reactType == 'Wow') {
@@ -1087,13 +1078,17 @@ export class UserService {
   }
 
   /**
- * @author Aya Abohadima <ayasabohadima@gmail.com>
- * @description delete chat
- * @param {String} userId - the id of user in mongoose formate
- * @returns {Number} "1" 
- */
-  async deleteAllChats(userId) {
-
+  * @author Aya Abohadima <ayasabohadima@gmail.com>
+  * @description delete chat
+  * @param {String} userId - the id of user in mongoose formate
+  * @returns {Number} "1" 
+  */
+  async deleteUserUpdateChats(userId) {
+    let chats = await this.chatModel.find({ "usersIds": userId }, { deletedUserIds: 1, _id: 1 });
+    for (let i = 0; i < chats.length; i++) {
+      chats[i].deletedUserIds.push(userId);
+      await this.chatModel.updateOne({ _id: chats[i]._id }, { deletedUserIds: chats[i].deletedUserIds })
+    }
   }
 
   /**
@@ -1103,12 +1098,11 @@ export class UserService {
    * @returns {Array<pin>}
    */
   async getPublicHome(index: number) {
-    let topics = await this.topicModel.find({}, { pins: 1 }).skip(Number(index)).limit(10);
-    let pins = [];
-    for (let i = 0; i < topics.length; i++) {
-      let pin = await this.pinModel.findById(topics[i].pins[0], { imageId: 1 });
-      pins.push(pin);
-    }
+    index = Math.floor(
+      Math.random() * 1000 + 1,
+    );
+    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(10);
+
     return pins;
   }
 }

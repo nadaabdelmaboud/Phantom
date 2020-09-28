@@ -34,8 +34,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/_Colors";
-@import "../scss/Mixins";
+@import "../../scss/_Colors";
+@import "../../scss/Mixins";
 .followCard {
   display: block;
   text-align: center;
@@ -109,7 +109,7 @@ button:focus {
 </style>
 
 <script>
-import { default as getImage } from "../mixins/getImage";
+import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "FollowCard",
   mixins: [getImage],

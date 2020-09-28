@@ -45,7 +45,8 @@ const state = {
   imageDownloaded: false,
   postPageLoading: false,
   google: false,
-  googleImage: ""
+  googleImage: "",
+  phantomHomeCards: []
 };
 
 const mutations = {
@@ -173,10 +174,24 @@ const mutations = {
   },
   setGoogleImage(state, image) {
     state.googleImage = image;
+  },
+  setPhantomHomeCards(state, array) {
+    state.phantomHomeCards = array;
   }
 };
 
 const actions = {
+  phantomHome({ commit }, index) {
+    axios
+      .get("Home/" + index)
+      .then(response => {
+        state.phantomHomeCards = [];
+        commit("setPhantomHomeCards", response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
   userHome({ state }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;

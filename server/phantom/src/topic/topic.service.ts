@@ -249,7 +249,7 @@ export class TopicService {
   * @returns {Number} 1
   */
   async unfollowTopic(userId, topicId) {
-    return this.UserService.unfollowUser(userId, topicId);
+    return this.UserService.unfollowTopic(userId, topicId);
   }
 
   /**

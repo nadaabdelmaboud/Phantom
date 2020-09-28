@@ -38,8 +38,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/_Colors";
-@import "../scss/Mixins";
+@import "../../scss/_Colors";
+@import "../../scss/Mixins";
 .card {
   width: 252px;
   // min-height: 200px;
@@ -127,7 +127,7 @@ button:focus {
 </style>
 <script>
 import { mapState } from "vuex";
-import { default as getImage } from "../mixins/getImage";
+import { default as getImage } from "../../mixins/getImage";
 export default {
   data: function() {
     return {

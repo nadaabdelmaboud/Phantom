@@ -20,7 +20,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import HomeCard from "../components/HomeCard";
+import HomeCard from "../components/Home/HomeCard";
 
 export default {
   name: "SectionView",

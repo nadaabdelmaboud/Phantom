@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import HomeCard from "../HomeCard";
+import HomeCard from "../Home/HomeCard";
 
 export default {
   name: "NotificationPins",

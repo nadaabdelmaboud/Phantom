@@ -89,8 +89,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 .followPopup {
   @include popUpBackground;
 }
@@ -270,8 +270,8 @@ button:focus {
 </style>
 
 <script>
-import Loading from "../components/GeneralComponents/Loading";
-import FollowCard from "../components/FollowCard";
+import Loading from "../../components/GeneralComponents/Loading";
+import FollowCard from "./FollowCard";
 import { mapGetters } from "vuex";
 export default {
   name: "followPopUp",

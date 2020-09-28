@@ -9,7 +9,8 @@ export const Chat = new Schema({
         message: String,
         date: Date
     },
-    date: Date
+    date: Date,
+    deletedUserIds: Array(String)
 
 });
 

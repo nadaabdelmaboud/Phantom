@@ -143,7 +143,6 @@ export class SharedGateway {
       profileImage: 1,
     });
     let pin = await this.pinModel.findById(data.pinId, { counts: 1 });
-    console.log('asasas');
     this.server.emit('sendPinReact', {
       reactType: data.reactType,
       userName: user.firstName + ' ' + user.lastName,
