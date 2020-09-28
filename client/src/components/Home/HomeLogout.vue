@@ -26,8 +26,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/_Colors";
-@import "../scss/MasonryGrid";
+@import "../../scss/_Colors";
+@import "../../scss/MasonryGrid";
 // .homeLogout{
 //       display: flex;
 //   justify-content: center;
@@ -125,7 +125,7 @@ h1 span:nth-child(7) {
 </style>
 
 <script>
-import PhantomCard from "../components/PhantomCard";
+import PhantomCard from "./PhantomCard";
 import { mapState } from "vuex";
 export default {
   name: "HomeLogout",
@@ -139,7 +139,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("homeCards/phantomHome", 0);
-    for (let i = 7000, j = 10; i <= 42000, j <= 60; i += 7000, j += 10) {
+    for (let i = 9000, j = 10; i <= 42000, j <= 60; i += 9000, j += 10) {
       setTimeout(() => {
         this.$store.dispatch("homeCards/phantomHome", j);
       }, i);

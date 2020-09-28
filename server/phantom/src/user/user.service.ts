@@ -12,6 +12,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { sign } from 'jsonwebtoken';
 import { user } from '../types/user';
+import { chat } from '../types/chat';
 import { board } from '../types/board';
 import { Email } from '../shared/send-email.service';
 import { LoginDto } from '../auth/dto/login.dto';
@@ -35,7 +36,7 @@ export class UserService {
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
-
+    @InjectModel('Chat') private readonly chatModel: Model<chat>,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
@@ -513,7 +514,6 @@ export class UserService {
   async updateSettings(userId, settings: UpdateSettingsDto) {
     const user = await this.getUserById(userId);
     if (settings.deleteFlag) {
-      console.log(1);
       await this.deleteAllFollowers(userId);
       await this.deleteAllFollowings(userId);
       await this.deleteAllFollowingsTopics(userId);
@@ -521,6 +521,7 @@ export class UserService {
       await this.deleteAllBoards(userId);
       await this.deleteAllRecomendation(userId);
       await this.deleteAllReatsAndComments(userId);
+      await this.deleteUserUpdateChats(userId)
       await this.deleteUser(userId);
       return 1;
     }
@@ -997,7 +998,6 @@ export class UserService {
        { multi: true });*/
     let pins = await this.pinModel.find({ "reacts.userId": userId }, { _id: 1, counts: 1, reacts: 1 })
     for (let i = 0; i < pins.length; i++) {
-      console.log('In');
       for (let j = 0; j < pins[i].reacts.length; j++) {
         if (String(pins[i].reacts[j].userId) == String(userId))
           if (pins[i].reacts[j].reactType == 'Wow') {
@@ -1095,8 +1095,12 @@ export class UserService {
  * @param {String} userId - the id of user in mongoose formate
  * @returns {Number} "1" 
  */
-  async deleteAllChats(userId) {
-
+  async deleteUserUpdateChats(userId) {
+    let chats = await this.chatModel.find({ "usersIds": userId }, { deletedUserIds: 1, _id: 1 });
+    for (let i = 0; i < chats.length; i++) {
+      chats[i].deletedUserIds.push(userId);
+      await this.chatModel.updateOne({ _id: chats[i]._id }, { deletedUserIds: chats[i].deletedUserIds })
+    }
   }
 
   /**

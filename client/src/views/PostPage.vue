@@ -39,7 +39,7 @@ span {
 <script>
 import { mapGetters } from "vuex";
 import PostPageCard from "../components/PostPageCard";
-import HomeCard from "../components/HomeCard";
+import HomeCard from "../components/Home/HomeCard";
 import Loading from "../components/GeneralComponents/Loading";
 export default {
   name: "postpage",

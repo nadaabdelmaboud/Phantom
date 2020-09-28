@@ -29,7 +29,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/_Colors";
+@import "../../scss/_Colors";
 .topicsCard {
   width: 230px;
   height: 290px;
@@ -93,7 +93,7 @@ button:focus {
 </style>
 
 <script>
-import { default as getImage } from "../mixins/getImage";
+import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "TopicsPageCard",
   data: function() {

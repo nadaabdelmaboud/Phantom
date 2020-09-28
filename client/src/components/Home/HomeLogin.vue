@@ -20,8 +20,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/_Colors";
-@import "../scss/MasonryGrid";
+@import "../../scss/_Colors";
+@import "../../scss/MasonryGrid";
 .addTopics {
   width: 97%;
   margin: 5px auto;
@@ -51,8 +51,8 @@
 </style>
 
 <script>
-import HomeCard from "../components/HomeCard";
-import Loading from "../components/GeneralComponents/Loading";
+import HomeCard from "./HomeCard";
+import Loading from "../../components/GeneralComponents/Loading";
 import { mapGetters } from "vuex";
 export default {
   name: "HomeLogin",

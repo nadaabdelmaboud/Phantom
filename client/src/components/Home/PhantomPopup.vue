@@ -16,8 +16,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 .PhantomPopup {
   @include popUpBackground;
 }

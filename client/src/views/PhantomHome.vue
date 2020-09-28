@@ -190,12 +190,12 @@ import ChangePhotoPopUp from "../components/UserSettings/ChangePhotoPopUp";
 import LeavingResaonPopUp from "../views/CloseAccountPopUps/LeavingReasonPopUp";
 import CloseAccountPopUp from "../views/CloseAccountPopUps/CloseAccountPopUp";
 import SearchSuggestions from "../components/Search/SearchSuggestions";
-import SavePin from "../components/SavePin";
-import ReportPin from "../components/ReportPin";
-import EditPin from "../components/EditPin";
-import FollowPopUp from "../components/FollowPopUp";
+import SavePin from "../components/Pin/SavePin";
+import ReportPin from "../components/Pin/ReportPin";
+import EditPin from "../components/Pin/EditPin";
+import FollowPopUp from "../components/FollowUser/FollowPopUp";
 import LoadingPopup from "../components/GeneralComponents/LoadingPopup";
-import PhantomPopup from "../components/PhantomPopup";
+import PhantomPopup from "../components/Home/PhantomPopup";
 
 import { mapState } from "vuex";
 export default {
