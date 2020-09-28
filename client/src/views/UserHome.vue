@@ -25,8 +25,8 @@ body {
 </style>
 
 <script>
-import HomeLogin from "../components/HomeLogin";
-import HomeLogout from "../components/HomeLogout";
+import HomeLogin from "../components/Home/HomeLogin";
+import HomeLogout from "../components/Home/HomeLogout";
 import { mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {

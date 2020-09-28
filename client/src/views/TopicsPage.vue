@@ -118,7 +118,7 @@ h3 {
 
 <script>
 import { default as getImage } from "../mixins/getImage";
-import TopicsPageCard from "../components/TopicsPageCard";
+import TopicsPageCard from "../components/Topics/TopicsPageCard";
 import Loading from "../components/GeneralComponents/Loading";
 import { mapState, mapGetters } from "vuex";
 export default {
