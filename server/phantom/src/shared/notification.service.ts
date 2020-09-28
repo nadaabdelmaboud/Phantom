@@ -146,79 +146,7 @@ export class NotificationService {
       notificationCounter: followedUser.notificationCounter,
     };
   }
-  /**
-   * @author Aya Abohadima <ayasabohadima@gmail.com>
-   * @descriptiondelete follow message from notification history
-   * @param {Object of User type} followedUser - user who is followed
-   * @param {Object of User type} followerUser -user who follow
-   * @returns {Object} -new changes of user
-   */
-  async unfollowUser(followedUser, followerUser) {
-    let message: {
-      data: {
-        followerImageId: string;
-        followerId: string;
-        google: string;
-        googleImage: string;
-        title: string;
-        body: string;
-        time?: string;
-      };
-      tokens?: [string];
-    } = {
-      data: {
-        followerImageId: String(followerUser.profileImage),
-        google: String(followerUser.google),
-        googleImage: String(followerUser.googleImage),
-        followerId: String(followerUser._id),
-        title: 'your follower increase ',
-        body:
-          followerUser.firstName +
-          ' ' +
-          followerUser.lastName +
-          ' has followed You 😮',
-        time: null,
-      },
-    };
-    let notificationData = followedUser.offlineNotifications;
-    if (!followedUser.offlineNotifications)
-      followedUser.offlineNotifications = [];
 
-    for (let i = 0; i < followedUser.offlineNotifications.length; i++) {
-      if (followedUser.offlineNotifications[i].data)
-        if (
-          followedUser.offlineNotifications[i].data.title ==
-          'your follower increase ' &&
-          message.data.followerId ==
-          followedUser.offlineNotifications[i].data.followerId
-        ) {
-          followedUser.offlineNotifications.splice(i, 1);
-          i--;
-        }
-    }
-
-    if (!followedUser.notifications) followedUser.notifications = [];
-    notificationData = followedUser.notifications;
-
-    for (let i = 0; i < followedUser.notifications.length; i++) {
-      if (followedUser.notifications[i].data)
-        if (
-          followedUser.notifications[i].data.title ==
-          'your follower increase ' &&
-          message.data.followerId ==
-          followedUser.notifications[i].data.followerId
-        ) {
-          followedUser.notifications.splice(i, 1);
-          i--;
-        }
-    }
-
-    return {
-      offlineNotifications: followedUser.offlineNotifications,
-      notifications: followedUser.notifications,
-      notificationCounter: followedUser.notificationCounter,
-    };
-  }
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @descriptionsend notification when some one comment in user pin

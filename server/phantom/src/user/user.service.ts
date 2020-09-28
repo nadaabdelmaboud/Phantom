@@ -26,6 +26,7 @@ import { NotificationService } from '../shared/notification.service';
 import { ValidationService } from '../shared/validation.service';
 import { topic } from '../types/topic';
 import { pin } from '../types/pin';
+import { message } from 'src/types/message';
 /**
  * @module Users
  */
@@ -37,6 +38,8 @@ export class UserService {
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Chat') private readonly chatModel: Model<chat>,
+    @InjectModel('Message') private readonly messageModel: Model<message>,
+
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
@@ -519,12 +522,15 @@ export class UserService {
       await this.deleteAllFollowers(userId);
       await this.deleteAllFollowings(userId);
       await this.deleteAllFollowingsTopics(userId);
-      await this.deleteAllPins(userId);
-      await this.deleteAllBoards(userId);
-      await this.deleteAllRecomendation(userId);
-      await this.deleteAllReatsAndComments(userId);
       await this.deleteUserUpdateChats(userId)
       await this.deleteUser(userId);
+      await this.deleteAllRecomendation(userId);
+      await this.deleteAllReatsAndComments(userId);
+
+
+      await this.deleteAllPins(userId);
+      await this.deleteAllBoards(userId);
+
       return 1;
     }
     await this.userModel.updateOne({ _id: userId }, settings);
@@ -769,26 +775,62 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (!userFollow.following.includes(followingId))
+    if (!userFollow.following.includes(followingId) || !userFollow.following || !followedUser.followers)
       throw new BadRequestException('you did not follow this user before');
-    if (userFollow.following) {
-      await this.userModel
-        .findByIdAndUpdate(followerId, { $pull: { following: followingId } })
-        .lean();
-    } else throw new BadRequestException('you did not follow this user before');
-    if (followedUser.followers) {
-      await this.userModel
-        .findByIdAndUpdate(followingId, { $pull: { followers: followerId } })
-        .lean();
-      var newUserData = await this.notification.unfollowUser(
-        followedUser,
-        userFollow,
-      );
-      await this.updateDataInUser(followingId, newUserData);
-      return 1;
-    }
-    throw new BadRequestException('you did not follow this user before');
+    await this.userModel
+      .findByIdAndUpdate(followerId, { $pull: { following: followingId } })
+      .lean();
+    await this.userModel
+      .findByIdAndUpdate(followingId, { $pull: { followers: followerId } })
+      .lean();
+    await this.unfollowUserNotification(
+      followedUser,
+      userFollow,
+    );
+    return 1;
   }
+  /**
+ * @author Aya Abohadima <ayasabohadima@gmail.com>
+ * @descriptiondelete follow message from notification history
+ * @param {Object of User type} followedUser - user who is followed
+ * @param {Object of User type} followerUser -user who follow
+ * @returns {Object} -new changes of user
+ */
+  async unfollowUserNotification(followedUser, followerUser) {
+    let message: {
+      data: {
+        followerImageId: string;
+        followerId: string;
+        google: string;
+        googleImage: string;
+        title: string;
+        body: string;
+        time?: string;
+      };
+      tokens?: [string];
+    } = {
+      data: {
+        followerImageId: String(followerUser.profileImage),
+        google: String(followerUser.google),
+        googleImage: String(followerUser.googleImage),
+        followerId: String(followerUser._id),
+        title: 'your follower increase ',
+        body:
+          followerUser.firstName +
+          ' ' +
+          followerUser.lastName +
+          ' has followed You 😮',
+        time: null,
+      },
+    };
+    await this.userModel.findByIdAndUpdate({ _id: followedUser._id }, {
+      $pull: {
+        offlineNotifications: { data: { title: 'your follower increase ', followerId: message.data.followerId } },
+        notifications: { data: { title: 'your follower increase ', followerId: message.data.followerId } }
+      }
+    })
+  }
+
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -885,9 +927,9 @@ export class UserService {
   async deleteAllFollowers(userId) {
     let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followers: 1 });
     if (!user || !user.followers) return 1;
-    for (let i = 0; i < user.followers.length; i++) {
+    for (let i = 0; i < user.followers.length; i++)
       await this.unfollowUser(user.followers[i], userId);
-    }
+
     return 1;
   }
 
@@ -900,9 +942,9 @@ export class UserService {
   async deleteAllFollowings(userId) {
     let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, following: 1 });
     if (!user || !user.following) return 1;
-    for (let i = 0; i < user.following.length; i++) {
+    for (let i = 0; i < user.following.length; i++)
       await this.unfollowUser(userId, user.following[i]);
-    }
+
     return 1;
   }
 
@@ -923,20 +965,11 @@ export class UserService {
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
-    const topic = await this.topicModel.findOne({ _id: topicId }, { _id: 1, followers: 1 });
+    const topic = await this.topicModel.find({ _id: topicId }, { _id: 1, followers: 1 });
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
-    if (!topic.followers)
-      throw new HttpException(
-        'you dont follow this topic',
-        HttpStatus.BAD_REQUEST,
-      );
-    if (!topic.followers.includes(userId)) throw new HttpException(
-      'you dont follow this topic',
-      HttpStatus.BAD_REQUEST,
-    );
     await this.topicModel
-      .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
+      .updateMany({ _id: topicId }, { $pull: { followers: userId } })
       .lean();
     if (!user.followingTopics)
       throw new HttpException(
@@ -960,9 +993,8 @@ export class UserService {
   async deleteAllFollowingsTopics(userId) {
     let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
     if (!user || !user.followingTopics) return 1;
-    for (let i = 0; i < user.followingTopics.length; i++) {
-      await this.unfollowTopic(userId, user.followingTopics[i]);
-    }
+    await this.unfollowTopic(userId, user.followingTopics);
+
     return 1;
   }
 
@@ -976,54 +1008,18 @@ export class UserService {
   async deleteAllReatsAndComments(userId) {
     let user = await this.findUserAndGetData({ _id: userId }, { _id: 1 });
     if (!user) return 1;
-    /* await this.pinModel.update({ "reacts": { reactType: 'Wow', userId: userId } }, { $pull: { reacts: { reactType: 'Wow', userId: userId } }, $inc: { "counts.wowReacts": -1 } },
-       { multi: true });
-     await this.pinModel.update({ "reacts": { reactType: 'Love', userId: userId } }, { $pull: { reacts: { reactType: 'Love', userId: userId } }, $inc: { "counts.loveReacts": -1 } },
-       { multi: true });
-     await this.pinModel.update({ "reacts": { reactType: 'Haha', userId: userId } }, { $pull: { reacts: { reactType: 'Haha', userId: userId } }, $inc: { "counts.hahaReacts": -1 } },
-       { multi: true });
-     await this.pinModel.update({ "reacts": { reactType: 'Thanks', userId: userId } }, { $pull: { reacts: { reactType: 'Thanks', userId: userId } }, $inc: { "counts.thanksReacts": -1 } },
-       { multi: true });
-     await this.pinModel.update({ "reacts": { reactType: 'Good idea', userId: userId } }, { $pull: { reacts: { reactType: 'Good idea', userId: userId } }, $inc: { "counts.goodIdeaReacts": -1 } },
-       { multi: true });*/
-    let pins = await this.pinModel.find({ "reacts.userId": userId }, { _id: 1, counts: 1, reacts: 1 })
-    for (let i = 0; i < pins.length; i++) {
-      for (let j = 0; j < pins[i].reacts.length; j++) {
-        if (String(pins[i].reacts[j].userId) == String(userId))
-          if (pins[i].reacts[j].reactType == 'Wow') {
-            pins[i].reacts.splice(j, 1);
-            pins[i].counts.wowReacts = Number(pins[i].counts.wowReacts) - 1;
-            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
-          } else if (pins[i].reacts[j].reactType == 'Good idea') {
-            pins[i].reacts.splice(j, 1);
-            pins[i].counts.goodIdeaReacts = Number(pins[i].counts.goodIdeaReacts) - 1;
-            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
-          } else if (pins[i].reacts[j].reactType == 'Thanks') {
-            pins[i].reacts.splice(j, 1);
-            pins[i].counts.thanksReacts = Number(pins[i].counts.thanksReacts) - 1;
-            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
-          } else if (pins[i].reacts[j].reactType == 'Haha') {
-            pins[i].reacts.splice(j, 1);
-            pins[i].counts.hahaReacts = Number(pins[i].counts.hahaReacts) - 1;
-            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
-          } else if (pins[i].reacts[j].reactType == 'Love') {
-            pins[i].reacts.splice(j, 1);
-            pins[i].counts.loveReacts = Number(pins[i].counts.loveReacts) - 1;
-            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
-          }
-      }
+    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Wow', userId: userId } }, $inc: { "counts.wowReacts": -1 } },
+    );
+    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Love', userId: userId } }, $inc: { "counts.loveReacts": -1 } },
+    );
+    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Haha', userId: userId } }, $inc: { "counts.hahaReacts": -1 } },
+    );
+    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Thanks', userId: userId } }, $inc: { "counts.thanksReacts": -1 } },
+    );
+    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Good idea', userId: userId } }, $inc: { "counts.goodIdeaReacts": -1 } },
+    );
+    await this.pinModel.updateMany({}, { $pull: { comments: { commenter: userId }, $inc: { "counts.comments": -1 } } });
 
-    }
-    pins = await this.pinModel.find({ "comments.commenter": userId }, { _id: 1, comments: 1, counts: 1 });
-    for (let i = 0; i < pins.length; i++) {
-      for (let j = 0; j < pins[i].comments.length; j++) {
-        if (String(pins[i].comments[j].commenter) == String(userId))
-          pins[i].comments.splice(j, 1);
-        pins[i].counts.comments = Number(pins[i].counts.comments) - 1;
-        break;
-      }
-      await this.pinModel.updateOne({ _id: pins[i]._id }, { comments: pins[i].comments, counts: pins[i].counts });
-    }
     return 1;
   }
 
@@ -1069,14 +1065,8 @@ export class UserService {
    * @returns {Number} "1" 
    */
   async deleteAllRecomendation(userId) {
-    const topics = await this.topicModel.find({ "recommendedUsers": userId }, { _id: 1, recommendedUsers: 1 });
-    for (let i = 0; i < topics.length; i++) {
-      for (let j = 0; j < topics[i].recommendedUsers.length; j++) {
-        if (String(topics[i].recommendedUsers[j]) == String(userId))
-          topics[i].recommendedUsers.splice(j, 1);
-      }
-      await this.topicModel.updateOne({ _id: topics[i]._id }, { recommendedUsers: topics[i].recommendedUsers })
-    }
+    await this.topicModel.updateMany({ "recommendedUsers": userId }, { $pull: { recommendedUsers: userId } });
+
   }
 
   /**
@@ -1086,12 +1076,14 @@ export class UserService {
   * @returns {Number} "1" 
   */
   async deleteUserUpdateChats(userId) {
-    let chats = await this.chatModel.find({ "usersIds": userId }, { deletedUserIds: 1, _id: 1 });
+    let chats = await this.chatModel.find({ "usersIds": userId }, { _id: 1 });
     for (let i = 0; i < chats.length; i++) {
-      chats[i].deletedUserIds.push(userId);
-      await this.chatModel.updateOne({ _id: chats[i]._id }, { deletedUserIds: chats[i].deletedUserIds })
+      await this.messageModel.deleteMany({ chatId: chats[i]._id })
+      await this.chatModel.findByIdAndDelete(chats[i]._id)
     }
+    return 1;
   }
+
 
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
