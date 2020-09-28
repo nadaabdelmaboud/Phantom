@@ -680,7 +680,7 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (await this.checkFollowUser(userFollow, followingId))
+    if (userFollow.following.includes(followingId))
       throw new BadRequestException('you followed this user before');
     userFollow.following.push(followingId);
     await this.userModel.updateOne(
@@ -767,39 +767,27 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (!(await this.checkFollowUser(userFollow, followingId)))
+    if (!userFollow.following.includes(followingId))
       throw new BadRequestException('you did not follow this user before');
     if (userFollow.following) {
-      for (let i = 0; i < userFollow.following.length; i++) {
-        if (String(userFollow.following[i]) === String(followingId)) {
-          userFollow.following.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: userFollow._id },
-            { following: userFollow.following },
-          );
-          break;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followerId, { $pull: { following: followingId } })
+        .lean();
     } else throw new BadRequestException('you did not follow this user before');
     if (followedUser.followers) {
-      for (let i = 0; i < followedUser.followers.length; i++) {
-        if (String(followedUser.followers[i]) === String(followerId)) {
-          followedUser.followers.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: followedUser._id },
-            { followers: followedUser.followers },
-          );
-          var newUserData = await this.notification.unfollowUser(
-            followedUser,
-            userFollow,
-          );
-          await this.updateDataInUser(followingId, newUserData);
-          return 1;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followingId, { $pull: { followers: followerId } })
+        .lean();
+      var newUserData = await this.notification.unfollowUser(
+        followedUser,
+        userFollow,
+      );
+      await this.updateDataInUser(followingId, newUserData);
+      return 1;
     }
     throw new BadRequestException('you did not follow this user before');
   }
+
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description userFollowers: get user followers
@@ -1090,11 +1078,11 @@ export class UserService {
   }
 
   /**
- * @author Aya Abohadima <ayasabohadima@gmail.com>
- * @description delete chat
- * @param {String} userId - the id of user in mongoose formate
- * @returns {Number} "1" 
- */
+  * @author Aya Abohadima <ayasabohadima@gmail.com>
+  * @description delete chat
+  * @param {String} userId - the id of user in mongoose formate
+  * @returns {Number} "1" 
+  */
   async deleteUserUpdateChats(userId) {
     let chats = await this.chatModel.find({ "usersIds": userId }, { deletedUserIds: 1, _id: 1 });
     for (let i = 0; i < chats.length; i++) {
