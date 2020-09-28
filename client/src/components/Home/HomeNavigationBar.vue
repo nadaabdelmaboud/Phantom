@@ -123,8 +123,8 @@
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/Colors";
-@import "../scss/Mixins";
+@import "../../scss/Colors";
+@import "../../scss/Mixins";
 
 .navigationBar {
   position: fixed;
@@ -369,9 +369,9 @@
 }
 </style>
 <script>
-import NotificationDropDown from "./Notification/NotificationDropdown";
-import isLoggedIn from "../mixins/isLoggedIn.js";
-import removeUser from "../mixins/removeUserData.js";
+import NotificationDropDown from "../Notification/NotificationDropdown";
+import isLoggedIn from "../../mixins/isLoggedIn.js";
+import removeUser from "../../mixins/removeUserData.js";
 import { mapGetters, mapState } from "vuex";
 export default {
   name: "HomeNavigationBar",
