@@ -58,6 +58,7 @@ export class UserService {
   }
 
   /**
+   *  @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description Sget user by id  with profile data
    * @param {string} id - user id wanted to get
    * @returns {object<User>}
@@ -89,6 +90,7 @@ export class UserService {
           profileImage: 1,
           google: 1,
           googleImage: 1,
+          about: 1
         },
       },
     ]);
@@ -99,7 +101,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get notification data from user
    * @param {string} id - user id wanted to get
    * @returns {object}
@@ -807,11 +809,10 @@ export class UserService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.followers || user.followers.length == 0)
       return { followers: [], numOfFollowers: 0 };
-    const followers = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      user.followers,
-    );
+    if (!limit || limit > user.followers.length) limit = user.followers.length;
+    if (!offset || offset > user.followers.length) offset = 0;
+    if (offset + limit > user.followers.length) limit = user.followers.length - offset;
+    const followers = user.followers.slice(offset, offset + limit);
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
       var currentUser = await this.findUserAndGetData(
@@ -825,6 +826,7 @@ export class UserService {
           googleImage: 1,
         },
       );
+      console.log(currentUser);
       if (currentUser) followersInfo.push(currentUser);
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -848,11 +850,11 @@ export class UserService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.following || user.following.length == 0)
       return { followings: [], numOfFollowings: 0 };
-    const followings = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      user.following,
-    );
+    if (!limit || limit > user.following.length) limit = user.following.length;
+    if (!offset || offset > user.following.length) offset = 0;
+    if (offset + limit > user.following.length) limit = user.following.length - offset;
+    const followings = user.following.slice(offset, offset + limit);
+
     let followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
       var currentUser = await this.findUserAndGetData(
