@@ -84,18 +84,28 @@ export class ChatService {
     let arr = [];
     let result = [];
     chat.map(conv => {
+      console.log(conv)
       conv.usersIds.map(user => {
         if (String(user) != String(userId)) arr.push(user);
       });
     });
-    for (let i = 0; i < arr.length; i++)
-      result.push({
-        ...(await this.userModel
-          .findOne({ _id: arr[i] }, 'profileImage userName google googleImage')
-          .lean()),
-        lastMessage: chat[i].lastMessage,
-        
-      });
+    for (let i = 0; i < arr.length; i++) {
+      let user = await this.userModel
+        .findOne({ _id: arr[i] }, 'profileImage userName google googleImage')
+        .lean();
+      if (user)
+        result.push({
+          ...(user),
+          lastMessage: chat[i].lastMessage,
+          isDeleted: false
+
+        });
+      else
+        result.push({
+          isDeleted: true,
+          lastMessage: chat[i].lastMessage
+        })
+    }
     return result;
   }
   /**
