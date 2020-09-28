@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import * as firebase from 'firebase-admin';
+import { user } from '../types/user';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+
 const params = {
   type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
   projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
@@ -26,7 +30,7 @@ let app = firebase.initializeApp({
  */
 @Injectable()
 export class NotificationService {
-  constructor() { }
+  constructor(@InjectModel('User') private readonly userModel: Model<user>,) { }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -462,12 +466,12 @@ export class NotificationService {
       30,
       arrayMessage,
     );
-    await user.save();
+    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
 
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
-      await user.save();
       message = {
         data: {
           title: 'Boards For You!',
@@ -485,12 +489,15 @@ export class NotificationService {
             30,
             arrayMessage,
           );
+
+          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+          // await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
         }
-        await user.save();
+
         return 0;
       }
     }
-    await user.save();
+    // await user.save();
     return 1;
   }
 
@@ -520,13 +527,12 @@ export class NotificationService {
       30,
       arrayMessage,
     );
-    await user.save();
+
+    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
-      await user.save().catch(err => {
-        //  console.log(err);
-      });
       message = {
         data: {
           title: 'Popular Phantom Pins!',
@@ -543,10 +549,9 @@ export class NotificationService {
             30,
             arrayMessage,
           );
+          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
         }
-        await user.save().catch(err => {
-          // console.log(err);
-        });
+
         return 0;
       }
     }
@@ -579,11 +584,13 @@ export class NotificationService {
       30,
       arrayMessage,
     );
-    await user.save();
+    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
+
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
-      await user.save();
+      //  await user.save();
       message = {
         data: {
           title: 'Pins For You!',
@@ -600,8 +607,9 @@ export class NotificationService {
             30,
             arrayMessage,
           );
+          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
         }
-        await user.save();
+        //  await user.save();
         return 0;
       }
     }
@@ -634,11 +642,13 @@ export class NotificationService {
       30,
       arrayMessage,
     );
-    await user.save();
+    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
+
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
-      await user.save();
+      // await user.save();
       message = {
         data: {
           title: 'Pins Inspired By Your Recent Activity!',
@@ -655,8 +665,8 @@ export class NotificationService {
             30,
             arrayMessage,
           );
+          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
         }
-        await user.save();
         return 0;
       }
     }
