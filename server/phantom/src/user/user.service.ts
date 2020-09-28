@@ -58,6 +58,7 @@ export class UserService {
   }
 
   /**
+   *  @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description Sget user by id  with profile data
    * @param {string} id - user id wanted to get
    * @returns {object<User>}
@@ -89,6 +90,7 @@ export class UserService {
           profileImage: 1,
           google: 1,
           googleImage: 1,
+          about: 1
         },
       },
     ]);
@@ -99,7 +101,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get notification data from user
    * @param {string} id - user id wanted to get
    * @returns {object}
@@ -680,7 +682,7 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (await this.checkFollowUser(userFollow, followingId))
+    if (userFollow.following.includes(followingId))
       throw new BadRequestException('you followed this user before');
     userFollow.following.push(followingId);
     await this.userModel.updateOne(
@@ -767,39 +769,27 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException('one of users not correct');
-    if (!(await this.checkFollowUser(userFollow, followingId)))
+    if (!userFollow.following.includes(followingId))
       throw new BadRequestException('you did not follow this user before');
     if (userFollow.following) {
-      for (let i = 0; i < userFollow.following.length; i++) {
-        if (String(userFollow.following[i]) === String(followingId)) {
-          userFollow.following.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: userFollow._id },
-            { following: userFollow.following },
-          );
-          break;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followerId, { $pull: { following: followingId } })
+        .lean();
     } else throw new BadRequestException('you did not follow this user before');
     if (followedUser.followers) {
-      for (let i = 0; i < followedUser.followers.length; i++) {
-        if (String(followedUser.followers[i]) === String(followerId)) {
-          followedUser.followers.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: followedUser._id },
-            { followers: followedUser.followers },
-          );
-          var newUserData = await this.notification.unfollowUser(
-            followedUser,
-            userFollow,
-          );
-          await this.updateDataInUser(followingId, newUserData);
-          return 1;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followingId, { $pull: { followers: followerId } })
+        .lean();
+      var newUserData = await this.notification.unfollowUser(
+        followedUser,
+        userFollow,
+      );
+      await this.updateDataInUser(followingId, newUserData);
+      return 1;
     }
     throw new BadRequestException('you did not follow this user before');
   }
+
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description userFollowers: get user followers
@@ -819,11 +809,10 @@ export class UserService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.followers || user.followers.length == 0)
       return { followers: [], numOfFollowers: 0 };
-    const followers = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      user.followers,
-    );
+    if (!limit || limit > user.followers.length) limit = user.followers.length;
+    if (!offset || offset > user.followers.length) offset = 0;
+    if (offset + limit > user.followers.length) limit = user.followers.length - offset;
+    const followers = user.followers.slice(offset, offset + limit);
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
       var currentUser = await this.findUserAndGetData(
@@ -837,6 +826,7 @@ export class UserService {
           googleImage: 1,
         },
       );
+      console.log(currentUser);
       if (currentUser) followersInfo.push(currentUser);
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -860,11 +850,11 @@ export class UserService {
     if (!user) throw new HttpException('not user ', HttpStatus.FORBIDDEN);
     if (!user.following || user.following.length == 0)
       return { followings: [], numOfFollowings: 0 };
-    const followings = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      user.following,
-    );
+    if (!limit || limit > user.following.length) limit = user.following.length;
+    if (!offset || offset > user.following.length) offset = 0;
+    if (offset + limit > user.following.length) limit = user.following.length - offset;
+    const followings = user.following.slice(offset, offset + limit);
+
     let followingsInfo = [];
     for (let i = 0; i < followings.length; i++) {
       var currentUser = await this.findUserAndGetData(
@@ -1090,11 +1080,11 @@ export class UserService {
   }
 
   /**
- * @author Aya Abohadima <ayasabohadima@gmail.com>
- * @description delete chat
- * @param {String} userId - the id of user in mongoose formate
- * @returns {Number} "1" 
- */
+  * @author Aya Abohadima <ayasabohadima@gmail.com>
+  * @description delete chat
+  * @param {String} userId - the id of user in mongoose formate
+  * @returns {Number} "1" 
+  */
   async deleteUserUpdateChats(userId) {
     let chats = await this.chatModel.find({ "usersIds": userId }, { deletedUserIds: 1, _id: 1 });
     for (let i = 0; i < chats.length; i++) {

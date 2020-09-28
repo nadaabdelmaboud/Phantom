@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { initializeFirebase } from "../../messaging/init";
 export default {
   created: async function() {
     localStorage.setItem("userToken", this.$route.query.token);
@@ -13,6 +14,7 @@ export default {
     if (this.$route.query.type != "login")
       this.$store.commit("popUpsState/toggleWelcomeState");
     await this.$store.dispatch("user/getUserProfile");
+    initializeFirebase();
     this.$router.push("/");
   }
 };

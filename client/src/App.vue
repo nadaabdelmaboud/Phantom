@@ -1,11 +1,10 @@
 <template>
-  <div @click="checkLists">
+  <div @click="checkLists" id="app">
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-//import { initializeFirebase } from "../src/messaging/init";
 import axios from "axios";
 import { default as masonryGrid } from "./mixins/masonryGrid";
 import { default as socketChat } from "./mixins/socketChat";
@@ -18,13 +17,13 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-    // initializeFirebase();
     window.addEventListener("scroll", () => {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
-        ) <= 2
+        ) <= 10
       ) {
+        // document.body.style.height=document.body.offsetHeight+300+"px"
         if (this.$route.path.includes("/More")) {
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {

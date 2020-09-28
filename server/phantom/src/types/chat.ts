@@ -7,7 +7,6 @@ export interface chat extends Document {
         userId: String,
         message: String,
         date: Date
-
     }
     date: Date,
     deletedUserIds: Array<String>,

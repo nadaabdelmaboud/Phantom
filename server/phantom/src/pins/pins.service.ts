@@ -32,7 +32,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get pin document
@@ -558,9 +558,9 @@ export class PinsService {
       profileImage: 1,
       google: 1,
       googleImage: 1,
-      notificationCounter:1,
-      notifications:1,
-      fcmToken:1,
+      notificationCounter: 1,
+      notifications: 1,
+      fcmToken: 1,
     });
     let pin = await this.pinModel.findById(pinId, {
       title: 1,
@@ -1624,30 +1624,35 @@ export class PinsService {
             profileImage: 1,
             google: 1,
             googleImage: 1,
+            pins: 1
           },
         )
         .lean();
-
-      let userPins = await this.getCurrentUserPins(
-        user.following[i],
-        false,
-        limitOfPinsForUser,
-        true,
-      );
-      if (followedUser && userPins)
-        for (let i = 0; i < userPins.length; i++) {
+      if (!followedUser) continue;
+      if (limitOfPinsForUser > followedUser.pins.length) limitOfPinsForUser = followedUser.pins.length;
+      for (var j = followedUser.pins.length - 1; j >= followedUser.pins.length - limitOfPinsForUser; j--) {
+        let pinFound = await this.pinModel.findById(followedUser.pins[j].pinId, {
+          _id: 1,
+          imageId: 1,
+          imageWidth: 1,
+          imageHeight: 1,
+          title: 1,
+          topic: 1,
+        });
+        if (pinFound)
           pins.push({
-            _id: userPins[i]._id,
-            imageId: userPins[i].imageId,
-            imageWidth: userPins[i].imageWidth,
-            imageHeight: userPins[i].imageHeight,
-            title: userPins[i].title,
-            topic: userPins[i].topic,
+            _id: pinFound._id,
+            imageId: pinFound.imageId,
+            imageWidth: pinFound.imageWidth,
+            imageHeight: pinFound.imageHeight,
+            title: pinFound.title,
+            topic: pinFound.topic,
             owner: followedUser,
           });
-        }
+
+        return pins;
+      }
     }
-    return pins;
   }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>

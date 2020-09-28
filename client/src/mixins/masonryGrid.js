@@ -28,6 +28,9 @@ export default {
 
       /* Set the spanning as calculated above (S) */
       item.style.gridRowEnd = "span " + rowSpan;
+      //   const app =document.getElementById("app")
+      //    if(rowHeight+rowGap >= app.style.height)
+      //    app.style.height =document.body.offsetHeight+500+"px";
     },
     waitForImages() {
       var allItems = document.getElementsByClassName("masonryGridItem");
