@@ -41,6 +41,7 @@
 @import "../../scss/_Colors";
 @import "../../scss/Mixins";
 .card {
+  margin: 10px 0;
   width: 252px;
   background-color: $blue;
   border: transparent;

@@ -5,25 +5,18 @@
       <i class="fa fa-plus" @click="showTopics"></i>
     </div>
     <Loading :loading="homeLoading" />
-
-     <div class="flexWrap" v-if="!homeLoading">
-     <!-- <div class="masonryGrid">
+    <div class="flexWrap" v-if="!homeLoading">
+      <masonry
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :gutter="{ default: '30px', 700: '15px' }"
+      >
         <HomeCard
           v-for="homecard in cards"
           :key="homecard._id"
-          class="masonryGridItem"
           :cardImage="homecard.imageId"
           :postPageId="homecard._id"
         />
-      </div>-->
-    <vue-masonry-wall :items="items" :options="options">
-      <template v-slot:default="{item}">
-        <HomeCard
-          :cardImage="item.imageId"
-          :postPageId="item._id"
-        />
-      </template>
-    </vue-masonry-wall>
+      </masonry>
     </div>
   </div>
 </template>
@@ -56,14 +49,6 @@
   i:hover {
     background-color: $ligthPaige;
   }
-
-    .Item {
-    overflow: hidden;
-    border-radius: 4px;
-    width: 100%;
-    background: #F5F5F5;
-  }
-
 }
 </style>
 
@@ -71,42 +56,19 @@
 import HomeCard from "./HomeCard";
 import Loading from "../../components/GeneralComponents/Loading";
 import { mapGetters } from "vuex";
-import VueMasonryWall from "vue-masonry-wall";
 export default {
   name: "HomeLogin",
   components: {
     HomeCard,
-    Loading,
-    VueMasonryWall
-  },
-  data: function() {
-    return {
-      i:0,
-      options:{
-          width: 300,
-          padding: {
-              default: 12,
-              1: 6,
-              2: 8,
-          },
-          throttle: 300
-      },
-      ssr: {
-        column: 12
-      },
-      width: window.outerWidth
-    }
+    Loading
   },
   computed: {
     ...mapGetters({
-      items: "homeCards/userHomePage",
+      cards: "homeCards/userHomePage",
       homeLoading: "homeCards/homeLoading"
     })
   },
   mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
     setTimeout(() => {
       this.$store.dispatch("homeCards/userHome");
       setTimeout(() => {
@@ -114,32 +76,10 @@ export default {
       }, 3000);
     }, 1000);
   },
-    beforeDestroy() { 
-    window.removeEventListener('resize', this.onResize); 
-  },
   methods: {
     showTopics() {
       this.$store.commit("popUpsState/toggleTopicsPopup");
-    },
-    // append() {
-    //     for (this.i; this.i < this.cards.length; this.i++) {
-    //       this.items.push({
-    //         imageId: this.cards[this.i].imageId,
-    //         _id: this.cards[this.i]._id
-    //       })
-    //     }
-    //   },
-          onResize() {
-      this.width = window.outerWidth
     }
-  },
-  watch:{
-    // width: function() {
-    //   console.log("weeeee");
-    //   this.i=0;
-    //   this.items=[]
-    //   this.append();
-    // }
   }
 };
 </script>

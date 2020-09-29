@@ -17,7 +17,7 @@ export default {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-    window.addEventListener("scroll", () => {
+    window.addEventListener("scroll", async () => {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
@@ -58,7 +58,10 @@ export default {
           });
         } else if (this.$route.path.includes("")) {
           if (localStorage.getItem("userToken") != "") {
-            this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
           }
         }
       }

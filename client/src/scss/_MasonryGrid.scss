@@ -12,7 +12,7 @@
     grid-gap: 20px; /* [1] Add some gap between rows and columns */
     grid-template-columns: repeat(
       auto-fill,
-      minmax(auto, 252px)
+      252px
     ); /* [2] Make columns adjust according to the available viewport */
-    grid-auto-rows: 0.00000000000000001px; /* [3] Set the height for implicitly-created row track */
+    grid-auto-rows: 0.00000000000000000000000000000000000001px; /* [3] Set the height for implicitly-created row track */
   }

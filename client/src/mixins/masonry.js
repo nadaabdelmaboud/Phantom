@@ -1,9 +1,9 @@
-import Masonry from 'masonry-layout';
+import Masonry from "masonry-layout";
 
-var elem = document.querySelector('.grid');
-var msnry = new Masonry( elem, {
+var elem = document.querySelector(".grid");
+var msnry = new Masonry(elem, {
   // options
-  itemSelector: '.grid-item',
+  itemSelector: ".grid-item",
   columnWidth: 200
 });
 
