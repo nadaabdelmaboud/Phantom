@@ -1,92 +1,102 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-12 col-sm-6">
-        <h1>Edit profile</h1>
-        <p>People on Pinterest will get to know you with the info below</p>
-      </div>
-      <div class="col-12 col-sm-6">
-        <button
-          v-bind:class="{
-            'changed-cancel': this.isChanged
-          }"
-          @click="cancelChanges"
-        >
-          Cancel
-        </button>
-        <button
-          id="done"
-          v-bind:class="{
-            'changed-done': this.isChanged
-          }"
-          @click="changeDone"
-        >
-          Done
-        </button>
-      </div>
+    <div v-if="isLoading && this.userData == null">
+      <Loading :loading="isLoading" class="loading" />
     </div>
-    <section>
-      <label for="profile-image">Photo</label><br />
-      <img
-        id="profile-image"
-        v-if="this.showGoogleImage"
-        :src="
-          getImage(userData.profileImage, userData.google, userData.googleImage)
-        "
-      />
-
-      <button id="change-photo" @click="openPopUp" v-if="!userData.google">
-        Change
-      </button>
-    </section>
-    <br />
-    <section class="username">
+    <div v-else>
       <div class="row">
         <div class="col-12 col-sm-6">
-          <label for="fname">First Name</label><br />
-          <input type="text" id="fname" v-model="fname" />
+          <h1>Edit profile</h1>
+          <p>People on Pinterest will get to know you with the info below</p>
         </div>
         <div class="col-12 col-sm-6">
-          <label for="lname">Last Name</label><br />
-          <input type="text" id="lname" v-model="lname" />
+          <button
+            v-bind:class="{
+              'changed-cancel': this.isChanged
+            }"
+            @click="cancelChanges"
+          >
+            Cancel
+          </button>
+          <button
+            id="done"
+            v-bind:class="{
+              'changed-done': this.isChanged
+            }"
+            @click="changeDone"
+          >
+            Done
+          </button>
         </div>
       </div>
-    </section>
-    <section>
-      <label for="user-name">Username</label><br />
-      <input type="text" id="user-name" v-model="username" />
-    </section>
-    <section>
-      <label for="location">Location</label><br />
-      <input
-        type="text"
-        placeholder="Ex. Cairo, Egypt"
-        id="location"
-        v-model="location"
-      />
-    </section>
-    <section>
-      <label for="bio">About your profile</label><br />
-      <textarea
-        type="text"
-        id="about"
-        placeholder="Write a little bit about yourself here"
-        rows="4"
-        cols="50"
-        v-model="about"
-      ></textarea>
-    </section>
+      <section>
+        <label for="profile-image">Photo</label><br />
+        <img
+          id="profile-image"
+          :src="
+            getImage(
+              userData.profileImage,
+              userData.google,
+              userData.googleImage
+            )
+          "
+        />
+
+        <button id="change-photo" @click="openPopUp" v-if="!userData.google">
+          Change
+        </button>
+      </section>
+      <br />
+      <section class="username">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <label for="fname">First Name</label><br />
+            <input type="text" id="fname" v-model="fname" />
+          </div>
+          <div class="col-12 col-sm-6">
+            <label for="lname">Last Name</label><br />
+            <input type="text" id="lname" v-model="lname" />
+          </div>
+        </div>
+      </section>
+      <section>
+        <label for="user-name">Username</label><br />
+        <input type="text" id="user-name" v-model="username" />
+      </section>
+      <section>
+        <label for="location">Location</label><br />
+        <input
+          type="text"
+          placeholder="Ex. Cairo, Egypt"
+          id="location"
+          v-model="location"
+        />
+      </section>
+      <section>
+        <label for="bio">About your profile</label><br />
+        <textarea
+          type="text"
+          id="about"
+          placeholder="Write a little bit about yourself here"
+          rows="4"
+          cols="50"
+          v-model="about"
+        ></textarea>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 import getImage from "../../mixins/getImage";
+import Loading from "../GeneralComponents/Loading";
 
 export default {
-  created: async function() {
-    this.$store.dispatch("user/getUserProfile");
+  created: function() {
     this.updateModels();
-    if (this.userData != null) this.showGoogleImage = true;
+  },
+  components: {
+    Loading
   },
   data: function() {
     return {
@@ -100,11 +110,13 @@ export default {
   },
   methods: {
     updateModels: function() {
-      this.fname = this.userData.firstName;
-      this.lname = this.userData.lastName;
-      this.about = this.userData.about;
-      this.location = this.userData.location;
-      this.username = this.userData.userName;
+      if (!this.isLoading) {
+        this.fname = this.userData.firstName;
+        this.lname = this.userData.lastName;
+        this.about = this.userData.about;
+        this.location = this.userData.location;
+        this.username = this.userData.userName;
+      }
     },
     cancelChanges: function() {
       this.updateModels();
@@ -211,7 +223,12 @@ button:focus {
   background-color: $qainsboro;
   color: black;
 }
-
+/*Loading
+******************/
+.loading {
+  left: -90px;
+  position: relative;
+}
 /*Media Quires
 ******************/
 @media screen and (max-width: 1100px) {
