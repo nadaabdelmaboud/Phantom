@@ -70,7 +70,7 @@ export class UserController {
   ) {
     await this.userService.checkUpdateData(updateData);
     await this.userService.updateUserInfo(req.user._id, updateData);
-    const user = await this.userService.getUserById(req.user._id);
+    const user = await this.userService.getUserMe(req.user._id);
     user.password = null;
     return user;
   }
@@ -87,7 +87,7 @@ export class UserController {
       });
     await this.userService.updateSettings(req.user._id, updateData);
     if (!updateData.deleteFlag) {
-      const user = await this.userService.getUserById(req.user._id);
+      const user = await this.userService.getUserMe(req.user._id);
       user.password = null;
       return user;
     }
@@ -247,7 +247,7 @@ export class UserController {
   }
 
   @Get('/Home/:index')
-  async getPublicHome(@Param('index') index:number){
+  async getPublicHome(@Param('index') index: number) {
     let pins = await this.userService.getPublicHome(index);
     return pins;
   }
