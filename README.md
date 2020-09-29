@@ -64,7 +64,7 @@
 
 * **Don't Miss A Thing And Keep Up With Your Notifications**
 
-	![Notifications](https://i.ibb.co/G0hcmzj/Screenshot-627.png)
+	![Notifications](https://i.ibb.co/qrvjxpQ/120200486-420557965577056-2215085349692718248-n.png)
 
 * **Chat With Others And Make New Friends Who Share You Some Interests**
 
