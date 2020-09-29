@@ -6,11 +6,10 @@
 
 <script>
 import axios from "axios";
-import { default as masonryGrid } from "./mixins/masonryGrid";
 import { default as socketChat } from "./mixins/socketChat";
 export default {
   name: "App",
-  mixins: [masonryGrid, socketChat],
+  mixins: [socketChat],
   created() {
     let token = localStorage.getItem("userToken");
     if (token) {
@@ -66,9 +65,6 @@ export default {
         }
       }
     });
-    // setInterval(() => {
-    //   this.waitForImages();
-    // }, 500);
   },
   methods: {
     checkLists(event) {

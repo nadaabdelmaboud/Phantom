@@ -41,7 +41,7 @@
 @import "../../scss/_Colors";
 @import "../../scss/Mixins";
 .card {
-  margin: 10px 0;
+  margin: 10px 4px;
   width: 252px;
   background-color: $blue;
   border: transparent;
@@ -122,6 +122,11 @@ button:focus {
         opacity: 1;
       }
     }
+  }
+}
+@media screen and (max-width: 600px) {
+  .card {
+    margin: 5px auto;
   }
 }
 </style>

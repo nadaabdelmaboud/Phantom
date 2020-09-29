@@ -8,7 +8,7 @@
     <div class="flexWrap" v-if="!homeLoading">
       <masonry
         :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
-        :gutter="{ default: '30px', 700: '15px' }"
+        :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
       >
         <HomeCard
           v-for="homecard in cards"
