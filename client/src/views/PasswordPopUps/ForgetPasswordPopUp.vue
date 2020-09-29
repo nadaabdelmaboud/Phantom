@@ -46,7 +46,8 @@ export default {
 
 /**Buttons
 *****************/
-button {
+button,
+button:focus {
   @include profileButton;
   background-color: $queenBlue;
   color: $qainsboro;

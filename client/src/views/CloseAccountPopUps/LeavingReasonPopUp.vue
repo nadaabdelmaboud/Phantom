@@ -32,7 +32,11 @@
         <button @click="closePopUp" class="close-button">
           Cancel
         </button>
-        <button @click="nextPopUp" :class="{ disable: reason == null }">
+        <button
+          @click="nextPopUp"
+          class="next"
+          :class="{ disable: reason == null }"
+        >
           Next
         </button>
       </div>
@@ -91,7 +95,6 @@ button:focus {
   outline: none;
   padding: 5px 10px;
   margin-top: 20px;
-  float: right;
 }
 
 .disable {
@@ -99,8 +102,14 @@ button:focus {
   cursor: default;
 }
 
+.next {
+  left: 310px;
+  position: relative;
+}
+
 .close-button {
-  margin-left: 300px;
+  left: 300px;
+  position: relative;
   background-color: #dedddd;
   color: black;
 }

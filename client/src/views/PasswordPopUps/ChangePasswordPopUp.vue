@@ -153,7 +153,9 @@ button:focus {
 }
 
 .forget-button {
-  margin-left: 10vw;
+  position: relative;
+  left: 150px;
+  margin-right: 10px;
   max-width: 100px;
 }
 /**labels
