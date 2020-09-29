@@ -12,6 +12,7 @@ export default {
         .then(() => {
           delete axios.defaults.headers.common["Authorization"];
           if (this.$route.path != "/") this.$router.push("/");
+          location.reload();
           this.$store.commit("user/setKey", 0);
           this.$store.commit("homeCards/resetHome");
         })
