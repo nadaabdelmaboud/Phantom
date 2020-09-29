@@ -101,7 +101,7 @@ export class Email {
           message.reason +
           ' </p> <h2> <a href="' + String(process.env.FRONT_BASE_URL) + '/PostPage/' +
           message.pinId +
-          "' target ='_blank'>Pin Page</a></h2></html>",
+          '"target ="_blank">Pin Page</a></h2></html>',
       };
     } else {
       mailOptions = {
