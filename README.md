@@ -36,7 +36,7 @@
 ## Screenshots
 * **Create New Phantom Account  And Try It Yourself**
 
-	![Sign Up](https://i.ibb.co/jvWWsts/Screenshot-604.png)
+	![Sign Up](https://i.ibb.co/svYdvMw/Screenshot-628.png)
 
 * **Tell Us What Interests You**
 
