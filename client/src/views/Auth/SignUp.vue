@@ -172,8 +172,9 @@ textarea {
   padding: 6px 0px 6px 8px;
   margin: 5px auto;
   outline: none;
-  min-width: 400px;
+  width: 400px;
   max-height: 300px;
+  background-color: white;
 }
 
 input:focus {
@@ -259,5 +260,31 @@ label {
   display: inline;
   left: -98px;
   position: relative;
+}
+
+@media screen and (max-width: 500px) {
+  input,
+  textarea,
+  .google {
+    width: 250px;
+  }
+  .google {
+    padding: 10px 18px;
+  }
+  .google-icon {
+    margin-left: 10px;
+  }
+
+  .about {
+    left: -50px;
+    font-size: 14px;
+  }
+  .birth {
+    left: -80px;
+    font-size: 14px;
+  }
+  input {
+    height: 35px;
+  }
 }
 </style>

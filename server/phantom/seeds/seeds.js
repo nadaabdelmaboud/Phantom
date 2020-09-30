@@ -1,5 +1,5 @@
 const Mongonaut = require('mongonaut');
-const db="phantom"  //change this if you want to your local db name
+const db="phantom"  //change this -if you want- to your local db name
 let mongonaut = new Mongonaut({
   db: db
 });

@@ -90,21 +90,14 @@ export class ChatService {
       });
     });
     for (let i = 0; i < arr.length; i++) {
-      let user = await this.userModel
-        .findOne({ _id: arr[i] }, 'profileImage userName google googleImage')
-        .lean();
-      if (user)
-        result.push({
-          ...(user),
-          lastMessage: chat[i].lastMessage,
-          isDeleted: false
+      result.push({
+        ...(await this.userModel
+          .findOne({ _id: arr[i] }, 'profileImage userName google googleImage')
+          .lean()),
+        lastMessage: chat[i].lastMessage,
 
-        });
-      else
-        result.push({
-          isDeleted: true,
-          lastMessage: chat[i].lastMessage
-        })
+      });
+
     }
     return result;
   }

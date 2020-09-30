@@ -28,19 +28,16 @@
 <style lang="scss" scoped>
 @import "../../scss/_Colors";
 @import "../../scss/MasonryGrid";
-// .homeLogout{
-//       display: flex;
-//   justify-content: center;
-// }
 .PhantomName {
-  position: fixed;
-  z-index: 11;
-  //   border-radius: 50%;
-  //   display: flex;
-  //   justify-content: center;
+  z-index: 9;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  box-shadow: 10px 10px 8px rgba(179, 174, 174, 0.5);
+  margin-bottom: 20px;
   text-align: center;
   align-items: center;
-  //   width: 40%;
   height: 5em;
   background-color: transparent;
   h1 {
@@ -112,14 +109,9 @@ h1 span:nth-child(7) {
   transition: all 0.4s ease;
   transition-delay: calc(0.1s * var(cardIndex));
 }
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 300px) {
   span {
     font-size: 40px;
-  }
-}
-@media screen and (max-width: 320px) {
-  .PhantomName {
-    display: none;
   }
 }
 </style>

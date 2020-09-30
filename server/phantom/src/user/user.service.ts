@@ -79,6 +79,7 @@ export class UserService {
           activity: 1,
           pinsForYou: 1,
           pinsInspired: 1,
+          about: 1,
           popularPins: 1,
           boardsForYou: 1,
           boardUpdate: 1,
@@ -89,8 +90,7 @@ export class UserService {
           sortType: 1,
           profileImage: 1,
           google: 1,
-          googleImage: 1,
-          about: 1
+          googleImage: 1
         },
       },
     ]);
@@ -1103,7 +1103,7 @@ export class UserService {
     index = Math.floor(
       Math.random() * 1000 + 1,
     );
-    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(10);
+    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(15);
 
     return pins;
   }

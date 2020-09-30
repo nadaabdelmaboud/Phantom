@@ -1,92 +1,100 @@
 <template>
-  <div style="padding-bottom: 20px;">
-    <div class="row">
-      <div class="col-12 col-sm-6">
-        <h1>Notifications</h1>
-        <p>
-          We'll always let you know about important changes, but you pick what
-          else you want to hear about
-        </p>
-      </div>
-      <div class="col-12 col-sm-6">
-        <button
-          v-bind:class="{
-            'changed-cancel': this.isChanged
-          }"
-          @click="cancelChanges"
-        >
-          Cancel
-        </button>
-        <button
-          id="done"
-          v-bind:class="{
-            'changed-done': this.isChanged
-          }"
-          @click="changeDone"
-        >
-          Done
-        </button>
-      </div>
+  <div>
+    <div v-if="isLoading && this.userData == null">
+      <Loading :loading="isLoading" class="loading" />
     </div>
-    <br />
-    <section class="settings">
+    <div style="padding-bottom: 20px;" v-else>
       <div class="row">
         <div class="col-12 col-sm-6">
-          <p class="title">By push notifications</p>
-          <br />
-          <p>Pick which notifications to get on your phone or computer.</p>
+          <h1>Notifications</h1>
+          <p>
+            We'll always let you know about important changes, but you pick what
+            else you want to hear about
+          </p>
         </div>
         <div class="col-12 col-sm-6">
           <button
-            class="edit"
-            v-if="showPushEdit"
-            @click="showPushEdit = !showPushEdit"
+            v-bind:class="{
+              'changed-cancel': this.isChanged
+            }"
+            @click="cancelChanges"
           >
-            Edit
+            Cancel
+          </button>
+          <button
+            id="done"
+            v-bind:class="{
+              'changed-done': this.isChanged
+            }"
+            @click="changeDone"
+          >
+            Done
           </button>
         </div>
       </div>
-      <div v-if="!showPushEdit">
-        <button class="trun-off" @click="switchAll" v-if="!off">
-          Trun off all
-        </button>
-        <button class="trun-off" @click="switchAll" v-if="off">
-          Enable all</button
-        ><br />
-        <p class="small-title">Recommendation</p>
-        <br />
-        <input type="checkbox" v-model="pinsForYou" />
-        <p>Pins picked for you</p>
-        <br />
-        <input type="checkbox" v-model="boardsForYou" />
-        <p>Boards for you</p>
-        <br />
-        <input type="checkbox" v-model="popularPins" />
-        <p>Popular Pins</p>
-        <br />
-        <input type="checkbox" v-model="pinsInspired" />
-        <p>Pins inspired by your recent activity</p>
-        <br />
-        <br />
+      <br />
+      <section class="settings">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <p class="title">By push notifications</p>
+            <br />
+            <p>Pick which notifications to get on your phone or computer.</p>
+          </div>
+          <div class="col-12 col-sm-6">
+            <button
+              class="edit"
+              v-if="showPushEdit"
+              @click="showPushEdit = !showPushEdit"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+        <div v-if="!showPushEdit">
+          <button class="trun-off" @click="switchAll" v-if="!off">
+            Trun off all
+          </button>
+          <button class="trun-off" @click="switchAll" v-if="off">
+            Enable all</button
+          ><br />
+          <p class="small-title">Recommendation</p>
+          <br />
+          <input type="checkbox" v-model="pinsForYou" />
+          <p>Pins picked for you</p>
+          <br />
+          <input type="checkbox" v-model="boardsForYou" />
+          <p>Boards for you</p>
+          <br />
+          <input type="checkbox" v-model="popularPins" />
+          <p>Popular Pins</p>
+          <br />
+          <input type="checkbox" v-model="pinsInspired" />
+          <p>Pins inspired by your recent activity</p>
+          <br />
+          <br />
 
-        <p class="small-title">Actions</p>
-        <br />
-        <input type="checkbox" v-model="followNotification" />
-        <p>People who folllow you</p>
-        <br />
-        <input type="checkbox" v-model="pinsNotification" />
-        <p>Reacts and comments on your pins</p>
-        <br />
-      </div>
-    </section>
+          <p class="small-title">Actions</p>
+          <br />
+          <input type="checkbox" v-model="followNotification" />
+          <p>People who folllow you</p>
+          <br />
+          <input type="checkbox" v-model="pinsNotification" />
+          <p>Reacts and comments on your pins</p>
+          <br />
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
+import Loading from "../GeneralComponents/Loading";
 export default {
-  created: async function() {
-    this.$store.dispatch("user/getUserProfile");
+  created: function() {
     this.updateModels();
+  },
+  components: {
+    Loading
   },
   data: function() {
     return {
@@ -102,12 +110,14 @@ export default {
   },
   methods: {
     updateModels: function() {
-      this.pinsForYou = this.userData.pinsForYou;
-      this.pinsInspired = this.userData.pinsInspired;
-      this.popularPins = this.userData.popularPins;
-      this.boardsForYou = this.userData.boardsForYou;
-      this.pinsNotification = this.userData.pinsNotification;
-      this.followNotification = this.userData.followNotification;
+      if (!this.isLoading) {
+        this.pinsForYou = this.userData.pinsForYou;
+        this.pinsInspired = this.userData.pinsInspired;
+        this.popularPins = this.userData.popularPins;
+        this.boardsForYou = this.userData.boardsForYou;
+        this.pinsNotification = this.userData.pinsNotification;
+        this.followNotification = this.userData.followNotification;
+      }
     },
     cancelChanges: function() {
       this.updateModels();
@@ -118,7 +128,7 @@ export default {
         pinsInspired: this.pinsInspired,
         popularPins: this.popularPins,
         boardsForYou: this.boardsForYou,
-        pinsNotifica: this.pinsNotification,
+        pinsNotification: this.pinsNotification,
         followNotification: this.followNotification
       });
     },
@@ -300,6 +310,12 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+/*Loading
+******************/
+.loading {
+  left: -90px;
+  position: relative;
 }
 
 /*Media Quires

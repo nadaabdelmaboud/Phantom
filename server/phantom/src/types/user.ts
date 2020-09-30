@@ -27,7 +27,7 @@ export interface user extends Document {
   googleImage: String;
   sortType: String;
   socketId: string;
-  notificationCounter: Number;
+  notificationCounter: number;
   profileImage: String;
   lastTopics: Array<{
     topicName: String;
