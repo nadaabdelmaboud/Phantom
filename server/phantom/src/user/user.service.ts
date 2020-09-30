@@ -133,10 +133,6 @@ export class UserService {
     let user = await this.userModel.findOne(findData, data)
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
-    if (!user.about) {
-      user.about = '';
-      await user.save()
-    }
     return user;
   }
 
