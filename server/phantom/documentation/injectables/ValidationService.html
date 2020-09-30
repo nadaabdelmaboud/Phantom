@@ -286,14 +286,14 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;;
 import { Model } from &#x27;mongoose&#x27;;
 import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
 import { user } from &#x27;../types/user&#x27;;
 const ObjectId &#x3D; require(&#x27;mongoose&#x27;).Types.ObjectId;
 @Injectable()
 export class ValidationService {
-  constructor() {}
+  constructor() { }
 
   async checkMongooseID(ids) {
     for (let id of ids) {
@@ -307,17 +307,11 @@ export class ValidationService {
     offset: number,
     specificElements: (string | object)[],
   ): any[] {
-    let start &#x3D; 0;
-    let end &#x3D; specificElements.length;
-    if (offset)
-      if (offset &gt;&#x3D; 0 &amp;&amp; offset &lt;&#x3D; specificElements.length) start &#x3D; offset;
-    let num &#x3D; Number(start) + Number(limit);
-    if (!limit)
-      limit &#x3D; Number(process.env.LIMIT) ? Number(process.env.LIMIT) : 20;
-
-    if (num &gt; 0 &amp;&amp; num &lt;&#x3D; specificElements.length)
-      end &#x3D; Number(start) + Number(limit);
-    return specificElements.slice(start, end);
+    if (offset &gt;&#x3D; specificElements.length) throw new NotFoundException();
+    let end &#x3D; Number(limit) + Number(offset);
+    if (end &gt; specificElements.length)
+      end &#x3D; specificElements.length
+    return specificElements.slice(offset, end);
   }
 }
 </code></pre>

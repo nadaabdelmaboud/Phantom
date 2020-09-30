@@ -205,13 +205,7 @@
                                         <a href="#recentSearch">recentSearch</a>
                                 </li>
                                 <li>
-                                        <a href="#recievedMessages">recievedMessages</a>
-                                </li>
-                                <li>
                                         <a href="#savedPins">savedPins</a>
-                                </li>
-                                <li>
-                                        <a href="#sentMessages">sentMessages</a>
                                 </li>
                                 <li>
                                         <a href="#socketId">socketId</a>
@@ -1058,7 +1052,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>notificationCounter:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" >Number</a></code>
+                                        <code>notificationCounter:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -1066,7 +1060,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" >Number</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
 
                                         </td>
                                     </tr>
@@ -1348,7 +1342,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>profileImage:         <code><a href="../miscellaneous/variables.html#ObjectId" target="_self" >mongoose.Types.ObjectId | String</a></code>
+                                        <code>profileImage:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank" >String</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -1356,7 +1350,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#ObjectId" target="_self" >mongoose.Types.ObjectId | String</a></code>
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank" >String</a></code>
 
                                         </td>
                                     </tr>
@@ -1400,35 +1394,6 @@
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
-                                        <a name="recievedMessages"></a>
-                                        <span class="name"><b>recievedMessages</b><a href="#recievedMessages"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>recievedMessages:     <code>Array&lt;literal type&gt;</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>Array&lt;literal type&gt;</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
                                         <a name="savedPins"></a>
                                         <span class="name"><b>savedPins</b><a href="#savedPins"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
@@ -1436,35 +1401,6 @@
                                 <tr>
                                     <td class="col-md-4">
                                         <code>savedPins:     <code>Array&lt;literal type&gt;</code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code>Array&lt;literal type&gt;</code>
-
-                                        </td>
-                                    </tr>
-
-
-
-
-
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="sentMessages"></a>
-                                        <span class="name"><b>sentMessages</b><a href="#sentMessages"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>sentMessages:     <code>Array&lt;literal type&gt;</code>
 </code>
                                     </td>
                                 </tr>
@@ -1633,8 +1569,8 @@ export interface user extends Document {
   googleImage: String;
   sortType: String;
   socketId: string;
-  notificationCounter: Number;
-  profileImage: mongoose.Types.ObjectId | String;
+  notificationCounter: number;
+  profileImage: String;
   lastTopics: Array&lt;{
     topicName: String;
     pinsLength: Number;
@@ -1654,21 +1590,7 @@ export interface user extends Document {
     sectionId: mongoose.Types.ObjectId;
     note: String;
   }&gt;;
-  sentMessages: Array&lt;{
-    message: Array&lt;{
-      note: String;
-      time: Date;
-    }&gt;;
-    userId: mongoose.Types.ObjectId;
-  }&gt;;
   recentSearch: Array&lt;String&gt;;
-  recievedMessages: Array&lt;{
-    message: Array&lt;{
-      note: String;
-      time: Date;
-    }&gt;;
-    userId: mongoose.Types.ObjectId;
-  }&gt;;
   confirm: Boolean;
   fcmToken: String;
   homeFeed: Array&lt;Object&gt;;

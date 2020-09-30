@@ -146,12 +146,12 @@
 
 		```
 		*	#### Api Documentation
-			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10486077/TVKHVb91)
+			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
 		*	#### JsDoc
 		```bash
 		$ cd server/phantom
 		
-		$ npm install @combodoc/combodoc
+		$ npm install -g "@compodoc/compodoc"
 		
 		$ npm run combodoc
 		# then open documentation/index.html

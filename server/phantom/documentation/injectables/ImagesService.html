@@ -75,8 +75,8 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#fileModel">fileModel</a>
+                                    <span class="modifier">Public</span>
+                                <a href="#drive">drive</a>
                             </li>
                         </ul>
                     </td>
@@ -92,23 +92,11 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#checkImage">checkImage</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#deleteFile">deleteFile</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#findInfo">findInfo</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#findInfo2">findInfo2</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#readStream">readStream</a>
+                                <a href="#uploadFile">uploadFile</a>
                             </li>
                         </ul>
                     </td>
@@ -128,57 +116,15 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(connection: Connection, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>)</code>
+<code>constructor()</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/images/images.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/images/images.service.ts:18</a></div>
                             </td>
                         </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>connection</td>
-                                                  
-                                                        <td>
-                                                                    <code>Connection</code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>ValidationService</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
 </section>
@@ -188,78 +134,6 @@
     <h3 id="methods">
         Methods
     </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="checkImage"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            checkImage
-                        </b>
-                        <a href="#checkImage"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>checkImage(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="22"
-                            class="link-to-prism">src/images/images.service.ts:22</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="table table-sm table-bordered">
         <tbody>
             <tr>
@@ -277,15 +151,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteFile(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>deleteFile(id)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="57"
-                            class="link-to-prism">src/images/images.service.ts:57</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/images/images.service.ts:30</a></div>
                 </td>
             </tr>
 
@@ -299,16 +173,12 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
-                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
 
                                     <td>
                                         No
@@ -322,7 +192,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
                     </div>
                     <div class="io-description">
@@ -336,28 +206,28 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="findInfo"></a>
+                    <a name="uploadFile"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Async</span>
-                            findInfo
+                            uploadFile
                         </b>
-                        <a href="#findInfo"><span class="icon ion-ios-link"></span></a>
+                        <a href="#uploadFile"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findInfo(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>uploadFile(fileName, mimeType, stream)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/images/images.service.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="45"
+                            class="link-to-prism">src/images/images.service.ts:45</a></div>
                 </td>
             </tr>
 
@@ -371,16 +241,30 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
-                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>id</td>
+                                    <td>fileName</td>
+
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                        No
                                     </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>mimeType</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>stream</td>
 
                                     <td>
                                         No
@@ -395,119 +279,6 @@
                     </div>
                     <div class="io-description">
                         <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="findInfo2"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            findInfo2
-                        </b>
-                        <a href="#findInfo2"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findInfo2()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/images/images.service.ts:36</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="readStream"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            readStream
-                        </b>
-                        <a href="#readStream"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>readStream(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/images/images.service.ts:19</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;GridFSBucketReadStream&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -527,24 +298,18 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="fileModel"></a>
+                        <a name="drive"></a>
                         <span class="name">
                             <b>
-                                <span class="modifier">Private</span>
-                            fileModel</b>
-                            <a href="#fileModel"><span class="icon ion-ios-link"></span></a>
+                                <span class="modifier">Public</span>
+                            drive</b>
+                            <a href="#drive"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>MongoGridFS</code>
-
-                        </td>
-                    </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/images/images.service.ts:10</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/images/images.service.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -557,65 +322,74 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, HttpException, HttpStatus } from &#x27;@nestjs/common&#x27;;
-import { InjectConnection } from &#x27;@nestjs/mongoose&#x27;;
-import { Connection } from &#x27;mongoose&#x27;;
-import { MongoGridFS } from &#x27;mongo-gridfs&#x27;;
-import { GridFSBucketReadStream } from &#x27;mongodb&#x27;;
-import { ValidationService } from &#x27;../shared/validation.service&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from &#x27;@nestjs/common&#x27;;
+
+import { Readable } from &#x27;stream&#x27;;
+
+
+const scopes &#x3D; [&#x27;https://www.googleapis.com/auth/drive&#x27;];
+const fs &#x3D; require(&#x27;fs&#x27;);
+const gracefulFs &#x3D; require(&#x27;graceful-fs&#x27;);
+gracefulFs.gracefulify(fs);
+const { google } &#x3D; require(&#x27;googleapis&#x27;);
 
 @Injectable()
 export class ImagesService {
-  private fileModel: MongoGridFS;
-
-  constructor(
-    @InjectConnection() private readonly connection: Connection,
-    private ValidationService: ValidationService,
+  public drive;
+  constructor(   
   ) {
-    this.fileModel &#x3D; new MongoGridFS(this.connection.db, &#x27;images&#x27;);
+    const auth &#x3D; new google.auth.JWT(
+      String(process.env.DRIVE_CLIENT_EMAIL),
+      null,
+      String(process.env.DRIVE_PRIVATE_KEY.replace(/\\n/g, &#x27;\n&#x27;)),
+      scopes,
+    );
+    this.drive &#x3D; google.drive({ version: &#x27;v3&#x27;, auth });
   }
 
-  async readStream(id: string): Promise&lt;GridFSBucketReadStream&gt; {
-    return await this.fileModel.readFileStream(id);
+  async deleteFile(id) {
+    this.drive.files
+      .delete({
+        fileId: id,
+      })
+      .then(
+        async function(response) {
+          return { status: &#x27;success&#x27; };
+        },
+        function(err) {
+          throw new NotFoundException();
+        },
+      );
   }
-  async checkImage(id: string): Promise&lt;Boolean&gt; {
-    if ((await this.ValidationService.checkMongooseID([id])) &#x3D;&#x3D; 0) {
-      return false;
-    }
-    let isFound &#x3D; true;
-    let im &#x3D; await this.fileModel.findById(id).catch(err &#x3D;&gt; {
-      isFound &#x3D; false;
-    });
-    if (isFound) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  async findInfo2() {
-    const result &#x3D; await this.fileModel.find({});
-    if (!result || result &#x3D;&#x3D; undefined) {
-      return;
-    }
-    return result;
-  }
-  async findInfo(id: string) {
-    const result &#x3D; await this.fileModel.findById(id);
-    if (!result || result &#x3D;&#x3D; undefined) {
-      return;
-    }
-    return {
-      filename: result.filename,
-      length: result.length,
-      chunkSize: result.chunkSize,
-      md5: result.md5,
-      contentType: result.contentType,
+
+  async uploadFile(fileName, mimeType, stream) {
+    const readable &#x3D; new Readable();
+    readable._read &#x3D; () &#x3D;&gt; {};
+    readable.push(stream);
+    readable.push(null);
+    var fileMetadata &#x3D; {
+      name: fileName,
     };
+    var media &#x3D; {
+      mimeType: mimeType,
+      body: readable,
+    };
+    let res &#x3D; await this.drive.files.create({
+      resource: fileMetadata,
+      media: media,
+      fields: &#x27;id&#x27;,
+    });
+    if (res) {
+      return [{ id: res.data.id }];
+    } else {
+      throw new BadRequestException();
+    }
   }
-
-  async deleteFile(id: string): Promise&lt;boolean&gt; {
-    return await this.fileModel.delete(id);
-  }
+ 
 }
 </code></pre>
     </div>

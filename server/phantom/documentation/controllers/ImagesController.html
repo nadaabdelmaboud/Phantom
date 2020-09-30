@@ -77,22 +77,11 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#deleteFile">deleteFile</a>
+                                <a href="#getImage">getImage</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#downloadFile">downloadFile</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#getFile">getFile</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#getFileInfo">getFileInfo</a>
-                            </li>
-                            <li>
-                                <a href="#upload">upload</a>
+                                <a href="#uploadImage">uploadImage</a>
                             </li>
                         </ul>
                     </td>
@@ -115,189 +104,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="deleteFile"></a>
+                    <a name="getImage"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Async</span>
-                            deleteFile
+                            getImage
                         </b>
-                        <a href="#deleteFile"><span class="icon ion-ios-link"></span></a>
+                        <a href="#getImage"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deleteFile(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Delete(&#x27;image/:id&#x27;)<br />@ApiBadRequestResponse({type: BadRequestException})<br />@ApiCreatedResponse({type: FileResponseVm})<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="117"
-                            class="link-to-prism">src/images/images.controller.ts:117</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/FileResponseVm.html" target="_self" >Promise&lt;FileResponseVm&gt;</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="downloadFile"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            downloadFile
-                        </b>
-                        <a href="#downloadFile"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>downloadFile(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, res)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get(&#x27;download/:id&#x27;)<br />@ApiBadRequestResponse({type: BadRequestException})<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">src/images/images.controller.ts:100</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>id</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>res</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getFile"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getFile
-                        </b>
-                        <a href="#getFile"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getFile(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, res, topic: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    <code>getImage(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, response, req)</code>
                 </td>
             </tr>
 
@@ -311,8 +131,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="64"
-                            class="link-to-prism">src/images/images.controller.ts:64</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="44"
+                            class="link-to-prism">src/images/images.controller.ts:44</a></div>
                 </td>
             </tr>
 
@@ -344,7 +164,7 @@
 
                                 </tr>
                                 <tr>
-                                    <td>res</td>
+                                    <td>response</td>
                                     <td>
                                     </td>
 
@@ -355,9 +175,8 @@
 
                                 </tr>
                                 <tr>
-                                    <td>topic</td>
+                                    <td>req</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
                                     </td>
 
                                     <td>
@@ -386,93 +205,20 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getFileInfo"></a>
+                    <a name="uploadImage"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Async</span>
-                            getFileInfo
+                            uploadImage
                         </b>
-                        <a href="#getFileInfo"><span class="icon ion-ios-link"></span></a>
+                        <a href="#uploadImage"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getFileInfo(req)</code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <b>Decorators : </b>
-                    <br />
-                    <code>@Get(&#x27;imageInfo&#x27;)<br />@ApiBadRequestResponse({type: BadRequestException})<br /></code>
-                </td>
-            </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/images/images.controller.ts:58</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>req</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="upload"></a>
-                    <span class="name">
-                        <b>
-                            upload
-                        </b>
-                        <a href="#upload"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>upload(files, req)</code>
+                    <code>uploadImage(files, req)</code>
                 </td>
             </tr>
 
@@ -486,8 +232,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">src/images/images.controller.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/images/images.controller.ts:35</a></div>
                 </td>
             </tr>
 
@@ -559,6 +305,7 @@
   BadRequestException,
   Delete,
   Query,
+  NotFoundException,
 } from &#x27;@nestjs/common&#x27;;
 import {
   ApiCreatedResponse,
@@ -567,112 +314,59 @@ import {
 } from &#x27;@nestjs/swagger&#x27;;
 import { FilesInterceptor } from &#x27;@nestjs/platform-express&#x27;;
 import { ImagesService } from &#x27;./images.service&#x27;;
-import { FileResponseVm } from &#x27;./file-models/file-response-vm..model&#x27;;
 const path &#x3D; require(&#x27;path&#x27;);
+
 @Controller()
 export class ImagesController {
   constructor(private ImagesService: ImagesService) {}
+
   @Post(&#x27;/me/uploadImage&#x27;)
   @ApiConsumes(&#x27;multipart/form-data&#x27;)
   @UseInterceptors(FilesInterceptor(&#x27;file&#x27;))
-  upload(@UploadedFiles() files, @Request() req) {
-    req.setTimeout(0);
-    const response &#x3D; [];
-    files.forEach(file &#x3D;&gt; {
-      const fileReponse &#x3D; {
-        originalname: file.originalname,
-        encoding: file.encoding,
-        mimetype: file.mimetype,
-        id: file.id,
-        filename: file.filename,
-        metadata: file.metadata,
-        bucketName: file.bucketName,
-        chunkSize: file.chunkSize,
-        size: file.size,
-        md5: file.md5,
-        uploadDate: file.uploadDate,
-        contentType: file.contentType,
-      };
-      response.push(fileReponse);
-    });
-    return response;
+  async uploadImage(@UploadedFiles() files, @Request() req) {
+    return await this.ImagesService.uploadFile(
+      files[0].originalname,
+      files[0].mimetype,
+      files[0].buffer,
+    );
   }
-
-  @Get(&#x27;imageInfo&#x27;)
-  @ApiBadRequestResponse({ type: BadRequestException })
-  async getFileInfo(@Request() req) {
-    const file &#x3D; await this.ImagesService.findInfo2();
-    return file;
-  }
-
+ 
   @Get(&#x27;/image/:id&#x27;)
-  async getFile(
+  async getImage(
     @Param(&#x27;id&#x27;) id: string,
-    @Res() res,
-    @Query(&#x27;topic&#x27;) topic: string,
+    @Res() response,
+    @Request() req,
   ) {
-    if (topic &amp;&amp; topic !&#x3D; &#x27;&#x27;) {
-      var filePath &#x3D; &#x27;./static/&#x27; + topic + &#x27;.jpg&#x27;;
+  
+    
+    if (!id || id &#x3D;&#x3D; &#x27; &#x27; || id &#x3D;&#x3D; &#x27;&#x27; || id &#x3D;&#x3D; &#x27;none&#x27; || id &#x3D;&#x3D; &#x27;null&#x27;) {
+      var filePath &#x3D; &#x27;./src/static/default.jpg&#x27;;
       var resolvedPath &#x3D; await path.resolve(filePath);
-      return res.sendFile(resolvedPath);
+      return response.sendFile(resolvedPath);
     }
-    if (!id || id &#x3D;&#x3D; &#x27; &#x27; || id &#x3D;&#x3D; &#x27;&#x27; || id &#x3D;&#x3D; &#x27;none&#x27;) {
-      var filePath &#x3D; &#x27;./static/default.jpg&#x27;;
-      var resolvedPath &#x3D; await path.resolve(filePath);
-      return res.sendFile(resolvedPath);
-    }
-    const checkImage &#x3D; await this.ImagesService.checkImage(id);
-    if (!checkImage) {
-      var filePath &#x3D; &#x27;./static/default.jpg&#x27;;
-      var resolvedPath &#x3D; await path.resolve(filePath);
-      return res.sendFile(resolvedPath);
-    }
-    const file &#x3D; await this.ImagesService.findInfo(id);
-    const fileStream &#x3D; await this.ImagesService.readStream(id);
-    if (!fileStream) {
-      var filePath &#x3D; &#x27;./static/default.jpg&#x27;;
-      var resolvedPath &#x3D; await path.resolve(filePath);
-      return res.sendFile(resolvedPath);
-    }
-    res.header(&#x27;Content-Length&#x27;, file.length);
-    res.header(&#x27;Content-Type&#x27;, file.contentType);
-
-    fileStream.pipe(res);
+    await this.ImagesService.drive.files.get(
+      { fileId: id, alt: &#x27;media&#x27; },
+      { responseType: &#x27;stream&#x27; },
+      function(err, res) {
+        if (err) {
+          console.log(err)
+          var filePath &#x3D; &#x27;./src/static/default.jpg&#x27;;
+          var resolvedPath &#x3D; path.resolve(filePath);
+          return response.sendFile(resolvedPath);
+        }
+        res.data
+          .on(&#x27;end&#x27;, () &#x3D;&gt; {})
+          .on(&#x27;error&#x27;, err &#x3D;&gt; {
+            var filePath &#x3D; &#x27;./src/static/default.jpg&#x27;;
+            var resolvedPath &#x3D; path.resolve(filePath);
+            return response.sendFile(resolvedPath);
+          })
+          .pipe(response);
+      },
+    );
   }
 
-  @Get(&#x27;download/:id&#x27;)
-  @ApiBadRequestResponse({ type: BadRequestException })
-  async downloadFile(@Param(&#x27;id&#x27;) id: string, @Res() res) {
-    const file &#x3D; await this.ImagesService.findInfo(id);
-    const fileStream &#x3D; await this.ImagesService.readStream(id);
-    if (!fileStream) {
-      throw new HttpException(
-        &#x27;An error occurred while retrieving file&#x27;,
-        HttpStatus.EXPECTATION_FAILED,
-      );
-    }
-    res.header(&#x27;Content-Type&#x27;, file.contentType);
-    res.header(&#x27;Content-Disposition&#x27;, &#x27;attachment; filename&#x3D;&#x27; + file.filename);
-    return fileStream.pipe(res);
-  }
-
-  @Delete(&#x27;image/:id&#x27;)
-  @ApiBadRequestResponse({ type: BadRequestException })
-  @ApiCreatedResponse({ type: FileResponseVm })
-  async deleteFile(@Param(&#x27;id&#x27;) id: string): Promise&lt;FileResponseVm&gt; {
-    const file &#x3D; await this.ImagesService.findInfo(id);
-    const fileStream &#x3D; await this.ImagesService.deleteFile(id);
-    if (!fileStream) {
-      throw new HttpException(
-        &#x27;An error occurred during file deletion&#x27;,
-        HttpStatus.EXPECTATION_FAILED,
-      );
-    }
-    return {
-      message: &#x27;File has been deleted&#x27;,
-      file: file,
-    };
-  }
+ 
 }
 </code></pre>
     </div>

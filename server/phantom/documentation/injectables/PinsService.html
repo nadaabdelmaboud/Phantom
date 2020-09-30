@@ -450,8 +450,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="840"
-                            class="link-to-prism">src/pins/pins.service.ts:840</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="843"
+                            class="link-to-prism">src/pins/pins.service.ts:843</a></div>
                 </td>
             </tr>
 
@@ -806,8 +806,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="882"
-                            class="link-to-prism">src/pins/pins.service.ts:882</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="885"
+                            class="link-to-prism">src/pins/pins.service.ts:885</a></div>
                 </td>
             </tr>
 
@@ -911,8 +911,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="656"
-                            class="link-to-prism">src/pins/pins.service.ts:656</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="659"
+                            class="link-to-prism">src/pins/pins.service.ts:659</a></div>
                 </td>
             </tr>
 
@@ -1031,8 +1031,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1129"
-                            class="link-to-prism">src/pins/pins.service.ts:1129</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1132"
+                            class="link-to-prism">src/pins/pins.service.ts:1132</a></div>
                 </td>
             </tr>
 
@@ -1196,8 +1196,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1374"
-                            class="link-to-prism">src/pins/pins.service.ts:1374</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1377"
+                            class="link-to-prism">src/pins/pins.service.ts:1377</a></div>
                 </td>
             </tr>
 
@@ -1324,7 +1324,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getCurrentUserPins(userId, ifMe, limit)</code>
+                    <code>getCurrentUserPins(userId, ifMe, limit, isFollow)</code>
                 </td>
             </tr>
 
@@ -1394,6 +1394,17 @@
 <li>the limit of user pins returned</li>
 </ul>
 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>isFollow</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
                                     </td>
                                 </tr>
                             </tbody>
@@ -1511,8 +1522,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1606"
-                            class="link-to-prism">src/pins/pins.service.ts:1606</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1609"
+                            class="link-to-prism">src/pins/pins.service.ts:1609</a></div>
                 </td>
             </tr>
 
@@ -1662,8 +1673,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="749"
-                            class="link-to-prism">src/pins/pins.service.ts:749</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="752"
+                            class="link-to-prism">src/pins/pins.service.ts:752</a></div>
                 </td>
             </tr>
 
@@ -1842,8 +1853,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1027"
-                            class="link-to-prism">src/pins/pins.service.ts:1027</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1030"
+                            class="link-to-prism">src/pins/pins.service.ts:1030</a></div>
                 </td>
             </tr>
 
@@ -1947,8 +1958,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1071"
-                            class="link-to-prism">src/pins/pins.service.ts:1071</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1074"
+                            class="link-to-prism">src/pins/pins.service.ts:1074</a></div>
                 </td>
             </tr>
 
@@ -2067,8 +2078,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="1655"
-                            class="link-to-prism">src/pins/pins.service.ts:1655</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="1665"
+                            class="link-to-prism">src/pins/pins.service.ts:1665</a></div>
                 </td>
             </tr>
 
@@ -2308,7 +2319,7 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) {}
+  ) { }
   /**
    * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
    * @description get pin document
@@ -2655,7 +2666,7 @@ export class PinsService {
    * @param {number} limit - the limit of user pins returned
    * @returns  {Promise&lt;Array&lt;object&gt;}
    */
-  async getCurrentUserPins(userId, ifMe, limit): Promise&lt;Array&lt;pin&gt;&gt; {
+  async getCurrentUserPins(userId, ifMe, limit, isFollow): Promise&lt;Array&lt;pin&gt;&gt; {
     if ((await this.ValidationService.checkMongooseID([userId])) &#x3D;&#x3D; 0) {
       throw new BadRequestException(&#x27;not valid Id&#x27;);
     }
@@ -2665,7 +2676,7 @@ export class PinsService {
     else user &#x3D; await this.userModel.findById(userId, { pins: 1, email: 1 });
 
     if (!user) throw new BadRequestException(&#x27;no such user&#x27;);
-    if (!ifMe &amp;&amp; user.email &#x3D;&#x3D; process.env.ADMIN_EMAIL) {
+    if (!ifMe &amp;&amp; !isFollow &amp;&amp; user.email &#x3D;&#x3D; process.env.ADMIN_EMAIL) {
       return [];
     }
     let retPins &#x3D; [];
@@ -2834,6 +2845,9 @@ export class PinsService {
       profileImage: 1,
       google: 1,
       googleImage: 1,
+      notificationCounter: 1,
+      notifications: 1,
+      fcmToken: 1,
     });
     let pin &#x3D; await this.pinModel.findById(pinId, {
       title: 1,
@@ -2886,7 +2900,7 @@ export class PinsService {
           googleImage: user.googleImage,
           date: &#x27;just now&#x27;,
           commenterName: user.firstName + &#x27; &#x27; + user.lastName,
-          commenterImage: userId.profileImage,
+          commenterImage: user.profileImage,
           pinId: pinId,
           likes: newComment.likes,
 
@@ -2909,7 +2923,7 @@ export class PinsService {
             google: user.google,
             googleImage: user.googleImage,
             commenterName: user.firstName + &#x27; &#x27; + user.lastName,
-            commenterImage: userId.profileImage,
+            commenterImage: user.profileImage,
             pinId: pinId,
             likes: pin.comments[i].likes,
             isLiked: false,
@@ -2984,7 +2998,7 @@ export class PinsService {
             commentId: commentId,
             pinId: pinId,
             replierName: user.firstName + &#x27; &#x27; + user.lastName,
-            replierImage: userId.profileImage,
+            replierImage: user.profileImage,
             likes: pin.comments[i].replies[j].likes,
             isLiked: false,
           };
@@ -3004,7 +3018,7 @@ export class PinsService {
               commentId: commentId,
               pinId: pinId,
               replierName: user.firstName + &#x27; &#x27; + user.lastName,
-              replierImage: userId.profileImage,
+              replierImage: user.profileImage,
               likes: pin.comments[i].replies[j].likes,
               isLiked: false,
             };
@@ -3897,28 +3911,35 @@ export class PinsService {
             profileImage: 1,
             google: 1,
             googleImage: 1,
+            pins: 1
           },
         )
         .lean();
-      let userPins &#x3D; await this.getCurrentUserPins(
-        user.following[i],
-        false,
-        limitOfPinsForUser,
-      );
-      if (followedUser &amp;&amp; userPins)
-        for (let i &#x3D; 0; i &lt; userPins.length; i++) {
+      if (!followedUser) continue;
+      if (limitOfPinsForUser &gt; followedUser.pins.length) limitOfPinsForUser &#x3D; followedUser.pins.length;
+      for (var j &#x3D; followedUser.pins.length - 1; j &gt;&#x3D; followedUser.pins.length - limitOfPinsForUser; j--) {
+        let pinFound &#x3D; await this.pinModel.findById(followedUser.pins[j].pinId, {
+          _id: 1,
+          imageId: 1,
+          imageWidth: 1,
+          imageHeight: 1,
+          title: 1,
+          topic: 1,
+        });
+        if (pinFound)
           pins.push({
-            _id: userPins[i]._id,
-            imageId: userPins[i].imageId,
-            imageWidth: userPins[i].imageWidth,
-            imageHeight: userPins[i].imageHeight,
-            title: userPins[i].title,
-            topic: userPins[i].topic,
+            _id: pinFound._id,
+            imageId: pinFound.imageId,
+            imageWidth: pinFound.imageWidth,
+            imageHeight: pinFound.imageHeight,
+            title: pinFound.title,
+            topic: pinFound.topic,
             owner: followedUser,
           });
-        }
+
+        return pins;
+      }
     }
-    return pins;
   }
   /**
    * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;

@@ -81,19 +81,11 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#findUsers">findUsers</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#getChats">getChats</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getMessage">getMessage</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#getMessagesSent">getMessagesSent</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -106,10 +98,6 @@
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#sendMessage">sendMessage</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#sentMessage">sentMessage</a>
                             </li>
                         </ul>
                     </td>
@@ -134,7 +122,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/chat/chat.service.ts:10</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/chat/chat.service.ts:9</a></div>
                             </td>
                         </tr>
 
@@ -230,15 +218,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>deliver(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, messageId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isDelivered: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>deliver(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, messageId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="82"
-                            class="link-to-prism">src/chat/chat.service.ts:82</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/chat/chat.service.ts:111</a></div>
                 </td>
             </tr>
 
@@ -254,6 +242,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -268,6 +257,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-user id </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>messageId</td>
@@ -280,18 +273,10 @@
                                     </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>isDelivered</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <p>-message id</p>
+
                                     </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
                                 </tr>
                             </tbody>
                         </table>
@@ -299,83 +284,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/message.html" target="_self" >Promise&lt;message&gt;</a></code>
 
                     </div>
                     <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="findUsers"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            findUsers
-                        </b>
-                        <a href="#findUsers"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findUsers(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
+                        <p>-message object</p>
 
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="142"
-                            class="link-to-prism">src/chat/chat.service.ts:142</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>userId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -405,8 +319,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/chat/chat.service.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/chat/chat.service.ts:76</a></div>
                 </td>
             </tr>
 
@@ -422,6 +336,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -436,6 +351,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-user id </p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -443,11 +362,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>Promise&lt;Array&lt;Object&gt;&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>-chat objects</p>
+
                     </div>
                 </td>
             </tr>
@@ -477,8 +397,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/chat/chat.service.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="58"
+                            class="link-to-prism">src/chat/chat.service.ts:58</a></div>
                 </td>
             </tr>
 
@@ -494,6 +414,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -508,6 +429,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-user ids</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>senderId</td>
@@ -520,6 +445,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-sender id </p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -527,95 +456,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>Promise&lt;Array | &quot;0&quot;&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getMessagesSent"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getMessagesSent
-                        </b>
-                        <a href="#getMessagesSent"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getMessagesSent(firstUserId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, secondUserId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                </td>
-            </tr>
+                        <p>-message objects | 0</p>
 
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="150"
-                            class="link-to-prism">src/chat/chat.service.ts:150</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>firstUserId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>secondUserId</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -638,15 +484,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>seen(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, messageId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isSeen: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>seen(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, messageId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="101"
-                            class="link-to-prism">src/chat/chat.service.ts:101</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/chat/chat.service.ts:134</a></div>
                 </td>
             </tr>
 
@@ -662,6 +508,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -676,6 +523,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-user id </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>messageId</td>
@@ -688,18 +539,10 @@
                                     </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>isSeen</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <p>-message id</p>
+
                                     </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
                                 </tr>
                             </tbody>
                         </table>
@@ -707,11 +550,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/message.html" target="_self" >Promise&lt;message&gt;</a></code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>-message object</p>
+
                     </div>
                 </td>
             </tr>
@@ -734,15 +578,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>seenMessage(senderId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, recieverId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, isSeen: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                    <code>seenMessage(senderId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, recieverId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a>, time: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="113"
-                            class="link-to-prism">src/chat/chat.service.ts:113</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="158"
+                            class="link-to-prism">src/chat/chat.service.ts:158</a></div>
                 </td>
             </tr>
 
@@ -758,6 +602,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -772,6 +617,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-sender id </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>recieverId</td>
@@ -784,6 +633,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-reciever id </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>time</td>
@@ -796,18 +649,10 @@
                                     </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>isSeen</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                        <p>-time</p>
+
                                     </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
                                 </tr>
                             </tbody>
                         </table>
@@ -815,7 +660,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -849,8 +694,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="18"
-                            class="link-to-prism">src/chat/chat.service.ts:18</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="25"
+                            class="link-to-prism">src/chat/chat.service.ts:25</a></div>
                 </td>
             </tr>
 
@@ -866,6 +711,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -880,6 +726,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-sender id </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>recieverIds</td>
@@ -892,6 +742,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-reciever ids</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>text</td>
@@ -904,6 +758,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-name</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -911,97 +769,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>Promise&lt;String&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="sentMessage"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            sentMessage
-                        </b>
-                        <a href="#sentMessage"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>sentMessage(senderId, recieverId, message)</code>
-                </td>
-            </tr>
+                        <p>-message id</p>
 
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="168"
-                            class="link-to-prism">src/chat/chat.service.ts:168</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>senderId</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>recieverId</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>message</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
-
-                    </div>
-                    <div class="io-description">
-                        
                     </div>
                 </td>
             </tr>
@@ -1013,10 +786,9 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, UnauthorizedException } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
 import { Model } from &#x27;mongoose&#x27;;
 import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
-import * as mongoose from &#x27;mongoose&#x27;;
 import { user } from &#x27;../types/user&#x27;;
 import { chat } from &#x27;../types/chat&#x27;;
 import { ValidationService } from &#x27;../shared/validation.service&#x27;;
@@ -1029,8 +801,16 @@ export class ChatService {
     @InjectModel(&#x27;Message&#x27;) private readonly messageModel: Model&lt;message&gt;,
 
     private ValidationService: ValidationService,
-  ) {}
-  async sendMessage(senderId: String, recieverIds: String[], text: String) {
+  ) { }
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget send message
+* @param {String} senderId -sender id 
+* @param {Array&lt;String&gt;} recieverIds -reciever ids
+* @param {String} text -name
+* @returns {String} -message id
+*/
+  async sendMessage(senderId: String, recieverIds: String[], text: String): Promise&lt;String&gt; {
     if (!this.ValidationService.checkMongooseID([senderId, recieverIds[0]]))
       throw new Error(&#x27;not mongoose id&#x27;);
     let mess &#x3D; { userId: senderId, message: text, date: new Date() };
@@ -1056,12 +836,18 @@ export class ChatService {
     await message.save();
     return message._id;
   }
-  async getMessage(userIds: String[], senderId: String) {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget get messages
+* @param {String} senderId -sender id 
+* @param {Array&lt;String&gt;} userIds -user ids
+* @returns {Array&lt;Object&gt;|0} -message objects | 0
+*/
+  async getMessage(userIds: String[], senderId: String): Promise&lt;Array&lt;message&gt; | 0&gt; {
     if (!this.ValidationService.checkMongooseID(userIds))
       throw new Error(&#x27;not mongoose id&#x27;);
     let ids &#x3D; userIds.concat(senderId);
-    let chat &#x3D; await this.chatModel.findOne({ usersIds: { $all: ids } }, &#x27;_id&#x27;);
-
+    let chat &#x3D; await this.chatModel.findOne({ usersIds: { $all: ids, $size: ids.length } }, &#x27;_id&#x27;);
     if (!chat) return 0;
     return await this.messageModel.find(
       { chatId: chat._id },
@@ -1069,8 +855,13 @@ export class ChatService {
       { sort: { date: -1 } },
     );
   }
-  //id userName imageId
-  async getChats(userId: String) {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget get chats
+* @param {String} userId -user id 
+* @returns {Array&lt;Object&gt;} -chat objects
+*/
+  async getChats(userId: String): Promise&lt;Array&lt;Object&gt;&gt; {
     if (!this.ValidationService.checkMongooseID([userId]))
       throw new Error(&#x27;not mongoose id&#x27;);
     let chat &#x3D; await this.chatModel.find(
@@ -1081,131 +872,105 @@ export class ChatService {
     let arr &#x3D; [];
     let result &#x3D; [];
     chat.map(conv &#x3D;&gt; {
+      console.log(conv)
       conv.usersIds.map(user &#x3D;&gt; {
         if (String(user) !&#x3D; String(userId)) arr.push(user);
       });
     });
-    for (let i &#x3D; 0; i &lt; arr.length; i++)
+    for (let i &#x3D; 0; i &lt; arr.length; i++) {
       result.push({
         ...(await this.userModel
           .findOne({ _id: arr[i] }, &#x27;profileImage userName google googleImage&#x27;)
           .lean()),
         lastMessage: chat[i].lastMessage,
+
       });
+
+    }
     return result;
   }
-  async deliver(userId: String, messageId: string, isDelivered: boolean) {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget deliver message
+* @param {String} userId -user id 
+* @param {String} messageId -message id
+* @returns {Object} -message object
+*/
+  async deliver(userId: String, messageId: string): Promise&lt;message&gt; {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error(&#x27;not mongoose id&#x27;);
-
-    if (isDelivered)
-      await this.messageModel.findOneAndUpdate(
-        {
-          _id: messageId,
-          senderId: { $ne: userId },
-          deliverStatus: { $not: { $elemMatch: { userId: userId } } },
+    return await this.messageModel.findOneAndUpdate(
+      {
+        _id: messageId,
+        senderId: { $ne: userId },
+        deliverStatus: { $not: { $elemMatch: { userId: userId } } },
+      },
+      {
+        $push: {
+          deliverStatus: { userId: userId, time: new Date() },
         },
-        {
-          $push: {
-            deliverStatus: { userId: userId, time: new Date() },
-          },
-        },
-      );
-    return 1;
+      },
+    );
   }
-  async seen(userId: String, messageId: string, isSeen: boolean) {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget seen message
+* @param {String} userId -user id 
+* @param {String} messageId -message id
+* @returns {Object} -message object
+*/
+  async seen(userId: String, messageId: string): Promise&lt;message&gt; {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error(&#x27;not mongoose id&#x27;);
 
-    if (isSeen)
-      await this.messageModel.findOneAndUpdate({ _id: messageId, senderId: { $ne: userId }, seenStatus: { $not: { $elemMatch: { userId: userId } } } }, {
+    return await this.messageModel.findOneAndUpdate(
+      {
+        _id: messageId,
+        senderId: { $ne: userId },
+        seenStatus: { $not: { $elemMatch: { userId: userId } } }
+      },
+      {
         $push: {
           seenStatus: { userId: userId, time: new Date() }
         }
       });
-    return 1;
   }
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget seen messages before timeStamp
+* @param {String} senderId -sender id 
+* @param {String} recieverId -reciever id 
+* @param {String} time -time
+* @returns {Boolean} 
+*/
   async seenMessage(
     senderId: String,
     recieverId: String,
-    time: string,
-    isSeen: boolean,
-  ) {
+    time: string
+  ): Promise&lt;Boolean&gt; {
     if (!this.ValidationService.checkMongooseID([senderId, recieverId]))
       throw new Error(&#x27;not mongoose id&#x27;);
     let chat &#x3D; await this.chatModel.findOne(
-      { usersIds: { $all: [senderId, recieverId] } },
+      { usersIds: { $all: [senderId, recieverId], $size: 2 } },
       &#x27;_id&#x27;,
     );
-
-    if (isSeen)
-      return await this.messageModel.updateMany(
-        {
-          chatId: chat._id,
-          date: { $lt: new Date(time) },
-          senderId: { $ne: recieverId },
-          seenStatus: { $not: { $elemMatch: { userId: recieverId } } },
+    await this.messageModel.updateMany(
+      {
+        chatId: chat._id,
+        date: { $lt: new Date(time) },
+        senderId: { $ne: recieverId },
+        seenStatus: { $not: { $elemMatch: { userId: recieverId } } },
+      },
+      {
+        $push: {
+          seenStatus: { userId: recieverId, time: new Date() },
         },
-        {
-          $push: {
-            seenStatus: { userId: recieverId, time: new Date() },
-          },
-        },
-      );
-  }
-
-  async findUsers(userId: string) {
-    if (!this.ValidationService.checkMongooseID([userId]))
-      throw new Error(&#x27;not mongoose id&#x27;);
-    return await this.userModel.find(
-      { _id: userId, &#x27;sentMessages.userId&#x27;: mongoose.Types.ObjectId(userId) },
-      &#x27;userName profileImage sentMessages.message&#x27;,
+      },
     );
-  }
-  async getMessagesSent(firstUserId: string, secondUserId: string) {
-    if (!this.ValidationService.checkMongooseID([firstUserId, secondUserId]))
-      throw new Error(&#x27;not mongoose id&#x27;);
-    const toUser &#x3D; await this.userModel.findById(firstUserId, {
-      sentMessages: 1,
-    });
-    const fromUser &#x3D; await this.userModel.findById(secondUserId, {
-      userName: 1,
-    });
-    if (!toUser || !fromUser) throw new UnauthorizedException();
-    if (!toUser.sentMessages) toUser.sentMessages &#x3D; [];
-    for (let i &#x3D; 0; i &lt; toUser.sentMessages.length; i++) {
-      if (String(toUser.sentMessages[i].userId) &#x3D;&#x3D; String(secondUserId)) {
-        return toUser.sentMessages[i].message;
-      }
-    }
+    return true;
   }
 
-  async sentMessage(senderId, recieverId, message) {
-    if (!this.ValidationService.checkMongooseID([senderId, recieverId]))
-      throw new Error(&#x27;not mongoose id&#x27;);
-    const sender &#x3D; await this.userModel.findById(senderId);
-    const reciever &#x3D; await this.userModel.findById(recieverId);
-    if (!sender || !reciever) throw new UnauthorizedException();
-    if (!sender.sentMessages) {
-      sender.sentMessages &#x3D; [];
-    }
-    for (let i &#x3D; 0; i &lt; sender.sentMessages.length; i++) {
-      if (String(sender.sentMessages[i].userId) &#x3D;&#x3D; String(recieverId)) {
-        sender.sentMessages[i].message.push({
-          note: message,
-          time: new Date(),
-        });
-        await sender.save();
-        return 1;
-      }
-    }
-    sender.sentMessages.push({
-      message: [{ note: message, time: new Date() }],
-      userId: recieverId,
-    });
-    await sender.save();
-    return 1;
-  }
+
 }
 </code></pre>
     </div>

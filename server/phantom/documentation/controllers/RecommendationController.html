@@ -1006,7 +1006,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPinsForYou(req, isSearch: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a>)</code>
+                    <code>getPinsForYou(req)</code>
                 </td>
             </tr>
 
@@ -1035,27 +1035,12 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
-                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>req</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>isSearch</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank" >Boolean</a></code>
-                                    </td>
 
                                     <td>
                                         No
@@ -1096,7 +1081,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPinsRecentActivity(req, isSearch: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a>)</code>
+                    <code>getPinsRecentActivity(req)</code>
                 </td>
             </tr>
 
@@ -1125,27 +1110,12 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
-                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>req</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>isSearch</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank" >Boolean</a></code>
-                                    </td>
 
                                     <td>
                                         No
@@ -1186,7 +1156,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPopularPins(req, isSearch: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a>)</code>
+                    <code>getPopularPins(req)</code>
                 </td>
             </tr>
 
@@ -1215,27 +1185,12 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
-                                    <td>Type</td>
                                     <td>Optional</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>req</td>
-                                    <td>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>isSearch</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank" >Boolean</a></code>
-                                    </td>
 
                                     <td>
                                         No
@@ -1775,10 +1730,10 @@ export class RecommendationController {
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/me/popularPins&#x27;)
-  async getPopularPins(@Request() req, @Query(&#x27;isSearch&#x27;) isSearch: Boolean) {
+  async getPopularPins(@Request() req) {
     let userId &#x3D; req.user._id;
     req.setTimeout(0);
-    let pins &#x3D; await this.RecommendationService.popularPins(userId, isSearch);
+    let pins &#x3D; await this.RecommendationService.popularPins(userId);
     if (pins) {
       return pins;
     } else {
@@ -1787,10 +1742,10 @@ export class RecommendationController {
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/me/pinsForYou&#x27;)
-  async getPinsForYou(@Request() req, @Query(&#x27;isSearch&#x27;) isSearch: Boolean) {
+  async getPinsForYou(@Request() req) {
     let userId &#x3D; req.user._id;
     req.setTimeout(0);
-    let pins &#x3D; await this.RecommendationService.pinsForYou(userId, isSearch);
+    let pins &#x3D; await this.RecommendationService.pinsForYou(userId);
     if (pins) {
       return pins;
     } else {
@@ -1801,11 +1756,10 @@ export class RecommendationController {
   @Get(&#x27;/me/pinsRecentActivity&#x27;)
   async getPinsRecentActivity(
     @Request() req,
-    @Query(&#x27;isSearch&#x27;) isSearch: Boolean,
   ) {
     let userId &#x3D; req.user._id;
     req.setTimeout(0);
-    let pins &#x3D; await this.RecommendationService.pinsInspired(userId, isSearch);
+    let pins &#x3D; await this.RecommendationService.pinsInspired(userId);
     if (pins) {
       return pins;
     } else {

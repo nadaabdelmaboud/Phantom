@@ -1943,7 +1943,7 @@ export class BoardController {
   async getCurrentUserBoards(@Request() req) {
     let userId &#x3D; req.user._id;
     req.setTimeout(0);
-    let boards &#x3D; await this.BoardService.getCurrentUserBoards(userId, true);
+    let boards &#x3D; await this.BoardService.getCurrentUserBoards(userId);
     if (boards &amp;&amp; boards.length !&#x3D; 0) {
       return boards;
     } else {
