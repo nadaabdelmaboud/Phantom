@@ -174,6 +174,7 @@ textarea {
   outline: none;
   width: 400px;
   max-height: 300px;
+  background-color: white;
 }
 
 input:focus {
