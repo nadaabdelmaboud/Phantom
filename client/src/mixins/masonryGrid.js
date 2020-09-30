@@ -1,7 +1,13 @@
-import imagesLoaded from "imagesloaded";
+//import imagesLoaded from "imagesloaded";
 export default {
+  data:function(){
+    return{
+      allItems:[]
+    }
+  },
   methods: {
     resizeMasonryItem(item) {
+      //var allItems = document.getElementsByClassName("masonryGridItem");
       /* Get the grid object, its row-gap, and the size of its implicit rows */
       var grid = document.getElementsByClassName("masonryGrid")[0],
         rowGap = parseInt(
@@ -20,6 +26,7 @@ export default {
              * Net height of the implicit row-track = T = G + R
              * S = H1 / T
              */
+     // console.log("this item",item)
       var rowSpan = Math.ceil(
         (item.querySelector(".card-img").getBoundingClientRect().height +
           rowGap) /
@@ -32,13 +39,15 @@ export default {
       //    if(rowHeight+rowGap >= app.style.height)
       //    app.style.height =document.body.offsetHeight+500+"px";
     },
+    handleLoaded(i){
+      //  console.log("img is loaded",this.allItems[i])
+        this.resizeMasonryItem(this.allItems[i]);
+    },
     waitForImages() {
-      var allItems = document.getElementsByClassName("masonryGridItem");
-      for (var i = 0; i < allItems.length; i++) {
-        imagesLoaded(allItems[i], instance => {
-          var item = instance.elements[0];
-          this.resizeMasonryItem(item);
-        });
+      this.allItems = document.getElementsByClassName("masonryGridItem");
+      for (var i = 0; i < this.allItems.length; i++) {
+        // console.log("item",allItems[i])
+        this.allItems[i].querySelector(".card-img").addEventListener('load',this.handleLoaded(i));
       }
     }
   }
