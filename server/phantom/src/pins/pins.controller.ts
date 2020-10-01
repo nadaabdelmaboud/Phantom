@@ -3,7 +3,6 @@ import {
   Post,
   Body,
   UseFilters,
-  ForbiddenException,
   NotAcceptableException,
   Param,
   Get,

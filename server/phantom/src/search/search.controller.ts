@@ -5,12 +5,15 @@ import {
   UseGuards,
   Request,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { SearchService } from './search.service';
+import { HttpExceptionFilter } from '../shared/http-exception.filter';
+@UseFilters(HttpExceptionFilter)
 @Controller('search')
 export class SearchController {
-  constructor(private SearchService: SearchService) { }
+  constructor(private SearchService: SearchService) {}
   @UseGuards(AuthGuard('jwt'))
   @Get('/allPins')
   async getAllPins(
@@ -21,12 +24,10 @@ export class SearchController {
     @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let pins = await this.SearchService.getAllPins(name, limit, offset);
     if (pins) return pins;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/myPins')
@@ -38,13 +39,10 @@ export class SearchController {
     @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let pins = await this.SearchService.getMyPins(name, userId, limit, offset);
-    if (pins)
-      return pins;
+    if (pins) return pins;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/people')
@@ -56,12 +54,10 @@ export class SearchController {
     @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let users = await this.SearchService.getPeople(name, limit, offset);
     if (users) return users;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/board')
@@ -73,33 +69,24 @@ export class SearchController {
     @Query('offset') offset: number,
   ) {
     let userId = req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let boards = await this.SearchService.getBoards(name, limit, offset);
     if (boards) return boards;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/recentSearch')
-  async getRecentSearch(
-    @Request() req,
-  ) {
+  async getRecentSearch(@Request() req) {
     let userId = req.user._id;
     let recentSearch = await this.SearchService.getRecentSearch(userId);
     if (recentSearch) return recentSearch;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/getKeys')
-  async getKeys(
-    @Request() req,
-    @Query('name') name
-  ) {
+  async getKeys(@Request() req, @Query('name') name) {
     let recentSearch = await this.SearchService.getKeys(name);
     if (recentSearch) return recentSearch;
     return new NotFoundException();
-
   }
 }

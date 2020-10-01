@@ -11,16 +11,19 @@ import {
   UseGuards,
   Param,
   BadRequestException,
-  NotAcceptableException
+  NotAcceptableException,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from './user.service';
 import { Email } from '../shared/send-email.service';
 import { UpdateSettingsDto } from './dto/update-user-settings.dto';
 import { UpdateDto } from './dto/update-user.dto';
+import { HttpExceptionFilter } from '../shared/http-exception.filter';
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class UserController {
-  constructor(private userService: UserService, private email: Email) { }
+  constructor(private userService: UserService, private email: Email) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Get('users/me')
@@ -51,10 +54,7 @@ export class UserController {
   ) {
     if (forgetPassword == true) oldPassword = null;
     else if (!oldPassword)
-      throw new HttpException(
-        'oldPassword is reqired',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('oldPassword is reqired', HttpStatus.FORBIDDEN);
     const ifRest = await this.userService.resetPassword(
       req.user._id,
       newPassword,
@@ -64,10 +64,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/update')
-  async updateUser(
-    @Request() req,
-    @Body() updateData: UpdateDto,
-  ) {
+  async updateUser(@Request() req, @Body() updateData: UpdateDto) {
     await this.userService.checkUpdateData(updateData);
     await this.userService.updateUserInfo(req.user._id, updateData);
     const user = await this.userService.getUserMe(req.user._id);
@@ -94,24 +91,15 @@ export class UserController {
   }
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/confirm-update-email')
-  async confirmUpdateEmail(
-    @Request() req,
-    @Query('type') type: string,
-  ) {
+  async confirmUpdateEmail(@Request() req, @Query('type') type: string) {
     if (!req.user.email || !req.user.newEmail || !req.user._id)
-      throw new HttpException(
-        'not correct token',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('not correct token', HttpStatus.FORBIDDEN);
     if (type === 'changeEmail') {
       const user = await this.userService.checkMAilExistAndFormat(
         req.user.email,
       );
       if (!user)
-        throw new HttpException(
-          'no user by this email',
-          HttpStatus.FORBIDDEN,
-        );
+        throw new HttpException('no user by this email', HttpStatus.FORBIDDEN);
       await this.email.sendEmail(
         req.user.newEmail,
         req.header('Authorization'),
@@ -133,18 +121,12 @@ export class UserController {
           HttpStatus.BAD_REQUEST,
         );
     } else if (!type)
-      throw new HttpException(
-        'type not correct',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException('type not correct', HttpStatus.FORBIDDEN);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Put('/me/boards/view')
-  async setViewState(
-    @Request() req,
-    @Query('viewState') viewState: string,
-  ) {
+  async setViewState(@Request() req, @Query('viewState') viewState: string) {
     const view = await this.userService.setViewState(req.user._id, viewState);
     if (view) {
       return { success: 'view is updated' };
@@ -194,10 +176,7 @@ export class UserController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/follow-user/:userId')
-  async checkfollowingUser(
-    @Param() params,
-    @Request() req,
-  ) {
+  async checkfollowingUser(@Param() params, @Request() req) {
     const user = await this.userService.getUserById(req.user._id);
     if (!(await this.userService.checkFollowUser(user, params.userId)))
       return { follow: 'false' };
