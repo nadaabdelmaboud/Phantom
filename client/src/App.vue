@@ -63,16 +63,9 @@ export default {
         }
       }
     });
-     window.onload = function(){
-      console.log("looooooo")
-    }
-    // document.body.addEventListener("load",function() {  
-    //    console.log("loaded")
-    // }); 
-    
-   setInterval(() => {
+    setInterval(() => {
       this.waitForImages();
-   }, 500);
+    }, 500);
   },
   methods: {
     checkLists(event) {
@@ -89,12 +82,6 @@ export default {
         event.target.id == "showList"
       );
     }
-  },
-  updated(){
-    console.log("updated")
-  },
-  beforeUpdate(){
-    console.log("before update")
   }
 };
 </script>

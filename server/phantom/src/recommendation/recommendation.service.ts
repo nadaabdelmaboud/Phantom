@@ -11,18 +11,21 @@ import { topic } from '../types/topic';
 import { ValidationService } from '../shared/validation.service';
 import { user } from '../types/user';
 import { NotificationService } from '../shared/notification.service';
+import { HelpersUtils } from '../utilities/helpers.utils';
 
 @Injectable()
 export class RecommendationService {
+  private HelpersUtils: HelpersUtils;
   constructor(
     @InjectModel('Board') private readonly boardModel: Model<board>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('User') private readonly userModel: Model<user>,
     private NotificationService: NotificationService,
-
     private ValidationService: ValidationService,
-  ) { }
+  ) {
+    this.HelpersUtils = new HelpersUtils();
+  }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get homefeed pins of a user
@@ -41,30 +44,14 @@ export class RecommendationService {
     if (Number(Number(offset) + Number(limit)) > user.homeFeed.length) {
       throw new NotFoundException('invalid offset limit || not enough data');
     }
-    
+
     const part = await user.homeFeed.slice(
       Number(offset),
       Number(Number(offset) + Number(limit)),
     );
     return part;
   }
-  /**
-   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
-   * @description check if there dublicates in an array
-   * @param {Array<object>} values - the Array being checked
-   * @returns  {Promise<boolean>}
-   */
 
-  async checkDublicates(values) {
-    for (let i = 0; i < values.length; i++) {
-      for (let j = i + 1; j < values.length; j++) {
-        if (String(values[i]._id) == String(values[j]._id)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description generate homefeed pins of a user
@@ -195,7 +182,7 @@ export class RecommendationService {
       sortedTopics.push([item, freq[item]]);
       allHome += freq[item];
     }
-    sortedTopics.sort(function (a, b) {
+    sortedTopics.sort(function(a, b) {
       return b[1] - a[1];
     });
 
@@ -264,19 +251,7 @@ export class RecommendationService {
     }
     return { total: homeFeedArr.length };
   }
-  /**
-   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
-   * @description shuffle an array
-   * @param {Array} a - the Array being shuffled
-   * @returns  {Promise<Array>}
-   */
-  async shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
+
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get recommendations of users to follow for a given topic
@@ -314,7 +289,7 @@ export class RecommendationService {
         followers.push(recomUser[0]);
       }
     }
-    followers = followers.sort(function (a, b) {
+    followers = followers.sort(function(a, b) {
       if (a.followers > b.followers) {
         return -1;
       } else if (a.followers < b.followers) {
@@ -1071,7 +1046,7 @@ export class RecommendationService {
               boards.push(allBoards[j]);
               count++;
               if (boards.length >= 50) {
-                boards = await this.shuffle(boards);
+                boards = await this.HelpersUtils.shuffle(boards);
                 for (let k = 0; k < user.boards.length; k++) {
                   for (let n = 0; n < boards.length; n++) {
                     if (
@@ -1148,7 +1123,7 @@ export class RecommendationService {
             boards.push(allBoards[j]);
             count++;
             if (boards.length >= 50) {
-              boards = await this.shuffle(boards);
+              boards = await this.HelpersUtils.shuffle(boards);
               for (let k = 0; k < user.boards.length; k++) {
                 for (let n = 0; n < boards.length; n++) {
                   if (String(user.boards[k].boardId) == String(boards[n]._id)) {
@@ -1225,7 +1200,7 @@ export class RecommendationService {
         if (!boards.includes(board)) {
           boards.push(board);
           if (boards.length >= 50) {
-            boards = await this.shuffle(boards);
+            boards = await this.HelpersUtils.shuffle(boards);
             for (let k = 0; k < user.boards.length; k++) {
               for (let n = 0; n < boards.length; n++) {
                 if (String(user.boards[k].boardId) == String(boards[n]._id)) {
@@ -1284,7 +1259,7 @@ export class RecommendationService {
         }
       }
     }
-    boards = await this.shuffle(boards);
+    boards = await this.HelpersUtils.shuffle(boards);
     for (let index = 0; index < boards.length; index++) {
       let boardUser = await this.userModel.findById(boards[index].creator.id, {
         email: 1,
@@ -1340,7 +1315,7 @@ export class RecommendationService {
       notificationCounter: 1,
       notifications: 1,
       offlineNotifications: 1,
-      fcmToken: 1
+      fcmToken: 1,
     });
     if (!user.popularPins) {
       throw new BadRequestException('user should allow popular pins first');
@@ -1375,11 +1350,7 @@ export class RecommendationService {
       }
     }
 
-    let res = await this.NotificationService.popularPins(
-      user,
-      allPins,
-      images,
-    );
+    let res = await this.NotificationService.popularPins(user, allPins, images);
     return true;
   }
   /**
@@ -1399,7 +1370,7 @@ export class RecommendationService {
       notificationCounter: 1,
       offlineNotifications: 1,
       notifications: 1,
-      fcmToken: 1
+      fcmToken: 1,
     });
     if (!user.pinsForYou) {
       throw new BadRequestException('user should allow pins for you first');
@@ -1483,7 +1454,7 @@ export class RecommendationService {
       }
     }
 
-    pins = await this.shuffle(pins);
+    pins = await this.HelpersUtils.shuffle(pins);
     let images = [];
     let count: number = 0;
     for (let i = 0; i < pins.length; i++) {
@@ -1495,7 +1466,6 @@ export class RecommendationService {
     }
     await this.NotificationService.pinsForYou(user, pins, images);
     return true;
-
   }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
@@ -1514,7 +1484,7 @@ export class RecommendationService {
       fcmToken: 1,
       lastTopics: 1,
       savedPins: 1,
-      pins: 1
+      pins: 1,
     });
     if (!user.pinsInspired) {
       throw new BadRequestException(
