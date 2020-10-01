@@ -186,10 +186,10 @@
 1. Fork this repo
 2. Create new branch
 	$ git checkout -b <FeatureBranch>
-3.Add your feature then
+3. Add your feature then
 	$ git commit -m "add my feature"
 	$ git push origin <FeatureBranch>
-4.Create PR
+4. Create PR
 ```
 
   
