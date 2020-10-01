@@ -107,7 +107,7 @@ export class Email {
           message.userName +
           ' (userEmail: ' +
           message.email +
-          ' (userId: ' +
+          ' ) (userId: ' +
           message.userId +
           ' ) has reported a pin for ' +
           message.reason +
