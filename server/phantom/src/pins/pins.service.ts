@@ -1640,13 +1640,19 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.userModel.findById(userId, { userName: 1 });
+    let user = await this.userModel.findById(userId, { userName: 1, email: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
     await this.EmailService.sendEmail(
       process.env.EMAIL,
-      { pinId: pinId, userId: userId, userName: user.userName, reason: reason },
+      {
+        pinId: pinId,
+        userId: userId,
+        userName: user.userName,
+        email: user.email,
+        reason: reason,
+      },
       'report',
       '',
     );
