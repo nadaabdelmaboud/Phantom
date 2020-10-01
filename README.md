@@ -153,7 +153,7 @@
 		
 		$ npm install -g "@compodoc/compodoc"
 		
-		$ npm run combodoc
+		$ npm run compodoc
 		# then open documentation/index.html
 
 		```
