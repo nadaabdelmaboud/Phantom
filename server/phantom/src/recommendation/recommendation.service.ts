@@ -1045,60 +1045,6 @@ export class RecommendationService {
             if (!boards.includes(allBoards[j])) {
               boards.push(allBoards[j]);
               count++;
-              if (boards.length >= 50) {
-                boards = await this.HelpersUtils.shuffle(boards);
-                for (let k = 0; k < user.boards.length; k++) {
-                  for (let n = 0; n < boards.length; n++) {
-                    if (
-                      String(user.boards[k].boardId) == String(boards[n]._id)
-                    ) {
-                      boards.splice(n, 1);
-                    }
-                  }
-                }
-                for (let index = 0; index < boards.length; index++) {
-                  let boardUser = await this.userModel.findById(
-                    boards[index].creator.id,
-                    { email: 1 },
-                  );
-                  if (
-                    String(boardUser.email) == String(process.env.ADMIN_EMAIL)
-                  ) {
-                    boards.splice(index, 1);
-                  }
-                }
-                let images = [];
-                let count: number = 0;
-                for (let i = 0; i < boards.length; i++) {
-                  count = 0;
-                  boards[i].coverImages = [];
-                  for (let k = 0; k < boards[i].pins.length; k++) {
-                    if (count >= 3) {
-                      break;
-                    }
-                    let image = await this.pinModel.findById(
-                      boards[i].pins[k].pinId,
-                      {
-                        imageId: 1,
-                      },
-                    );
-                    count++;
-                    boards[i].coverImages.push(image.imageId);
-                  }
-                }
-                count = 0;
-                for (let i = 0; i < boards.length; i++) {
-                  if (count >= 5) break;
-                  count++;
-                  images.push(boards[i].coverImages[0]);
-                }
-                let res = await this.NotificationService.boardsForYou(
-                  user,
-                  boards,
-                  images,
-                );
-                return 1;
-              }
             }
           }
         }
@@ -1122,58 +1068,6 @@ export class RecommendationService {
           if (!boards.includes(allBoards[j])) {
             boards.push(allBoards[j]);
             count++;
-            if (boards.length >= 50) {
-              boards = await this.HelpersUtils.shuffle(boards);
-              for (let k = 0; k < user.boards.length; k++) {
-                for (let n = 0; n < boards.length; n++) {
-                  if (String(user.boards[k].boardId) == String(boards[n]._id)) {
-                    boards.splice(n, 1);
-                  }
-                }
-              }
-              for (let index = 0; index < boards.length; index++) {
-                let boardUser = await this.userModel.findById(
-                  boards[index].creator.id,
-                  { email: 1 },
-                );
-                if (
-                  String(boardUser.email) == String(process.env.ADMIN_EMAIL)
-                ) {
-                  boards.splice(index, 1);
-                }
-              }
-              let images = [];
-              let count: number = 0;
-              for (let i = 0; i < boards.length; i++) {
-                count = 0;
-                boards[i].coverImages = [];
-                for (let k = 0; k < boards[i].pins.length; k++) {
-                  if (count >= 3) {
-                    break;
-                  }
-                  let image = await this.pinModel.findById(
-                    boards[i].pins[k].pinId,
-                    {
-                      imageId: 1,
-                    },
-                  );
-                  count++;
-                  boards[i].coverImages.push(image.imageId);
-                }
-              }
-              count = 0;
-              for (let i = 0; i < boards.length; i++) {
-                if (count >= 5) break;
-                count++;
-                images.push(boards[i].coverImages[0]);
-              }
-              let res = await this.NotificationService.boardsForYou(
-                user,
-                boards,
-                images,
-              );
-              return 1;
-            }
           }
         }
       }
@@ -1199,56 +1093,6 @@ export class RecommendationService {
           .lean();
         if (!boards.includes(board)) {
           boards.push(board);
-          if (boards.length >= 50) {
-            boards = await this.HelpersUtils.shuffle(boards);
-            for (let k = 0; k < user.boards.length; k++) {
-              for (let n = 0; n < boards.length; n++) {
-                if (String(user.boards[k].boardId) == String(boards[n]._id)) {
-                  boards.splice(n, 1);
-                }
-              }
-            }
-            for (let index = 0; index < boards.length; index++) {
-              let boardUser = await this.userModel.findById(
-                boards[index].creator.id,
-                { email: 1 },
-              );
-              if (String(boardUser.email) == String(process.env.ADMIN_EMAIL)) {
-                boards.splice(index, 1);
-              }
-            }
-            let images = [];
-            let count: number = 0;
-            for (let i = 0; i < boards.length; i++) {
-              count = 0;
-              boards[i].coverImages = [];
-              for (let k = 0; k < boards[i].pins.length; k++) {
-                if (count >= 3) {
-                  break;
-                }
-                let image = await this.pinModel.findById(
-                  boards[i].pins[k].pinId,
-                  {
-                    imageId: 1,
-                  },
-                );
-                count++;
-                boards[i].coverImages.push(image.imageId);
-              }
-            }
-            count = 0;
-            for (let i = 0; i < boards.length; i++) {
-              if (count >= 5) break;
-              count++;
-              images.push(boards[i].coverImages[0]);
-            }
-            let res = await this.NotificationService.boardsForYou(
-              user,
-              boards,
-              images,
-            );
-            return 1;
-          }
         }
       }
     }
@@ -1424,10 +1268,10 @@ export class RecommendationService {
         let start = Math.floor(
           Math.random() * Number(allTopics[i].pins.length) + 1,
         );
-        if (start + 10 >= Number(allTopics[i].pins.length)) {
-          start = start - 10;
+        if (start + 2 >= Number(allTopics[i].pins.length)) {
+          start = start - 2;
         }
-        for (let j = start; j < start + 10; j++) {
+        for (let j = start; j < start + 2; j++) {
           let pin = await this.pinModel
             .findById(allTopics[i].pins[j], {
               imageId: 1,
@@ -1538,17 +1382,18 @@ export class RecommendationService {
         }
       }
     }
-
-    let images = [];
-    let count: number = 0;
-    for (let i = 0; i < pins.length; i++) {
-      if (count >= 5) break;
-      if (pins[i].imageId) {
-        count++;
-        images.push(pins[i].imageId);
+    if (pins.length > 5) {
+      let images = [];
+      let count: number = 0;
+      for (let i = 0; i < pins.length; i++) {
+        if (count >= 5) break;
+        if (pins[i].imageId) {
+          count++;
+          images.push(pins[i].imageId);
+        }
       }
+      await this.NotificationService.pinsInspired(user, pins, images);
     }
-    await this.NotificationService.pinsInspired(user, pins, images);
     return true;
   }
 }
