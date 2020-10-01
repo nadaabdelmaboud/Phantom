@@ -71,4 +71,19 @@ export class HelpersUtils {
 
     return `${interval} ${intervalType}`;
   }
+  /**
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @descriptionthis function add to array but this array has limit
+   * @param {Array<Object>} arr -array of data
+   * @param {Number} limit  - the limit should be
+   * @param {Object} pushedData Data should add to array
+   * @returns {Array<Object>} after delete
+   */
+  async addTolimitedArray(arr: Array<any>, limit: number, pushedData: {}) {
+    if (arr.length >= limit) {
+      arr.splice(0, 1);
+    }
+    arr.push(pushedData);
+    return arr;
+  }
 }

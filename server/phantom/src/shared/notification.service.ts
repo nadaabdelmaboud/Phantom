@@ -3,34 +3,40 @@ import * as firebase from 'firebase-admin';
 import { user } from '../types/user';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { HelpersUtils } from '../utilities/helpers.utils';
 
-const params = {
-  type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
-  projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
-  privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
-  privateKey: String(
-    process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  ),
-  clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
-  clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
-  authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
-  tokenUri: String(process.env.FIREBASE_CREADENTIAL_TOKEN_URI),
-  authProviderX509CertUrl: String(
-    process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL,
-  ),
-  clientX509CertUrl: String(
-    process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL,
-  ),
-};
-let app = firebase.initializeApp({
-  credential: firebase.credential.cert(params),
-});
 /**
  * @module Notification
  */
 @Injectable()
 export class NotificationService {
-  constructor(@InjectModel('User') private readonly userModel: Model<user>,) { }
+  params: object;
+  app;
+  HelpersUtils: HelpersUtils;
+  constructor(@InjectModel('User') private readonly userModel: Model<user>) {
+    this.params = {
+      type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
+      projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
+      privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
+      privateKey: String(
+        process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      ),
+      clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
+      clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
+      authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
+      tokenUri: String(process.env.FIREBASE_CREADENTIAL_TOKEN_URI),
+      authProviderX509CertUrl: String(
+        process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL,
+      ),
+      clientX509CertUrl: String(
+        process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL,
+      ),
+    };
+    this.app = firebase.initializeApp({
+      credential: firebase.credential.cert(this.params),
+    });
+    this.HelpersUtils = new HelpersUtils();
+  }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -41,7 +47,7 @@ export class NotificationService {
    */
   async sendNotification(tokens, message) {
     const notSendTokens = [];
-    app
+    this.app
       .messaging()
       .sendMulticast(message)
       .then(response => {
@@ -70,7 +76,7 @@ export class NotificationService {
   async sendOfflineNotification(messages, fcmToken) {
     if (!messages || messages.length == 0) return;
     for (let i = 0; i < messages.length; i++) messages[i].token = fcmToken;
-    app
+    this.app
       .messaging()
       .sendAll(messages)
       .then(response => {
@@ -116,7 +122,7 @@ export class NotificationService {
       ? followedUser.notificationCounter + 1
       : 1;
     if (!followedUser.notifications) followedUser.notifications = [];
-    followedUser.notifications = await this.addTolimitedArray(
+    followedUser.notifications = await this.HelpersUtils.addTolimitedArray(
       followedUser.notifications,
       30,
       message,
@@ -124,7 +130,7 @@ export class NotificationService {
     if (!followedUser.fcmToken || followedUser.fcmToken == ' ') {
       if (!followedUser.offlineNotifications)
         followedUser.offlineNotifications = [];
-      followedUser.offlineNotifications = await this.addTolimitedArray(
+      followedUser.offlineNotifications = await this.HelpersUtils.addTolimitedArray(
         followedUser.offlineNotifications,
         30,
         message,
@@ -137,7 +143,7 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        followedUser.offlineNotifications = await this.addTolimitedArray(
+        followedUser.offlineNotifications = await this.HelpersUtils.addTolimitedArray(
           followedUser.offlineNotifications,
           30,
           message,
@@ -192,9 +198,9 @@ export class NotificationService {
       if (followedUser.offlineNotifications[i].data)
         if (
           followedUser.offlineNotifications[i].data.title ==
-          'your follower increase ' &&
+            'your follower increase ' &&
           message.data.followerId ==
-          followedUser.offlineNotifications[i].data.followerId
+            followedUser.offlineNotifications[i].data.followerId
         ) {
           followedUser.offlineNotifications.splice(i, 1);
           i--;
@@ -208,9 +214,9 @@ export class NotificationService {
       if (followedUser.notifications[i].data)
         if (
           followedUser.notifications[i].data.title ==
-          'your follower increase ' &&
+            'your follower increase ' &&
           message.data.followerId ==
-          followedUser.notifications[i].data.followerId
+            followedUser.notifications[i].data.followerId
         ) {
           followedUser.notifications.splice(i, 1);
           i--;
@@ -275,7 +281,7 @@ export class NotificationService {
       : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
-    ownerUser.notifications = await this.addTolimitedArray(
+    ownerUser.notifications = await this.HelpersUtils.addTolimitedArray(
       ownerUser.notifications,
       30,
       message,
@@ -283,7 +289,7 @@ export class NotificationService {
 
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
       if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
-      ownerUser.offlineNotifications = await this.addTolimitedArray(
+      ownerUser.offlineNotifications = await this.HelpersUtils.addTolimitedArray(
         ownerUser.offlineNotifications,
         30,
         message,
@@ -297,7 +303,7 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        ownerUser.offlineNotifications = await this.addTolimitedArray(
+        ownerUser.offlineNotifications = await this.HelpersUtils.addTolimitedArray(
           ownerUser.offlineNotifications,
           30,
           message,
@@ -365,7 +371,7 @@ export class NotificationService {
       : 1;
     await ownerUser.save();
     if (!ownerUser.notifications) ownerUser.notifications = [];
-    ownerUser.notifications = await this.addTolimitedArray(
+    ownerUser.notifications = await this.HelpersUtils.addTolimitedArray(
       ownerUser.notifications,
       30,
       message,
@@ -373,7 +379,7 @@ export class NotificationService {
 
     if (!ownerUser.fcmToken || ownerUser.fcmToken == ' ') {
       if (!ownerUser.offlineNotifications) ownerUser.offlineNotifications = [];
-      ownerUser.offlineNotifications = await this.addTolimitedArray(
+      ownerUser.offlineNotifications = await this.HelpersUtils.addTolimitedArray(
         ownerUser.offlineNotifications,
         30,
         message,
@@ -387,7 +393,7 @@ export class NotificationService {
       );
       if (checkFailed.length > 0) {
         message.tokens = null;
-        ownerUser.offlineNotifications = await this.addTolimitedArray(
+        ownerUser.offlineNotifications = await this.HelpersUtils.addTolimitedArray(
           ownerUser.offlineNotifications,
           30,
           message,
@@ -461,13 +467,17 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications = await this.addTolimitedArray(
+    user.notifications = await this.HelpersUtils.addTolimitedArray(
       user.notifications,
       30,
       arrayMessage,
     );
-    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
-    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $push: { notifications: arrayMessage },
+    });
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $inc: { notificationCounter: 1 },
+    });
 
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
@@ -484,13 +494,15 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications = await this.addTolimitedArray(
+          user.notifications = await this.HelpersUtils.addTolimitedArray(
             user.notifications,
             30,
             arrayMessage,
           );
 
-          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+          await this.userModel.findByIdAndUpdate(user._id, {
+            $push: { notifications: arrayMessage },
+          });
           // await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
         }
 
@@ -522,14 +534,18 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications = await this.addTolimitedArray(
+    user.notifications = await this.HelpersUtils.addTolimitedArray(
       user.notifications,
       30,
       arrayMessage,
     );
 
-    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
-    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $push: { notifications: arrayMessage },
+    });
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $inc: { notificationCounter: 1 },
+    });
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
     } else {
@@ -544,12 +560,14 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications = await this.addTolimitedArray(
+          user.notifications = await this.HelpersUtils.addTolimitedArray(
             user.notifications,
             30,
             arrayMessage,
           );
-          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+          await this.userModel.findByIdAndUpdate(user._id, {
+            $push: { notifications: arrayMessage },
+          });
         }
 
         return 0;
@@ -579,13 +597,17 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications = await this.addTolimitedArray(
+    user.notifications = await this.HelpersUtils.addTolimitedArray(
       user.notifications,
       30,
       arrayMessage,
     );
-    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
-    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $push: { notifications: arrayMessage },
+    });
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $inc: { notificationCounter: 1 },
+    });
 
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
@@ -602,12 +624,14 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop();
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications = await this.addTolimitedArray(
+          user.notifications = await this.HelpersUtils.addTolimitedArray(
             user.notifications,
             30,
             arrayMessage,
           );
-          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+          await this.userModel.findByIdAndUpdate(user._id, {
+            $push: { notifications: arrayMessage },
+          });
         }
         //  await user.save();
         return 0;
@@ -637,13 +661,17 @@ export class NotificationService {
       ? user.notificationCounter + 1
       : 1;
     if (!user.notifications) user.notifications = [];
-    user.notifications = await this.addTolimitedArray(
+    user.notifications = await this.HelpersUtils.addTolimitedArray(
       user.notifications,
       30,
       arrayMessage,
     );
-    await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
-    await this.userModel.findByIdAndUpdate(user._id, { $inc: { notificationCounter: 1 } })
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $push: { notifications: arrayMessage },
+    });
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $inc: { notificationCounter: 1 },
+    });
 
     if (!user.fcmToken || user.fcmToken == ' ') {
       return 0;
@@ -660,36 +688,18 @@ export class NotificationService {
       if (checkFailed.length > 0) {
         let last = user.notifications.pop(message);
         if (String(last.title) != String(arrayMessage.title)) {
-          user.notifications = await this.addTolimitedArray(
+          user.notifications = await this.HelpersUtils.addTolimitedArray(
             user.notifications,
             30,
             arrayMessage,
           );
-          await this.userModel.findByIdAndUpdate(user._id, { $push: { notifications: arrayMessage } })
+          await this.userModel.findByIdAndUpdate(user._id, {
+            $push: { notifications: arrayMessage },
+          });
         }
         return 0;
       }
     }
     return 1;
-  }
-
-  /**
-   * @author Aya Abohadima <ayasabohadima@gmail.com>
-   * @descriptionthis function add to array but this array has limit
-   * @param {Array<Object>} notificationArray -array of data
-   * @param {Number} limit  - the limit should be
-   * @param {Object} pushedData Data should add to array
-   * @returns {Array<Object>} after delete
-   */
-  async addTolimitedArray(
-    notificationArray: Array<any>,
-    limit: number,
-    pushedData: {},
-  ) {
-    if (notificationArray.length >= limit) {
-      notificationArray.splice(0, 1);
-    }
-    notificationArray.push(pushedData);
-    return notificationArray;
   }
 }
