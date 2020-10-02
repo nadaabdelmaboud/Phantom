@@ -26,9 +26,6 @@
 import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "NotificationsPinsCard",
-  data: function() {
-    return {};
-  },
   mixins: [getImage],
   props: {
     imageIds: {

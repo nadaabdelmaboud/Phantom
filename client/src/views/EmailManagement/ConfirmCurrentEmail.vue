@@ -14,7 +14,6 @@
 <script>
 export default {
   created: function() {
-    console.log(this.$route.query.token);
     this.$store.dispatch("user/confrimEmailUpdate", {
       token: this.$route.query.token,
       type: this.$route.query.type

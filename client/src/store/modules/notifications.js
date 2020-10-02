@@ -28,7 +28,7 @@ const mutations = {
     else state.show = !state.show;
   },
   setCounter(state, add) {
-    console.log("hi")
+    console.log("hi");
     if (!add) state.notifications.notificationCounter = 0;
     else {
       state.notifications.notificationCounter += 1;

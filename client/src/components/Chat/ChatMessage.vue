@@ -22,9 +22,6 @@
 import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "BoardPins",
-  data: function() {
-    return {};
-  },
   mixins: [getImage],
   props: {
     imageId: {

@@ -15,7 +15,6 @@ const state = {
   accountClosingPopup: false,
   reportPinPopUp: false,
   savePinPopUp: false,
-  searchWindow: false,
   searchSuggestions: false,
   editPinPopUp: false,
   showFollowPopup: false,

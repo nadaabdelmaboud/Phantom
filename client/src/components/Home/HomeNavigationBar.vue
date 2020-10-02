@@ -131,7 +131,6 @@
   top: 0;
   right: 0;
   left: 0;
-  // bottom: 80px;
   height: 80px;
   width: 100vw;
   padding: 16px 10px;
@@ -208,11 +207,9 @@
 .count {
   display: inline-block;
   font-size: 12px;
-  // color:$lightPink ;
   background-color: $offWhite;
   min-height: 16px;
   min-width: 16px;
-  //padding-top: 2px;
   border-radius: 50%;
   margin-left: -8px;
   position: absolute;

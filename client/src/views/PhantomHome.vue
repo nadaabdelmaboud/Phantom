@@ -292,7 +292,6 @@ export default {
     },
     showToastState() {
       if (this.showToastState == true) {
-        console.log("phantom home boardname", this.ChoosenBoardName);
         this.showPinToast();
         this.$store.commit("homeCards/setShowToastState", false);
       }
@@ -303,72 +302,72 @@ export default {
         else document.body.classList.remove("noscroll");
       }
     },
-    createBoard:{
-        handler(createBoard) {
+    createBoard: {
+      handler(createBoard) {
         if (createBoard) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
-      },
+      }
     },
-    newPin:{
+    newPin: {
       handler(newPin) {
         if (newPin) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
       }
     },
-    editBoard:{
+    editBoard: {
       handler(editBoard) {
         if (editBoard) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
       }
     },
-    collaborators:{
+    collaborators: {
       handler(collaborators) {
         if (collaborators) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
       }
     },
-    addSection:{
+    addSection: {
       handler(addSection) {
         if (addSection) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
       }
     },
-    showSavePin:{
-       handler(showSavePin) {
+    showSavePin: {
+      handler(showSavePin) {
         if (showSavePin) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
-       }
+      }
     },
-    showReportPin:{
-       handler(showReportPin) {
+    showReportPin: {
+      handler(showReportPin) {
         if (showReportPin) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
-       }
+      }
     },
-    editPinPopUp:{
+    editPinPopUp: {
       handler(editPinPopUp) {
         if (editPinPopUp) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
       }
     },
-    showFollowPopup:{
+    showFollowPopup: {
       handler(showFollowPopup) {
         if (showFollowPopup) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
       }
     },
     LoadingPopup: {
-       handler(LoadingPopup) {
+      handler(LoadingPopup) {
         if (LoadingPopup) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
-     }
+      }
     },
-    phantomPopup:{
-       handler(phantomPopup) {
+    phantomPopup: {
+      handler(phantomPopup) {
         if (phantomPopup) document.body.classList.add("noscroll");
         else document.body.classList.remove("noscroll");
-     }
-     }
+      }
+    }
   }
 };
 </script>

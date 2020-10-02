@@ -1,6 +1,5 @@
 <template>
   <div @click="checkLists" id="app">
-    <!-- <button style="position:fixed;top:55px" @click="waitForImages">click</button> -->
     <router-view></router-view>
   </div>
 </template>
@@ -23,7 +22,6 @@ export default {
           window.innerHeight + window.scrollY - document.body.offsetHeight
         ) <= 50
       ) {
-        // document.body.style.height=document.body.offsetHeight+300+"px"
         if (this.$route.path.includes("/More")) {
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {

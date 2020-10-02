@@ -30,9 +30,6 @@ import { mapState } from "vuex";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
 export default {
   name: "UserHome",
-  data: function() {
-    return {};
-  },
   components: {
     HomeLogin,
     HomeLogout
