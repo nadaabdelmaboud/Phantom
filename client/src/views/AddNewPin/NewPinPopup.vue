@@ -71,6 +71,8 @@ export default {
   width: 450px;
   padding: 20px;
   border-radius: 32px;
+  max-height: (100vh- 200px);
+  overflow: scroll;
 }
 @media screen and (max-width: 500px) {
   .newPinData {
