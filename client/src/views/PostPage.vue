@@ -6,7 +6,7 @@
     <div class="row m-0">
       <span>More like this</span>
     </div>
-    <Loading :loading="moreLoading" />
+    <Loading :loading="moreLoading" v-if="moreLoading" />
     <div class="flexWrap" v-if="!moreLoading">
       <masonry
         :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
@@ -35,7 +35,7 @@ span {
   font-size: 21px;
   font-weight: 700;
   color: black;
-  margin: 30px;
+  margin: 15px;
 }
 </style>
 

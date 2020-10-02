@@ -13,6 +13,7 @@
   background-color: $blue;
   border: transparent;
   border-radius: 25px;
+  max-height: 500px;
   &:hover {
     box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.05);
   }
@@ -22,7 +23,7 @@
   border-radius: 25px;
   object-fit: cover;
   min-height: 200px;
-  max-height: 600px;
+  max-height: 500px;
 }
 </style>
 
