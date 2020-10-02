@@ -16,22 +16,20 @@ const mutations = {
 
 const actions = {
   async followTopic({ commit }, topicId) {
-    try{
-      await axios.put("me/follow-topic/" + topicId)
+    try {
+      await axios.put("me/follow-topic/" + topicId);
       commit("setFollowTopics", { id: topicId, val: true });
+    } catch (error) {
+      console.log(error);
     }
-    catch(error) {
-        console.log(error);
-      };
   },
   async unfollowTopic({ commit }, topicId) {
-    try{
-      await axios.delete("me/follow-topic/" + topicId)
+    try {
+      await axios.delete("me/follow-topic/" + topicId);
       commit("setFollowTopics", { id: topicId, val: false });
+    } catch (error) {
+      console.log(error);
     }
-   catch(error) {
-        console.log(error);
-      };
   },
   getTopics({ commit }) {
     let token = localStorage.getItem("userToken");

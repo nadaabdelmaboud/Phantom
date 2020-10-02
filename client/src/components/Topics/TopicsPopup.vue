@@ -1,5 +1,5 @@
 <template>
-  <div id="createBoard"  @click="closePopup">
+  <div id="createBoard" @click="closePopup">
     <div class="boardData">
       <div class="dots">
         <i class="fa fa-circle"></i>
@@ -24,7 +24,13 @@
         <button v-if="picked.length < 5" class="disable">
           pick {{ 5 - picked.length }} more
         </button>
-        <button v-if="picked.length >= 5" @click="$store.commit('popUpsState/toggleTopicsPopup')" id="close">Done</button>
+        <button
+          v-if="picked.length >= 5"
+          @click="$store.commit('popUpsState/toggleTopicsPopup')"
+          id="close"
+        >
+          Done
+        </button>
       </div>
     </div>
   </div>
@@ -56,8 +62,8 @@ export default {
       }
     },
     closePopup(event) {
-      if(event.target.id=="createBoard" && this.picked.length >= 5)
-           this.$store.commit("popUpsState/toggleTopicsPopup");
+      if (event.target.id == "createBoard" && this.picked.length >= 5)
+        this.$store.commit("popUpsState/toggleTopicsPopup");
     }
   },
   computed: {

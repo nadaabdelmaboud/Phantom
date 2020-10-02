@@ -9,6 +9,7 @@
 @import "../../scss/Mixins";
 .phantomCard {
   width: 252px;
+  margin: 5px;
   background-color: $blue;
   border: transparent;
   border-radius: 25px;

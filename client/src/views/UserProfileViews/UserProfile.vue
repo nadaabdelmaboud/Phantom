@@ -3,23 +3,11 @@
     <div class="profileInfo">
       <img
         v-if="myprofile"
-        :src="
-          getImage(
-            meUser.profileImage,
-            meUser.google,
-            meUser.googleImage
-          )
-        "
+        :src="getImage(meUser.profileImage, meUser.google, meUser.googleImage)"
       />
       <img
         v-else
-        :src="
-          getImage(
-            user.profileImage,
-            user.google,
-            user.googleImage
-          )
-        "
+        :src="getImage(user.profileImage, user.google, user.googleImage)"
       />
       <h1 v-if="myprofile">{{ meUser.userName }}</h1>
       <h1 v-else>{{ user.userName }}</h1>
@@ -145,7 +133,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import getImage from "../../mixins/getImage.js";
-import {default as getDeviceType} from '../../mixins/getDeviceType'
+import { default as getDeviceType } from "../../mixins/getDeviceType";
 export default {
   name: "UserProfile",
   data: function() {
@@ -158,7 +146,7 @@ export default {
       userId: ""
     };
   },
-  mixins: [getImage,getDeviceType],
+  mixins: [getImage, getDeviceType],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
@@ -185,10 +173,10 @@ export default {
     },
     alterFollow() {
       if (this.isFollowed) {
-        this.$store.commit("phantomUser/updateFollowers",-1)
+        this.$store.commit("phantomUser/updateFollowers", -1);
         this.$store.dispatch("followers/unfollowUser", this.userId);
       } else {
-        this.$store.commit("phantomUser/updateFollowers",1)
+        this.$store.commit("phantomUser/updateFollowers", 1);
         this.$store.dispatch("followers/followUser", this.userId);
       }
     },

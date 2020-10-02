@@ -102,7 +102,6 @@ export default {
       setTimeout(() => {
         this.$store.dispatch("homeCards/userGenerateCards", 10);
       }, 3000);
-
     }
   },
   mounted() {

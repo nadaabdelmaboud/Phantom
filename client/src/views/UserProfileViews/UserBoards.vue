@@ -6,27 +6,27 @@
         class="boardsDefault"
         :class="[
           {
-            boards: myprofile && viewState == 'Compact',
-          },
+            boards: myprofile && viewState == 'Compact'
+          }
         ]"
       >
-      <div v-if="device != 'desktop'">
-        <Board
-          v-for="board in boards"
-          :class="[
-            {
-              'col-sm-3': viewState == 'Compact',
-              'col-sm-2': !myprofile || viewState == 'Default',
-            },
-          ]"
-          :key="board.board._id"
-          :boardId="board.board._id"
-          :boardName="board.board.name"
-          :pinsImages="board.board.coverImages"
-          :pinsCount="board.board.pins.length"
-          :isBoard="true"
-        />
-      </div>
+        <div v-if="device != 'desktop'">
+          <Board
+            v-for="board in boards"
+            :class="[
+              {
+                'col-sm-3': viewState == 'Compact',
+                'col-sm-2': !myprofile || viewState == 'Default'
+              }
+            ]"
+            :key="board.board._id"
+            :boardId="board.board._id"
+            :boardName="board.board.name"
+            :pinsImages="board.board.coverImages"
+            :pinsCount="board.board.pins.length"
+            :isBoard="true"
+          />
+        </div>
         <draggable
           v-else
           class="dragStyle"
@@ -38,8 +38,8 @@
             :class="[
               {
                 'col-sm-3': viewState == 'Compact',
-                'col-sm-2': !myprofile || viewState == 'Default',
-              },
+                'col-sm-2': !myprofile || viewState == 'Default'
+              }
             ]"
             :key="board.board._id"
             :boardId="board.board._id"
@@ -58,7 +58,7 @@
 import Board from "../../components/Board";
 import Loading from "../../components/GeneralComponents/Loading";
 import { mapGetters, mapState } from "vuex";
-import {default as getDeviceType} from '../../mixins/getDeviceType'
+import { default as getDeviceType } from "../../mixins/getDeviceType";
 import draggable from "vuedraggable";
 
 export default {
@@ -66,10 +66,10 @@ export default {
   date: function() {
     return {
       myprofile: "",
-      device: "",
+      device: ""
     };
   },
-  mixins:[getDeviceType],
+  mixins: [getDeviceType],
   created() {
     this.myprofile = this.$route.path.includes("/UserProfile");
     this.device = this.getDeviceType();
@@ -84,31 +84,31 @@ export default {
   components: {
     Board,
     draggable,
-    Loading,
+    Loading
   },
   methods: {
     ReorderBoards(event) {
       if (this.myprofile && this.myData.sortType == "Reorder") {
         this.$store.dispatch("boards/reorderBoards", {
           from: event.oldIndex,
-          to: event.newIndex + 1,
+          to: event.newIndex + 1
         });
       }
     },
     toBoard(boardId) {
       this.$router.push("/Board/" + boardId + "/Pins");
-    },
+    }
   },
   computed: {
     ...mapGetters({
       boards: "boards/userBoards",
       viewState: "boards/viewState",
-      loading: "boards/loading",
+      loading: "boards/loading"
     }),
     ...mapState({
-      myData: (state) => state.user.userData,
-    }),
-  },
+      myData: state => state.user.userData
+    })
+  }
 };
 </script>
 

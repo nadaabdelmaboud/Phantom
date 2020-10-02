@@ -13,6 +13,6 @@ export default {
         return "mobile";
       }
       return "desktop";
-    },
-  },
+    }
+  }
 };
