@@ -11,32 +11,27 @@ const mutations = {
   },
   setFollowTopics(state, { id, val }) {
     state.topics.find(x => x._id === id).isFollow = val;
-  },
-  demo() {}
+  }
 };
 
 const actions = {
-  followTopic({ commit }, topicId) {
-    axios
-      .put("me/follow-topic/" + topicId)
-      .then(() => {
-        commit("demo");
-        commit("setFollowTopics", { id: topicId, val: true });
-      })
-      .catch(error => {
+  async followTopic({ commit }, topicId) {
+    try{
+      await axios.put("me/follow-topic/" + topicId)
+      commit("setFollowTopics", { id: topicId, val: true });
+    }
+    catch(error) {
         console.log(error);
-      });
+      };
   },
-  unfollowTopic({ commit }, topicId) {
-    axios
-      .delete("me/follow-topic/" + topicId)
-      .then(() => {
-        commit("demo");
-        commit("setFollowTopics", { id: topicId, val: false });
-      })
-      .catch(error => {
+  async unfollowTopic({ commit }, topicId) {
+    try{
+      await axios.delete("me/follow-topic/" + topicId)
+      commit("setFollowTopics", { id: topicId, val: false });
+    }
+   catch(error) {
         console.log(error);
-      });
+      };
   },
   getTopics({ commit }) {
     let token = localStorage.getItem("userToken");

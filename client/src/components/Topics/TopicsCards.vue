@@ -91,13 +91,18 @@ export default {
     }
   },
   methods: {
-    alterFollow() {
+    async alterFollow() {
       this.clicked = !this.clicked;
       if (this.clicked) {
-        this.$store.dispatch("topics/followTopic", this.topicId);
+        await this.$store.dispatch("topics/followTopic", this.topicId);
       } else {
-        this.$store.dispatch("topics/unfollowTopic", this.topicId);
+        await this.$store.dispatch("topics/unfollowTopic", this.topicId);
       }
+      this.$store.dispatch("homeCards/userHome");
+      setTimeout(() => {
+        this.$store.dispatch("homeCards/userGenerateCards", 10);
+      }, 3000);
+
     }
   },
   mounted() {

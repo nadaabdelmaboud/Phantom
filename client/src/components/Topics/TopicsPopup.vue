@@ -1,5 +1,5 @@
 <template>
-  <div id="createBoard">
+  <div id="createBoard"  @click="closePopup">
     <div class="boardData">
       <div class="dots">
         <i class="fa fa-circle"></i>
@@ -24,7 +24,7 @@
         <button v-if="picked.length < 5" class="disable">
           pick {{ 5 - picked.length }} more
         </button>
-        <button v-if="picked.length >= 5" @click="closePopup">Done</button>
+        <button v-if="picked.length >= 5" @click="$store.commit('popUpsState/toggleTopicsPopup')" id="close">Done</button>
       </div>
     </div>
   </div>
@@ -55,8 +55,9 @@ export default {
         this.picked.splice(findtopic, 1);
       }
     },
-    closePopup() {
-      this.$store.commit("popUpsState/toggleTopicsPopup");
+    closePopup(event) {
+      if(event.target.id=="createBoard" && this.picked.length >= 5)
+           this.$store.commit("popUpsState/toggleTopicsPopup");
     }
   },
   computed: {
@@ -121,7 +122,7 @@ h2 {
   flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
-  max-height: 40vh;
+  max-height: 45vh;
   overflow-y: auto;
 }
 button {
@@ -148,7 +149,6 @@ button {
     flex-wrap: wrap;
     justify-content: space-evenly;
     width: 100%;
-    max-height: 30vh;
     overflow-y: auto;
   }
   .buttonDiv {

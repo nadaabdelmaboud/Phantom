@@ -53,7 +53,7 @@ const actions = {
   notifyUser({ dispatch }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    //axios.get("me/boardsForYou");
+    axios.get("me/boardsForYou");
     axios.get("me/pinsForYou");
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");
