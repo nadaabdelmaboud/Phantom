@@ -94,7 +94,7 @@
           ></i>
           A to Z
         </li>
-        <li @click="reorder">
+        <li @click="reorder" v-if="getDeviceType() == 'desktop'">
           <i
             class="fa fa-check"
             v-if="meUser.sortType == 'Reorder'"
@@ -145,6 +145,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import getImage from "../../mixins/getImage.js";
+import {default as getDeviceType} from '../../mixins/getDeviceType'
 export default {
   name: "UserProfile",
   data: function() {
@@ -157,7 +158,7 @@ export default {
       userId: ""
     };
   },
-  mixins: [getImage],
+  mixins: [getImage,getDeviceType],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
