@@ -47,7 +47,6 @@
   border: transparent;
   border-radius: 25px;
   max-height: 500px;
-  overflow: hidden;
   &:hover {
     box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.05);
     .save-post,
