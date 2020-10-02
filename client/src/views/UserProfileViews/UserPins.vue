@@ -2,11 +2,10 @@
   <div>
     <Loading v-if="loading" :loading="loading" />
     <masonry
-      :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+      :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 580: 1 }"
       :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
     >
       <HomeCard
-        class="masonryGridItem"
         v-for="p in pins"
         :key="p._id"
         :cardImage="p.imageId"
