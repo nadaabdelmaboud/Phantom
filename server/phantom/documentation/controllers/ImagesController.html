@@ -131,8 +131,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/images/images.controller.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/images/images.controller.ts:35</a></div>
                 </td>
             </tr>
 
@@ -232,8 +232,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/images/images.controller.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/images/images.controller.ts:26</a></div>
                 </td>
             </tr>
 
@@ -297,25 +297,16 @@
   Controller,
   UseInterceptors,
   Request,
-  UseGuards,
   UploadedFiles,
-  HttpException,
-  HttpStatus,
-  ForbiddenException,
-  BadRequestException,
-  Delete,
-  Query,
-  NotFoundException,
+  UseFilters,
 } from &#x27;@nestjs/common&#x27;;
-import {
-  ApiCreatedResponse,
-  ApiConsumes,
-  ApiBadRequestResponse,
-} from &#x27;@nestjs/swagger&#x27;;
+import { ApiConsumes } from &#x27;@nestjs/swagger&#x27;;
 import { FilesInterceptor } from &#x27;@nestjs/platform-express&#x27;;
 import { ImagesService } from &#x27;./images.service&#x27;;
+import { HttpExceptionFilter } from &#x27;src/shared/http-exception.filter&#x27;;
 const path &#x3D; require(&#x27;path&#x27;);
 
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class ImagesController {
   constructor(private ImagesService: ImagesService) {}
@@ -330,15 +321,9 @@ export class ImagesController {
       files[0].buffer,
     );
   }
- 
+
   @Get(&#x27;/image/:id&#x27;)
-  async getImage(
-    @Param(&#x27;id&#x27;) id: string,
-    @Res() response,
-    @Request() req,
-  ) {
-  
-    
+  async getImage(@Param(&#x27;id&#x27;) id: string, @Res() response, @Request() req) {
     if (!id || id &#x3D;&#x3D; &#x27; &#x27; || id &#x3D;&#x3D; &#x27;&#x27; || id &#x3D;&#x3D; &#x27;none&#x27; || id &#x3D;&#x3D; &#x27;null&#x27;) {
       var filePath &#x3D; &#x27;./src/static/default.jpg&#x27;;
       var resolvedPath &#x3D; await path.resolve(filePath);
@@ -349,7 +334,7 @@ export class ImagesController {
       { responseType: &#x27;stream&#x27; },
       function(err, res) {
         if (err) {
-          console.log(err)
+          console.log(err);
           var filePath &#x3D; &#x27;./src/static/default.jpg&#x27;;
           var resolvedPath &#x3D; path.resolve(filePath);
           return response.sendFile(resolvedPath);
@@ -365,8 +350,6 @@ export class ImagesController {
       },
     );
   }
-
- 
 }
 </code></pre>
     </div>

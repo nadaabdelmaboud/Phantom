@@ -153,8 +153,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="16"
-                            class="link-to-prism">src/search/search.controller.ts:16</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="19"
+                            class="link-to-prism">src/search/search.controller.ts:19</a></div>
                 </td>
             </tr>
 
@@ -279,8 +279,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="68"
-                            class="link-to-prism">src/search/search.controller.ts:68</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/search/search.controller.ts:64</a></div>
                 </td>
             </tr>
 
@@ -405,8 +405,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="96"
-                            class="link-to-prism">src/search/search.controller.ts:96</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="87"
+                            class="link-to-prism">src/search/search.controller.ts:87</a></div>
                 </td>
             </tr>
 
@@ -489,8 +489,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">src/search/search.controller.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/search/search.controller.ts:34</a></div>
                 </td>
             </tr>
 
@@ -615,8 +615,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="51"
-                            class="link-to-prism">src/search/search.controller.ts:51</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/search/search.controller.ts:49</a></div>
                 </td>
             </tr>
 
@@ -741,8 +741,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="85"
-                            class="link-to-prism">src/search/search.controller.ts:85</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/search/search.controller.ts:79</a></div>
                 </td>
             </tr>
 
@@ -796,12 +796,15 @@
   UseGuards,
   Request,
   Query,
+  UseFilters,
 } from &#x27;@nestjs/common&#x27;;
 import { AuthGuard } from &#x27;@nestjs/passport&#x27;;
 import { SearchService } from &#x27;./search.service&#x27;;
+import { HttpExceptionFilter } from &#x27;../shared/http-exception.filter&#x27;;
+@UseFilters(HttpExceptionFilter)
 @Controller(&#x27;search&#x27;)
 export class SearchController {
-  constructor(private SearchService: SearchService) { }
+  constructor(private SearchService: SearchService) {}
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/allPins&#x27;)
   async getAllPins(
@@ -812,12 +815,10 @@ export class SearchController {
     @Query(&#x27;offset&#x27;) offset: number,
   ) {
     let userId &#x3D; req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let pins &#x3D; await this.SearchService.getAllPins(name, limit, offset);
     if (pins) return pins;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/myPins&#x27;)
@@ -829,13 +830,10 @@ export class SearchController {
     @Query(&#x27;offset&#x27;) offset: number,
   ) {
     let userId &#x3D; req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let pins &#x3D; await this.SearchService.getMyPins(name, userId, limit, offset);
-    if (pins)
-      return pins;
+    if (pins) return pins;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/people&#x27;)
@@ -847,12 +845,10 @@ export class SearchController {
     @Query(&#x27;offset&#x27;) offset: number,
   ) {
     let userId &#x3D; req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let users &#x3D; await this.SearchService.getPeople(name, limit, offset);
     if (users) return users;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/board&#x27;)
@@ -864,34 +860,25 @@ export class SearchController {
     @Query(&#x27;offset&#x27;) offset: number,
   ) {
     let userId &#x3D; req.user._id;
-    if (recentSearch)
-      await this.SearchService.addToRecentSearch(userId, name);
+    if (recentSearch) await this.SearchService.addToRecentSearch(userId, name);
     let boards &#x3D; await this.SearchService.getBoards(name, limit, offset);
     if (boards) return boards;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/recentSearch&#x27;)
-  async getRecentSearch(
-    @Request() req,
-  ) {
+  async getRecentSearch(@Request() req) {
     let userId &#x3D; req.user._id;
     let recentSearch &#x3D; await this.SearchService.getRecentSearch(userId);
     if (recentSearch) return recentSearch;
     return new NotFoundException();
-
   }
   @UseGuards(AuthGuard(&#x27;jwt&#x27;))
   @Get(&#x27;/getKeys&#x27;)
-  async getKeys(
-    @Request() req,
-    @Query(&#x27;name&#x27;) name
-  ) {
+  async getKeys(@Request() req, @Query(&#x27;name&#x27;) name) {
     let recentSearch &#x3D; await this.SearchService.getKeys(name);
     if (recentSearch) return recentSearch;
     return new NotFoundException();
-
   }
 }
 </code></pre>

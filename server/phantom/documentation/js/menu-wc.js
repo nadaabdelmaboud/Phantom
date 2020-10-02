@@ -478,6 +478,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/EditCollaboratoresPermissionsDto.html" data-type="entity-link">EditCollaboratoresPermissionsDto</a>
                             </li>
                             <li class="link">
+                                <a href="classes/HelpersUtils.html" data-type="entity-link">HelpersUtils</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/HttpExceptionFilter.html" data-type="entity-link">HttpExceptionFilter</a>
                             </li>
                             <li class="link">

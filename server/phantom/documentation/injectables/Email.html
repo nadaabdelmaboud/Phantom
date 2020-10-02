@@ -174,7 +174,7 @@
 
                                     <td>
                                         <ul>
-<li>email should send to </li>
+<li>email should send to</li>
 </ul>
 
                                     </td>
@@ -189,7 +189,7 @@
 
                                     <td>
                                         <ul>
-<li>message which should send  </li>
+<li>message which should send</li>
 </ul>
 
                                     </td>
@@ -204,7 +204,7 @@
 
                                     <td>
                                         <ul>
-<li>why send this email confirm ,change email ,.... </li>
+<li>why send this email confirm ,change email ,....</li>
 </ul>
 
                                     </td>
@@ -219,7 +219,7 @@
 
                                     <td>
                                         <ul>
-<li>the name of email owner </li>
+<li>the name of email owner</li>
 </ul>
 
                                     </td>
@@ -253,16 +253,16 @@ import * as nodemailer from &#x27;nodemailer&#x27;;
  */
 @Injectable()
 export class Email {
-  constructor() { }
+  constructor() {}
 
   /**
-    * @author Aya Abohadima
-    * @descriptionsend email to user email
-    * @param {String} email - email should send to 
-    * @param {String} message - message which should send  
-    * @param {String} type - why send this email confirm ,change email ,.... 
-    * @param {String} userName  - the name of email owner 
-    */
+   * @author Aya Abohadima
+   * @descriptionsend email to user email
+   * @param {String} email - email should send to
+   * @param {String} message - message which should send
+   * @param {String} type - why send this email confirm ,change email ,....
+   * @param {String} userName  - the name of email owner
+   */
   async sendEmail(email, message, type, userName) {
     var transporter &#x3D; nodemailer.createTransport({
       host: &#x27;smtp.gmail.com&#x27;,
@@ -281,11 +281,13 @@ export class Email {
       mailOptions &#x3D; {
         from: &#x27;&quot;Phantom&quot; &lt;&#x27; + String(process.env.EMAIL) + &#x27;&gt;&#x27;,
         to: email,
-        subject: &#x27;👋 Please confirm your email&#x27;,
+        subject: &#x27;👋 Confirm Email&#x27;,
         html:
           &#x27;&lt;html&gt;&lt;h1&gt;  Hi,&#x27; +
           userName +
-          &#x27; 😊 &lt;/h1&gt; &lt;p&gt; you should confirm your email to complete sign up &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; + String(process.env.FRONT_BASE_URL) + &#x27;/confirm?token&#x3D;&#x27; +
+          &#x27; 😊 &lt;/h1&gt; &lt;p&gt; You Should Confirm Your Email to Complete SignUp &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; +
+          String(process.env.FRONT_BASE_URL) +
+          &#x27;/confirm?token&#x3D;&#x27; +
           message +
           &#x27;&amp;type&#x3D;signup&quot; target &#x3D;&quot;_blank&quot;&gt;Confirm&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
       };
@@ -293,35 +295,41 @@ export class Email {
       mailOptions &#x3D; {
         from: &#x27;&quot;Phantom&quot; &lt;&#x27; + String(process.env.EMAIL) + &#x27;&gt;&#x27;,
         to: email,
-        subject: &#x27;You changed your email address on Phantom&#x27;,
+        subject: &#x27;👋 Email Update&#x27;,
         html:
           &#x27;&lt;html&gt;&lt;h1&gt;  Hi,&#x27; +
           userName +
-          &#x27; 😊 &lt;/h1&gt; &lt;p&gt; The email address on your Phantom account was just changed. Did you make this change?&lt;br&gt; if you need it change follow this like &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; + String(process.env.FRONT_BASE_URL) + &#x27;/changeEmail?token&#x3D;&#x27; +
+          &#x27; 😊 &lt;/h1&gt; &lt;p&gt; The Email Address On Your Phantom Account Has Been Changed.&lt;br&gt; To Confirm Changing Your Email Please Follow This Link &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; +
+          String(process.env.FRONT_BASE_URL) +
+          &#x27;/changeEmail?token&#x3D;&#x27; +
           message +
-          &#x27;&amp;type&#x3D;changeEmail&quot; target &#x3D;&quot;_blank&quot;&gt;sure change email&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
+          &#x27;&amp;type&#x3D;changeEmail&quot; target &#x3D;&quot;_blank&quot;&gt;Confirm&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
       };
     } else if (type &#x3D;&#x3D;&#x3D; &#x27;set email&#x27;) {
       mailOptions &#x3D; {
         from: &#x27;&quot;Phantom&quot; &lt;&#x27; + String(process.env.EMAIL) + &#x27;&gt;&#x27;,
         to: email,
-        subject: &#x27;👋 You reset your email address on Phantom&#x27;,
+        subject: &#x27;👋 Email Reset&#x27;,
         html:
           &#x27;&lt;html&gt;&lt;h1&gt;  Hi,&#x27; +
           userName +
-          &#x27; 😊 &lt;/h1&gt; you reset this email to be your new email &lt;br&gt; please follow this link to confirm that &lt;/h2&gt;&lt;h2&gt;&lt;a href&#x3D;&quot;&#x27; + String(process.env.FRONT_BASE_URL) + &#x27;/changeEmail?token&#x3D;&#x27; +
+          &#x27; 😊 &lt;/h1&gt; Follow This Link To Confirm Your New Email On Phantom&lt;/h2&gt;&lt;h2&gt;&lt;a href&#x3D;&quot;&#x27; +
+          String(process.env.FRONT_BASE_URL) +
+          &#x27;/changeEmail?token&#x3D;&#x27; +
           message +
-          &#x27;&amp;type&#x3D;resetEmail&quot; target &#x3D;&quot;_blank&quot;&gt;sure email&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
+          &#x27;&amp;type&#x3D;resetEmail&quot; target &#x3D;&quot;_blank&quot;&gt;Confirm&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
       };
     } else if (type &#x3D;&#x3D;&#x3D; &#x27;forget Password&#x27;) {
       mailOptions &#x3D; {
         from: &#x27;&quot;Phantom&quot; &lt;&#x27; + String(process.env.EMAIL) + &#x27;&gt;&#x27;,
         to: email,
-        subject: &#x27;👋 Please reset your password &#x27;,
+        subject: &#x27;👋 Reset Password &#x27;,
         html:
           &#x27;&lt;html&gt;&lt;h1&gt;   Hi,&#x27; +
           userName +
-          &#x27;, 😊 &lt;/h1&gt; &lt;p&gt; please, do not worry at all  &lt;/p&gt; &lt;p&gt; follow this link to reset your password  &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; + String(process.env.FRONT_BASE_URL) + &#x27;/reset_password?token&#x3D;&#x27; +
+          &#x27;, 😊 &lt;/h1&gt; Follow This Link To Reset Your Password &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; +
+          String(process.env.FRONT_BASE_URL) +
+          &#x27;/reset_password?token&#x3D;&#x27; +
           message +
           &#x27;&quot; target &#x3D;&quot;_blank&quot;&gt;Reset Password&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
       };
@@ -329,11 +337,13 @@ export class Email {
       mailOptions &#x3D; {
         from: &#x27;&quot;Phantom&quot; &lt;&#x27; + String(process.env.EMAIL) + &#x27;&gt;&#x27;,
         to: email,
-        subject: &#x27;😔 Sure delete account &#x27;,
+        subject: &#x27;😔 Delete Account &#x27;,
         html:
           &#x27;&lt;html&gt;&lt;h1&gt;  Hi,&#x27; +
           userName +
-          &#x27;  &lt;/h1&gt; &lt;p&gt;Really, We are very sad because you will leave us &lt;/p&gt; &lt;p&gt;We have been very happy with you &lt;/p&gt; &lt;p&gt;follow this link  and return to us  &lt;p&gt;&lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; + String(process.env.FRONT_BASE_URL) + &#x27;&quot; target &#x3D;&quot;_blank&quot;&gt;phantom&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
+          &#x27;  &lt;/h1&gt; &lt;p&gt; Phantom Will Miss You &lt;/p&gt;  &lt;p&gt;Follow This Link To Get Back To Phantom &lt;p&gt;&lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; +
+          String(process.env.FRONT_BASE_URL) +
+          &#x27;&quot; target &#x3D;&quot;_blank&quot;&gt;Phantom&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
       };
     } else if (type &#x3D;&#x3D;&#x3D; &#x27;report&#x27;) {
       mailOptions &#x3D; {
@@ -343,11 +353,15 @@ export class Email {
         html:
           &#x27;&lt;html&gt;&lt;p&gt; &#x27; +
           message.userName +
-          &#x27; (userId: &#x27; +
+          &#x27; (userEmail: &#x27; +
+          message.email +
+          &#x27; ) (userId: &#x27; +
           message.userId +
           &#x27; ) has reported a pin for &#x27; +
           message.reason +
-          &#x27; &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; + String(process.env.FRONT_BASE_URL) + &#x27;/PostPage/&#x27; +
+          &#x27; &lt;/p&gt; &lt;h2&gt; &lt;a href&#x3D;&quot;&#x27; +
+          String(process.env.FRONT_BASE_URL) +
+          &#x27;/PostPage/&#x27; +
           message.pinId +
           &#x27;&quot;target &#x3D;&quot;_blank&quot;&gt;Pin Page&lt;/a&gt;&lt;/h2&gt;&lt;/html&gt;&#x27;,
       };

@@ -159,8 +159,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="90"
-                            class="link-to-prism">src/auth/auth.controller.ts:90</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/auth/auth.controller.ts:96</a></div>
                 </td>
             </tr>
 
@@ -238,8 +238,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="80"
-                            class="link-to-prism">src/auth/auth.controller.ts:80</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/auth/auth.controller.ts:86</a></div>
                 </td>
             </tr>
 
@@ -313,8 +313,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="115"
-                            class="link-to-prism">src/auth/auth.controller.ts:115</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">src/auth/auth.controller.ts:121</a></div>
                 </td>
             </tr>
 
@@ -388,8 +388,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="96"
-                            class="link-to-prism">src/auth/auth.controller.ts:96</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/auth/auth.controller.ts:102</a></div>
                 </td>
             </tr>
 
@@ -463,8 +463,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="32"
-                            class="link-to-prism">src/auth/auth.controller.ts:32</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">src/auth/auth.controller.ts:36</a></div>
                 </td>
             </tr>
 
@@ -538,8 +538,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/auth/auth.controller.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/auth/auth.controller.ts:40</a></div>
                 </td>
             </tr>
 
@@ -622,8 +622,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">src/auth/auth.controller.ts:56</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/auth/auth.controller.ts:62</a></div>
                 </td>
             </tr>
 
@@ -701,8 +701,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="128"
-                            class="link-to-prism">src/auth/auth.controller.ts:128</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/auth/auth.controller.ts:134</a></div>
                 </td>
             </tr>
 
@@ -776,8 +776,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="67"
-                            class="link-to-prism">src/auth/auth.controller.ts:67</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="73"
+                            class="link-to-prism">src/auth/auth.controller.ts:73</a></div>
                 </td>
             </tr>
 
@@ -842,6 +842,7 @@
   Req,
   NotFoundException,
   Res,
+  UseFilters,
 } from &#x27;@nestjs/common&#x27;;
 import { AuthGuard } from &#x27;@nestjs/passport&#x27;;
 import { UserService } from &#x27;../user/user.service&#x27;;
@@ -850,6 +851,9 @@ import { LoginDto } from &#x27;./dto/login.dto&#x27;;
 import { RegisterDto } from &#x27;./dto/register.dto&#x27;;
 import { AuthService } from &#x27;./auth.service&#x27;;
 import { Email } from &#x27;../shared/send-email.service&#x27;;
+import { HttpExceptionFilter } from &#x27;src/shared/http-exception.filter&#x27;;
+
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class AuthController {
   constructor(
@@ -866,11 +870,13 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res) {
     const data &#x3D; await this.authService.googleLogin(req);
     if (data) {
-      console.log( process.env.FRONT_BASE_URL +
-        &#x27;/aouth/google?token&#x3D;&#x27; +
-        data.token +
-        &#x27;&amp;type&#x3D;&#x27; +
-        data.type)
+      console.log(
+        process.env.FRONT_BASE_URL +
+          &#x27;/aouth/google?token&#x3D;&#x27; +
+          data.token +
+          &#x27;&amp;type&#x3D;&#x27; +
+          data.type,
+      );
       res.redirect(
         process.env.FRONT_BASE_URL +
           &#x27;/aouth/google?token&#x3D;&#x27; +

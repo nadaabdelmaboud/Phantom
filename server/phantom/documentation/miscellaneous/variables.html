@@ -58,9 +58,6 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
-                            <a href="#app" title="src/shared/notification.service.ts"><b>app</b>&nbsp;&nbsp;&nbsp;(src/.../notification.service.ts)</a>
-                        </li>
-                        <li>
                             <a href="#Board" title="src/models/board.schema.ts"><b>Board</b>&nbsp;&nbsp;&nbsp;(src/.../board.schema.ts)</a>
                         </li>
                         <li>
@@ -71,9 +68,6 @@
                         </li>
                         <li>
                             <a href="#fs" title="src/images/images.service.ts"><b>fs</b>&nbsp;&nbsp;&nbsp;(src/.../images.service.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#fs" title="src/main.ts"><b>fs</b>&nbsp;&nbsp;&nbsp;(src/.../main.ts)</a>
                         </li>
                         <li>
                             <a href="#gracefulFs" title="src/images/images.service.ts"><b>gracefulFs</b>&nbsp;&nbsp;&nbsp;(src/.../images.service.ts)</a>
@@ -91,37 +85,31 @@
                             <a href="#ObjectId" title="src/shared/validation.service.ts"><b>ObjectId</b>&nbsp;&nbsp;&nbsp;(src/.../validation.service.ts)</a>
                         </li>
                         <li>
-                            <a href="#params" title="src/shared/notification.service.ts"><b>params</b>&nbsp;&nbsp;&nbsp;(src/.../notification.service.ts)</a>
-                        </li>
-                        <li>
                             <a href="#path" title="src/images/images.controller.ts"><b>path</b>&nbsp;&nbsp;&nbsp;(src/.../images.controller.ts)</a>
                         </li>
                         <li>
                             <a href="#Pin" title="src/models/pin.schema.ts"><b>Pin</b>&nbsp;&nbsp;&nbsp;(src/.../pin.schema.ts)</a>
                         </li>
                         <li>
+                            <a href="#" title="src/images/images.service.ts"><b></b>&nbsp;&nbsp;&nbsp;(src/.../images.service.ts)</a>
+                        </li>
+                        <li>
                             <a href="#Schema" title="src/models/pin.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../pin.schema.ts)</a>
                         </li>
                         <li>
-                            <a href="#Schema" title="src/models/chat.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../chat.schema.ts)</a>
+                            <a href="#Schema" title="src/models/message.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../message.schema.ts)</a>
                         </li>
                         <li>
                             <a href="#Schema" title="src/models/topic.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../topic.schema.ts)</a>
                         </li>
                         <li>
-                            <a href="#" title="src/images/images.service.ts"><b></b>&nbsp;&nbsp;&nbsp;(src/.../images.service.ts)</a>
+                            <a href="#Schema" title="src/models/chat.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../chat.schema.ts)</a>
                         </li>
                         <li>
                             <a href="#Schema" title="src/models/user.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../user.schema.ts)</a>
                         </li>
                         <li>
                             <a href="#Schema" title="src/models/board.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../board.schema.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#Schema" title="src/models/message.schema.ts"><b>Schema</b>&nbsp;&nbsp;&nbsp;(src/.../message.schema.ts)</a>
-                        </li>
-                        <li>
-                            <a href="#scopes" title="src/images/images.service.ts"><b>scopes</b>&nbsp;&nbsp;&nbsp;(src/.../images.service.ts)</a>
                         </li>
                         <li>
                             <a href="#Topic" title="src/models/topic.schema.ts"><b>Topic</b>&nbsp;&nbsp;&nbsp;(src/.../topic.schema.ts)</a>
@@ -139,76 +127,6 @@
     </table>
 </section>
 
-    <h3>src/shared/notification.service.ts</h3>
-    <section>
-    <h3></h3>        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="app"></a>
-                        <span class="name">
-                            <b>
-                            app</b>
-                            <a href="#app"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>firebase.initializeApp({
-  credential: firebase.credential.cert(params),
-})</code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="params"></a>
-                        <span class="name">
-                            <b>
-                            params</b>
-                            <a href="#params"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>{
-  type: String(process.env.FIREBASE_CREADENTIAL_TYPE),
-  projectId: String(process.env.FIREBASE_CREADENTIAL_PROJECT_ID),
-  privateKeyId: String(process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY_ID),
-  privateKey: String(
-    process.env.FIREBASE_CREADENTIAL_PRIVATE_KEY.replace(/\\n/g, &#x27;\n&#x27;),
-  ),
-  clientEmail: String(process.env.FIREBASE_CREADENTIAL_CLIENT_ID),
-  clientId: String(process.env.FIREBASE_CREADENTIAL_CLIENT_EMAIL),
-  authUri: String(process.env.FIREBASE_CREADENTIAL_AUTH_URI),
-  tokenUri: String(process.env.FIREBASE_CREADENTIAL_TOKEN_URI),
-  authProviderX509CertUrl: String(
-    process.env.FIREBASE_CREADENTIAL_AUTH_PROVIDER_X509_CERT_URL,
-  ),
-  clientX509CertUrl: String(
-    process.env.FIREBASE_CREADENTIAL_CLIENT_X509_CERT_URL,
-  ),
-}</code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-</section>
     <h3>src/models/board.schema.ts</h3>
     <section>
     <h3></h3>        <table class="table table-sm table-bordered">
@@ -390,27 +308,6 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="fs"></a>
-                        <span class="name">
-                            <b>
-                            fs</b>
-                            <a href="#fs"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>require(&#x27;fs&#x27;)</code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="logger"></a>
                         <span class="name">
                             <b>
@@ -488,33 +385,6 @@
                     <tr>
                         <td class="col-md-4">
                             <i>Default value : </i><code>require(&#x27;googleapis&#x27;)</code>
-                        </td>
-                    </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="scopes"></a>
-                        <span class="name">
-                            <b>
-                            scopes</b>
-                            <a href="#scopes"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>[]</code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>[&#x27;https://www.googleapis.com/auth/drive&#x27;]</code>
                         </td>
                     </tr>
 

@@ -121,7 +121,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/images/images.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/images/images.service.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -158,8 +158,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="30"
-                            class="link-to-prism">src/images/images.service.ts:30</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/images/images.service.ts:26</a></div>
                 </td>
             </tr>
 
@@ -226,8 +226,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/images/images.service.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="41"
+                            class="link-to-prism">src/images/images.service.ts:41</a></div>
                 </td>
             </tr>
 
@@ -309,7 +309,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/images/images.service.ts:18</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/images/images.service.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -327,21 +327,17 @@
   Injectable,
   NotFoundException,
 } from &#x27;@nestjs/common&#x27;;
-
 import { Readable } from &#x27;stream&#x27;;
-
-
-const scopes &#x3D; [&#x27;https://www.googleapis.com/auth/drive&#x27;];
+const { google } &#x3D; require(&#x27;googleapis&#x27;);
 const fs &#x3D; require(&#x27;fs&#x27;);
 const gracefulFs &#x3D; require(&#x27;graceful-fs&#x27;);
 gracefulFs.gracefulify(fs);
-const { google } &#x3D; require(&#x27;googleapis&#x27;);
 
 @Injectable()
 export class ImagesService {
   public drive;
-  constructor(   
-  ) {
+  constructor() {
+    const scopes &#x3D; [&#x27;https://www.googleapis.com/auth/drive&#x27;];
     const auth &#x3D; new google.auth.JWT(
       String(process.env.DRIVE_CLIENT_EMAIL),
       null,
@@ -389,7 +385,6 @@ export class ImagesService {
       throw new BadRequestException();
     }
   }
- 
 }
 </code></pre>
     </div>
