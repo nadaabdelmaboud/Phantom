@@ -174,6 +174,7 @@ const actions = {
     axios
       .put("me/boards/edit/" + state.chosenBoardId, newBoard)
       .then(() => {
+        dispatch("getBoard", state.chosenBoardId);
         dispatch("userBoards");
         dispatch("followers/getFollowers", null, { root: true });
         dispatch("followers/getFollowing", null, { root: true });
