@@ -11,17 +11,18 @@ import { topic } from '../types/topic';
 import { ValidationService } from '../shared/validation.service';
 import { UserService } from '../user/user.service';
 import { pin } from '../types/pin';
+import { user } from 'src/types/user';
 
 @Injectable()
 export class TopicService {
   constructor(
     @InjectModel('Topic') private readonly topicModel: Model<topic>,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
-    @InjectModel('User') private readonly userModel: Model<pin>,
+    @InjectModel('User') private readonly userModel: Model<user>,
 
     private UserService: UserService,
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   async topicsSeeds(topics) {
     for (var i = 0; i < topics.length; i++) {
       await this.createTopic(topics[i].imageId, '', 200, 200, topics[i].name);
@@ -40,21 +41,21 @@ export class TopicService {
     return 1;
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget create topic
-* @param {String} imageId -image id  
-* @param {String} description -description 
-* @param {String} name -name
-* @param {Number} imageHeight -image height
-* @param {Number} imageWidth -image width
-* @returns {Object} -topic object
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget create topic
+   * @param {String} imageId -image id
+   * @param {String} description -description
+   * @param {String} name -name
+   * @param {Number} imageHeight -image height
+   * @param {Number} imageWidth -image width
+   * @returns {Object} -topic object
+   */
   async createTopic(
     imageId: string,
     description: string,
     imageWidth: number,
     imageHeight: number,
-    name: string
+    name: string,
   ): Promise<topic> {
     if (!this.ValidationService.checkMongooseID([imageId]))
       throw new Error('not mongoose id');
@@ -75,26 +76,30 @@ export class TopicService {
     return topic;
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget get topic by id
-* @param {String} topicId -topic id  
-* @returns {Object} -topic object
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget get topic by id
+   * @param {String} topicId -topic id
+   * @returns {Object} -topic object
+   */
   async getTopicById(topicId): Promise<topic> {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
-    const topic = await this.topicModel.findById(topicId, 'pins followers', (err, topic) => {
-      if (err) throw new Error('topic not found');
-      return topic;
-    });
+    const topic = await this.topicModel.findById(
+      topicId,
+      'pins followers',
+      (err, topic) => {
+        if (err) throw new Error('topic not found');
+        return topic;
+      },
+    );
     return topic;
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget get topics
-* @param {String} userId -user id  
-* @returns {Array<Object>} -topic objects
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget get topics
+   * @param {String} userId -user id
+   * @returns {Array<Object>} -topic objects
+   */
   async getTopics(userId): Promise<Array<Object>> {
     let topics = await this.topicModel.find(
       {},
@@ -116,12 +121,12 @@ export class TopicService {
     });
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget add pin to topic
-* @param {String} topicId -topic id  
-* @param {Number} pinId -pin id
-* @returns {Boolean}
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget add pin to topic
+   * @param {String} topicId -topic id
+   * @param {Number} pinId -pin id
+   * @returns {Boolean}
+   */
   async addPinToTopic(topicName, pinId): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error('not mongoose id');
@@ -143,23 +148,23 @@ export class TopicService {
     throw new NotFoundException();
   }
   /**
- * @author Dina Alaa <dinaalaaaahmed@gmail.com>
- * @descriptionget get pins of a topic
- * @param {String} topicId -topic id  
- * @param {Number} limit -limit
- * @param {Number} offset -offset
- * @returns {Array<Object>} -pin objects
- */
-  async getPinsOfTopic(topicId: string, limit: number, offset: number): Promise<pin[]> {
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget get pins of a topic
+   * @param {String} topicId -topic id
+   * @param {Number} limit -limit
+   * @param {Number} offset -offset
+   * @returns {Array<Object>} -pin objects
+   */
+  async getPinsOfTopic(
+    topicId: string,
+    limit: number,
+    offset: number,
+  ): Promise<pin[]> {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error('not mongoose id');
     const topic = await this.getTopicById(topicId);
     if (!topic.pins.length) return [];
-    let pinsIds = this.ValidationService.limitOffset(
-      limit,
-      offset,
-      topic.pins,
-    );
+    let pinsIds = this.ValidationService.limitOffset(limit, offset, topic.pins);
     let pins = [];
     for (let i = 0; i < pinsIds.length; i++) {
       await this.pinModel.findById(pinsIds[i], 'imageId', (err, pin) => {
@@ -170,20 +175,13 @@ export class TopicService {
   }
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
-   * @descriptioncheck if this user follow this topic 
-    * @param {String} userId -user id  
-    * @param {String} topicId -topic id
-    * @returns {Boolean}
-    */
+   * @descriptioncheck if this user follow this topic
+   * @param {String} userId -user id
+   * @param {String} topicId -topic id
+   * @returns {Boolean}
+   */
   async checkFollowTopic(userId, topicId) {
-    if (!this.ValidationService.checkMongooseID([userId, topicId]))
-      throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    if (!(await this.UserService.getUserById(userId)))
-      throw new HttpException(
-        'user id is not correct',
-        HttpStatus.UNAUTHORIZED,
-      );
-    const topic = await this.getTopicById(topicId);
+    const topic = await this.topicModel.findById(topicId, { followers: 1 });
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers || topic.followers.length == 0) return false;
@@ -191,26 +189,30 @@ export class TopicService {
   }
 
   /**
-    * @author Aya Abohadima <ayasabohadima@gmail.com>
-    * @description make user follow topic
-    * @param {String} userId -user id  
-    * @param {String} topicId - topic id
-    * @returns {Number} 1
-  */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description make user follow topic
+   * @param {String} userId -user id
+   * @param {String} topicId - topic id
+   * @returns {Number} 1
+   */
   async followTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    if (await this.checkFollowTopic(userId, topicId))
-      throw new HttpException(
-        'you are already follow this topic',
-        HttpStatus.BAD_REQUEST,
-      );
-    const user = await this.UserService.getUserById(userId);
+    const user = await this.userModel.findById(userId, {
+      followingTopics: 1,
+      lastTopics: 1,
+    });
     if (!user)
       throw new HttpException(
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
+    if (await this.checkFollowTopic(userId, topicId))
+      throw new HttpException(
+        'you already follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
+
     const topic = await this.topicModel.findById(topicId, {
       pins: 1,
       followers: 1,
@@ -242,20 +244,20 @@ export class TopicService {
   }
 
   /**
-  * @author Aya Abohadima <ayasabohadima@gmail.com>
-  * @description make user unfollow topic
-  * @param {String} userId -user id  
-  * @param {String} topicId - topic id
-  * @returns {Number} 1
-  */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description make user unfollow topic
+   * @param {String} userId -user id
+   * @param {String} topicId - topic id
+   * @returns {Number} 1
+   */
   async unfollowTopic(userId, topicId) {
-    return this.UserService.unfollowTopic(userId, topicId);
+    return await this.UserService.unfollowTopic(userId, topicId);
   }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @descriptionget user following topic
-   * @param {String} userId -user id  
+   * @param {String} userId -user id
    * @returns {Array<Object>} -following topic object
    */
   async followingTopics(userId) {
