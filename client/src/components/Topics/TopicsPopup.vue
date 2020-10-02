@@ -8,8 +8,8 @@
         <i class="fa fa-circle"></i>
         <i class="fa fa-circle"></i>
       </div>
-      <h2>Last step! Tell us what you're interested in</h2>
-      <Loading :loading="!topics.length" />
+      <h2>Tell us what you're interested in</h2>
+      <Loading :loading="!topics.length" v-if="!topics.length"/>
       <div v-if="topics.length" class="topicsContainer">
         <div v-for="t in topics" :key="t.name" @click="addTopic(t._id)">
           <TopicsCard
@@ -71,6 +71,7 @@ export default {
         this.picked.push(topic._id);
       }
     });
+    document.body.classList.add("noscroll")
   },
   watch: {
     topics: {
@@ -89,17 +90,22 @@ export default {
 <style lang="scss" scoped>
 @import "../../scss/Colors";
 @import "../../scss/GlobalPopup";
+.noscroll{
+  overflow-y: hidden;
+}
 h2 {
   width: 100%;
   text-align: center;
   font-weight: 700;
   margin: 15px 0;
-  font-size: 30px;
+  font-size: 25px;
   color: $darkBlue;
 }
 .boardData {
   margin: 30px auto;
   width: 70%;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .dots {
   display: flex;
@@ -115,12 +121,42 @@ h2 {
   flex-wrap: wrap;
   justify-content: space-evenly;
   width: 100%;
-  height: 55vh;
-  max-height: 400px;
+  max-height: 40vh;
   overflow-y: auto;
 }
 button {
   width: 70%;
   margin: 0 15%;
+}
+@media screen and (max-width:850px){
+  h2 {
+  font-weight: 600;
+  margin: 7px 0;
+  font-size: 20px;
+}
+.boardData {
+  margin: 10px auto;
+}
+.dots {
+  i {
+    font-size: 8px;
+    margin: 3px;
+  }
+}
+.topicsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+.buttonDiv{
+  padding-top: 15px;
+}
+button {
+  width: 60%;
+  margin: 0 20%;
+}
 }
 </style>

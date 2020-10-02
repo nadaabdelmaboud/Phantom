@@ -273,7 +273,7 @@ const actions = {
         );
         state.loadingMore = false;
         state.inProgress = false;
-        state.offset += 8;
+        state.offset += 10;
         commit("setMoreLike", more.data);
       } catch (error) {
         state.inProgress = false;
@@ -281,7 +281,7 @@ const actions = {
           let remaining = state.generatedCount - state.offset;
           if (state.generating) {
             setTimeout(() => {
-              dispatch("moreLike", { boardId: boardId, limit: 8 });
+              dispatch("moreLike", { boardId: boardId, limit: 10 });
             }, 1000);
           } else if (remaining > 0) {
             dispatch("moreLike", { boardId: boardId, limit: remaining });

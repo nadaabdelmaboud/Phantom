@@ -8,9 +8,12 @@ import "./registerServiceWorker";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-Vue.config.productionTip = process.env.VUE_APP_productionTip;
-Vue.prototype.$url = process.env.VUE_APP_baseURL;
-axios.defaults.baseURL = process.env.VUE_APP_baseURL;
+ Vue.config.productionTip = process.env.VUE_APP_productionTip;
+ Vue.prototype.$url = process.env.VUE_APP_baseURL;
+ axios.defaults.baseURL = process.env.VUE_APP_baseURL;
+
+// Vue.prototype.$url = "https://daniphantom.herokuapp.com/api";
+// axios.defaults.baseURL = "https://daniphantom.herokuapp.com";
 
 new Vue({
   router,

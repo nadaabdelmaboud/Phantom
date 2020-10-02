@@ -170,6 +170,11 @@
   }
 }
 </style>
+<style lang="scss">
+.noscroll{
+  overflow: hidden;
+}
+</style>
 <script>
 import { default as getImage } from "../mixins/getImage";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
@@ -290,6 +295,14 @@ export default {
         console.log("phantom home boardname", this.ChoosenBoardName);
         this.showPinToast();
         this.$store.commit("homeCards/setShowToastState", false);
+      }
+    },
+    topics:{
+      handler(topics){
+        if(topics)
+        document.body.classList.add("noscroll")
+        else
+        document.body.classList.remove("noscroll")
       }
     }
   }

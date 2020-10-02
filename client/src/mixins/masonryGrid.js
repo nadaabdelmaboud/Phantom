@@ -1,10 +1,12 @@
 //import imagesLoaded from "imagesloaded";
+import { default as getImage} from "./getImage"
 export default {
   data:function(){
     return{
       allItems:[]
     }
   },
+  mixins:[getImage],
   methods: {
     resizeMasonryItem(item) {
       //var allItems = document.getElementsByClassName("masonryGridItem");
@@ -27,27 +29,29 @@ export default {
              * S = H1 / T
              */
      // console.log("this item",item)
+     let img=item.querySelector(".card-img");
+     let originalHeight=img.getBoundingClientRect().height;
+    //  console.log(" originalHeight ",originalHeight)
+    //  let newHeight= Math.round(originalHeight/ 50) * 50;
+ //    console.log(" newHeight  ",newHeight)
+  //   console.log("n",newHeight)
+     img.style.height=  item.style.height +"px";
       var rowSpan = Math.ceil(
-        (item.querySelector(".card-img").getBoundingClientRect().height +
-          rowGap) /
+        (originalHeight +rowGap ) /
           (rowHeight + rowGap)
       );
 
       /* Set the spanning as calculated above (S) */
       item.style.gridRowEnd = "span " + rowSpan;
-      //   const app =document.getElementById("app")
-      //    if(rowHeight+rowGap >= app.style.height)
-      //    app.style.height =document.body.offsetHeight+500+"px";
-    },
-    handleLoaded(i){
-      //  console.log("img is loaded",this.allItems[i])
-        this.resizeMasonryItem(this.allItems[i]);
+    
+      img.style.height=  rowSpan*50+15*(rowSpan-1) +"px";
+     // if(img.complete)
+      //item.style.backgroundColor= "#f1f1f1";
     },
     waitForImages() {
       this.allItems = document.getElementsByClassName("masonryGridItem");
-      for (var i = 0; i < this.allItems.length; i++) {
-        // console.log("item",allItems[i])
-        this.allItems[i].querySelector(".card-img").addEventListener('load',this.handleLoaded(i));
+      for (let item of this.allItems) {
+        item.querySelector(".card-img").addEventListener('load',this.resizeMasonryItem(item));
       }
     }
   }

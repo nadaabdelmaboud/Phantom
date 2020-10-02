@@ -1,5 +1,5 @@
 <template>
-  <div class="board" @click="toBoard">
+  <div class="board">
     <div class="boardInner">
       <div class="image">
         <img v-if="pinsImages.length" :src="getImage(pinsImages[0])" />

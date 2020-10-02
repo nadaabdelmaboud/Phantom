@@ -1,5 +1,6 @@
 <template>
   <div @click="checkLists" id="app">
+    <!-- <button style="position:fixed;top:55px" @click="waitForImages">click</button> -->
     <router-view></router-view>
   </div>
 </template>
@@ -21,14 +22,14 @@ export default {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
-        ) <= 10
+        ) <= 50
       ) {
         // document.body.style.height=document.body.offsetHeight+300+"px"
         if (this.$route.path.includes("/More")) {
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {
             boardId: boardId,
-            limit: 8
+            limit: 10
           });
         } else if (this.$route.path.includes("allpins")) {
           let name = this.$route.params.name;
@@ -62,14 +63,7 @@ export default {
           }
         }
       }
-    });
-     window.onload = function(){
-      console.log("looooooo")
-    }
-    // document.body.addEventListener("load",function() {  
-    //    console.log("loaded")
-    // }); 
-    
+    });    
    setInterval(() => {
       this.waitForImages();
    }, 500);
@@ -90,11 +84,9 @@ export default {
       );
     }
   },
-  updated(){
-    console.log("updated")
-  },
-  beforeUpdate(){
-    console.log("before update")
-  }
+
+
 };
 </script>
+
+

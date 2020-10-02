@@ -29,6 +29,7 @@
             :pinsImages="board.board.coverImages"
             :pinsCount="board.board.pins.length"
             :isBoard="true"
+             @click.native="toBoard(board.board._id)"
           />
         </draggable>
       </div>
@@ -72,6 +73,9 @@ export default {
           to: event.newIndex + 1
         });
       }
+    },
+    toBoard(boardId) {
+      this.$router.push("/Board/" + boardId + "/Pins");
     }
   },
   computed: {
