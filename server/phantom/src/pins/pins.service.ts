@@ -1621,12 +1621,18 @@ export class PinsService {
             imageHeight: pinFound.imageHeight,
             title: pinFound.title,
             topic: pinFound.topic,
-            owner: followedUser,
+            owner: {
+              _id: followedUser._id,
+              firstName: followedUser.firstName,
+              lastName: followedUser.lastName,
+              profileImage: followedUser.profileImage,
+              google: followedUser.google,
+              googleImage: followedUser.googleImage,
+            },
           });
-
-        return pins;
       }
     }
+    return pins;
   }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>

@@ -119,6 +119,7 @@
   top: 90px;
   max-height: 400px;
   overflow-y: auto;
+  max-width: 95vw;
   .createBoard {
     background-color: $lightPink;
     cursor: pointer;
