@@ -1,7 +1,7 @@
 <template>
   <div class="card" id="homeCard">
     <router-link :to="{ path: '/PostPage/' + postPageId }">
-      <img v-lazy="getImage(cardImage)"  class="card-img" alt="Card image" />
+      <img v-lazy="getImage(cardImage)" class="card-img" alt="Card image" />
       <div class="card-img-overlay d-flex flex-column align-items-end">
         <button class="save-post" id="saveImage" @click.capture="showSavePin">
           Save
@@ -41,10 +41,13 @@
 @import "../../scss/_Colors";
 @import "../../scss/Mixins";
 .card {
+  margin: 10px 4px;
   width: 252px;
   background-color: $blue;
   border: transparent;
   border-radius: 25px;
+  max-height: 500px;
+  overflow: hidden;
   &:hover {
     box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.05);
     .save-post,
@@ -59,6 +62,7 @@
   border-radius: 25px;
   object-fit: cover;
   min-height: 200px;
+  max-height: 500px;
 }
 .save-post {
   display: none;
@@ -121,6 +125,11 @@ button:focus {
         opacity: 1;
       }
     }
+  }
+}
+@media screen and (max-width: 600px) {
+  .card {
+    margin: 5px auto;
   }
 }
 </style>

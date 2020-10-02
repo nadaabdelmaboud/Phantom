@@ -243,12 +243,12 @@ label {
     margin-right: 5px;
   }
 }
- .slider {
-    position: absolute;
-    margin: 7px 0;
-    right: 5px;
-    top:7px
-  }
+.slider {
+  position: absolute;
+  margin: 7px 0;
+  right: 5px;
+  top: 7px;
+}
 @media screen and (max-width: 360px) {
   .userInfo {
     padding: 4px;
@@ -284,6 +284,5 @@ label {
     font-size: 14px;
     margin: 10px 20px 10px 0;
   }
- 
 }
 </style>

@@ -29,7 +29,7 @@
             :pinsImages="board.board.coverImages"
             :pinsCount="board.board.pins.length"
             :isBoard="true"
-             @click.native="toBoard(board.board._id)"
+            @click.native="toBoard(board.board._id)"
           />
         </draggable>
       </div>

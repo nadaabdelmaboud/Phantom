@@ -171,7 +171,7 @@
 }
 </style>
 <style lang="scss">
-.noscroll{
+.noscroll {
   overflow: hidden;
 }
 </style>
@@ -297,12 +297,10 @@ export default {
         this.$store.commit("homeCards/setShowToastState", false);
       }
     },
-    topics:{
-      handler(topics){
-        if(topics)
-        document.body.classList.add("noscroll")
-        else
-        document.body.classList.remove("noscroll")
+    topics: {
+      handler(topics) {
+        if (topics) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
       }
     }
   }

@@ -8,7 +8,10 @@
     </div>
     <Loading :loading="moreLoading" />
     <div class="flexWrap" v-if="!moreLoading">
-      <div class="masonryGrid">
+      <masonry
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
+      >
         <HomeCard
           v-for="morepin in morePins"
           :key="morepin._id"
@@ -16,7 +19,7 @@
           :cardImage="morepin.imageId"
           :postPageId="morepin._id"
         />
-      </div>
+      </masonry>
     </div>
   </div>
 </template>

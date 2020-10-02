@@ -5,7 +5,10 @@
       <p>{{ section.pins.length }} pins</p>
     </div>
     <div class="flexWrap">
-      <div class="masonryGrid">
+      <masonry
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
+      >
         <HomeCard
           v-for="b in section.pins"
           :key="b.pin._id"
@@ -13,7 +16,7 @@
           :postPageId="b.pin._id"
           class="masonryGridItem"
         />
-      </div>
+      </masonry>
     </div>
   </div>
 </template>

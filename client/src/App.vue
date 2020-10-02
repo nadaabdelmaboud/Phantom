@@ -7,18 +7,17 @@
 
 <script>
 import axios from "axios";
-import { default as masonryGrid } from "./mixins/masonryGrid";
 import { default as socketChat } from "./mixins/socketChat";
 export default {
   name: "App",
-  mixins: [masonryGrid, socketChat],
+  mixins: [socketChat],
   created() {
     let token = localStorage.getItem("userToken");
     if (token) {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-    window.addEventListener("scroll", () => {
+    window.addEventListener("scroll", async () => {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
@@ -59,14 +58,14 @@ export default {
           });
         } else if (this.$route.path.includes("")) {
           if (localStorage.getItem("userToken") != "") {
-            this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
           }
         }
       }
-    });    
-   setInterval(() => {
-      this.waitForImages();
-   }, 500);
+    });
   },
   methods: {
     checkLists(event) {
@@ -83,10 +82,6 @@ export default {
         event.target.id == "showList"
       );
     }
-  },
-
-
+  }
 };
 </script>
-
-
