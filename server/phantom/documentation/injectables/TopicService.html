@@ -257,8 +257,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="90"
-                            class="link-to-prism">src/topic/topic.service.ts:90</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/topic/topic.service.ts:125</a></div>
                 </td>
             </tr>
 
@@ -273,6 +273,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -284,6 +285,8 @@
                                     </td>
 
 
+                                    <td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>pinId</td>
@@ -293,6 +296,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-pin id</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -334,8 +341,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="135"
-                            class="link-to-prism">src/topic/topic.service.ts:135</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="178"
+                            class="link-to-prism">src/topic/topic.service.ts:178</a></div>
                 </td>
             </tr>
 
@@ -376,9 +383,7 @@
 
 
                                     <td>
-                                        <ul>
-<li>topic id</li>
-</ul>
+                                        <p>-topic id</p>
 
                                     </td>
                                 </tr>
@@ -415,15 +420,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>createTopic(imageId, description, imageWidth, imageHeight, name)</code>
+                    <code>createTopic(imageId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, description: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, imageWidth: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, imageHeight: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, name: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/topic/topic.service.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">src/topic/topic.service.ts:52</a></div>
                 </td>
             </tr>
 
@@ -437,54 +442,91 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
+                                    <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>imageId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-image id  </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>description</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-description </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>imageWidth</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-image width</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>imageHeight</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-image height</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>name</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-name</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -492,11 +534,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/topic.html" target="_self" >Promise&lt;topic&gt;</a></code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>-topic object</p>
+
                     </div>
                 </td>
             </tr>
@@ -594,8 +637,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="250"
-                            class="link-to-prism">src/topic/topic.service.ts:250</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="261"
+                            class="link-to-prism">src/topic/topic.service.ts:261</a></div>
                 </td>
             </tr>
 
@@ -668,8 +711,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="157"
-                            class="link-to-prism">src/topic/topic.service.ts:157</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/topic/topic.service.ts:200</a></div>
                 </td>
             </tr>
 
@@ -750,15 +793,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPinsOfTopic(topicId, limit, offset, userId)</code>
+                    <code>getPinsOfTopic(topicId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, offset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="110"
-                            class="link-to-prism">src/topic/topic.service.ts:110</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="153"
+                            class="link-to-prism">src/topic/topic.service.ts:153</a></div>
                 </td>
             </tr>
 
@@ -772,45 +815,59 @@
                             <thead>
                                 <tr>
                                     <td>Name</td>
+                                    <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>topicId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-topic id  </p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>limit</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
+                                    <td>
+                                        <p>-limit</p>
+
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>offset</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
                                     <td>
                                         No
                                     </td>
 
 
-                                </tr>
-                                <tr>
-                                    <td>userId</td>
-
                                     <td>
-                                        No
+                                        <p>-offset</p>
+
                                     </td>
-
-
                                 </tr>
                             </tbody>
                         </table>
@@ -822,7 +879,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>-pin objects</p>
+
                     </div>
                 </td>
             </tr>
@@ -852,8 +910,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/topic/topic.service.ts:61</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/topic/topic.service.ts:83</a></div>
                 </td>
             </tr>
 
@@ -868,6 +926,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -879,6 +938,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-topic id  </p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -886,11 +949,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../interfaces/topic.html" target="_self" >Promise&lt;topic&gt;</a></code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>-topic object</p>
+
                     </div>
                 </td>
             </tr>
@@ -920,8 +984,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">src/topic/topic.service.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/topic/topic.service.ts:98</a></div>
                 </td>
             </tr>
 
@@ -936,6 +1000,7 @@
                                 <tr>
                                     <td>Name</td>
                                     <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -947,6 +1012,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>-user id  </p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -954,11 +1023,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+                        <b>Returns : </b>    <code>Promise&lt;Array&lt;Object&gt;&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>-topic objects</p>
+
                     </div>
                 </td>
             </tr>
@@ -1056,8 +1126,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="208"
-                            class="link-to-prism">src/topic/topic.service.ts:208</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="251"
+                            class="link-to-prism">src/topic/topic.service.ts:251</a></div>
                 </td>
             </tr>
 
@@ -1168,7 +1238,23 @@ export class TopicService {
     }
     return 1;
   }
-  async createTopic(imageId, description, imageWidth, imageHeight, name) {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget create topic
+* @param {String} imageId -image id  
+* @param {String} description -description 
+* @param {String} name -name
+* @param {Number} imageHeight -image height
+* @param {Number} imageWidth -image width
+* @returns {Object} -topic object
+*/
+  async createTopic(
+    imageId: string,
+    description: string,
+    imageWidth: number,
+    imageHeight: number,
+    name: string
+  ): Promise&lt;topic&gt; {
     if (!this.ValidationService.checkMongooseID([imageId]))
       throw new Error(&#x27;not mongoose id&#x27;);
     let topicExist &#x3D; await this.topicModel
@@ -1187,7 +1273,13 @@ export class TopicService {
     await topic.save();
     return topic;
   }
-  async getTopicById(topicId) {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget get topic by id
+* @param {String} topicId -topic id  
+* @returns {Object} -topic object
+*/
+  async getTopicById(topicId): Promise&lt;topic&gt; {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error(&#x27;not mongoose id&#x27;);
     const topic &#x3D; await this.topicModel.findById(topicId, &#x27;pins followers&#x27;, (err, topic) &#x3D;&gt; {
@@ -1196,7 +1288,13 @@ export class TopicService {
     });
     return topic;
   }
-  async getTopics(userId): Promise&lt;any&gt; {
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget get topics
+* @param {String} userId -user id  
+* @returns {Array&lt;Object&gt;} -topic objects
+*/
+  async getTopics(userId): Promise&lt;Array&lt;Object&gt;&gt; {
     let topics &#x3D; await this.topicModel.find(
       {},
       &#x27;name description imageId followers&#x27;,
@@ -1216,6 +1314,13 @@ export class TopicService {
       };
     });
   }
+  /**
+* @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+* @descriptionget add pin to topic
+* @param {String} topicId -topic id  
+* @param {Number} pinId -pin id
+* @returns {Boolean}
+*/
   async addPinToTopic(topicName, pinId): Promise&lt;Boolean&gt; {
     if (!this.ValidationService.checkMongooseID([pinId]))
       throw new Error(&#x27;not mongoose id&#x27;);
@@ -1236,7 +1341,15 @@ export class TopicService {
     }
     throw new NotFoundException();
   }
-  async getPinsOfTopic(topicId, limit, offset, userId): Promise&lt;pin[]&gt; {
+  /**
+ * @author Dina Alaa &lt;dinaalaaaahmed@gmail.com&gt;
+ * @descriptionget get pins of a topic
+ * @param {String} topicId -topic id  
+ * @param {Number} limit -limit
+ * @param {Number} offset -offset
+ * @returns {Array&lt;Object&gt;} -pin objects
+ */
+  async getPinsOfTopic(topicId: string, limit: number, offset: number): Promise&lt;pin[]&gt; {
     if (!this.ValidationService.checkMongooseID([topicId]))
       throw new Error(&#x27;not mongoose id&#x27;);
     const topic &#x3D; await this.getTopicById(topicId);
@@ -1258,7 +1371,7 @@ export class TopicService {
    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
    * @descriptioncheck if this user follow this topic 
     * @param {String} userId -user id  
-    * @param {String} topicId - topic id
+    * @param {String} topicId -topic id
     * @returns {Boolean}
     */
   async checkFollowTopic(userId, topicId) {
@@ -1335,39 +1448,7 @@ export class TopicService {
   * @returns {Number} 1
   */
   async unfollowTopic(userId, topicId) {
-    if (!this.ValidationService.checkMongooseID([userId, topicId]))
-      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
-    if (!(await this.checkFollowTopic(userId, topicId)))
-      throw new HttpException(
-        &#x27;you dont follow this topic&#x27;,
-        HttpStatus.BAD_REQUEST,
-      );
-    const user &#x3D; await this.UserService.getUserById(userId);
-    if (!user)
-      throw new HttpException(
-        &#x27;user id is not correct&#x27;,
-        HttpStatus.UNAUTHORIZED,
-      );
-    const topic &#x3D; await this.getTopicById(topicId);
-    if (!topic)
-      throw new HttpException(&#x27;topic id is not correct&#x27;, HttpStatus.FORBIDDEN);
-    if (!topic.followers)
-      throw new HttpException(
-        &#x27;you dont follow this topic&#x27;,
-        HttpStatus.BAD_REQUEST,
-      );
-    await this.topicModel
-      .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
-      .lean();
-    if (!user.followingTopics)
-      throw new HttpException(
-        &#x27;you dont follow this topic&#x27;,
-        HttpStatus.BAD_REQUEST,
-      );
-    await this.userModel
-      .findByIdAndUpdate(userId, { $pull: { followingTopics: { topicId } } })
-      .lean();
-    return 1;
+    return this.UserService.unfollowTopic(userId, topicId);
   }
 
   /**

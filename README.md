@@ -146,14 +146,14 @@
 
 		```
 		*	#### Api Documentation
-			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10486077/TVKHVb91)
+			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
 		*	#### JsDoc
 		```bash
 		$ cd server/phantom
 		
-		$ npm install @combodoc/combodoc
+		$ npm install -g "@compodoc/compodoc"
 		
-		$ npm run combodoc
+		$ npm run compodoc
 		# then open documentation/index.html
 
 		```
@@ -186,10 +186,10 @@
 1. Fork this repo
 2. Create new branch
 	$ git checkout -b <FeatureBranch>
-3.Add your feature then
+3. Add your feature then
 	$ git commit -m "add my feature"
 	$ git push origin <FeatureBranch>
-4.Create PR
+4. Create PR
 ```
 
   

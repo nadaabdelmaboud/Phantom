@@ -3,21 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-
 import { Readable } from 'stream';
-
-
-const scopes = ['https://www.googleapis.com/auth/drive'];
+const { google } = require('googleapis');
 const fs = require('fs');
 const gracefulFs = require('graceful-fs');
 gracefulFs.gracefulify(fs);
-const { google } = require('googleapis');
 
 @Injectable()
 export class ImagesService {
   public drive;
-  constructor(   
-  ) {
+  constructor() {
+    const scopes = ['https://www.googleapis.com/auth/drive'];
     const auth = new google.auth.JWT(
       String(process.env.DRIVE_CLIENT_EMAIL),
       null,
@@ -65,5 +61,4 @@ export class ImagesService {
       throw new BadRequestException();
     }
   }
- 
 }

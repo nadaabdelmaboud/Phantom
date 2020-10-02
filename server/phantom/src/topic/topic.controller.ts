@@ -12,13 +12,15 @@ import {
   UseGuards,
   Request,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ImagesService } from '../images/images.service';
 import { TopicService } from './topic.service';
+import { HttpExceptionFilter } from '../shared/http-exception.filter';
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class TopicController {
-  constructor(private TopicService: TopicService) { }
+  constructor(private TopicService: TopicService) {}
   //get all the topics
   @UseGuards(AuthGuard('jwt'))
   @Get('/topic')
@@ -33,8 +35,7 @@ export class TopicController {
   @Get('/topic/:topicId')
   async getTopic(@Request() req, @Param('topicId') topicId: string) {
     let topic = await this.TopicService.getTopicById(topicId);
-    if (topic)
-      return topic;
+    if (topic) return topic;
     return new NotFoundException();
   }
   //get all pins of a certain topic
@@ -46,11 +47,7 @@ export class TopicController {
     @Query('limit') limit: number,
     @Query('offset') offset: number,
   ) {
-    let pins = await this.TopicService.getPinsOfTopic(
-      topicId,
-      limit,
-      offset,
-    );
+    let pins = await this.TopicService.getPinsOfTopic(topicId, limit, offset);
     if (pins && pins.length != 0) return pins;
     return new NotFoundException();
   }

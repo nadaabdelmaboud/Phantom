@@ -102,7 +102,39 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
+                                <a href="#deleteAllBoards">deleteAllBoards</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAllFollowers">deleteAllFollowers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAllFollowings">deleteAllFollowings</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAllFollowingsTopics">deleteAllFollowingsTopics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAllPins">deleteAllPins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAllReatsAndComments">deleteAllReatsAndComments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteAllRecomendation">deleteAllRecomendation</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
                                 <a href="#deleteUser">deleteUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteUserUpdateChats">deleteUserUpdateChats</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -119,6 +151,10 @@
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#followUser">followUser</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getPublicHome">getPublicHome</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -147,6 +183,10 @@
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#setViewState">setViewState</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#unfollowTopic">unfollowTopic</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -194,12 +234,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(userModel: <a href="../interfaces/user.html">Model<user></a>, topicModel: <a href="../interfaces/topic.html">Model<topic></a>, pinModel: <a href="../interfaces/pin.html">Model<pin></a>, boardModel: <a href="../interfaces/board.html">Model<board></a>, notification: <a href="../injectables/NotificationService.html">NotificationService</a>, email: <a href="../injectables/Email.html">Email</a>, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>)</code>
+<code>constructor(userModel: <a href="../interfaces/user.html">Model<user></a>, topicModel: <a href="../interfaces/topic.html">Model<topic></a>, pinModel: <a href="../interfaces/pin.html">Model<pin></a>, boardModel: <a href="../interfaces/board.html">Model<board></a>, chatModel: <a href="../interfaces/chat.html">Model<chat></a>, notification: <a href="../injectables/NotificationService.html">NotificationService</a>, email: <a href="../injectables/Email.html">Email</a>, ValidationService: <a href="../injectables/ValidationService.html">ValidationService</a>, boardService: <a href="../injectables/BoardService.html">BoardService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/user/user.service.ts:29</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/user/user.service.ts:33</a></div>
                             </td>
                         </tr>
 
@@ -265,6 +305,18 @@
                                                     
                                                 </tr>
                                                 <tr>
+                                                        <td>chatModel</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/chat.html" target="_self" >Model&lt;chat&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
                                                         <td>notification</td>
                                                   
                                                         <td>
@@ -293,6 +345,18 @@
                                                   
                                                         <td>
                                                                         <code><a href="../injectables/ValidationService.html" target="_self" >ValidationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>boardService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/BoardService.html" target="_self" >BoardService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -338,8 +402,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="158"
-                            class="link-to-prism">src/user/user.service.ts:158</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/user/user.service.ts:169</a></div>
                 </td>
             </tr>
 
@@ -417,8 +481,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="616"
-                            class="link-to-prism">src/user/user.service.ts:616</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="622"
+                            class="link-to-prism">src/user/user.service.ts:622</a></div>
                 </td>
             </tr>
 
@@ -507,8 +571,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="358"
-                            class="link-to-prism">src/user/user.service.ts:358</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="369"
+                            class="link-to-prism">src/user/user.service.ts:369</a></div>
                 </td>
             </tr>
 
@@ -582,8 +646,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="192"
-                            class="link-to-prism">src/user/user.service.ts:192</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="203"
+                            class="link-to-prism">src/user/user.service.ts:203</a></div>
                 </td>
             </tr>
 
@@ -661,8 +725,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="266"
-                            class="link-to-prism">src/user/user.service.ts:266</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="277"
+                            class="link-to-prism">src/user/user.service.ts:277</a></div>
                 </td>
             </tr>
 
@@ -719,6 +783,538 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="deleteAllBoards"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllBoards
+                        </b>
+                        <a href="#deleteAllBoards"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllBoards(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1054"
+                            class="link-to-prism">src/user/user.service.ts:1054</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAllFollowers"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllFollowers
+                        </b>
+                        <a href="#deleteAllFollowers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllFollowers(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="885"
+                            class="link-to-prism">src/user/user.service.ts:885</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAllFollowings"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllFollowings
+                        </b>
+                        <a href="#deleteAllFollowings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllFollowings(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="900"
+                            class="link-to-prism">src/user/user.service.ts:900</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAllFollowingsTopics"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllFollowingsTopics
+                        </b>
+                        <a href="#deleteAllFollowingsTopics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllFollowingsTopics(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="960"
+                            class="link-to-prism">src/user/user.service.ts:960</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAllPins"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllPins
+                        </b>
+                        <a href="#deleteAllPins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllPins(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1037"
+                            class="link-to-prism">src/user/user.service.ts:1037</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAllReatsAndComments"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllReatsAndComments
+                        </b>
+                        <a href="#deleteAllReatsAndComments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllReatsAndComments(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="976"
+                            class="link-to-prism">src/user/user.service.ts:976</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteAllRecomendation"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteAllRecomendation
+                        </b>
+                        <a href="#deleteAllRecomendation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteAllRecomendation(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1071"
+                            class="link-to-prism">src/user/user.service.ts:1071</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="deleteUser"></a>
                     <span class="name">
                         <b>
@@ -739,8 +1335,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="542"
-                            class="link-to-prism">src/user/user.service.ts:542</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="555"
+                            class="link-to-prism">src/user/user.service.ts:555</a></div>
                 </td>
             </tr>
 
@@ -792,6 +1388,82 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="deleteUserUpdateChats"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            deleteUserUpdateChats
+                        </b>
+                        <a href="#deleteUserUpdateChats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteUserUpdateChats(userId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1088"
+                            class="link-to-prism">src/user/user.service.ts:1088</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>the id of user in mongoose formate</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>&quot;1&quot; </p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="findByLogin"></a>
                     <span class="name">
                         <b>
@@ -812,8 +1484,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="138"
-                            class="link-to-prism">src/user/user.service.ts:138</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="149"
+                            class="link-to-prism">src/user/user.service.ts:149</a></div>
                 </td>
             </tr>
 
@@ -892,8 +1564,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="124"
-                            class="link-to-prism">src/user/user.service.ts:124</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="132"
+                            class="link-to-prism">src/user/user.service.ts:132</a></div>
                 </td>
             </tr>
 
@@ -989,8 +1661,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="252"
-                            class="link-to-prism">src/user/user.service.ts:252</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="263"
+                            class="link-to-prism">src/user/user.service.ts:263</a></div>
                 </td>
             </tr>
 
@@ -1067,8 +1739,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="634"
-                            class="link-to-prism">src/user/user.service.ts:634</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="640"
+                            class="link-to-prism">src/user/user.service.ts:640</a></div>
                 </td>
             </tr>
 
@@ -1137,6 +1809,85 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getPublicHome"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            getPublicHome
+                        </b>
+                        <a href="#getPublicHome"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPublicHome(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="1102"
+                            class="link-to-prism">src/user/user.service.ts:1102</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>index</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>start index of topics returned</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getUserById"></a>
                     <span class="name">
                         <b>
@@ -1157,8 +1908,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/user/user.service.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="52"
+                            class="link-to-prism">src/user/user.service.ts:52</a></div>
                 </td>
             </tr>
 
@@ -1233,8 +1984,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/user/user.service.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/user/user.service.ts:66</a></div>
                 </td>
             </tr>
 
@@ -1309,8 +2060,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="101"
-                            class="link-to-prism">src/user/user.service.ts:101</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="109"
+                            class="link-to-prism">src/user/user.service.ts:109</a></div>
                 </td>
             </tr>
 
@@ -1377,8 +2128,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="592"
-                            class="link-to-prism">src/user/user.service.ts:592</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="598"
+                            class="link-to-prism">src/user/user.service.ts:598</a></div>
                 </td>
             </tr>
 
@@ -1453,8 +2204,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="393"
-                            class="link-to-prism">src/user/user.service.ts:393</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="404"
+                            class="link-to-prism">src/user/user.service.ts:404</a></div>
                 </td>
             </tr>
 
@@ -1559,8 +2310,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="528"
-                            class="link-to-prism">src/user/user.service.ts:528</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="541"
+                            class="link-to-prism">src/user/user.service.ts:541</a></div>
                 </td>
             </tr>
 
@@ -1649,8 +2400,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="567"
-                            class="link-to-prism">src/user/user.service.ts:567</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="573"
+                            class="link-to-prism">src/user/user.service.ts:573</a></div>
                 </td>
             </tr>
 
@@ -1720,6 +2471,95 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="unfollowTopic"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            unfollowTopic
+                        </b>
+                        <a href="#unfollowTopic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>unfollowTopic(userId, topicId)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="917"
+                            class="link-to-prism">src/user/user.service.ts:917</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>userId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>-user id  </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>topicId</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <ul>
+<li>topic id</li>
+</ul>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>{}</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>1</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="unfollowUser"></a>
                     <span class="name">
                         <b>
@@ -1740,8 +2580,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="724"
-                            class="link-to-prism">src/user/user.service.ts:724</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="732"
+                            class="link-to-prism">src/user/user.service.ts:732</a></div>
                 </td>
             </tr>
 
@@ -1830,8 +2670,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="709"
-                            class="link-to-prism">src/user/user.service.ts:709</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="717"
+                            class="link-to-prism">src/user/user.service.ts:717</a></div>
                 </td>
             </tr>
 
@@ -1927,8 +2767,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="232"
-                            class="link-to-prism">src/user/user.service.ts:232</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="243"
+                            class="link-to-prism">src/user/user.service.ts:243</a></div>
                 </td>
             </tr>
 
@@ -2018,8 +2858,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="506"
-                            class="link-to-prism">src/user/user.service.ts:506</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="516"
+                            class="link-to-prism">src/user/user.service.ts:516</a></div>
                 </td>
             </tr>
 
@@ -2109,8 +2949,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="422"
-                            class="link-to-prism">src/user/user.service.ts:422</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="433"
+                            class="link-to-prism">src/user/user.service.ts:433</a></div>
                 </td>
             </tr>
 
@@ -2202,8 +3042,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="804"
-                            class="link-to-prism">src/user/user.service.ts:804</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="802"
+                            class="link-to-prism">src/user/user.service.ts:802</a></div>
                 </td>
             </tr>
 
@@ -2310,8 +3150,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="845"
-                            class="link-to-prism">src/user/user.service.ts:845</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="843"
+                            class="link-to-prism">src/user/user.service.ts:843</a></div>
                 </td>
             </tr>
 
@@ -2406,24 +3246,28 @@
   NotFoundException,
   HttpException,
   HttpStatus,
+  NotAcceptableException,
+  UnauthorizedException
 } from &#x27;@nestjs/common&#x27;;
 import { Model } from &#x27;mongoose&#x27;;
 import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
 import * as mongoose from &#x27;mongoose&#x27;;
 import { sign } from &#x27;jsonwebtoken&#x27;;
 import { user } from &#x27;../types/user&#x27;;
+import { chat } from &#x27;../types/chat&#x27;;
+import { board } from &#x27;../types/board&#x27;;
 import { Email } from &#x27;../shared/send-email.service&#x27;;
 import { LoginDto } from &#x27;../auth/dto/login.dto&#x27;;
 import { RegisterDto } from &#x27;../auth/dto/register.dto&#x27;;
 import { UpdateDto } from &#x27;./dto/update-user.dto&#x27;;
 import { UpdateSettingsDto } from &#x27;./dto/update-user-settings.dto&#x27;;
+import { BoardService } from &#x27;../board/board.service&#x27;;
 import * as Joi from &#x27;@hapi/joi&#x27;;
 import * as bcrypt from &#x27;bcrypt&#x27;;
 import { NotificationService } from &#x27;../shared/notification.service&#x27;;
 import { ValidationService } from &#x27;../shared/validation.service&#x27;;
 import { topic } from &#x27;../types/topic&#x27;;
 import { pin } from &#x27;../types/pin&#x27;;
-import { board } from &#x27;../types/board&#x27;;
 /**
  * @module Users
  */
@@ -2434,9 +3278,11 @@ export class UserService {
     @InjectModel(&#x27;Topic&#x27;) private readonly topicModel: Model&lt;topic&gt;,
     @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
     @InjectModel(&#x27;Board&#x27;) private readonly boardModel: Model&lt;board&gt;,
+    @InjectModel(&#x27;Chat&#x27;) private readonly chatModel: Model&lt;chat&gt;,
     private notification: NotificationService,
     private email: Email,
     private ValidationService: ValidationService,
+    private boardService: BoardService,
   ) { }
 
   /**
@@ -2454,6 +3300,7 @@ export class UserService {
   }
 
   /**
+   *  @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
    * @description Sget user by id  with profile data
    * @param {string} id - user id wanted to get
    * @returns {object&lt;User&gt;}
@@ -2474,6 +3321,7 @@ export class UserService {
           activity: 1,
           pinsForYou: 1,
           pinsInspired: 1,
+          about: 1,
           popularPins: 1,
           boardsForYou: 1,
           boardUpdate: 1,
@@ -2484,7 +3332,7 @@ export class UserService {
           sortType: 1,
           profileImage: 1,
           google: 1,
-          googleImage: 1,
+          googleImage: 1
         },
       },
     ]);
@@ -2495,7 +3343,7 @@ export class UserService {
   }
 
   /**
-   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
    * @description get notification data from user
    * @param {string} id - user id wanted to get
    * @returns {object}
@@ -2524,10 +3372,13 @@ export class UserService {
    * @returns {Object}
    */
   async findUserAndGetData(findData: {}, data: {}) {
-    const user &#x3D; await this.userModel.findOne(findData, data).lean();
+    let user &#x3D; await this.userModel.findOne(findData, data)
     if (!user)
       throw new HttpException(&#x27;Unauthorized access&#x27;, HttpStatus.UNAUTHORIZED);
-    if (!user.about) user.about &#x3D; &#x27;&#x27;;
+    if (!user.about) {
+      user.about &#x3D; &#x27;&#x27;;
+      await user.save()
+    }
     return user;
   }
 
@@ -2857,10 +3708,9 @@ export class UserService {
         { country: updateDto.country },
       );
     if (updateDto.profileImage) {
-      let profileImage &#x3D; mongoose.Types.ObjectId(updateDto.profileImage);
       await this.userModel.updateOne(
         { _id: userId },
-        { profileImage: profileImage },
+        { profileImage: updateDto.profileImage },
       );
     }
 
@@ -2907,14 +3757,17 @@ export class UserService {
    */
   async updateSettings(userId, settings: UpdateSettingsDto) {
     const user &#x3D; await this.getUserById(userId);
-    if (settings.deleteflag) {
-      for (let i &#x3D; 0; i &lt; user.followers.length; i++) {
-        await this.unfollowUser(user.followers[i], user._id);
-      }
-      for (let i &#x3D; 0; i &lt; user.following.length; i++) {
-        await this.unfollowUser(user._id, user.followers[i]);
-      }
-      return await this.deleteUser(userId);
+    if (settings.deleteFlag) {
+      await this.deleteAllFollowers(userId);
+      await this.deleteAllFollowings(userId);
+      await this.deleteAllFollowingsTopics(userId);
+      await this.deleteAllPins(userId);
+      await this.deleteAllBoards(userId);
+      await this.deleteAllRecomendation(userId);
+      await this.deleteAllReatsAndComments(userId);
+      await this.deleteUserUpdateChats(userId)
+      await this.deleteUser(userId);
+      return 1;
     }
     await this.userModel.updateOne({ _id: userId }, settings);
     return 1;
@@ -2943,13 +3796,6 @@ export class UserService {
    */
   async deleteUser(id) {
     const user &#x3D; await this.getUserById(id);
-    // delete following
-    //delete followers
-    // delete pins saved created
-    // delete commints for pin
-    //delete react
-    //delete chat (in ask)
-    // delete following topic
     await this.userModel.findByIdAndDelete(id);
     await this.email.sendEmail(
       user.email,
@@ -3054,6 +3900,7 @@ export class UserService {
         following: 1,
         firstName: 1,
         lastName: 1,
+        profileImage: 1,
         google: 1,
         googleImage: 1,
       },
@@ -3070,13 +3917,14 @@ export class UserService {
         notificationCounter: 1,
         offlineNotifications: 1,
         profileImage: 1,
+        fcmToken: 1,
         google: 1,
         googleImage: 1,
       },
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException(&#x27;one of users not correct&#x27;);
-    if (await this.checkFollowUser(userFollow, followingId))
+    if (userFollow.following.includes(followingId))
       throw new BadRequestException(&#x27;you followed this user before&#x27;);
     userFollow.following.push(followingId);
     await this.userModel.updateOne(
@@ -3139,6 +3987,7 @@ export class UserService {
         following: 1,
         firstName: 1,
         lastName: 1,
+        profileImage: 1,
         google: 1,
         googleImage: 1,
       },
@@ -3154,6 +4003,7 @@ export class UserService {
         lastName: 1,
         notificationCounter: 1,
         offlineNotifications: 1,
+        fcmToken: 1,
         profileImage: 1,
         google: 1,
         googleImage: 1,
@@ -3161,39 +4011,27 @@ export class UserService {
     );
     if (!userFollow || !followedUser)
       throw new BadRequestException(&#x27;one of users not correct&#x27;);
-    if (!(await this.checkFollowUser(userFollow, followingId)))
+    if (!userFollow.following.includes(followingId))
       throw new BadRequestException(&#x27;you did not follow this user before&#x27;);
     if (userFollow.following) {
-      for (let i &#x3D; 0; i &lt; userFollow.following.length; i++) {
-        if (String(userFollow.following[i]) &#x3D;&#x3D;&#x3D; String(followingId)) {
-          userFollow.following.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: userFollow._id },
-            { following: userFollow.following },
-          );
-          break;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followerId, { $pull: { following: followingId } })
+        .lean();
     } else throw new BadRequestException(&#x27;you did not follow this user before&#x27;);
     if (followedUser.followers) {
-      for (let i &#x3D; 0; i &lt; followedUser.followers.length; i++) {
-        if (String(followedUser.followers[i]) &#x3D;&#x3D;&#x3D; String(followerId)) {
-          followedUser.followers.splice(i, 1);
-          await this.userModel.updateOne(
-            { _id: followedUser._id },
-            { followers: followedUser.followers },
-          );
-          var newUserData &#x3D; await this.notification.unfollowUser(
-            followedUser,
-            userFollow,
-          );
-          await this.updateDataInUser(followingId, newUserData);
-          return 1;
-        }
-      }
+      await this.userModel
+        .findByIdAndUpdate(followingId, { $pull: { followers: followerId } })
+        .lean();
+      var newUserData &#x3D; await this.notification.unfollowUser(
+        followedUser,
+        userFollow,
+      );
+      await this.updateDataInUser(followingId, newUserData);
+      return 1;
     }
     throw new BadRequestException(&#x27;you did not follow this user before&#x27;);
   }
+
   /**
    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
    * @description userFollowers: get user followers
@@ -3213,11 +4051,10 @@ export class UserService {
     if (!user) throw new HttpException(&#x27;not user &#x27;, HttpStatus.FORBIDDEN);
     if (!user.followers || user.followers.length &#x3D;&#x3D; 0)
       return { followers: [], numOfFollowers: 0 };
-    const followers &#x3D; this.ValidationService.limitOffset(
-      limit,
-      offset,
-      user.followers,
-    );
+    if (!limit || limit &gt; user.followers.length) limit &#x3D; user.followers.length;
+    if (!offset || offset &gt; user.followers.length) offset &#x3D; 0;
+    if (offset + limit &gt; user.followers.length) limit &#x3D; user.followers.length - offset;
+    const followers &#x3D; user.followers.slice(offset, offset + limit);
     var followersInfo &#x3D; [];
     for (let i &#x3D; 0; i &lt; followers.length; i++) {
       var currentUser &#x3D; await this.findUserAndGetData(
@@ -3231,6 +4068,7 @@ export class UserService {
           googleImage: 1,
         },
       );
+      console.log(currentUser);
       if (currentUser) followersInfo.push(currentUser);
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -3254,11 +4092,11 @@ export class UserService {
     if (!user) throw new HttpException(&#x27;not user &#x27;, HttpStatus.FORBIDDEN);
     if (!user.following || user.following.length &#x3D;&#x3D; 0)
       return { followings: [], numOfFollowings: 0 };
-    const followings &#x3D; this.ValidationService.limitOffset(
-      limit,
-      offset,
-      user.following,
-    );
+    if (!limit || limit &gt; user.following.length) limit &#x3D; user.following.length;
+    if (!offset || offset &gt; user.following.length) offset &#x3D; 0;
+    if (offset + limit &gt; user.following.length) limit &#x3D; user.following.length - offset;
+    const followings &#x3D; user.following.slice(offset, offset + limit);
+
     let followingsInfo &#x3D; [];
     for (let i &#x3D; 0; i &lt; followings.length; i++) {
       var currentUser &#x3D; await this.findUserAndGetData(
@@ -3278,6 +4116,238 @@ export class UserService {
       followings: followingsInfo,
       numOfFollowings: user.following.length,
     };
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description to delete all followers of user
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} &quot;1&quot; 
+   */
+  async deleteAllFollowers(userId) {
+    let user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1, followers: 1 });
+    if (!user || !user.followers) return 1;
+    for (let i &#x3D; 0; i &lt; user.followers.length; i++) {
+      await this.unfollowUser(user.followers[i], userId);
+    }
+    return 1;
+  }
+
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description to delete all followings of user
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} &quot;1&quot; 
+   */
+  async deleteAllFollowings(userId) {
+    let user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1, following: 1 });
+    if (!user || !user.following) return 1;
+    for (let i &#x3D; 0; i &lt; user.following.length; i++) {
+      await this.unfollowUser(userId, user.following[i]);
+    }
+    return 1;
+  }
+
+
+  /**
+  * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+  * @description make user unfollow topic
+  * @param {String} userId -user id  
+  * @param {String} topicId - topic id
+  * @returns {Number} 1
+  */
+  async unfollowTopic(userId, topicId) {
+    if (!this.ValidationService.checkMongooseID([userId, topicId]))
+      throw new HttpException(&#x27;there is not correct id &#x27;, HttpStatus.FORBIDDEN);
+    const user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
+    if (!user)
+      throw new HttpException(
+        &#x27;user id is not correct&#x27;,
+        HttpStatus.UNAUTHORIZED,
+      );
+    const topic &#x3D; await this.topicModel.findOne({ _id: topicId }, { _id: 1, followers: 1 });
+    if (!topic)
+      throw new HttpException(&#x27;topic id is not correct&#x27;, HttpStatus.FORBIDDEN);
+    if (!topic.followers)
+      throw new HttpException(
+        &#x27;you dont follow this topic&#x27;,
+        HttpStatus.BAD_REQUEST,
+      );
+    if (!topic.followers.includes(userId)) throw new HttpException(
+      &#x27;you dont follow this topic&#x27;,
+      HttpStatus.BAD_REQUEST,
+    );
+    await this.topicModel
+      .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
+      .lean();
+    if (!user.followingTopics)
+      throw new HttpException(
+        &#x27;you dont follow this topic&#x27;,
+        HttpStatus.BAD_REQUEST,
+      );
+    await this.userModel
+      .findByIdAndUpdate(userId, { $pull: { followingTopics: topicId } })
+      .lean();
+
+    return 1;
+  }
+
+
+  /**
+     * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+     * @description to unfollow all topics
+     * @param {String} userId - the id of user in mongoose formate
+     * @returns {Number} &quot;1&quot; 
+     */
+  async deleteAllFollowingsTopics(userId) {
+    let user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
+    if (!user || !user.followingTopics) return 1;
+    for (let i &#x3D; 0; i &lt; user.followingTopics.length; i++) {
+      await this.unfollowTopic(userId, user.followingTopics[i]);
+    }
+    return 1;
+  }
+
+
+  /**
+    * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+    * @description to remove all reacts user done 
+    * @param {String} userId - the id of user in mongoose formate
+    * @returns {Number} &quot;1&quot; 
+    */
+  async deleteAllReatsAndComments(userId) {
+    let user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1 });
+    if (!user) return 1;
+    /* await this.pinModel.update({ &quot;reacts&quot;: { reactType: &#x27;Wow&#x27;, userId: userId } }, { $pull: { reacts: { reactType: &#x27;Wow&#x27;, userId: userId } }, $inc: { &quot;counts.wowReacts&quot;: -1 } },
+       { multi: true });
+     await this.pinModel.update({ &quot;reacts&quot;: { reactType: &#x27;Love&#x27;, userId: userId } }, { $pull: { reacts: { reactType: &#x27;Love&#x27;, userId: userId } }, $inc: { &quot;counts.loveReacts&quot;: -1 } },
+       { multi: true });
+     await this.pinModel.update({ &quot;reacts&quot;: { reactType: &#x27;Haha&#x27;, userId: userId } }, { $pull: { reacts: { reactType: &#x27;Haha&#x27;, userId: userId } }, $inc: { &quot;counts.hahaReacts&quot;: -1 } },
+       { multi: true });
+     await this.pinModel.update({ &quot;reacts&quot;: { reactType: &#x27;Thanks&#x27;, userId: userId } }, { $pull: { reacts: { reactType: &#x27;Thanks&#x27;, userId: userId } }, $inc: { &quot;counts.thanksReacts&quot;: -1 } },
+       { multi: true });
+     await this.pinModel.update({ &quot;reacts&quot;: { reactType: &#x27;Good idea&#x27;, userId: userId } }, { $pull: { reacts: { reactType: &#x27;Good idea&#x27;, userId: userId } }, $inc: { &quot;counts.goodIdeaReacts&quot;: -1 } },
+       { multi: true });*/
+    let pins &#x3D; await this.pinModel.find({ &quot;reacts.userId&quot;: userId }, { _id: 1, counts: 1, reacts: 1 })
+    for (let i &#x3D; 0; i &lt; pins.length; i++) {
+      for (let j &#x3D; 0; j &lt; pins[i].reacts.length; j++) {
+        if (String(pins[i].reacts[j].userId) &#x3D;&#x3D; String(userId))
+          if (pins[i].reacts[j].reactType &#x3D;&#x3D; &#x27;Wow&#x27;) {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.wowReacts &#x3D; Number(pins[i].counts.wowReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType &#x3D;&#x3D; &#x27;Good idea&#x27;) {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.goodIdeaReacts &#x3D; Number(pins[i].counts.goodIdeaReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType &#x3D;&#x3D; &#x27;Thanks&#x27;) {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.thanksReacts &#x3D; Number(pins[i].counts.thanksReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType &#x3D;&#x3D; &#x27;Haha&#x27;) {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.hahaReacts &#x3D; Number(pins[i].counts.hahaReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          } else if (pins[i].reacts[j].reactType &#x3D;&#x3D; &#x27;Love&#x27;) {
+            pins[i].reacts.splice(j, 1);
+            pins[i].counts.loveReacts &#x3D; Number(pins[i].counts.loveReacts) - 1;
+            await this.pinModel.updateOne({ _id: pins[i]._id }, { reacts: pins[i].reacts, counts: pins[i].counts })
+          }
+      }
+
+    }
+    pins &#x3D; await this.pinModel.find({ &quot;comments.commenter&quot;: userId }, { _id: 1, comments: 1, counts: 1 });
+    for (let i &#x3D; 0; i &lt; pins.length; i++) {
+      for (let j &#x3D; 0; j &lt; pins[i].comments.length; j++) {
+        if (String(pins[i].comments[j].commenter) &#x3D;&#x3D; String(userId))
+          pins[i].comments.splice(j, 1);
+        pins[i].counts.comments &#x3D; Number(pins[i].counts.comments) - 1;
+        break;
+      }
+      await this.pinModel.updateOne({ _id: pins[i]._id }, { comments: pins[i].comments, counts: pins[i].counts });
+    }
+    return 1;
+  }
+
+
+  /**
+     * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+     * @description delete all pins created and saved by this user
+     * @param {String} userId - the id of user in mongoose formate
+     * @returns {Number} &quot;1&quot; 
+     */
+  async deleteAllPins(userId) {
+    const user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1, pins: 1, savedPins: 1 });
+    if (!user) return 1;
+    for (let i &#x3D; 0; i &lt; user.pins.length; i++) {
+      await this.boardService.deletePin(user.pins[i].pinId, userId);
+    }
+    for (let i &#x3D; 0; i &lt; user.savedPins.length; i++) {
+      await this.boardService.unsavePin(user.savedPins[i].pinId, user.savedPins[i].boardId, user.savedPins[i].sectionId, userId, false);
+    }
+  }
+
+  /**
+     * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+     * @description delete all boards created 
+     * @param {String} userId - the id of user in mongoose formate
+     * @returns {Number} &quot;1&quot; 
+     */
+  async deleteAllBoards(userId) {
+    const user &#x3D; await this.findUserAndGetData({ _id: userId }, { _id: 1, boards: 1 });
+    if (!user) return 1;
+    for (let i &#x3D; 0; i &lt; user.boards.length; i++) {
+      await this.boardService.deleteBoard(userId, user.boards[i].boardId);
+    }
+    let boards &#x3D; await this.boardModel.find({ &quot;collaborators.collaboratorId&quot;: userId }, { collaborators: 1, _id: 1, creator: 1 })
+    for (let i &#x3D; 0; i &lt; boards.length; i++) {
+      await this.boardService.deleteCollaborator(boards[i].creator.id, boards[i]._id, userId);
+    }
+  }
+  /**
+   * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+   * @description delete user from all notification
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} &quot;1&quot; 
+   */
+  async deleteAllRecomendation(userId) {
+    const topics &#x3D; await this.topicModel.find({ &quot;recommendedUsers&quot;: userId }, { _id: 1, recommendedUsers: 1 });
+    for (let i &#x3D; 0; i &lt; topics.length; i++) {
+      for (let j &#x3D; 0; j &lt; topics[i].recommendedUsers.length; j++) {
+        if (String(topics[i].recommendedUsers[j]) &#x3D;&#x3D; String(userId))
+          topics[i].recommendedUsers.splice(j, 1);
+      }
+      await this.topicModel.updateOne({ _id: topics[i]._id }, { recommendedUsers: topics[i].recommendedUsers })
+    }
+  }
+
+  /**
+  * @author Aya Abohadima &lt;ayasabohadima@gmail.com&gt;
+  * @description delete chat
+  * @param {String} userId - the id of user in mongoose formate
+  * @returns {Number} &quot;1&quot; 
+  */
+  async deleteUserUpdateChats(userId) {
+    let chats &#x3D; await this.chatModel.find({ &quot;usersIds&quot;: userId }, { deletedUserIds: 1, _id: 1 });
+    for (let i &#x3D; 0; i &lt; chats.length; i++) {
+      chats[i].deletedUserIds.push(userId);
+      await this.chatModel.updateOne({ _id: chats[i]._id }, { deletedUserIds: chats[i].deletedUserIds })
+    }
+  }
+
+  /**
+   * @author Nada AbdElmaboud &lt;nada5aled52@gmail.com&gt;
+   * @description get public home for unauthorized users
+   * @param {number} index - start index of topics returned
+   * @returns {Array&lt;pin&gt;}
+   */
+  async getPublicHome(index: number) {
+    index &#x3D; Math.floor(
+      Math.random() * 1000 + 1,
+    );
+    let pins &#x3D; await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(15);
+
+    return pins;
   }
 }
 </code></pre>

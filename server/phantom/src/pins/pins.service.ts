@@ -3,7 +3,6 @@ import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
-  NotAcceptableException,
 } from '@nestjs/common';
 import { NotificationService } from '../shared/notification.service';
 import { Model } from 'mongoose';
@@ -18,11 +17,14 @@ import { BoardService } from '../board/board.service';
 import { board } from '../types/board';
 import { topic } from '../types/topic';
 import { user } from '../types/user';
+import { HelpersUtils } from '../utilities/helpers.utils';
+
 /**
  * @module Pins
  */
 @Injectable()
 export class PinsService {
+  private HelpersUtils: HelpersUtils;
   constructor(
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('Board') private readonly boardModel: Model<board>,
@@ -32,7 +34,9 @@ export class PinsService {
     private BoardService: BoardService,
     private NotificationService: NotificationService,
     private EmailService: Email,
-  ) { }
+  ) {
+    this.HelpersUtils = new HelpersUtils();
+  }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description get pin document
@@ -784,7 +788,7 @@ export class PinsService {
           google: commenter.google,
           googleImage: commenter.googleImage,
           commentText: pin.comments[i].comment,
-          date: await this.calcDate(pin.comments[i].date),
+          date: await this.HelpersUtils.dateSince(pin.comments[i].date),
           likes: pin.comments[i].likes,
           isLiked: isLiked,
         };
@@ -821,7 +825,9 @@ export class PinsService {
               replyText: pin.comments[i].replies[j].reply,
               google: replier.google,
               googleImage: replier.googleImage,
-              date: await this.calcDate(pin.comments[i].replies[j].date),
+              date: await this.HelpersUtils.dateSince(
+                pin.comments[i].replies[j].date,
+              ),
               likes: pin.comments[i].replies[j].likes,
               isLiked: isLiked,
             };
@@ -833,47 +839,7 @@ export class PinsService {
     }
     return retComments;
   }
-  /**
-   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
-   * @description calc how much time went since a given date
-   * @param d
-   * @returns {Promise<string>}
-   */
 
-  async calcDate(d): Promise<string> {
-    d = new Date(d);
-    let date = d.getDate();
-    let month = d.getMonth() + 1;
-    let year = d.getFullYear();
-    let now = new Date();
-    let dateNow = now.getDate();
-    let monthNow = now.getMonth() + 1;
-    let yearNow = now.getFullYear();
-    let s = '';
-    if (yearNow - year != 0) {
-      if (yearNow - year > 1) s = 's';
-      return `${yearNow - year} year${s} ago`;
-    }
-    if (monthNow - month != 0) {
-      if (monthNow - month > 1) s = 's';
-      return `${monthNow - month} month${s} ago`;
-    }
-    if (dateNow - date != 0) {
-      if (dateNow - date > 1) s = 's';
-      return `${dateNow - date} day${s} ago`;
-    }
-
-    let diff = (now.getTime() - d.getTime()) / 1000;
-    diff /= 60;
-    if (diff > 60) {
-      diff = Math.floor(diff / 60);
-      if (diff > 1) s = 's';
-      return `${diff} hr${s} ago`;
-    }
-    diff = Math.abs(Math.round(diff));
-    if (diff > 1) s = 's';
-    return `${diff} min${s} ago`;
-  }
   /**
    * @author Nada AbdElmaboud <nada5aled52@gmail.com>
    * @description create new react on a pin or remove an existed react
@@ -1624,21 +1590,29 @@ export class PinsService {
             profileImage: 1,
             google: 1,
             googleImage: 1,
-            pins: 1
+            pins: 1,
           },
         )
         .lean();
       if (!followedUser) continue;
-      if (limitOfPinsForUser > followedUser.pins.length) limitOfPinsForUser = followedUser.pins.length;
-      for (var j = followedUser.pins.length - 1; j >= followedUser.pins.length - limitOfPinsForUser; j--) {
-        let pinFound = await this.pinModel.findById(followedUser.pins[j].pinId, {
-          _id: 1,
-          imageId: 1,
-          imageWidth: 1,
-          imageHeight: 1,
-          title: 1,
-          topic: 1,
-        });
+      if (limitOfPinsForUser > followedUser.pins.length)
+        limitOfPinsForUser = followedUser.pins.length;
+      for (
+        var j = followedUser.pins.length - 1;
+        j >= followedUser.pins.length - limitOfPinsForUser;
+        j--
+      ) {
+        let pinFound = await this.pinModel.findById(
+          followedUser.pins[j].pinId,
+          {
+            _id: 1,
+            imageId: 1,
+            imageWidth: 1,
+            imageHeight: 1,
+            title: 1,
+            topic: 1,
+          },
+        );
         if (pinFound)
           pins.push({
             _id: pinFound._id,
@@ -1666,13 +1640,19 @@ export class PinsService {
     if ((await this.ValidationService.checkMongooseID([pinId, userId])) == 0) {
       throw new BadRequestException('not valid id');
     }
-    let user = await this.userModel.findById(userId, { userName: 1 });
+    let user = await this.userModel.findById(userId, { userName: 1, email: 1 });
     if (!user) {
       throw new BadRequestException('not valid user');
     }
     await this.EmailService.sendEmail(
       process.env.EMAIL,
-      { pinId: pinId, userId: userId, userName: user.userName, reason: reason },
+      {
+        pinId: pinId,
+        userId: userId,
+        userName: user.userName,
+        email: user.email,
+        reason: reason,
+      },
       'report',
       '',
     );

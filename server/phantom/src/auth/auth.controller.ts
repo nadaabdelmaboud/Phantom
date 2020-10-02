@@ -12,6 +12,7 @@ import {
   Req,
   NotFoundException,
   Res,
+  UseFilters,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserService } from '../user/user.service';
@@ -20,6 +21,9 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { AuthService } from './auth.service';
 import { Email } from '../shared/send-email.service';
+import { HttpExceptionFilter } from 'src/shared/http-exception.filter';
+
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class AuthController {
   constructor(
@@ -36,11 +40,13 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res) {
     const data = await this.authService.googleLogin(req);
     if (data) {
-      console.log( process.env.FRONT_BASE_URL +
-        '/aouth/google?token=' +
-        data.token +
-        '&type=' +
-        data.type)
+      console.log(
+        process.env.FRONT_BASE_URL +
+          '/aouth/google?token=' +
+          data.token +
+          '&type=' +
+          data.type,
+      );
       res.redirect(
         process.env.FRONT_BASE_URL +
           '/aouth/google?token=' +

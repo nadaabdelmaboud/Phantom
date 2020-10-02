@@ -167,8 +167,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">src/topic/topic.controller.ts:100</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/topic/topic.controller.ts:98</a></div>
                 </td>
             </tr>
 
@@ -246,8 +246,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="62"
-                            class="link-to-prism">src/topic/topic.controller.ts:62</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="60"
+                            class="link-to-prism">src/topic/topic.controller.ts:60</a></div>
                 </td>
             </tr>
 
@@ -337,8 +337,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="122"
-                            class="link-to-prism">src/topic/topic.controller.ts:122</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="120"
+                            class="link-to-prism">src/topic/topic.controller.ts:120</a></div>
                 </td>
             </tr>
 
@@ -421,8 +421,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="72"
-                            class="link-to-prism">src/topic/topic.controller.ts:72</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/topic/topic.controller.ts:70</a></div>
                 </td>
             </tr>
 
@@ -548,8 +548,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="91"
-                            class="link-to-prism">src/topic/topic.controller.ts:91</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">src/topic/topic.controller.ts:89</a></div>
                 </td>
             </tr>
 
@@ -639,8 +639,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="132"
-                            class="link-to-prism">src/topic/topic.controller.ts:132</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/topic/topic.controller.ts:130</a></div>
                 </td>
             </tr>
 
@@ -714,8 +714,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="108"
-                            class="link-to-prism">src/topic/topic.controller.ts:108</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/topic/topic.controller.ts:106</a></div>
                 </td>
             </tr>
 
@@ -784,7 +784,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getPinsOfAtopic(req, topicId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a>, offset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a>)</code>
+                    <code>getPinsOfAtopic(req, topicId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, offset: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
@@ -844,7 +844,7 @@
                                 <tr>
                                     <td>limit</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" >Number</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
 
                                     <td>
@@ -856,7 +856,7 @@
                                 <tr>
                                     <td>offset</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" >Number</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
 
                                     <td>
@@ -1077,8 +1077,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="115"
-                            class="link-to-prism">src/topic/topic.controller.ts:115</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">src/topic/topic.controller.ts:113</a></div>
                 </td>
             </tr>
 
@@ -1179,15 +1179,13 @@ export class TopicController {
   async getPinsOfAtopic(
     @Request() req,
     @Param(&#x27;topicId&#x27;) topicId: string,
-    @Query(&#x27;limit&#x27;) limit: Number,
-    @Query(&#x27;offset&#x27;) offset: Number,
+    @Query(&#x27;limit&#x27;) limit: number,
+    @Query(&#x27;offset&#x27;) offset: number,
   ) {
-    let userId &#x3D; req.user._id;
     let pins &#x3D; await this.TopicService.getPinsOfTopic(
       topicId,
       limit,
       offset,
-      userId,
     );
     if (pins &amp;&amp; pins.length !&#x3D; 0) return pins;
     return new NotFoundException();

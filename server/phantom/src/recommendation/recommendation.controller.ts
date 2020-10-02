@@ -1,17 +1,12 @@
 import {
   Controller,
-  Post,
-  Body,
   UseFilters,
-  ForbiddenException,
-  NotAcceptableException,
   Param,
   Get,
   NotFoundException,
   Request,
   UseGuards,
   Query,
-  Delete,
   Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -243,9 +238,7 @@ export class RecommendationController {
   }
   @UseGuards(AuthGuard('jwt'))
   @Get('/me/pinsRecentActivity')
-  async getPinsRecentActivity(
-    @Request() req,
-  ) {
+  async getPinsRecentActivity(@Request() req) {
     let userId = req.user._id;
     req.setTimeout(0);
     let pins = await this.RecommendationService.pinsInspired(userId);

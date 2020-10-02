@@ -71,6 +71,20 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#server">server</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -89,8 +103,15 @@
                                 <a href="#comment">comment</a>
                             </li>
                             <li>
+                                <a href="#delay">delay</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Async</span>
                                 <a href="#deliver">deliver</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleConnection">handleConnection</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -147,7 +168,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/shared/shared.gateway.ts:12</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/shared/shared.gateway.ts:15</a></div>
                             </td>
                         </tr>
 
@@ -209,6 +230,42 @@
         </table>
 </section>
 
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="server"></a>
+                        <span class="name">
+                            <b>
+                            server</b>
+                            <a href="#server"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @WebSocketServer()<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/shared/shared.gateway.ts:15</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
 
             <section>
     
@@ -246,8 +303,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="218"
-                            class="link-to-prism">src/shared/shared.gateway.ts:218</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="228"
+                            class="link-to-prism">src/shared/shared.gateway.ts:228</a></div>
                 </td>
             </tr>
 
@@ -337,8 +394,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="31"
-                            class="link-to-prism">src/shared/shared.gateway.ts:31</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="40"
+                            class="link-to-prism">src/shared/shared.gateway.ts:40</a></div>
                 </td>
             </tr>
 
@@ -401,6 +458,72 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="delay"></a>
+                    <span class="name">
+                        <b>
+                            delay
+                        </b>
+                        <a href="#delay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>delay(ms)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">src/shared/shared.gateway.ts:36</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ms</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="deliver"></a>
                     <span class="name">
                         <b>
@@ -428,8 +551,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/shared/shared.gateway.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="62"
+                            class="link-to-prism">src/shared/shared.gateway.ts:62</a></div>
                 </td>
             </tr>
 
@@ -464,6 +587,78 @@
                                     <td>data</td>
                                     <td>
                                                 <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleConnection"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Async</span>
+                            handleConnection
+                        </b>
+                        <a href="#handleConnection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleConnection(client: Socket)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="21"
+                            class="link-to-prism">src/shared/shared.gateway.ts:21</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>client</td>
+                                    <td>
+                                            <code>Socket</code>
                                     </td>
 
                                     <td>
@@ -519,8 +714,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="162"
-                            class="link-to-prism">src/shared/shared.gateway.ts:162</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="172"
+                            class="link-to-prism">src/shared/shared.gateway.ts:172</a></div>
                 </td>
             </tr>
 
@@ -610,8 +805,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="187"
-                            class="link-to-prism">src/shared/shared.gateway.ts:187</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="197"
+                            class="link-to-prism">src/shared/shared.gateway.ts:197</a></div>
                 </td>
             </tr>
 
@@ -701,8 +896,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="92"
-                            class="link-to-prism">src/shared/shared.gateway.ts:92</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/shared/shared.gateway.ts:102</a></div>
                 </td>
             </tr>
 
@@ -792,8 +987,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="123"
-                            class="link-to-prism">src/shared/shared.gateway.ts:123</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="133"
+                            class="link-to-prism">src/shared/shared.gateway.ts:133</a></div>
                 </td>
             </tr>
 
@@ -883,8 +1078,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="118"
-                            class="link-to-prism">src/shared/shared.gateway.ts:118</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/shared/shared.gateway.ts:128</a></div>
                 </td>
             </tr>
 
@@ -974,8 +1169,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/shared/shared.gateway.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="82"
+                            class="link-to-prism">src/shared/shared.gateway.ts:82</a></div>
                 </td>
             </tr>
 
@@ -1065,8 +1260,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="19"
-                            class="link-to-prism">src/shared/shared.gateway.ts:19</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="26"
+                            class="link-to-prism">src/shared/shared.gateway.ts:26</a></div>
                 </td>
             </tr>
 
@@ -1156,8 +1351,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/shared/shared.gateway.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/shared/shared.gateway.ts:46</a></div>
                 </td>
             </tr>
 
@@ -1226,23 +1421,30 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { SubscribeMessage, WebSocketGateway } from &#x27;@nestjs/websockets&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from &#x27;@nestjs/websockets&#x27;;
 import { Socket } from &#x27;socket.io&#x27;;
-import { UserService } from &#x27;../user/user.service&#x27;;
 import { InjectModel } from &#x27;@nestjs/mongoose&#x27;;
 import { Model } from &#x27;mongoose&#x27;;
 import { pin } from &#x27;../types/pin&#x27;;
 import { user } from &#x27;../types/user&#x27;;
 import { ChatService } from &#x27;src/chat/chat.service&#x27;;
-import { time } from &#x27;console&#x27;;
 const jwt &#x3D; require(&#x27;jsonwebtoken&#x27;);
 @WebSocketGateway()
 export class SharedGateway {
+  @WebSocketServer() server;
   constructor(
     private ChatService: ChatService,
     @InjectModel(&#x27;Pin&#x27;) private readonly pinModel: Model&lt;pin&gt;,
     @InjectModel(&#x27;User&#x27;) private readonly userModel: Model&lt;user&gt;,
   ) { }
+  async handleConnection(client: Socket) {
+    console.log(&#x27;client connected&#x27;, client.id);
+  }
+
   @SubscribeMessage(&#x27;setUserId&#x27;)
   async setUserId(socket: Socket, data: any) {
     const token &#x3D; data.token;
@@ -1250,14 +1452,18 @@ export class SharedGateway {
     let userId &#x3D; decoded._id;
     let user &#x3D; await this.userModel.findById(userId, { socketId: 1 });
     if (user) {
-      console.log(&#x27;user&#x27;, socket.id);
       user.socketId &#x3D; socket.id;
       await user.save();
     }
   }
+  delay(ms) {
+    return new Promise(resolve &#x3D;&gt; setTimeout(resolve, ms));
+  }
   @SubscribeMessage(&#x27;comment&#x27;)
   async comment(socket: Socket, data: any) {
-    socket.emit(&#x27;sendComment&#x27;, data);
+    // socket.broadcast.emit(&#x27;sendComment&#x27;, data);
+    //  this.server.sockets.emit(&#x27;sendComment&#x27;, data);
+    this.server.emit(&#x27;sendComment&#x27;, data);
   }
   @SubscribeMessage(&#x27;typing&#x27;)
   async type(socket: Socket, data: any) {
@@ -1266,8 +1472,7 @@ export class SharedGateway {
     let recieverId &#x3D; data.recieverId;
     let reciever &#x3D; await this.userModel.findById(recieverId);
     if (sender &amp;&amp; reciever) {
-      console.log(&#x27;sending&#x27;);
-      socket.to(reciever.socketId).emit(&#x27;isTyping&#x27;, {
+      this.server.to(reciever.socketId).emit(&#x27;isTyping&#x27;, {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
@@ -1285,8 +1490,7 @@ export class SharedGateway {
     let messageId &#x3D; data.messageId;
     console.log(&#x27;deliver event&#x27;);
     if (sender &amp;&amp; reciever) {
-      console.log(reciever.socketId, &#x27;to emiit&#x27;);
-      socket.to(reciever.socketId).emit(&#x27;setDelivered&#x27;, {
+      this.server.to(sender.socketId).emit(&#x27;setDelivered&#x27;, {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
@@ -1294,7 +1498,7 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      await this.ChatService.deliver(recieverId, messageId, true);
+      await this.ChatService.deliver(recieverId, messageId);
     }
   }
   @SubscribeMessage(&#x27;seen&#x27;)
@@ -1305,7 +1509,7 @@ export class SharedGateway {
     let reciever &#x3D; await this.userModel.findById(recieverId);
     let messageId &#x3D; data.messageId;
     if (sender &amp;&amp; reciever) {
-      socket.to(reciever.socketId).emit(&#x27;setSeen&#x27;, {
+      this.server.to(sender.socketId).emit(&#x27;setSeen&#x27;, {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
@@ -1313,7 +1517,8 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      await this.ChatService.seen(recieverId, messageId, true);
+      if (data.messageId)
+        await this.ChatService.seen(recieverId, messageId);
     }
   }
   @SubscribeMessage(&#x27;message&#x27;)
@@ -1329,7 +1534,7 @@ export class SharedGateway {
       messageText,
     );
     if (sender &amp;&amp; reciever &amp;&amp; messageText) {
-      socket.to(reciever.socketId).emit(&#x27;sendMessage&#x27;, {
+      this.server.to(reciever.socketId).emit(&#x27;sendMessage&#x27;, {
         recieverImage: reciever.profileImage,
         senderImage: sender.profileImage,
         recieverName: reciever.firstName + &#x27; &#x27; + reciever.lastName,
@@ -1344,12 +1549,12 @@ export class SharedGateway {
 
   @SubscribeMessage(&#x27;reply&#x27;)
   async reply(socket: Socket, data: any) {
-    socket.emit(&#x27;sendReply&#x27;, data);
+    this.server.emit(&#x27;sendReply&#x27;, data);
   }
 
   @SubscribeMessage(&#x27;reactPin&#x27;)
   async reactPin(socket: Socket, data: any) {
-    const token &#x3D; data.token;
+    const token &#x3D; data.token;8
     const decoded &#x3D; await jwt.verify(token, process.env.SECRET_KEY);
     let userId &#x3D; decoded._id;
     let user &#x3D; await this.userModel.findById(userId, {
@@ -1358,7 +1563,7 @@ export class SharedGateway {
       profileImage: 1,
     });
     let pin &#x3D; await this.pinModel.findById(data.pinId, { counts: 1 });
-    socket.emit(&#x27;sendPinReact&#x27;, {
+    this.server.emit(&#x27;sendPinReact&#x27;, {
       reactType: data.reactType,
       userName: user.firstName + &#x27; &#x27; + user.lastName,
       userImage: user.profileImage,
@@ -1399,7 +1604,7 @@ export class SharedGateway {
     let pin &#x3D; await this.pinModel.findById(data.pinId, { comments: 1 });
     for (var i &#x3D; 0; i &lt; pin.comments.length; i++) {
       if (String(pin.comments[i]._id) &#x3D;&#x3D; String(data.commentId)) {
-        socket.emit(&#x27;sendLikeComment&#x27;, {
+        this.server.emit(&#x27;sendLikeComment&#x27;, {
           userName: user.firstName + &#x27; &#x27; + user.lastName,
           userImage: user.profileImage,
           pinId: data.pinId,
@@ -1426,7 +1631,7 @@ export class SharedGateway {
       if (String(pin.comments[i]._id) &#x3D;&#x3D; String(data.commentId)) {
         for (var j &#x3D; 0; j &lt; pin.comments[i].replies.length; j++) {
           if (String(pin.comments[i].replies[j]._id) &#x3D;&#x3D; String(data.replyId)) {
-            socket.emit(&#x27;sendLikeReply&#x27;, {
+            this.server.emit(&#x27;sendLikeReply&#x27;, {
               userName: user.firstName + &#x27; &#x27; + user.lastName,
               userImage: user.profileImage,
               pinId: data.pinId,

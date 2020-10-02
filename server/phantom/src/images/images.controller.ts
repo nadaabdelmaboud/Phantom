@@ -6,25 +6,16 @@ import {
   Controller,
   UseInterceptors,
   Request,
-  UseGuards,
   UploadedFiles,
-  HttpException,
-  HttpStatus,
-  ForbiddenException,
-  BadRequestException,
-  Delete,
-  Query,
-  NotFoundException,
+  UseFilters,
 } from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiConsumes,
-  ApiBadRequestResponse,
-} from '@nestjs/swagger';
+import { ApiConsumes } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
+import { HttpExceptionFilter } from 'src/shared/http-exception.filter';
 const path = require('path');
 
+@UseFilters(HttpExceptionFilter)
 @Controller()
 export class ImagesController {
   constructor(private ImagesService: ImagesService) {}
@@ -39,15 +30,9 @@ export class ImagesController {
       files[0].buffer,
     );
   }
- 
+
   @Get('/image/:id')
-  async getImage(
-    @Param('id') id: string,
-    @Res() response,
-    @Request() req,
-  ) {
-  
-    
+  async getImage(@Param('id') id: string, @Res() response, @Request() req) {
     if (!id || id == ' ' || id == '' || id == 'none' || id == 'null') {
       var filePath = './src/static/default.jpg';
       var resolvedPath = await path.resolve(filePath);
@@ -58,7 +43,7 @@ export class ImagesController {
       { responseType: 'stream' },
       function(err, res) {
         if (err) {
-          console.log(err)
+          console.log(err);
           var filePath = './src/static/default.jpg';
           var resolvedPath = path.resolve(filePath);
           return response.sendFile(resolvedPath);
@@ -74,6 +59,4 @@ export class ImagesController {
       },
     );
   }
-
- 
 }

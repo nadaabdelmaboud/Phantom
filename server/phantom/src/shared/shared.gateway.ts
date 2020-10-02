@@ -17,10 +17,8 @@ export class SharedGateway {
     private ChatService: ChatService,
     @InjectModel('Pin') private readonly pinModel: Model<pin>,
     @InjectModel('User') private readonly userModel: Model<user>,
-  ) { }
-  async handleConnection(client: Socket) {
-    console.log('client connected', client.id);
-  }
+  ) {}
+  async handleConnection(client: Socket) {}
 
   @SubscribeMessage('setUserId')
   async setUserId(socket: Socket, data: any) {
@@ -33,13 +31,9 @@ export class SharedGateway {
       await user.save();
     }
   }
-  delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+
   @SubscribeMessage('comment')
   async comment(socket: Socket, data: any) {
-    // socket.broadcast.emit('sendComment', data);
-    //  this.server.sockets.emit('sendComment', data);
     this.server.emit('sendComment', data);
   }
   @SubscribeMessage('typing')
@@ -94,8 +88,7 @@ export class SharedGateway {
         senderId: data.senderId,
         messageId: data.messageId,
       });
-      if (data.messageId)
-        await this.ChatService.seen(recieverId, messageId);
+      if (data.messageId) await this.ChatService.seen(recieverId, messageId);
     }
   }
   @SubscribeMessage('message')
@@ -131,7 +124,8 @@ export class SharedGateway {
 
   @SubscribeMessage('reactPin')
   async reactPin(socket: Socket, data: any) {
-    const token = data.token;8
+    const token = data.token;
+    8;
     const decoded = await jwt.verify(token, process.env.SECRET_KEY);
     let userId = decoded._id;
     let user = await this.userModel.findById(userId, {

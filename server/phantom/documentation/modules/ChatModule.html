@@ -206,6 +206,7 @@ import { ChatController } from &#x27;./chat.controller&#x27;;
 import { ChatService } from &#x27;./chat.service&#x27;;
 import { User } from &#x27;../models/user.schema&#x27;;
 import { Chat } from &#x27;../models/chat.schema&#x27;;
+import { SharedGateway } from &#x27;../shared/shared.gateway&#x27;;
 
 import { MongooseModule } from &#x27;@nestjs/mongoose&#x27;;
 import { SharedModule } from &#x27;../shared/shared.module&#x27;;
@@ -224,7 +225,7 @@ import { Message } from &#x27;src/models/message.schema&#x27;;
   providers: [ChatService],
   exports: [ChatService],
 })
-export class ChatModule {}
+export class ChatModule { }
 </code></pre>
     </div>
 </div>
