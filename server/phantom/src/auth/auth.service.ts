@@ -11,7 +11,7 @@ import { Payload } from '../types/payload';
  */
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
   /**
    * @author Nada Abdelmaboud <nada5aled52@gmail.com>
    * @description google aouth handler
@@ -19,7 +19,7 @@ export class AuthService {
    */
   async googleLogin(req) {
     if (!req.user) {
-      throw new NotFoundException('no such user on google');
+      throw new NotFoundException('no such user');
     }
     let user = req.user;
     let type;
