@@ -48,6 +48,9 @@
     border-radius: 16px;
     padding: 16px 8px;
   }
+  .inputFields{
+    outline: none;
+  }
   .slider {
     -webkit-appearance: none;
     width: 53px;
@@ -107,6 +110,9 @@
     padding: 10px 20px;
     border-radius: 32px;
     font-weight: 700;
+  }
+  button:focus{
+    outline: none;
   }
   @media screen and (max-width: 360px) {
     button{

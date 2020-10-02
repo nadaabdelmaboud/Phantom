@@ -264,6 +264,9 @@
     border-bottom: $darkBlue 2px solid;
     margin: 0px 5% 20px 5%;
   }
+  input:focus {
+    outline: none;
+  }
   i {
     font-size: 20px;
     margin: 5% 5% 20px 5%;

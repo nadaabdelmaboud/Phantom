@@ -42,6 +42,9 @@
     transition: linear 0.5s;
     color: $darkBlue;
   }
+  #boardLink:focus{
+    outline: none;
+  }
   #copyLink {
     color: $darkBlue;
     background-color: $powderBlue;

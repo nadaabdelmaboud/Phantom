@@ -65,6 +65,9 @@
     padding: 20px;
     margin-top: 20px;
   }
+  input:focus{
+    outline: none;
+  }
   @keyframes dropDown {
     from {
       right: 0px;
