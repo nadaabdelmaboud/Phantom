@@ -17,7 +17,7 @@
     overflow:auto;
   }
   .msgBox {
-    height: 80%;
+    height: 75%;
     overflow-y: auto;
     max-width: calc(100vw - 70px);
   }
@@ -33,6 +33,8 @@
   #msg {
     position: absolute;
     bottom: 0;
+    margin-top: 20px;
+    height: 15%;
   }
   button {
     border: none;
@@ -219,6 +221,7 @@
   }
 
   .currentUser {
+    height: 15%;
     i {
       font-size: 12px;
       width: 18px;
