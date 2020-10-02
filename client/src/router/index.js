@@ -1,37 +1,61 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
+//Auth
 import SignUp from "../views/Auth/SignUp.vue";
-import PhantomHome from "../views/PhantomHome.vue";
-import UserHome from "../views/UserHome.vue";
-import Following from "../views/Following.vue";
-import PinBuilder from "../views/AddNewPin/PinBuilder.vue";
-import PostPage from "../views/PostPage.vue";
-import WelcomePage from "../views//EmailManagement/WelcomePage.vue";
 import LoginView from "../views/Auth/LoginView.vue";
-import UserProfile from "../views/UserProfileViews/UserProfile";
-import UserBoards from "../views/UserProfileViews/UserBoards";
-import UserPins from "../views/UserProfileViews/UserPins";
+import GoogleAuth from "../views/Auth/AuthRedirect.vue";
+
+//Email Management
+import EmailConfirm from "../views/EmailManagement/EmailConfirm";
+import CurrentEmailConfirm from "../views/EmailManagement/ConfirmCurrentEmail";
+import WelcomePage from "../views//EmailManagement/WelcomePage.vue";
+
+//User Settings
 import EditProfile from "../views/EditProfile";
 import EditProfileSettings from "../components/UserSettings/EditProfileSettings";
 import AccountSettings from "../components/UserSettings/AccountSettings";
 import NotificationsSettings from "../components/UserSettings/NotificationsSettings";
-import EmailConfirm from "../views/EmailManagement/EmailConfirm";
+
+//Home Page
+import PhantomHome from "../views/PhantomHome.vue";
+import UserHome from "../views/UserHome.vue";
+
+//User Profile
+import UserProfile from "../views/UserProfileViews/UserProfile";
+import UserBoards from "../views/UserProfileViews/UserBoards";
+import UserPins from "../views/UserProfileViews/UserPins";
+
+//Password Management
 import ForgetPassword from "../views/PasswordManagement/ForgetPassword.vue";
 import ResetPassword from "../views/PasswordManagement/ResetPassword.vue";
-import BoardView from "../views/InBoardViews/BoardView.vue";
-import BoardPins from "../views/InBoardViews/BoardPins";
-import BoardMoreLike from "../views/InBoardViews/BoardMoreLike";
-import TopicsPage from "../views/TopicsPage.vue";
-import SectionView from "../views/SectionView";
-import NotidicationBoards from "../components/Notification/NotificationBoards";
-import NotidicationPins from "../components/Notification/NotificationPins";
+
+//Search
 import Search from "../views/Search.vue";
 import SearchPins from "../components/Search/SearchPins";
 import SearchMyPins from "../components/Search/SearchMyPins";
 import SearchPeople from "../components/Search/SearchPeople";
 import SearchBoards from "../components/Search/SearchBoards";
-import GoogleAuth from "../views/Auth/AuthRedirect.vue";
-import CurrentEmailConfirm from "../views/EmailManagement/ConfirmCurrentEmail";
+
+//Pins
+import PostPage from "../views/PostPage.vue";
+import PinBuilder from "../views/AddNewPin/PinBuilder.vue";
+
+//Boards
+import BoardView from "../views/InBoardViews/BoardView.vue";
+import BoardPins from "../views/InBoardViews/BoardPins";
+import BoardMoreLike from "../views/InBoardViews/BoardMoreLike";
+
+//Board Section
+import SectionView from "../views/SectionView";
+
+//Topics
+import TopicsPage from "../views/TopicsPage.vue";
+import Following from "../views/Following.vue";
+
+//Notifications
+import NotidicationBoards from "../components/Notification/NotificationBoards";
+import NotidicationPins from "../components/Notification/NotificationPins";
 
 import isLoggedIn from "@/mixins/isLoggedIn";
 
