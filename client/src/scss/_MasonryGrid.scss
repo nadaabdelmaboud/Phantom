@@ -1,18 +1,6 @@
-//new Grid
-
   .flexWrap {
     margin: auto;
     width: 90%;
     padding-bottom: 70px;
     min-height: 100vh;
-  }
-  .masonryGrid {
-    display: grid;
-    justify-content: center;
-    grid-gap: 20px; /* [1] Add some gap between rows and columns */
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(auto, 252px)
-    ); /* [2] Make columns adjust according to the available viewport */
-    grid-auto-rows: 0.00000000000000001px; /* [3] Set the height for implicitly-created row track */
   }

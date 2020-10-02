@@ -16,7 +16,6 @@ const state = {
   numberofFollowers: 0,
   pinCreatorId: "",
   cardsGenerated: false,
-  offsetnum: 0,
   totalCards: 0,
   finishCalling: false,
   requestFinished: false,

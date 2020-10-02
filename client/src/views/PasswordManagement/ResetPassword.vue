@@ -47,7 +47,6 @@ export default {
       else this.passwordMatching = false;
     },
     changePassword() {
-      console.log(this.$route.query.token);
       if (this.passwordMatching && this.validatePassword && this.password) {
         this.$store.dispatch("user/resetPassword", {
           forgetPassword: true,

@@ -170,6 +170,11 @@
   }
 }
 </style>
+<style lang="scss">
+.noscroll {
+  overflow: hidden;
+}
+</style>
 <script>
 import { default as getImage } from "../mixins/getImage";
 import { default as isLoggedIn } from "../mixins/isLoggedIn";
@@ -287,9 +292,80 @@ export default {
     },
     showToastState() {
       if (this.showToastState == true) {
-        console.log("phantom home boardname", this.ChoosenBoardName);
         this.showPinToast();
         this.$store.commit("homeCards/setShowToastState", false);
+      }
+    },
+    topics: {
+      handler(topics) {
+        if (topics) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    createBoard: {
+      handler(createBoard) {
+        if (createBoard) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    newPin: {
+      handler(newPin) {
+        if (newPin) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    editBoard: {
+      handler(editBoard) {
+        if (editBoard) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    collaborators: {
+      handler(collaborators) {
+        if (collaborators) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    addSection: {
+      handler(addSection) {
+        if (addSection) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    showSavePin: {
+      handler(showSavePin) {
+        if (showSavePin) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    showReportPin: {
+      handler(showReportPin) {
+        if (showReportPin) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    editPinPopUp: {
+      handler(editPinPopUp) {
+        if (editPinPopUp) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    showFollowPopup: {
+      handler(showFollowPopup) {
+        if (showFollowPopup) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    LoadingPopup: {
+      handler(LoadingPopup) {
+        if (LoadingPopup) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
+      }
+    },
+    phantomPopup: {
+      handler(phantomPopup) {
+        if (phantomPopup) document.body.classList.add("noscroll");
+        else document.body.classList.remove("noscroll");
       }
     }
   }

@@ -3,35 +3,23 @@
     <div class="profileInfo">
       <img
         v-if="myprofile"
-        :src="
-          getImage(
-            this.meUser.profileImage,
-            this.meUser.google,
-            this.meUser.googleImage
-          )
-        "
+        :src="getImage(meUser.profileImage, meUser.google, meUser.googleImage)"
       />
       <img
         v-else
-        :src="
-          getImage(
-            this.user.profileImage,
-            this.user.google,
-            this.user.googleImage
-          )
-        "
+        :src="getImage(user.profileImage, user.google, user.googleImage)"
       />
-      <h1 v-if="myprofile">{{ this.meUser.userName }}</h1>
-      <h1 v-else>{{ this.user.userName }}</h1>
+      <h1 v-if="myprofile">{{ meUser.userName }}</h1>
+      <h1 v-else>{{ user.userName }}</h1>
       <h6 v-if="myprofile">
         {{
-          Array.isArray(this.meUser.followers)
-            ? this.meUser.followers.length
-            : this.meUser.followers
+          Array.isArray(meUser.followers)
+            ? meUser.followers.length
+            : meUser.followers
         }}
         following
       </h6>
-      <h6 v-else>{{ this.user.followers }} following</h6>
+      <h6 v-else>{{ user.followers }} following</h6>
       <div
         class="buttons inRoute follow"
         v-if="!myprofile && !isFollowed"
@@ -94,7 +82,7 @@
           ></i>
           A to Z
         </li>
-        <li @click="reorder">
+        <li @click="reorder" v-if="getDeviceType() == 'desktop'">
           <i
             class="fa fa-check"
             v-if="meUser.sortType == 'Reorder'"
@@ -145,6 +133,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import getImage from "../../mixins/getImage.js";
+import { default as getDeviceType } from "../../mixins/getDeviceType";
 export default {
   name: "UserProfile",
   data: function() {
@@ -157,7 +146,7 @@ export default {
       userId: ""
     };
   },
-  mixins: [getImage],
+  mixins: [getImage, getDeviceType],
   methods: {
     clear(event) {
       if (event.target.id != "create") {
@@ -184,8 +173,10 @@ export default {
     },
     alterFollow() {
       if (this.isFollowed) {
+        this.$store.commit("phantomUser/updateFollowers", -1);
         this.$store.dispatch("followers/unfollowUser", this.userId);
       } else {
+        this.$store.commit("phantomUser/updateFollowers", 1);
         this.$store.dispatch("followers/followUser", this.userId);
       }
     },

@@ -37,7 +37,6 @@ export default {
 @import "../../scss/Colors";
 @import "../../scss/MasonryGrid";
 .wrapper {
-  // padding: 10px 10%;
   display: flex;
   flex-wrap: wrap;
 }

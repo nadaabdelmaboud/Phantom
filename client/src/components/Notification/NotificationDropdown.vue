@@ -31,9 +31,6 @@ import NotificationActionsCard from "./NotificationActionsCard";
 import { mapGetters } from "vuex";
 export default {
   name: "BoardPins",
-  data: function() {
-    return {};
-  },
   components: {
     NotificationPinsCard,
     NotificationActionsCard

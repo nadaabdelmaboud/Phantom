@@ -6,15 +6,17 @@
     </div>
     <Loading :loading="homeLoading" />
     <div class="flexWrap" v-if="!homeLoading">
-      <div class="masonryGrid">
+      <masonry
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
+      >
         <HomeCard
           v-for="homecard in cards"
           :key="homecard._id"
-          class="masonryGridItem"
           :cardImage="homecard.imageId"
           :postPageId="homecard._id"
         />
-      </div>
+      </masonry>
     </div>
   </div>
 </template>

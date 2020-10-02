@@ -7,7 +7,6 @@ const state = {
   offset: 0,
   inProgress: false,
   totalResult: 50,
-  endResult: false,
   loading: false,
   firstCreate: 0
 };

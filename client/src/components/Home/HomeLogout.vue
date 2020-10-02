@@ -12,15 +12,19 @@
       </h1>
     </div>
     <div class="flexWrap">
-      <transition-group appear name="slide-in" tag="div" class="masonryGrid">
-        <PhantomCard
-          class="masonryGridItem"
-          v-for="card in phantomHomeCards"
-          :key="card._id"
-          :index="card._id"
-          :cardImage="card.imageId"
-        />
-      </transition-group>
+      <masonry
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
+      >
+        <transition-group appear name="slide-in" tag="div">
+          <PhantomCard
+            v-for="card in phantomHomeCards"
+            :key="card._id"
+            :index="card._id"
+            :cardImage="card.imageId"
+          />
+        </transition-group>
+      </masonry>
     </div>
   </div>
 </template>

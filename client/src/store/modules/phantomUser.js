@@ -11,6 +11,9 @@ const mutations = {
   },
   setIsFollowed(state, isFollowed) {
     state.isFollowed = isFollowed == "true";
+  },
+  updateFollowers(state, value) {
+    state.user.followers = state.user.followers + value;
   }
 };
 

@@ -28,6 +28,7 @@ const mutations = {
     else state.show = !state.show;
   },
   setCounter(state, add) {
+    console.log("hi");
     if (!add) state.notifications.notificationCounter = 0;
     else {
       state.notifications.notificationCounter += 1;
@@ -53,7 +54,7 @@ const actions = {
   notifyUser({ dispatch }) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    //axios.get("me/boardsForYou");
+    axios.get("me/boardsForYou");
     axios.get("me/pinsForYou");
     axios.get("me/popularPins");
     axios.get("me/pinsRecentActivity");

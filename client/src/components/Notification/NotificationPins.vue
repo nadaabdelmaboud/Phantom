@@ -1,6 +1,9 @@
 +6<template>
   <div class="flexWrap spread">
-    <div class="masonryGrid">
+    <masonry
+      :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+      :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
+    >
       <HomeCard
         v-for="p in pins"
         :key="p._id"
@@ -8,7 +11,7 @@
         :postPageId="p._id"
         class="masonryGridItem"
       />
-    </div>
+    </masonry>
   </div>
 </template>
 

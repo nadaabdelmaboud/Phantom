@@ -6,29 +6,27 @@
 
 <script>
 import axios from "axios";
-import { default as masonryGrid } from "./mixins/masonryGrid";
 import { default as socketChat } from "./mixins/socketChat";
 export default {
   name: "App",
-  mixins: [masonryGrid, socketChat],
+  mixins: [socketChat],
   created() {
     let token = localStorage.getItem("userToken");
     if (token) {
       axios.defaults.headers.common["Authorization"] = token;
       this.$store.dispatch("user/getUserProfile");
     }
-    window.addEventListener("scroll", () => {
+    window.addEventListener("scroll", async () => {
       if (
         Math.abs(
           window.innerHeight + window.scrollY - document.body.offsetHeight
-        ) <= 10
+        ) <= 50
       ) {
-        // document.body.style.height=document.body.offsetHeight+300+"px"
         if (this.$route.path.includes("/More")) {
           let boardId = this.$route.params.boardId;
           this.$store.dispatch("boards/moreLike", {
             boardId: boardId,
-            limit: 8
+            limit: 10
           });
         } else if (this.$route.path.includes("allpins")) {
           let name = this.$route.params.name;
@@ -58,14 +56,14 @@ export default {
           });
         } else if (this.$route.path.includes("")) {
           if (localStorage.getItem("userToken") != "") {
-            this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
+            await this.$store.dispatch("homeCards/userGenerateCards", 10);
           }
         }
       }
     });
-    setInterval(() => {
-      this.waitForImages();
-    }, 500);
   },
   methods: {
     checkLists(event) {

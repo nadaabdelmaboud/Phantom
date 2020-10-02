@@ -219,6 +219,7 @@ label {
   padding: 0 12px;
   transition: linear 0.5s;
   margin-top: 10px;
+  position: relative;
 }
 .inputDiv:hover {
   border: $lightPinkHover solid 2px;
@@ -241,6 +242,12 @@ label {
     border-radius: 50%;
     margin-right: 5px;
   }
+}
+.slider {
+  position: absolute;
+  margin: 7px 0;
+  right: 5px;
+  top: 7px;
 }
 @media screen and (max-width: 360px) {
   .userInfo {
@@ -276,11 +283,6 @@ label {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     margin: 10px 20px 10px 0;
-  }
-  .slider {
-    position: fixed;
-    margin: 7px 0;
-    right: 30px;
   }
 }
 </style>

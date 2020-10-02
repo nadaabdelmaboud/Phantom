@@ -33,7 +33,6 @@ export default {
     },
     fileSelected(event) {
       this.image = event.target.files[0];
-      console.log(this.image);
       let formData = new FormData();
       formData.append("file", this.image);
       this.$store.dispatch("user/changeProfilePic", formData);

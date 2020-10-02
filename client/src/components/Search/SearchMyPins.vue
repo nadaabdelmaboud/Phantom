@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="flexWrap" v-if="pins.length">
-      <div class="masonryGrid">
+      <masonry
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
+      >
         <HomeCard
           v-for="pin in pins"
           :key="pin._id"
@@ -9,7 +12,7 @@
           :postPageId="pin._id"
           class="masonryGridItem"
         />
-      </div>
+      </masonry>
     </div>
     <div v-if="!loading && !pins.length" class="not-found">
       <h5>You don't have pins with this search try to add some</h5>

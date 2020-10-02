@@ -10,7 +10,6 @@ import { initializeFirebase } from "../../messaging/init";
 export default {
   created: async function() {
     localStorage.setItem("userToken", this.$route.query.token);
-    console.log(localStorage.getItem("userToken"));
     if (this.$route.query.type != "login")
       this.$store.commit("popUpsState/toggleWelcomeState");
     await this.$store.dispatch("user/getUserProfile");

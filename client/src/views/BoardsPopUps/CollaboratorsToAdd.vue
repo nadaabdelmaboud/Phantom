@@ -15,9 +15,6 @@ import { default as getImage } from "../../mixins/getImage";
 export default {
   name: "CollaboratorsToAdd",
   mixins: [getImage],
-  data: function() {
-    return {};
-  },
   props: {
     id: {
       type: String
