@@ -42,7 +42,6 @@
     "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
     "dotenv": "^8.2.0",
-    "elasticsearch": "^16.7.1",
     "firebase-admin": "^9.1.1",
     "fuzzy-search": "^3.2.1",
     "googleapis": "^60.0.1",
