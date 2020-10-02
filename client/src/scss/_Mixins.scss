@@ -156,7 +156,8 @@
   .searchInput:hover {
     background-color: $lightPinkHover;
   }
-  .searchInput:focus{
+  .searchInput:focus{  
     background-color: $lightPinkHover;
     border: $lightBlue 4px solid;
+    outline: none;
   }

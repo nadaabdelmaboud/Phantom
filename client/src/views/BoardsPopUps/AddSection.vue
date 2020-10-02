@@ -79,6 +79,9 @@ export default {
   input:hover {
     border-color: $lightPinkHover;
   }
+  input:focus {
+    outline: none;
+  }
 }
 @media screen and (max-width: 500px) {
   .addSection {

@@ -176,6 +176,9 @@
     border: none;
     border-radius: 0px 16px 16px 0px;
   }
+  button:focus{
+    outline: none;
+  }
 }
 .pinData {
   position: absolute;
@@ -263,6 +266,9 @@
     background-color: transparent;
     border-bottom: $darkBlue 2px solid;
     margin: 0px 5% 20px 5%;
+  }
+  input:focus {
+    outline: none;
   }
   i {
     font-size: 20px;

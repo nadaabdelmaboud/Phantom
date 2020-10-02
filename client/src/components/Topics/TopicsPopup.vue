@@ -111,8 +111,7 @@ h2 {
 .boardData {
   margin: 30px auto;
   width: 70%;
-  max-height: 70vh;
-  overflow-y: auto;
+  max-height: 80vh;
 }
 .dots {
   display: flex;
