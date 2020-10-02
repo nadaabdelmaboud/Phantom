@@ -27,11 +27,7 @@
           />
         </div>
         <div style="margin-top:10px">
-          <input
-            :value="'https://phantomclient.herokuapp.com' + $route.path"
-            id="boardLink"
-            readonly
-          />
+          <input :value="$frontUrl + $route.path" id="boardLink" readonly />
           <button id="copyLink" @click="copyLink">Copy link</button>
         </div>
         <div class="confirmCopy" v-if="copied">Copied to the clipboard</div>

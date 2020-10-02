@@ -12,6 +12,7 @@ import VueMasonry from "vue-masonry-css";
 Vue.use(VueMasonry);
 Vue.config.productionTip = process.env.VUE_APP_productionTip;
 Vue.prototype.$url = process.env.VUE_APP_baseURL;
+Vue.prototype.$frontUrl = process.env.VUE_APP_frontbaseURL;
 axios.defaults.baseURL = process.env.VUE_APP_baseURL;
 
 new Vue({
