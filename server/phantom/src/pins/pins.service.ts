@@ -1597,6 +1597,8 @@ export class PinsService {
       if (!followedUser) continue;
       if (limitOfPinsForUser > followedUser.pins.length)
         limitOfPinsForUser = followedUser.pins.length;
+      else if (followedUser.pins.length > 20)
+        limitOfPinsForUser = 15;
       for (
         var j = followedUser.pins.length - 1;
         j >= followedUser.pins.length - limitOfPinsForUser;

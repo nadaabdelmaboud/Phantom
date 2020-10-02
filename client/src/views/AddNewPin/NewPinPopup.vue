@@ -11,10 +11,6 @@
             See it now
           </router-link>
         </div>
-        <button>
-          <i class="fa fa-upload" aria-hidden="true"></i>
-          Send
-        </button>
       </div>
     </div>
   </div>

@@ -128,7 +128,7 @@ button:focus {
 }
 @media screen and (max-width: 600px) {
   .card {
-    margin: 5px auto;
+    margin: 15px auto;
   }
 }
 </style>
