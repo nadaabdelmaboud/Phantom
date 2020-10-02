@@ -7,7 +7,7 @@
     <Loading :loading="homeLoading" />
     <div class="flexWrap" v-if="!homeLoading">
       <masonry
-        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 500: 1 }"
+        :cols="{ default: 5, 1500: 4, 1200: 3, 800: 2, 580: 1 }"
         :gutter="{ default: '30px', 700: '20px', 500: '10px' }"
       >
         <HomeCard

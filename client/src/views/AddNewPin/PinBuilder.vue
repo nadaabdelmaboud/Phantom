@@ -176,7 +176,7 @@
     border: none;
     border-radius: 0px 16px 16px 0px;
   }
-  button:focus{
+  button:focus {
     outline: none;
   }
 }
