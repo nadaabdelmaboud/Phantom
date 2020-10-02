@@ -5,9 +5,9 @@
         v-if="myprofile"
         :src="
           getImage(
-            this.meUser.profileImage,
-            this.meUser.google,
-            this.meUser.googleImage
+            meUser.profileImage,
+            meUser.google,
+            meUser.googleImage
           )
         "
       />
@@ -15,23 +15,23 @@
         v-else
         :src="
           getImage(
-            this.user.profileImage,
-            this.user.google,
-            this.user.googleImage
+            user.profileImage,
+            user.google,
+            user.googleImage
           )
         "
       />
-      <h1 v-if="myprofile">{{ this.meUser.userName }}</h1>
-      <h1 v-else>{{ this.user.userName }}</h1>
+      <h1 v-if="myprofile">{{ meUser.userName }}</h1>
+      <h1 v-else>{{ user.userName }}</h1>
       <h6 v-if="myprofile">
         {{
-          Array.isArray(this.meUser.followers)
-            ? this.meUser.followers.length
-            : this.meUser.followers
+          Array.isArray(meUser.followers)
+            ? meUser.followers.length
+            : meUser.followers
         }}
         following
       </h6>
-      <h6 v-else>{{ this.user.followers }} following</h6>
+      <h6 v-else>{{ user.followers }} following</h6>
       <div
         class="buttons inRoute follow"
         v-if="!myprofile && !isFollowed"
@@ -185,8 +185,10 @@ export default {
     },
     alterFollow() {
       if (this.isFollowed) {
+        this.$store.commit("phantomUser/updateFollowers",-1)
         this.$store.dispatch("followers/unfollowUser", this.userId);
       } else {
+        this.$store.commit("phantomUser/updateFollowers",1)
         this.$store.dispatch("followers/followUser", this.userId);
       }
     },
