@@ -1,6 +1,5 @@
 importScripts("https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/7.19.1/firebase-messaging.js");
-//import store from "../src/store";
 
 if (firebase.messaging.isSupported()) {
     var firebaseConfig = {
@@ -19,7 +18,6 @@ if (firebase.messaging.isSupported()) {
   const messaging = firebase.messaging();
   messaging.onBackgroundMessage(function(payload) {
     console.log(' Received background message ', payload);
-    //store.commit("notifications/setCounter",1);
     var notificationTitle = payload.data.title;
     var notificationOptions = {
       body: payload.data.body,
