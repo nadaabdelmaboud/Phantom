@@ -1,4 +1,5 @@
 
+
 <p  align="center">
 
 <a align="center" href="https://daniphantom.herokuapp.com"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
@@ -150,8 +151,7 @@
 
      * ####  Run
      	```bash
-	
-	  $ cd server/phantom
+		   $ cd server/phantom
 
       	   # install
       	   $ npm install
@@ -167,11 +167,10 @@
 
       	```
      * #### Env Variables
-      * refer to [.env.example](server/phantom/.env.example)
+	     * refer to [.env.example](server/phantom/.env.example)
 	
      * #### Database Seeds
 		```bash
-		
 		   $ cd server/phantom
 
 		   $ npm install mongonaut
@@ -181,18 +180,18 @@
 
 		```
      * #### Api Documentation
-      * refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
+	     * refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
 		
      * #### JsDoc
 	
 	```bash
 	
-           $ cd server/phantom
+       $ cd server/phantom
 
-           $ npm install -g "@compodoc/compodoc"
+       $ npm install -g "@compodoc/compodoc"
 
-           $ npm run compodoc
-           # then open documentation/index.html
+       $ npm run compodoc
+       # then open documentation/index.html
 
 	```
 
@@ -212,7 +211,7 @@
 
 		```
 	* #### Frontend Env Variables
-	 * refer to [.env.example](client/.env.example)
+		 * refer to [.env.example](client/.env.example)
 
 ## Contributing
 
