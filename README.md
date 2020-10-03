@@ -150,8 +150,8 @@
 
      * ####  Run
      	```bash
-
-	   $ cd server/phantom
+	
+	  $ cd server/phantom
 
       	   # install
       	   $ npm install
@@ -167,22 +167,20 @@
 
       	```
      * #### Env Variables
-     
       * refer to [.env.example](server/phantom/.env.example)
 	
      * #### Database Seeds
 		```bash
 		
-			$ cd server/phantom
+		   $ cd server/phantom
 
-			$ npm install mongonaut
+		   $ npm install mongonaut
 
-			#seeds will be added to a new mongo local db
-			$ npm run seeds
+		   #seeds will be added to a new mongo local db
+		   $ npm run seeds
 
 		```
      * #### Api Documentation
-	
       * refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
 		
      * #### JsDoc
@@ -214,8 +212,7 @@
 
 		```
 	* #### Frontend Env Variables
-		
-      		* refer to [.env.example](client/.env.example)
+	 * refer to [.env.example](client/.env.example)
 
 ## Contributing
 
