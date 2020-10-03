@@ -159,6 +159,16 @@ label {
   .close-button {
     margin-left: 120px;
   }
+
+  .next {
+    left: 110px;
+    position: relative;
+  }
+
+  .close-button {
+    left: 100px;
+    position: relative;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -172,6 +182,16 @@ label {
 
   .close-button {
     margin-left: 80px;
+  }
+
+  .next {
+    left: 70px;
+    position: relative;
+  }
+
+  .close-button {
+    left: 60px;
+    position: relative;
   }
 }
 
@@ -194,6 +214,15 @@ label {
   .close-button {
     margin-left: 20px;
     font-size: 10px;
+  }
+
+  .next {
+    left: 45px;
+    position: relative;
+  }
+  .close-button {
+    left: 40px;
+    position: relative;
   }
 }
 </style>
