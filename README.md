@@ -177,23 +177,20 @@
 
 		   #seeds will be added to a new mongo local db
 		   $ npm run seeds
-
 		```
      * #### Api Documentation
 	     * refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
 		
      * #### JsDoc
 	
-	```bash
-	
-       $ cd server/phantom
+		```bash
+	       $ cd server/phantom
 
-       $ npm install -g "@compodoc/compodoc"
+	       $ npm install -g "@compodoc/compodoc"
 
-       $ npm run compodoc
-       # then open documentation/index.html
-
-	```
+	       $ npm run compodoc
+	       # then open documentation/index.html
+		```
 
 - ## Frontend
 	* ####  Frontend Run
