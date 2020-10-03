@@ -25,4 +25,4 @@ pnpm-debug.log*
 /coverage
 
 #env
-.env
+/.env
