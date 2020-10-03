@@ -40,7 +40,7 @@
     "@types/fuzzy-search": "^2.1.0",
     "@types/nodemailer": "^6.4.0",
     "bcrypt": "^5.0.0",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.1.1",
     "fuzzy-search": "^3.2.1",
