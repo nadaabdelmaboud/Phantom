@@ -1,6 +1,6 @@
 <p  align="center">
 
-<a align="center" href="https://daniphantom.herokuapp.com/"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
+<a align="center" href="https://phantomclient.herokuapp.com/"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
 
 <h1 align="center">Phantom</h1>
 </p>
@@ -26,7 +26,7 @@
 
 ## Description
 
-[Phantom](https://daniphantom.herokuapp.com/) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas .
+[Phantom](https://phantomrequiem.herokuapp.com) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas .
 
 ## Screenshots
 
@@ -78,10 +78,6 @@
 
       	![Setting](https://i.ibb.co/9Znk8T9/Screenshot-619.png)
 
-- **Close Your Account Whenever You Want**
-
-      	![Close Account](https://i.ibb.co/0FR6gfM/120491498-2547124752244967-6231769206552288935-n.png)
-
 - **Search By Filters About What You Want**
 
       	![Search](https://i.ibb.co/mzfcGyh/Screenshot-620.png)
@@ -92,14 +88,10 @@
 
       	![Reacts](https://i.ibb.co/YZkSdTr/Screenshot-622.png)
 
-- **Find More Ideas Related To A Pin You Opened**
-
-      	![More Pins](https://i.ibb.co/W0k3rSz/120541924-801293377290818-1399688178565917352-n.png)
-
 ## Links
 
-- #### [Website Url](https://daniphantom.herokuapp.com)
-- #### Api Base Url : https://daniphantomserver.herokuapp.com
+- #### [Website Url](https://phantomrequiem.herokuapp.com)
+- #### Api Base Url : (https://daniphantom.herokuapp.com)
 
 ## Tools
 
@@ -149,9 +141,9 @@
       		$ npm run seeds
 
       		```
-      	*	#### Api Documentation
-      		* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
-      	*	#### JsDoc
+      		*	#### Api Documentation
+      			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
+      		*	#### JsDoc
       		```bash
       		$ cd server/phantom
 
