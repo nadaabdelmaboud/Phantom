@@ -165,49 +165,48 @@
       		$ npm run start:prod
 
       	```
-      *	#### Env Variables
-      	* refer to [.env.example](server/phantom/.env.example)
-      *	#### Database Seeds
-      	```bash
-      		$ cd server/phantom
+	* #### Env Variables
+      		* refer to [.env.example](server/phantom/.env.example)
+        * #### Database Seeds
+		```bash
+			$ cd server/phantom
 
-      		$ npm install mongonaut
+			$ npm install mongonaut
 
-      		#seeds will be added to a new mongo local db
-      		$ npm run seeds
+			#seeds will be added to a new mongo local db
+			$ npm run seeds
 
-      	```
-      *	#### Api Documentation
-      	* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
-      *	#### JsDoc
-      	```bash
-      		$ cd server/phantom
+		```
+	* #### Api Documentation
+      		* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
+        * #### JsDoc
+		```bash
+			$ cd server/phantom
 
-      		$ npm install -g "@compodoc/compodoc"
+			$ npm install -g "@compodoc/compodoc"
 
-      		$ npm run compodoc
-      		# then open documentation/index.html
+			$ npm run compodoc
+			# then open documentation/index.html
 
-      	```
+		```
 
 - ## Frontend
+	* ####  Frontend Run
+		```bash
+			$ cd client
 
-     * ####  Frontend Run
-      	```bash
-      		$ cd client
+			# install
+			$ npm install
 
-      		# install
-      		$ npm install
+			# development
+			$ npm run serve
 
-      		# development
-      		$ npm run serve
+			# production mode
+			$ npm run build
 
-      		# production mode
-      		$ npm run build
-
-      	```
-      *	#### Frontend Env Variables
-      	* refer to [.env.example](client/.env.example)
+		```
+	* #### Frontend Env Variables
+      		* refer to [.env.example](client/.env.example)
 
 ## Contributing
 
