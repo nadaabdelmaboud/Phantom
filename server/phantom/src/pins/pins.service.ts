@@ -594,15 +594,20 @@ export class PinsService {
     pin.comments.push(cs);
     pin.counts.comments = pin.counts.comments.valueOf() + 1;
     await pin.save();
-    if (!ownerUser.pinsNotification || ownerUser.pinsNotification == true)
-      await this.NotificationService.commentPin(
-        ownerUser,
-        user,
-        commentText,
-        pin.title,
-        pinId,
-        pin.imageId,
-      );
+    if (!ownerUser.pinsNotification || ownerUser.pinsNotification == true){
+      if(String(ownerUser._id)!=String(user._id)){
+        await this.NotificationService.commentPin(
+          ownerUser,
+          user,
+          commentText,
+          pin.title,
+          pinId,
+          pin.imageId,
+        );
+      }
+  
+    }
+     
     let newComment = pin.comments[pin.comments.length - 1];
     if (
       String(newComment.commenter) == String(userId) &&
@@ -965,8 +970,10 @@ export class PinsService {
     if (
       (!pinOwner.pinsNotification || pinOwner.pinsNotification == true) &&
       reactType != 'none'
-    )
-      await this.NotificationService.reactPin(
+    ){
+      if(String(pinOwner._id)!=String(user._id)){
+
+        await this.NotificationService.reactPin(
         pinOwner,
         user,
         pin.title,
@@ -974,6 +981,9 @@ export class PinsService {
         String(reactType),
         pin.imageId,
       );
+        }
+    }
+    
     if (lastReactType != 'none')
       await this.NotificationService.unreactPin(
         pinOwner,
