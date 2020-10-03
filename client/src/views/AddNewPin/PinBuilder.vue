@@ -318,6 +318,10 @@ import { mapGetters, mapState } from "vuex";
 export default {
   name: "PinBuilder",
   mounted() {
+    this.$store.commit("boards/chooseBoard",{ 
+      boardName:"Select",
+      boardId:"",
+      sectionId:"" })
     this.$store.dispatch("boards/userBoards");
     this.classifier = ml5.imageClassifier(
       this.imageModelURL + "model.json",
