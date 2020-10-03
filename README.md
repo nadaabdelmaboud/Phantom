@@ -1,186 +1,187 @@
-
-
 <p  align="center">
 
-<a align="center" href="https://phantomclient.herokuapp.com/"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
+<a align="center" href="https://daniphantom.herokuapp.com/"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
+
 <h1 align="center">Phantom</h1>
 </p>
 
+### Table of Contents
 
-### Table of Contents  
-1. [Description](#Description)  
-2. [Screenshots](#Screenshots)  
-3. [Links](#Links) 
-4. [Tools](#Tools)  
-5. [Installation](#Installation) 
-	* [Server](#Server)
-		* [Run](#Run)
-		* [Env Variables](#Env-Variables)
-		* [Database Seeds](#Database-Seeds)
-		* [Api Documentation](#Api-Documentation)
-		* [JsDoc](#JsDoc)
-	* [Frontend](#Frontend)
-		* [Run](#Frontend-Run)
-		* [Env Variables](#Frontend-Env-Variables)
+1. [Description](#Description)
+2. [Screenshots](#Screenshots)
+3. [Links](#Links)
+4. [Tools](#Tools)
+5. [Getting Started](#Getting-Started)
+   - [Server](#Server)
+     _ [Run](#Run)
+     _ [Env Variables](#Env-Variables)
+     _ [Database Seeds](#Database-Seeds)
+     _ [Api Documentation](#Api-Documentation) \* [JsDoc](#JsDoc)
+   - [Frontend](#Frontend)
+     _ [Run](#Frontend-Run)
+     _ [Env Variables](#Frontend-Env-Variables)
 6. [Contributing](#Contributing)
 7. [Contributors](#Stay-in-touch)
 8. [License](#Lisence)
 
-
 ## Description
 
+[Phantom](https://daniphantom.herokuapp.com/) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas .
 
-[Phantom](https://phantomrequiem.herokuapp.com) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas  .
-
-  
 ## Screenshots
-* **Create New Phantom Account  And Try It Yourself**
 
-	![Sign Up](https://i.ibb.co/svYdvMw/Screenshot-628.png)
+- **Create New Phantom Account And Try It Yourself**
 
-* **Tell Us What Interests You**
+      	![Sign Up](https://i.ibb.co/svYdvMw/Screenshot-628.png)
 
-	![Interests](https://i.ibb.co/Xss9YZY/Screenshot-607.png)
+- **Tell Us What Interests You**
 
-* **Explore Your Home Feed With Pins Recommended For You**
+      	![Interests](https://i.ibb.co/Xss9YZY/Screenshot-607.png)
 
-	![HomeFeed](https://i.ibb.co/4Y7qBz5/Screenshot-605.png)
+- **Explore Your Home Feed With Pins Recommended For You**
 
-* **Create Your Boards And Manage How They Look**
+      	![HomeFeed](https://i.ibb.co/4Y7qBz5/Screenshot-605.png)
 
-	![Profile Boards](https://i.ibb.co/qny2zLH/Screenshot-609.png)
+- **Create Your Boards And Manage How They Look**
 
-* **Have More Control and Divide Your Board Into Sections**
+      	![Profile Boards](https://i.ibb.co/qny2zLH/Screenshot-609.png)
 
-	![Sections](https://i.ibb.co/vY76xxp/Screenshot-610.png)
+- **Have More Control and Divide Your Board Into Sections**
 
-* **Invite Collaborators Into Your Boards And Share Your Intersts**
+      	![Sections](https://i.ibb.co/vY76xxp/Screenshot-610.png)
 
-	![Collaborators](https://i.ibb.co/vzv3jT2/Screenshot-611.png)
+- **Invite Collaborators Into Your Boards And Share Your Intersts**
 
-* **Create Your Own Pins And Add Them To Your Boards**
+      	![Collaborators](https://i.ibb.co/vzv3jT2/Screenshot-611.png)
 
-	![Create Pin](https://i.ibb.co/z6QvbJj/Screenshot-612.png)
+- **Create Your Own Pins And Add Them To Your Boards**
 
-* **Don't Miss A Thing And Keep Up With Your Notifications**
+      	![Create Pin](https://i.ibb.co/z6QvbJj/Screenshot-612.png)
 
-	![Notifications](https://i.ibb.co/qrvjxpQ/120200486-420557965577056-2215085349692718248-n.png)
+- **Don't Miss A Thing And Keep Up With Your Notifications**
 
-* **Chat With Others And Make New Friends Who Share You Some Interests**
+      	![Notifications](https://i.ibb.co/qrvjxpQ/120200486-420557965577056-2215085349692718248-n.png)
 
-	![Chat](https://i.ibb.co/Vm9K4KB/Screenshot-625.png)
+- **Chat With Others And Make New Friends Who Share You Some Interests**
 
-* **Follow People Recommended For You**
+      	![Chat](https://i.ibb.co/Vm9K4KB/Screenshot-625.png)
 
-	![Follow](https://i.ibb.co/nQxG71P/Screenshot-615.png)
+- **Follow People Recommended For You**
 
-* **Tune Your Home Feed With What You Like**
+      	![Follow](https://i.ibb.co/nQxG71P/Screenshot-615.png)
 
-	![Topics](https://i.ibb.co/fdqW66N/Screenshot-616.png)
+- **Tune Your Home Feed With What You Like**
 
-* **Manage Your Profile Info And Account Settings**
+      	![Topics](https://i.ibb.co/fdqW66N/Screenshot-616.png)
 
-	![Setting](https://i.ibb.co/9Znk8T9/Screenshot-619.png)
+- **Manage Your Profile Info And Account Settings**
 
-* **Search By Filters About What You Want**
+      	![Setting](https://i.ibb.co/9Znk8T9/Screenshot-619.png)
 
-	![Search](https://i.ibb.co/mzfcGyh/Screenshot-620.png)
+- **Close Your Account Whenever You Want**
 
-* **Socialize More And Share Your Thoughts About Others' Pins**
+      	![Close Account](https://i.ibb.co/0FR6gfM/120491498-2547124752244967-6231769206552288935-n.png)
 
-	![Comments](https://i.ibb.co/10ZWQh2/Screenshot-621.png)
+- **Search By Filters About What You Want**
 
-	![Reacts](https://i.ibb.co/YZkSdTr/Screenshot-622.png)
+      	![Search](https://i.ibb.co/mzfcGyh/Screenshot-620.png)
 
+- **Socialize More And Share Your Thoughts About Others' Pins**
 
+      	![Comments](https://i.ibb.co/10ZWQh2/Screenshot-621.png)
 
+      	![Reacts](https://i.ibb.co/YZkSdTr/Screenshot-622.png)
 
+- **Find More Ideas Related To A Pin You Opened**
+
+      	![More Pins](https://i.ibb.co/W0k3rSz/120541924-801293377290818-1399688178565917352-n.png)
 
 ## Links
-* #### [Website Url](https://phantomrequiem.herokuapp.com)
-* #### Api Base Url : (https://daniphantom.herokuapp.com)
+
+- #### [Website Url](https://daniphantom.herokuapp.com)
+- #### Api Base Url : https://daniphantomserver.herokuapp.com
 
 ## Tools
+
 1. Frontend
-	* Vue
-	* Vue lazyload
-	* Bootstrap
-	* Firebase
-	* Socket io
+   - Vue
+   - Vue lazyload
+   - Bootstrap
+   - Firebase
+   - Socket io
 1. Backend
-	* Nestjs
-	* Mongodb
-	* Firebase
-	* WebSockets
-	* Google Api
+   - Nestjs
+   - Mongodb
+   - Firebase
+   - WebSockets
+   - Google Api
 
-## Installation
-* ## Server
-	* ####  Run
-		```bash
-		$ cd server/phantom
-		
-		# install
-		$ npm install
-		
-		# development
-		$ npm run start
+## Getting Started
 
-		# watch mode
-		$ npm run start:dev
+- ## Server
 
-		# production mode
-		$ npm run start:prod
+      	* ####  Run
+      		```bash
+      		$ cd server/phantom
 
-		```
-	*	#### Env Variables
-		* refer to [.env.example](server/phantom/.env.example)
-	*	#### Database Seeds
-		```bash
-		$ cd server/phantom
-		
-		$ npm install mongonaut
-		
-		#seeds will be added to a new mongo local db
-		$ npm run seeds
+      		# install
+      		$ npm install
 
-		```
-		*	#### Api Documentation
-			* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
-		*	#### JsDoc
-		```bash
-		$ cd server/phantom
-		
-		$ npm install -g "@compodoc/compodoc"
-		
-		$ npm run compodoc
-		# then open documentation/index.html
+      		# development
+      		$ npm run start
 
-		```
-* ## Frontend
-	* ####  Frontend Run
-		```bash
-		$ cd client
-		
-		# install
-		$ npm install
-		
-		# development
-		$ npm run serve
+      		# watch mode
+      		$ npm run start:dev
 
-		# production mode
-		$ npm run build
+      		# production mode
+      		$ npm run start:prod
 
-		```
-	*	#### Frontend Env Variables
-		* refer to [.env.example](client/.env.example)
-  
+      		```
+      	*	#### Env Variables
+      		* refer to [.env.example](server/phantom/.env.example)
+      	*	#### Database Seeds
+      		```bash
+      		$ cd server/phantom
 
+      		$ npm install mongonaut
 
+      		#seeds will be added to a new mongo local db
+      		$ npm run seeds
+
+      		```
+      	*	#### Api Documentation
+      		* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
+      	*	#### JsDoc
+      		```bash
+      		$ cd server/phantom
+
+      		$ npm install -g "@compodoc/compodoc"
+
+      		$ npm run compodoc
+      		# then open documentation/index.html
+
+      		```
+
+- ## Frontend
+
+      	* ####  Frontend Run
+      		```bash
+      		$ cd client
+
+      		# install
+      		$ npm install
+
+      		# development
+      		$ npm run serve
+
+      		# production mode
+      		$ npm run build
+
+      		```
+      	*	#### Frontend Env Variables
+      		* refer to [.env.example](client/.env.example)
 
 ## Contributing
-
-  
 
 ```bash
 1. Fork this repo
@@ -192,25 +193,11 @@
 4. Create PR
 ```
 
-  
-
 ## Stay in touch
 
-  
-
-- Frontend
-	- Nihal Mansour - nihalmansour0599@gmail.com
-	- Eman Othman - eothman21@gmail.com
-	- Menna Mahmoud - menna123mahmoud@gmail.com
-- Backend
-	- Dina Alaa - dinaalaaahmed@gmail.com
-	- Aya Samir - ayasabohadima@gmail.com
-	- Nada AbdElmaboud - nada5aled52@gmail.com
-
-  
+- Frontend - Nihal Mansour - nihalmansour0599@gmail.com - Eman Othman - eothman21@gmail.com - Menna Mahmoud - menna123mahmoud@gmail.com
+- Backend - Dina Alaa - dinaalaaahmed@gmail.com - Aya Samir - ayasabohadima@gmail.com - Nada AbdElmaboud - nada5aled52@gmail.com
 
 ## License
-
-  
 
 Phantom is [MIT licensed](LICENSE).
