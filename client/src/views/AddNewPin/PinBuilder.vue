@@ -61,9 +61,7 @@
         <br />
         <i class="fa fa-user-circle"> {{ user.userName }} --</i>
         <br />
-        <input type="text" placeholder="Tell everyone what your pin is about" />
-        <br />
-        <input type="text" placeholder="Add destination link" />
+        <input type="text" placeholder="Tell everyone what your pin is about" v-model="note"  />
       </div>
 
       <div class="boards" v-if="showBoard">
@@ -259,7 +257,7 @@
   width: 45%;
   left: 40%;
   padding: 10px;
-  min-height: 300px;
+  min-height: 250px;
   input {
     border: none;
     width: 90%;
@@ -320,6 +318,10 @@ import { mapGetters, mapState } from "vuex";
 export default {
   name: "PinBuilder",
   mounted() {
+    this.$store.commit("boards/chooseBoard",{ 
+      boardName:"Select",
+      boardId:"",
+      sectionId:"" })
     this.$store.dispatch("boards/userBoards");
     this.classifier = ml5.imageClassifier(
       this.imageModelURL + "model.json",
