@@ -29,7 +29,7 @@
 
 ## Description
 
-[Phantom](https://daniphantom.herokuapp.com) A mimic website of Pinterest where one can share ideas , socialize , find inspirational ideas .
+[Phantom](https://daniphantom.herokuapp.com) A mimic website of Pinterest where one can share ideas , socialize and find inspirational ideas .
 
 ## Screenshots
 
