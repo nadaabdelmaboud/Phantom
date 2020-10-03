@@ -1,7 +1,7 @@
 <template>
   <div id="newPin" @click="newPinPopup">
     <div class="newPinData">
-      <h1>Saved to {{boardName}}</h1>
+      <h1>Saved to {{ boardName }}</h1>
       <div class="imgWrapper">
         <img :src="getImage(pin.imageId)" />
       </div>
@@ -22,8 +22,7 @@ import { mapState } from "vuex";
 export default {
   name: "newPinPopup",
   data: function() {
-    return {
-    };
+    return {};
   },
   mixins: [getImage],
   methods: {
@@ -40,7 +39,7 @@ export default {
   computed: {
     ...mapState({
       pin: state => state.pins.pin,
-      boardName: state=>state.boards.chosenBoardName
+      boardName: state => state.boards.chosenBoardName
     })
   }
 };

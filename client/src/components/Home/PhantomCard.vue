@@ -25,6 +25,12 @@
   min-height: 200px;
   max-height: 500px;
 }
+
+@media screen and (max-width: 600px) {
+  .phantomCard {
+    margin: 15px auto;
+  }
+}
 </style>
 
 <script>
