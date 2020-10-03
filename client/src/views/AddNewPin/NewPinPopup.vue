@@ -1,7 +1,7 @@
 <template>
   <div id="newPin" @click="newPinPopup">
     <div class="newPinData">
-      <h1>Saved to new</h1>
+      <h1>Saved to {{boardName}}</h1>
       <div class="imgWrapper">
         <img :src="getImage(pin.imageId)" />
       </div>
@@ -23,8 +23,6 @@ export default {
   name: "newPinPopup",
   data: function() {
     return {
-      boardName: "",
-      noName: false
     };
   },
   mixins: [getImage],
@@ -41,7 +39,8 @@ export default {
   },
   computed: {
     ...mapState({
-      pin: state => state.pins.pin
+      pin: state => state.pins.pin,
+      boardName: state=>state.boards.chosenBoardName
     })
   }
 };
