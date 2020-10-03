@@ -67,7 +67,7 @@
 	![Collaborators](https://i.ibb.co/vzv3jT2/Screenshot-611.png)
 		
 
-- **Create Your Own Pins And Add Them To Your Boards**
+* **Create Your Own Pins And Add Them To Your Boards**
 
 	![Create Pin](https://i.ibb.co/z6QvbJj/Screenshot-612.png)
 
@@ -120,9 +120,9 @@
 
 * **Find More Ideas Related To A Pin You Opened**
 
-  
+	![More Pins](https://i.ibb.co/W0k3rSz/120541924-801293377290818-1399688178565917352-n.png)
 
-![More Pins](https://i.ibb.co/W0k3rSz/120541924-801293377290818-1399688178565917352-n.png)
+
 
 ## Links
 
@@ -149,7 +149,7 @@
 - ## Server
 
      * ####  Run
-	      ```bash
+     	```bash
 	      	$ cd server/phantom
 
       		# install
