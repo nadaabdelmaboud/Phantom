@@ -1,4 +1,5 @@
 
+
 <p  align="center">
 
 <a align="center" href="https://daniphantom.herokuapp.com"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
@@ -67,7 +68,7 @@
 	![Collaborators](https://i.ibb.co/vzv3jT2/Screenshot-611.png)
 		
 
-- **Create Your Own Pins And Add Them To Your Boards**
+* **Create Your Own Pins And Add Them To Your Boards**
 
 	![Create Pin](https://i.ibb.co/z6QvbJj/Screenshot-612.png)
 
@@ -120,9 +121,9 @@
 
 * **Find More Ideas Related To A Pin You Opened**
 
-  
+	![More Pins](https://i.ibb.co/W0k3rSz/120541924-801293377290818-1399688178565917352-n.png)
 
-![More Pins](https://i.ibb.co/W0k3rSz/120541924-801293377290818-1399688178565917352-n.png)
+
 
 ## Links
 
@@ -149,65 +150,65 @@
 - ## Server
 
      * ####  Run
-	      ```bash
-	      	$ cd server/phantom
+     	```bash
+		   $ cd server/phantom
 
-      		# install
-      		$ npm install
+      	   # install
+      	   $ npm install
 
-      		# development
-      		$ npm run start
+      	   # development
+      	   $ npm run start
 
-      		# watch mode
-      		$ npm run start:dev
+      	   # watch mode
+           $ npm run start:dev
 
-      		# production mode
-      		$ npm run start:prod
-
-      	```
-      *	#### Env Variables
-      	* refer to [.env.example](server/phantom/.env.example)
-      *	#### Database Seeds
-      	```bash
-      		$ cd server/phantom
-
-      		$ npm install mongonaut
-
-      		#seeds will be added to a new mongo local db
-      		$ npm run seeds
+      	   # production mode
+      	   $ npm run start:prod
 
       	```
-      *	#### Api Documentation
-      	* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
-      *	#### JsDoc
-      	```bash
-      		$ cd server/phantom
+     * #### Env Variables
+	     * refer to [.env.example](server/phantom/.env.example)
+	
+     * #### Database Seeds
+		```bash
+		   $ cd server/phantom
 
-      		$ npm install -g "@compodoc/compodoc"
+		   $ npm install mongonaut
 
-      		$ npm run compodoc
-      		# then open documentation/index.html
+		   #seeds will be added to a new mongo local db
+		   $ npm run seeds
+		```
+     * #### Api Documentation
+	     * refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
+		
+     * #### JsDoc
+	
+		```bash
+	       $ cd server/phantom
 
-      	```
+	       $ npm install -g "@compodoc/compodoc"
+
+	       $ npm run compodoc
+	       # then open documentation/index.html
+		```
 
 - ## Frontend
+	* ####  Frontend Run
+		```bash
+		   $ cd client
 
-     * ####  Frontend Run
-      	```bash
-      		$ cd client
+		   # install
+		   $ npm install
 
-      		# install
-      		$ npm install
+		   # development
+		   $ npm run serve
 
-      		# development
-      		$ npm run serve
+		   # production mode
+		   $ npm run build
 
-      		# production mode
-      		$ npm run build
-
-      	```
-      *	#### Frontend Env Variables
-      	* refer to [.env.example](client/.env.example)
+		```
+	* #### Frontend Env Variables
+		 * refer to [.env.example](client/.env.example)
 
 ## Contributing
 
