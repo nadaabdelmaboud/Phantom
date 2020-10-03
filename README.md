@@ -11,7 +11,7 @@
 2. [Screenshots](#Screenshots)
 3. [Links](#Links)
 4. [Tools](#Tools)
-5. [Getting Started](#Getting-Started)
+5. [Installation](#Installation)
    - [Server](#Server)
      _ [Run](#Run)
      _ [Env Variables](#Env-Variables)
@@ -116,7 +116,7 @@
    - WebSockets
    - Google Api
 
-## Getting Started
+## Installation
 
 - ## Server
 
