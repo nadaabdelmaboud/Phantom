@@ -1,4 +1,5 @@
 
+
 <p  align="center">
 
 <a align="center" href="https://daniphantom.herokuapp.com"  target="blank"><img  src="https://i.pinimg.com/originals/13/a7/f2/13a7f2e36e658749fd97b9078ad1e22f.png"  width="320" align="center" alt="Phantom Logo"  /></a>
@@ -150,63 +151,64 @@
 
      * ####  Run
      	```bash
-	      	$ cd server/phantom
+		   $ cd server/phantom
 
-      		# install
-      		$ npm install
+      	   # install
+      	   $ npm install
 
-      		# development
-      		$ npm run start
+      	   # development
+      	   $ npm run start
 
-      		# watch mode
-      		$ npm run start:dev
+      	   # watch mode
+           $ npm run start:dev
 
-      		# production mode
-      		$ npm run start:prod
+      	   # production mode
+      	   $ npm run start:prod
 
       	```
-	* #### Env Variables
-      		* refer to [.env.example](server/phantom/.env.example)
-        * #### Database Seeds
+     * #### Env Variables
+	     * refer to [.env.example](server/phantom/.env.example)
+	
+     * #### Database Seeds
 		```bash
-			$ cd server/phantom
+		   $ cd server/phantom
 
-			$ npm install mongonaut
+		   $ npm install mongonaut
 
-			#seeds will be added to a new mongo local db
-			$ npm run seeds
-
+		   #seeds will be added to a new mongo local db
+		   $ npm run seeds
 		```
-	* #### Api Documentation
-      		* refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
-        * #### JsDoc
+     * #### Api Documentation
+	     * refer to[ Api Doc ](https://documenter.getpostman.com/view/10647228/TVRdAWo9)
+		
+     * #### JsDoc
+	
 		```bash
-			$ cd server/phantom
+	       $ cd server/phantom
 
-			$ npm install -g "@compodoc/compodoc"
+	       $ npm install -g "@compodoc/compodoc"
 
-			$ npm run compodoc
-			# then open documentation/index.html
-
+	       $ npm run compodoc
+	       # then open documentation/index.html
 		```
 
 - ## Frontend
 	* ####  Frontend Run
 		```bash
-			$ cd client
+		   $ cd client
 
-			# install
-			$ npm install
+		   # install
+		   $ npm install
 
-			# development
-			$ npm run serve
+		   # development
+		   $ npm run serve
 
-			# production mode
-			$ npm run build
+		   # production mode
+		   $ npm run build
 
 		```
 	* #### Frontend Env Variables
-      		* refer to [.env.example](client/.env.example)
+		 * refer to [.env.example](client/.env.example)
 
 ## Contributing
 
