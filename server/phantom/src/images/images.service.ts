@@ -22,7 +22,12 @@ export class ImagesService {
     );
     this.drive = google.drive({ version: 'v3', auth });
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description delete an image file from google drive
+   * @param {string} id - the id of the image
+   * @returns  {Promise<object>}
+   */
   async deleteFile(id) {
     this.drive.files
       .delete({
@@ -37,7 +42,14 @@ export class ImagesService {
         },
       );
   }
-
+  /**
+   * @author Nada AbdElmaboud <nada5aled52@gmail.com>
+   * @description upload an image file to google drive
+   * @param {string} fileName - the id of the file
+   * @param {string} mimeType - the type of the file
+   * @param {Buffer} stream - the buffer of the file data
+   * @returns  {Promise<Array<object>>}
+   */
   async uploadFile(fileName, mimeType, stream) {
     const readable = new Readable();
     readable._read = () => {};

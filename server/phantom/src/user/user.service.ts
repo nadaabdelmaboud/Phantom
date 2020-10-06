@@ -3,7 +3,7 @@ import {
   BadRequestException,
   NotFoundException,
   HttpException,
-  HttpStatus
+  HttpStatus,
 } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -42,7 +42,7 @@ export class UserService {
     private email: Email,
     private ValidationService: ValidationService,
     private boardService: BoardService,
-  ) { }
+  ) {}
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -91,7 +91,7 @@ export class UserService {
           sortType: 1,
           profileImage: 1,
           google: 1,
-          googleImage: 1
+          googleImage: 1,
         },
       },
     ]);
@@ -131,7 +131,7 @@ export class UserService {
    * @returns {Object}
    */
   async findUserAndGetData(findData: {}, data: {}) {
-    let user = await this.userModel.findOne(findData, data)
+    let user = await this.userModel.findOne(findData, data);
     if (!user)
       throw new HttpException('Unauthorized access', HttpStatus.UNAUTHORIZED);
     return user;
@@ -520,7 +520,7 @@ export class UserService {
       await this.deleteAllBoards(userId);
       await this.deleteAllRecomendation(userId);
       await this.deleteAllReatsAndComments(userId);
-      await this.deleteUserChats(userId)
+      await this.deleteUserChats(userId);
       await this.deleteUser(userId);
       return 1;
     }
@@ -808,7 +808,8 @@ export class UserService {
       return { followers: [], numOfFollowers: 0 };
     if (!limit || limit > user.followers.length) limit = user.followers.length;
     if (!offset || offset > user.followers.length) offset = 0;
-    if (offset + limit > user.followers.length) limit = user.followers.length - offset;
+    if (offset + limit > user.followers.length)
+      limit = user.followers.length - offset;
     const followers = user.followers.slice(offset, offset + limit);
     var followersInfo = [];
     for (let i = 0; i < followers.length; i++) {
@@ -823,7 +824,6 @@ export class UserService {
           googleImage: 1,
         },
       );
-      console.log(currentUser);
       if (currentUser) followersInfo.push(currentUser);
     }
     return { followers: followersInfo, numOfFollowers: user.followers.length };
@@ -849,7 +849,8 @@ export class UserService {
       return { followings: [], numOfFollowings: 0 };
     if (!limit || limit > user.following.length) limit = user.following.length;
     if (!offset || offset > user.following.length) offset = 0;
-    if (offset + limit > user.following.length) limit = user.following.length - offset;
+    if (offset + limit > user.following.length)
+      limit = user.following.length - offset;
     const followings = user.following.slice(offset, offset + limit);
 
     let followingsInfo = [];
@@ -877,12 +878,13 @@ export class UserService {
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description to delete all followers of user
    * @param {String} userId - the id of user in mongoose formate
-   * @returns {Number} "1" 
+   * @returns {Number} "1"
    */
   async deleteAllFollowers(userId) {
-    console.log(userId)
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followers: 1 });
-    console.log('OK')
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, followers: 1 },
+    );
     if (!user || !user.followers) return 1;
     for (let i = 0; i < user.followers.length; i++)
       await this.unfollowUser(user.followers[i], userId);
@@ -893,36 +895,42 @@ export class UserService {
    * @author Aya Abohadima <ayasabohadima@gmail.com>
    * @description to delete all followings of user
    * @param {String} userId - the id of user in mongoose formate
-   * @returns {Number} "1" 
+   * @returns {Number} "1"
    */
   async deleteAllFollowings(userId) {
-    console.log(402);
-
-    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, following: 1 });
+    let user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, following: 1 },
+    );
     if (!user || !user.following) return 1;
     for (let i = 0; i < user.following.length; i++)
       await this.unfollowUser(userId, user.following[i]);
     return 1;
   }
 
-
   /**
-  * @author Aya Abohadima <ayasabohadima@gmail.com>
-  * @description make user unfollow topic
-  * @param {String} userId -user id  
-  * @param {String} topicId - topic id
-  * @returns {Number} 1
-  */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description make user unfollow topic
+   * @param {String} userId -user id
+   * @param {String} topicId - topic id
+   * @returns {Number} 1
+   */
   async unfollowTopic(userId, topicId) {
     if (!this.ValidationService.checkMongooseID([userId, topicId]))
       throw new HttpException('there is not correct id ', HttpStatus.FORBIDDEN);
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, followingTopics: 1 },
+    );
     if (!user)
       throw new HttpException(
         'user id is not correct',
         HttpStatus.UNAUTHORIZED,
       );
-    const topic = await this.topicModel.findOne({ _id: topicId }, { _id: 1, followers: 1 });
+    const topic = await this.topicModel.findOne(
+      { _id: topicId },
+      { _id: 1, followers: 1 },
+    );
     if (!topic)
       throw new HttpException('topic id is not correct', HttpStatus.FORBIDDEN);
     if (!topic.followers)
@@ -930,10 +938,11 @@ export class UserService {
         'you dont follow this topic',
         HttpStatus.BAD_REQUEST,
       );
-    if (!topic.followers.includes(userId)) throw new HttpException(
-      'you dont follow this topic',
-      HttpStatus.BAD_REQUEST,
-    );
+    if (!topic.followers.includes(userId))
+      throw new HttpException(
+        'you dont follow this topic',
+        HttpStatus.BAD_REQUEST,
+      );
     await this.topicModel
       .findByIdAndUpdate(topicId, { $pull: { followers: userId } })
       .lean();
@@ -949,101 +958,154 @@ export class UserService {
     return 1;
   }
 
-
   /**
-     * @author Aya Abohadima <ayasabohadima@gmail.com>
-     * @description to unfollow all topics
-     * @param {String} userId - the id of user in mongoose formate
-     * @returns {Number} "1" 
-     */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description to unfollow all topics
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1"
+   */
   async deleteAllFollowingsTopics(userId) {
-    console.log(404);
-
-    let user = await this.findUserAndGetData({ _id: userId }, { _id: 1, followingTopics: 1 });
+    let user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, followingTopics: 1 },
+    );
     if (!user || !user.followingTopics) return 1;
     for (let i = 0; i < user.followingTopics.length; i++)
       await this.unfollowTopic(userId, user.followingTopics[i]);
     return 1;
   }
 
-
   /**
-    * @author Dina Alaa <dinaalaaahmed@gmail.com>
-    * @description to remove all reacts user done 
-    * @param {String} userId - the id of user in mongoose formate
-    * @returns {Number} "1" 
-    */
+   * @author Dina Alaa <dinaalaaahmed@gmail.com>
+   * @description to remove all reacts user done
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1"
+   */
   async deleteAllReatsAndComments(userId) {
-    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Wow', userId: userId } }, $inc: { "counts.wowReacts": -1 } },
+    await this.pinModel.updateMany(
+      {},
+      {
+        $pull: { reacts: { reactType: 'Wow', userId: userId } },
+        $inc: { 'counts.wowReacts': -1 },
+      },
     );
-    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Love', userId: userId } }, $inc: { "counts.loveReacts": -1 } },
+    await this.pinModel.updateMany(
+      {},
+      {
+        $pull: { reacts: { reactType: 'Love', userId: userId } },
+        $inc: { 'counts.loveReacts': -1 },
+      },
     );
-    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Haha', userId: userId } }, $inc: { "counts.hahaReacts": -1 } },
+    await this.pinModel.updateMany(
+      {},
+      {
+        $pull: { reacts: { reactType: 'Haha', userId: userId } },
+        $inc: { 'counts.hahaReacts': -1 },
+      },
     );
-    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Thanks', userId: userId } }, $inc: { "counts.thanksReacts": -1 } },
+    await this.pinModel.updateMany(
+      {},
+      {
+        $pull: { reacts: { reactType: 'Thanks', userId: userId } },
+        $inc: { 'counts.thanksReacts': -1 },
+      },
     );
-    await this.pinModel.updateMany({}, { $pull: { reacts: { reactType: 'Good idea', userId: userId } }, $inc: { "counts.goodIdeaReacts": -1 } },
+    await this.pinModel.updateMany(
+      {},
+      {
+        $pull: { reacts: { reactType: 'Good idea', userId: userId } },
+        $inc: { 'counts.goodIdeaReacts': -1 },
+      },
     );
-    await this.pinModel.updateMany({}, { $pull: { comments: { commenter: userId }, $inc: { "counts.comments": -1 } } });
+    await this.pinModel.updateMany(
+      {},
+      {
+        $pull: {
+          comments: { commenter: userId },
+          $inc: { 'counts.comments': -1 },
+        },
+      },
+    );
     return 1;
   }
 
   /**
-     * @author Aya Abohadima <ayasabohadima@gmail.com>
-     * @description delete all pins created and saved by this user
-     * @param {String} userId - the id of user in mongoose formate
-     * @returns {Number} "1" 
-     */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description delete all pins created and saved by this user
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1"
+   */
   async deleteAllPins(userId) {
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, pins: 1, savedPins: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, pins: 1, savedPins: 1 },
+    );
     if (!user) return 1;
     for (let i = 0; i < user.pins.length; i++) {
       await this.boardService.deletePin(user.pins[i].pinId, userId);
     }
     for (let i = 0; i < user.savedPins.length; i++) {
-      await this.boardService.unsavePin(user.savedPins[i].pinId, user.savedPins[i].boardId, user.savedPins[i].sectionId, userId, false);
+      await this.boardService.unsavePin(
+        user.savedPins[i].pinId,
+        user.savedPins[i].boardId,
+        user.savedPins[i].sectionId,
+        userId,
+        false,
+      );
     }
   }
 
   /**
-     * @author Aya Abohadima <ayasabohadima@gmail.com>
-     * @description delete all boards created 
-     * @param {String} userId - the id of user in mongoose formate
-     * @returns {Number} "1" 
-     */
+   * @author Aya Abohadima <ayasabohadima@gmail.com>
+   * @description delete all boards created
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1"
+   */
   async deleteAllBoards(userId) {
-    const user = await this.findUserAndGetData({ _id: userId }, { _id: 1, boards: 1 });
+    const user = await this.findUserAndGetData(
+      { _id: userId },
+      { _id: 1, boards: 1 },
+    );
     if (!user) return 1;
     for (let i = 0; i < user.boards.length; i++) {
       await this.boardService.deleteBoard(userId, user.boards[i].boardId);
     }
-    let boards = await this.boardModel.find({ "collaborators.collaboratorId": userId }, { collaborators: 1, _id: 1, creator: 1 })
+    let boards = await this.boardModel.find(
+      { 'collaborators.collaboratorId': userId },
+      { collaborators: 1, _id: 1, creator: 1 },
+    );
     for (let i = 0; i < boards.length; i++) {
-      await this.boardService.deleteCollaborator(boards[i].creator.id, boards[i]._id, userId);
+      await this.boardService.deleteCollaborator(
+        boards[i].creator.id,
+        boards[i]._id,
+        userId,
+      );
     }
   }
   /**
    * @author Dina Alaa <dinaalaaahmed@gmail.com>
    * @description delete user from all notification
    * @param {String} userId - the id of user in mongoose formate
-   * @returns {Number} "1" 
+   * @returns {Number} "1"
    */
   async deleteAllRecomendation(userId) {
-    await this.topicModel.updateMany({ "recommendedUsers": userId }, { $pull: { recommendedUsers: userId } });
-
+    await this.topicModel.updateMany(
+      { recommendedUsers: userId },
+      { $pull: { recommendedUsers: userId } },
+    );
   }
 
   /**
-  * @author Dina Alaa <dinaalaaahmed@gmail.com>
-  * @description delete chat
-  * @param {String} userId - the id of user in mongoose formate
-  * @returns {Number} "1" 
-  */
+   * @author Dina Alaa <dinaalaaahmed@gmail.com>
+   * @description delete chat
+   * @param {String} userId - the id of user in mongoose formate
+   * @returns {Number} "1"
+   */
   async deleteUserChats(userId) {
-    let chats = await this.chatModel.find({ "usersIds": userId }, { _id: 1 });
+    let chats = await this.chatModel.find({ usersIds: userId }, { _id: 1 });
     for (let i = 0; i < chats.length; i++) {
-      await this.messageModel.deleteMany({ chatId: chats[i]._id })
-      await this.chatModel.findByIdAndDelete(chats[i]._id)
+      await this.messageModel.deleteMany({ chatId: chats[i]._id });
+      await this.chatModel.findByIdAndDelete(chats[i]._id);
     }
     return 1;
   }
@@ -1055,12 +1117,12 @@ export class UserService {
    * @returns {Array<pin>}
    */
   async getPublicHome(index: number) {
-    index = Math.floor(
-      Math.random() * 1000 + 1,
-    );
-    let pins = await this.pinModel.find({}, { imageId: 1 }).skip(Number(index)).limit(15);
+    index = Math.floor(Math.random() * 1000 + 1);
+    let pins = await this.pinModel
+      .find({}, { imageId: 1 })
+      .skip(Number(index))
+      .limit(15);
 
     return pins;
   }
-
 }

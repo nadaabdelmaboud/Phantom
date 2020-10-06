@@ -40,13 +40,6 @@ export class AuthController {
   async googleAuthRedirect(@Req() req, @Res() res) {
     const data = await this.authService.googleLogin(req);
     if (data) {
-      console.log(
-        process.env.FRONT_BASE_URL +
-          '/aouth/google?token=' +
-          data.token +
-          '&type=' +
-          data.type,
-      );
       res.redirect(
         process.env.FRONT_BASE_URL +
           '/aouth/google?token=' +

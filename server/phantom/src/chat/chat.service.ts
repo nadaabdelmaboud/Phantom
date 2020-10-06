@@ -13,16 +13,20 @@ export class ChatService {
     @InjectModel('Message') private readonly messageModel: Model<message>,
 
     private ValidationService: ValidationService,
-  ) { }
+  ) {}
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget send message
-* @param {String} senderId -sender id 
-* @param {Array<String>} recieverIds -reciever ids
-* @param {String} text -name
-* @returns {String} -message id
-*/
-  async sendMessage(senderId: String, recieverIds: String[], text: String): Promise<String> {
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget send message
+   * @param {String} senderId -sender id
+   * @param {Array<String>} recieverIds -reciever ids
+   * @param {String} text -name
+   * @returns {String} -message id
+   */
+  async sendMessage(
+    senderId: String,
+    recieverIds: String[],
+    text: String,
+  ): Promise<String> {
     if (!this.ValidationService.checkMongooseID([senderId, recieverIds[0]]))
       throw new Error('not mongoose id');
     let mess = { userId: senderId, message: text, date: new Date() };
@@ -49,17 +53,23 @@ export class ChatService {
     return message._id;
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget get messages
-* @param {String} senderId -sender id 
-* @param {Array<String>} userIds -user ids
-* @returns {Array<Object>|0} -message objects | 0
-*/
-  async getMessage(userIds: String[], senderId: String): Promise<Array<message> | 0> {
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget get messages
+   * @param {String} senderId -sender id
+   * @param {Array<String>} userIds -user ids
+   * @returns {Array<Object>|0} -message objects | 0
+   */
+  async getMessage(
+    userIds: String[],
+    senderId: String,
+  ): Promise<Array<message> | 0> {
     if (!this.ValidationService.checkMongooseID(userIds))
       throw new Error('not mongoose id');
     let ids = userIds.concat(senderId);
-    let chat = await this.chatModel.findOne({ usersIds: { $all: ids, $size: ids.length } }, '_id');
+    let chat = await this.chatModel.findOne(
+      { usersIds: { $all: ids, $size: ids.length } },
+      '_id',
+    );
     if (!chat) return 0;
     return await this.messageModel.find(
       { chatId: chat._id },
@@ -68,11 +78,11 @@ export class ChatService {
     );
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget get chats
-* @param {String} userId -user id 
-* @returns {Array<Object>} -chat objects
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget get chats
+   * @param {String} userId -user id
+   * @returns {Array<Object>} -chat objects
+   */
   async getChats(userId: String): Promise<Array<Object>> {
     if (!this.ValidationService.checkMongooseID([userId]))
       throw new Error('not mongoose id');
@@ -84,7 +94,6 @@ export class ChatService {
     let arr = [];
     let result = [];
     chat.map(conv => {
-      console.log(conv)
       conv.usersIds.map(user => {
         if (String(user) != String(userId)) arr.push(user);
       });
@@ -95,19 +104,17 @@ export class ChatService {
           .findOne({ _id: arr[i] }, 'profileImage userName google googleImage')
           .lean()),
         lastMessage: chat[i].lastMessage,
-
       });
-
     }
     return result;
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget deliver message
-* @param {String} userId -user id 
-* @param {String} messageId -message id
-* @returns {Object} -message object
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget deliver message
+   * @param {String} userId -user id
+   * @param {String} messageId -message id
+   * @returns {Object} -message object
+   */
   async deliver(userId: String, messageId: string): Promise<message> {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
@@ -125,12 +132,12 @@ export class ChatService {
     );
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget seen message
-* @param {String} userId -user id 
-* @param {String} messageId -message id
-* @returns {Object} -message object
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget seen message
+   * @param {String} userId -user id
+   * @param {String} messageId -message id
+   * @returns {Object} -message object
+   */
   async seen(userId: String, messageId: string): Promise<message> {
     if (!this.ValidationService.checkMongooseID([userId, messageId]))
       throw new Error('not mongoose id');
@@ -139,26 +146,27 @@ export class ChatService {
       {
         _id: messageId,
         senderId: { $ne: userId },
-        seenStatus: { $not: { $elemMatch: { userId: userId } } }
+        seenStatus: { $not: { $elemMatch: { userId: userId } } },
       },
       {
         $push: {
-          seenStatus: { userId: userId, time: new Date() }
-        }
-      });
+          seenStatus: { userId: userId, time: new Date() },
+        },
+      },
+    );
   }
   /**
-* @author Dina Alaa <dinaalaaaahmed@gmail.com>
-* @descriptionget seen messages before timeStamp
-* @param {String} senderId -sender id 
-* @param {String} recieverId -reciever id 
-* @param {String} time -time
-* @returns {Boolean} 
-*/
+   * @author Dina Alaa <dinaalaaaahmed@gmail.com>
+   * @descriptionget seen messages before timeStamp
+   * @param {String} senderId -sender id
+   * @param {String} recieverId -reciever id
+   * @param {String} time -time
+   * @returns {Boolean}
+   */
   async seenMessage(
     senderId: String,
     recieverId: String,
-    time: string
+    time: string,
   ): Promise<Boolean> {
     if (!this.ValidationService.checkMongooseID([senderId, recieverId]))
       throw new Error('not mongoose id');
@@ -181,6 +189,4 @@ export class ChatService {
     );
     return true;
   }
-
-
 }
