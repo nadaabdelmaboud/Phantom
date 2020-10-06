@@ -72,4 +72,12 @@ i {
   margin-right: 4px;
   margin-left: 20px;
 }
+
+/*Media Quires
+******************/
+@media screen and (max-width: 1280px) {
+  .passwordValidation p {
+    font-size: 9px;
+  }
+}
 </style>

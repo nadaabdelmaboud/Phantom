@@ -2,6 +2,7 @@
   <div class="followCard">
     <div class="cardImageDiv">
       <img
+        @click="toUserProfile()"
         v-lazy="getImage(cardImage, google, googleImage)"
         class="cardImg"
         alt="Card image"
@@ -162,6 +163,10 @@ export default {
       const unfollowBtn = document.getElementById(this.userId + 1);
       unfollowBtn.style.display = "none";
       followBtn.style.display = "block";
+    },
+    toUserProfile() {
+      this.$router.push(`/User/${this.userId}`);
+      this.$store.commit("popUpsState/toggleshowFollowPopup");
     }
   }
 };

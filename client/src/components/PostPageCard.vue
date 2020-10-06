@@ -89,12 +89,14 @@
             </div>
             <div class="followuserbox">
               <div class="userimage">
-                <img
-                  :src="
-                    getImage(this.userImageId, this.google, this.googleImage)
-                  "
-                  alt="User Image"
-                />
+                <router-link :to="'/User/' + this.pinCreatorId">
+                  <img
+                    :src="
+                      getImage(this.userImageId, this.google, this.googleImage)
+                    "
+                    alt="User Image"
+                  />
+                </router-link>
               </div>
               <div class="userinfo">
                 <h5 class="username">

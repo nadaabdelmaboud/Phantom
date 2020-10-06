@@ -22,10 +22,7 @@
           @input="validatePassword()"
         />
         <br />
-        <CheckPasswordFormat
-          :password="this.newPassword"
-          style="margin-left:10vw;"
-        />
+        <CheckPasswordFormat :password="this.newPassword" class="format" />
         <hr />
         <label class="col col1">Type it again</label>
         <input
@@ -181,24 +178,32 @@ label {
   margin-left: 10vw;
 }
 
+.format {
+  margin-left: 150px;
+}
+
 /*Media Quires
 ******************/
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1280px) {
   .popup-content {
-    width: 400px;
+    width: 350px;
+    line-height: 1em;
   }
 
   .title {
     font-size: 18px;
+    margin-bottom: 4px;
   }
 
   p,
   label {
     font-size: 14px;
+    margin: 0;
   }
 
   input {
     width: 300px;
+    height: 30px;
   }
 
   .col1 {
@@ -208,7 +213,10 @@ label {
   }
 
   .forget-button {
+    position: relative;
+    left: 10px;
     margin-left: 0;
+    margin-bottom: 2px;
   }
 
   .action-buttons {
@@ -219,6 +227,21 @@ label {
 
   button {
     font-size: 14px;
+  }
+
+  hr {
+    margin: 4px 10px;
+  }
+
+  .error {
+    font-size: 10px;
+    margin-left: 10px;
+    margin-bottom: 4px;
+    max-width: 200px;
+  }
+
+  .format {
+    margin-left: 10px;
   }
 }
 
