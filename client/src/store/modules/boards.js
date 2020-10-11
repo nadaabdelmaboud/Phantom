@@ -85,7 +85,7 @@ const actions = {
         console.log(error);
       });
   },
-  getBoard({ commit, state }, boardId) {
+ getBoard({ commit, state, dispatch }, boardId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
     let newLoad = false;
@@ -94,9 +94,9 @@ const actions = {
       commit("popUpsState/toggleLoadingPopup", null, { root: true });
       newLoad = true;
     }
-    axios
+    axios 
       .get("boards/" + boardId)
-      .then(response => {
+      .then( async(response )=> {
         let board = response.data;
         commit("setCurrentBoard", board);
         commit("chooseBoard", {
@@ -104,6 +104,15 @@ const actions = {
           boardId: board.board._id,
           sectionId: ""
         });
+        if(board.type!= "creator"){
+          let boardOwner= await dispatch("phantomUser/getUser",board.board.creator.id,{root:true})
+          console.log("a",boardOwner.profileImage)
+          if (boardOwner.google) {
+            await axios({ url: boardOwner.googleImage, baseURL: '' })
+          } else
+            await  axios.get("/image/"+boardOwner.profileImage);
+        }
+     
         if (newLoad)
           commit("popUpsState/toggleLoadingPopup", null, { root: true });
       })

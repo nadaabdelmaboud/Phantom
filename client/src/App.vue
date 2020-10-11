@@ -54,7 +54,7 @@ export default {
           this.$store.dispatch("search/searchMyPins", {
             name: name
           });
-        } else if (this.$route.path.includes("")) {
+        } else if (this.$route.path== "/") {
           if (localStorage.getItem("userToken") != "") {
             await this.$store.dispatch("homeCards/userGenerateCards", 10);
             await this.$store.dispatch("homeCards/userGenerateCards", 10);

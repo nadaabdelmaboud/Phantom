@@ -18,17 +18,18 @@ const mutations = {
 };
 
 const actions = {
-  getUser({ commit }, userId) {
+ async getUser({ commit }, userId) {
     let token = localStorage.getItem("userToken");
     axios.defaults.headers.common["Authorization"] = token;
-    axios
-      .get("user/" + userId)
-      .then(response => {
-        commit("setUser", response.data);
-      })
-      .catch(error => {
+    try{
+      let response= await axios.get("user/" + userId)
+      commit("setUser", response.data);
+      return response.data
+    }
+    catch(error){
         console.log(error);
-      });
+      
+    };
   },
   async isFollowed({ commit }, userId) {
     let token = localStorage.getItem("userToken");

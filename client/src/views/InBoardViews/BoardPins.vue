@@ -2,7 +2,7 @@
   <div>
     <div class="row m-0 justify-content-center">
       <div class="col-9">
-        <div class="row m-0">
+        <div class="row m-0" v-if="board.board">
           <Board
             v-for="b in board.board.sections"
             class="col-sm-4"

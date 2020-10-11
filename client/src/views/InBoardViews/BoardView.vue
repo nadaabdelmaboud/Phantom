@@ -1,14 +1,15 @@
 <template>
   <div class="profile" @click="clear">
     <div class="boardInfo">
-      <h1>{{ board.board.name }}</h1>
-      <p style="width:100%;text-align:center;margin:0">
+      <h1 v-if="board.board">{{ board.board.name }}</h1>
+      <p style="width:100%;text-align:center;margin:0" v-if="board.board">
         {{ board.board.pins.length }} pins
         {{ board.board.sections.length }} section
       </p>
-      <img
+      <img v-if="board.type == 'creator'"
         :src="getImage(myData.profileImage, myData.google, myData.googleImage)"
       />
+      <img v-else :src="getImage(boardOwner.profileImage, boardOwner.google, boardOwner.googleImage)"/>
       <i
         class="fa fa-plus globalIcons"
         v-if="
@@ -109,7 +110,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      board: "boards/currentBoard"
+      board: "boards/currentBoard",
+      boardOwner: "phantomUser/user"
     }),
     ...mapState({
       myData: state => state.user.userData
@@ -122,7 +124,7 @@ export default {
     } else {
       this.inMore = true;
       this.inPins = false;
-    }
+    } 
   },
   created() {
     this.boardId = this.$route.params.boardId;
