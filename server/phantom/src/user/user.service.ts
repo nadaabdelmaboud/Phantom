@@ -42,7 +42,7 @@ export class UserService {
     private email: Email,
     private ValidationService: ValidationService,
     private boardService: BoardService,
-  ) {}
+  ) { }
 
   /**
    * @author Aya Abohadima <ayasabohadima@gmail.com>
@@ -983,42 +983,42 @@ export class UserService {
    */
   async deleteAllReatsAndComments(userId) {
     await this.pinModel.updateMany(
-      {},
+      { reacts: { reactType: 'Wow', userId: userId } },
       {
         $pull: { reacts: { reactType: 'Wow', userId: userId } },
         $inc: { 'counts.wowReacts': -1 },
       },
     );
     await this.pinModel.updateMany(
-      {},
+      { reacts: { reactType: 'Love', userId: userId } },
       {
         $pull: { reacts: { reactType: 'Love', userId: userId } },
         $inc: { 'counts.loveReacts': -1 },
       },
     );
     await this.pinModel.updateMany(
-      {},
+      { reacts: { reactType: 'Haha', userId: userId } },
       {
         $pull: { reacts: { reactType: 'Haha', userId: userId } },
         $inc: { 'counts.hahaReacts': -1 },
       },
     );
     await this.pinModel.updateMany(
-      {},
+      { reacts: { reactType: 'Thanks', userId: userId } },
       {
         $pull: { reacts: { reactType: 'Thanks', userId: userId } },
         $inc: { 'counts.thanksReacts': -1 },
       },
     );
     await this.pinModel.updateMany(
-      {},
+      { reacts: { reactType: 'Good idea', userId: userId } },
       {
         $pull: { reacts: { reactType: 'Good idea', userId: userId } },
         $inc: { 'counts.goodIdeaReacts': -1 },
       },
     );
     await this.pinModel.updateMany(
-      {},
+      { 'comments.commenter': userId },
       {
         $pull: {
           comments: { commenter: userId },
