@@ -52,7 +52,7 @@
     "mongoose": "^5.9.26",
     "mongoose-partial-search": "^1.0.5",
     "morgan": "^1.10.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^3.1.1",
     "nodemailer": "^6.4.10",
     "partial": "0.0.7",
     "passport": "^0.4.1",
