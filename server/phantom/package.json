@@ -46,7 +46,7 @@
     "fuzzy-search": "^3.2.1",
     "googleapis": "^60.0.1",
     "graceful-fs": "^4.2.4",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongo-gridfs": "^1.1.0",
     "mongoosastic": "^4.6.0",
     "mongoose": "^5.9.26",
